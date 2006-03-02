@@ -1,0 +1,85 @@
+---
+- 
+ experiment:
+  	name: Demo Cigri GdX/Sophia Resa 
+-
+ oargridsubasync:
+   id: "1"
+   dep: "0"
+   name: DemoCigri
+   desc:
+#    - idpot: "name=idpot:nodes=3"
+    - gdx: "name=gdx:nodes=10"
+#    - sophia: "name=sophia:nodes=10"
+#    - parasol: "name=parasol:nodes=15"
+   walltime: "1:0:0"
+#   queue: deploy
+-
+ experiment:
+  	name: Demo Cigri Gdx Exec
+-
+ oargridstat:
+   name: DemoCigri
+   id: "1"
+   dep: "0"
+-
+ kadeploy:
+   id: "2"
+   dep: "1"
+   nodeset: gdx
+   env:  demo_cigri_oar
+   part: hda8
+- 
+ script:
+   id: "3"
+   dep: "2"
+   nodeset: gdx
+   program: launch_services 
+   dir: /home/grenoble/orichard/Script/Demo/
+
+-
+ experiment:
+  	name: Demo Cigri Gdx/Sophia Exec
+-
+ oargridstat:
+   name: DemoCigri
+   id: "1"
+   dep: "0"
+-
+ kadeploy:
+   id: "2"
+   dep: "1"
+   nodeset: gdx
+   env:  demo_cigri_oar
+   part: hda8
+-
+ kadeploy:
+   id: "3"
+   dep: "1"
+   nodeset: sophia
+   env:  demo_cigri_oar
+   part: hda6
+- 
+ script:
+   id: "4"
+   dep: "all"
+   nodeset: gdx
+   program: launch_services 
+   dir: /home/grenoble/orichard/Script/Demo/
+-
+ experiment:
+  	name: Test Gdx Exec
+-
+ oargridstat:
+   name: DemoCigri
+   id: "1"
+   dep: "0"
+- 
+ script:
+   id: "2"
+   dep: "all"
+   nodeset: gdx
+   program: launch_services 
+   dir: /home/grenoble/orichard/Script/Demo/
+
+
