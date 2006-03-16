@@ -352,7 +352,12 @@ class ExpoExec
 				expe.nodesets[name]= NodeSet.new(name,cluster,batchId,sid)			
 				subnodes = yamlnodes[cluster]
 				nodes = subnodes[batchId]
-				expe.nodesets[name].nodes = nodes
+
+				#unique on nodes
+				uniq_nodes = Array.new()
+				nodes.each { |node| uniq_nodes.push(node) if !uniq_nodes.include?(node)}
+
+				expe.nodesets[name].nodes = uniq_nodes
 				expe.allnodes.concat(nodes)
 			}
 		}

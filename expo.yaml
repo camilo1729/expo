@@ -13,7 +13,7 @@
 #    - sophia: "name=sophia:nodes=10"
 #    - parasol: "name=parasol:nodes=15"
    walltime: "1:0:0"
-#   queue: deploy
+   queue: deploy
 -
  experiment:
   	name: Demo Cigri Gdx Exec
