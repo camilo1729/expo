@@ -1,7 +1,7 @@
 Source: libcmdctrl-ruby
 Section: interpreters
 Priority: optional
-Maintainer: Lucas Nussbaum <lucas@lucas-nussbaum.net>
+Maintainer: Lucas Nussbaum <lucas.nussbaum@imag.fr>
 Build-Depends: debhelper (>= 5), ruby1.8, ruby1.8-dev, cdbs (>= 0.4.32ubuntu13), ruby-pkg-tools (>= 0.8), rdoc, graphviz
 Standards-Version: 3.6.2.2
 
