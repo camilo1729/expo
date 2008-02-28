@@ -1,3 +1,5 @@
+#!/usr/bin/env ruby
+
 require 'soap/rpc/standaloneServer'
 require 'yaml'
 require 'monitor'
@@ -32,7 +34,7 @@ SSH 					= 'ssh'
 
 	KADEPLOY_FRONTAL = { 
 								'idpot' => 'oar.idpot.grenoble.grid5000.fr',
-        				'sophia' => 'oar.sophia.grid5000.fr',
+        				'azur' => 'oar.sophia.grid5000.fr',
         				'parasol' => 'oar.parasol.rennes.grid5000.fr',
         				'gdx' => 'oar.orsay.grid5000.fr',
         				'toulouse' => 'oar.toulouse.grid5000.fr',
@@ -450,7 +452,7 @@ class ExpoExec
 		nodeset= deploy.nodeset
 		cmd =  ""
 		cmd << SSH
-		cmd << " #{KADEPLOY_FRONTAL[nodeset.cluster]}"
+		cmd << " -t #{KADEPLOY_FRONTAL[nodeset.cluster]}"
 		cmd << " #{KADEPLOY}"
 		cmd << " -f #{nodeset.filenode} -e #{deploy.env} -p #{deploy.part}"
 		puts "Kadeploy command: #{cmd}, cluster: #{nodeset.cluster}"

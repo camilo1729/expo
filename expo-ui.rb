@@ -1,10 +1,10 @@
 #!/usr/bin/env ruby
 =begin
   expo-ui.rb - A simple ui for experiment using expo-engine.
-	This include kadeploy, oar and oargrid supports plus user tasck
-	intergration
+  This include kadeploy, oar and oargrid supports plus user's 
+  task integration
 
-  Copyright (c) 2005  Mescal Project Team
+  Copyright (c) 2005 Mescal Project Team
   This program is licenced under the same licence as Kadeploy.
 =end
 
@@ -29,6 +29,33 @@ class BufferStdout
 		@textview.scroll_to_mark(@mark, 0, false, 0, 1) if !@hide  
 	end
 end
+
+#For non gui execution 
+class Dummy_Expo_ui
+	attr_accessor :expo_client, :listExpe, :listTask, :h_stdbuffer 
+
+	def initialize()
+		puts "Dummy_Expo_ui: gui desactivated"
+	end
+
+	def initviewExpe(listExpe)
+	end
+		 
+	def initviewStatus
+	end
+
+	def initviewInfo
+	end
+
+	def bufferStdout(tid)
+	end
+	
+	def append_taskStatus(root)
+	end
+	
+end
+
+
 
 class Expo_ui
 
@@ -376,8 +403,11 @@ end
 
 
 opts = GetoptLong.new(
-  [ "--dev",      "-d",          GetoptLong::NO_ARGUMENT ],
-  [ "--verbose",    "-v",        GetoptLong::NO_ARGUMENT ]
+  [ "--dev",      "-d",         GetoptLong::NO_ARGUMENT ],
+  [ "--verbose",  "-v",        	GetoptLong::NO_ARGUMENT ],
+	[ "--file",     "-f",        	GetoptLong::REQUIRED_ARGUMENT ],
+	[ "--no-gui",   "-n",       GetoptLong::NO_ARGUMENT ],
+	[ "--eid",   		"-e",       GetoptLong::REQUIRED_ARGUMENT ]
 )
 
 # process the parsed options
@@ -395,19 +425,37 @@ if opt_hash.has_key?('--dev')
   $dev=true
 end
 
-Gtk.init
+if opt_hash.has_key?('--no-gui')
+  puts "no gui"
+	$nogui=true
+end
+
+eid_tolaunch = 0
+
+if opt_hash.has_key?('--eid')
+	eid_tolaunch = opt_hash['--eid']
+end
+
+fileexpe = "expo.yaml"
+
+if opt_hash.has_key?('--file')
+ 	fileexpe = opt_hash['--file']
+end
+
+Gtk.init if !$nogui
 
 server = "http://localhost:12321"
 
-gui = Expo_ui.new("expo-ui.glade")
-
-fileexpe = ARGV[0]||"expo.yaml"
+if $nogui
+	gui = Dummy_Expo_ui.new()
+else
+	gui = Expo_ui.new("expo-ui.glade")
+end
 
 listTask = Array.new
 
 listExp = ListExperiment.new(fileexpe,listTask)
 pp listExp
-
 
 expo_client = Expo_ui_client.new(server)
 
@@ -422,4 +470,22 @@ gui.initviewStatus
 gui.initviewInfo
 gui.initviewExpe(listExp)
 #gui.testview
-Gtk.main
+if !$nogui
+	Gtk.main
+else
+	puts "Yop !"
+
+	#Block gui actions  
+	class  Task
+		def initStatusView(gui)
+		end
+		def update_gui
+		end
+	end
+	#Launch expe
+	expo_client.launch_expe(listExp[eid_tolaunch])
+	while (1)
+		sleep(5)
+		puts "."
+	end
+end

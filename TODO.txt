@@ -4,6 +4,7 @@
 * utiliser l'index de listTask pour identifier l'expé à lancer
 * lancement automatique du serveur + établisement du tunnel 
 * services info (version, user, ..., dans les retours de l'open expe ?)
+* default partition pour kadeploy
 * mode nogui
 * numéro des tâches non contigue
 * plusieurs expe en parallèle (à tester)
@@ -17,7 +18,8 @@
 * menu
 * logo à "gimper" :)
 * rinda pour la gestion des nodesets ?
-* ...
+* DSL/API/XML...
+
 
 DONE:
 

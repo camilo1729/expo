@@ -1,7 +1,7 @@
 ---
 - 
  experiment:
-  	name: Demo Cigri GdX/Sophia Resa 
+  	name: Demo Cigri GDX/AZUR Resa 
 -
  oargridsubasync:
    id: "1"
@@ -9,14 +9,15 @@
    name: DemoCigri
    desc:
 #    - idpot: "name=idpot:nodes=3"
-    - gdx: "name=gdx:nodes=10"
-#    - sophia: "name=sophia:nodes=10"
+#    - gdx: name=gdx:nodes=10:-prop="netgdx='YES'"
+    - gdx: name=gdx:nodes=100
+#    - azur: "name=azur:nodes=1"
 #    - parasol: "name=parasol:nodes=15"
    walltime: "1:0:0"
    queue: deploy
 -
  experiment:
-  	name: Demo Cigri Gdx Exec
+  	name: Demo Cigri GDX Exec
 -
  oargridstat:
    name: DemoCigri
@@ -27,16 +28,37 @@
    id: "2"
    dep: "1"
    nodeset: gdx
-   env:  demo_cigri_oar
-   part: hda8
+   env:  sid-x64-base-1.0
+   part: sda3  
 - 
  script:
    id: "3"
    dep: "2"
    nodeset: gdx
-   program: launch_services 
-   dir: /home/grenoble/orichard/Script/Demo/
-
+   program: true 
+   dir: /bin/
+-
+ experiment:
+  	name: Demo Cigri AZUR Exec
+-
+ oargridstat:
+   name: DemoCigri
+   id: "1"
+   dep: "0"
+-
+ kadeploy:
+   id: "2"
+   dep: "1"
+   nodeset: azur
+   env:  sid-x64-base-1.0
+   part: hda3  
+- 
+ script:
+   id: "3"
+   dep: "2"
+   nodeset: azur
+   program: true 
+   dir: /bin/
 -
  experiment:
   	name: Demo Cigri Gdx/Sophia Exec
