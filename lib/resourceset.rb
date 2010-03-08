@@ -347,7 +347,7 @@ class ResourceSet < Resource
                                         sets_cmd += x.make_taktuk_command(cmd)
                                 end
                         }
-                        str_cmd += " -m #{self.gw} -[" + sets_cmd + " -]" if sets
+                        str_cmd += " -m #{self.gw} -[ " + sets_cmd + " -]" if sets
                         nodes = false
                         nodes_cmd = ""
                         @resources.each { |x|
@@ -356,7 +356,7 @@ class ResourceSet < Resource
                                         nodes_cmd += x.make_taktuk_command(cmd)
                                 end
                         }
-                        str_cmd += " -m #{self.gw} -[" + nodes_cmd + " downcast exec [ #{cmd} ] -]" if nodes
+                        str_cmd += " -m #{self.gw} -[ " + nodes_cmd + " downcast exec [ #{cmd} ] -]" if nodes
                 else
                         nodes = false
                         nodes_cmd = ""
@@ -368,7 +368,7 @@ class ResourceSet < Resource
                                         nodes_cmd += x.make_taktuk_command(cmd)
                                 end
                         }
-                        str_cmd += " -m #{first} -[" + nodes_cmd + " downcast exec [ #{cmd} ] -]" if nodes
+                        str_cmd += " -m #{first} -[ " + nodes_cmd + " downcast exec [ #{cmd} ] -]" if nodes
                         sets = false
                         sets_cmd = ""
                         @resources.each { |x|
@@ -379,7 +379,7 @@ class ResourceSet < Resource
                         }
                         if sets then
                                 if nodes then 
-                                        str_cmd += " -m #{first} -[" + sets_cmd + " -]"
+                                        str_cmd += " -m #{first} -[ " + sets_cmd + " -]"
                                 else
                                         str_cmd += sets_cmd
                                 end
