@@ -42,7 +42,7 @@ end
 
 def add(*args)
 	a = Struct::Action.new(nil,*args)
-#		p caller
+		p caller
 #		p caller[1].split(':')[1]
 	@action_mutex.synchronize do
 		a.id = self.length
