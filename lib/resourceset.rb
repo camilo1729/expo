@@ -32,7 +32,9 @@ class Resource
                 @type = type
                 @properties = Hash::new
                 if properties then
-                        @properties.replace(properties)
+                  #----replaces the contents of @properties hash with
+                  #----contents of 'properties' hash
+                  @properties.replace(properties)
                 end
                 if name then
                         @properties[:name] = name
@@ -118,8 +120,8 @@ class ResourceSet < Resource
         end
 
         def push( resource )
-                @resources.push( resource )
-		return self
+          @resources.push( resource )
+          return self
         end
 
         def first ( type=nil )
@@ -130,11 +132,21 @@ class ResourceSet < Resource
                                 res = resource.first( type )
                                 return res if res
                         elsif not type then
-				return resource
-			end
+                          return resource
+                        end
                 }
-                return nil
+            return nil
         end
+
+        def select_resource( props )
+          @resources.each { |resource|
+            if resource.corresponds( props ) then
+              return resource
+            end 
+          }   
+        end 
+
+
 
         def select( type=nil, props=nil , &block)
                 set = ResourceSet::new
@@ -198,7 +210,8 @@ class ResourceSet < Resource
                                 @resources.delete_at(i)
                                 res = resource
                         elsif @resources[i].kind_of?(ResourceSet) then
-                                if @resources[i].delete_all( resource ) then
+                                #if @resources[i].delete_all( resource ) then
+                                if @resources[i].delete( resource ) then
                                         res = resource
                                 end
                         end
@@ -206,7 +219,7 @@ class ResourceSet < Resource
                 return res
         end
 
-        def delete_if(block)
+        def delete_if(&block)
                 @resources.each_index { |i|
                         if block.call(@resources[i]) then
                                 @resources.delete_at(i)
@@ -249,6 +262,8 @@ class ResourceSet < Resource
                 while true do
                         resource_set = ResourceSet::new
                         it = ResourceSetIterator::new(self, type)
+                        #----is slice_step a block? if we call from
+                        #----each_slice_power2 then yes
                         if slice_step.kind_of?(Proc) then
                                 number = slice_step.call(i)
                         else
@@ -295,25 +310,25 @@ class ResourceSet < Resource
         end
 
         def uniq!
-		i = 0
-		while i < @resources.size-1 do
-			pos = []
-                        for j in i+1...@resources.size
-                                if @resources[i].eql?(@resources[j]) then
-					pos.push(j)
-                                end
-                        end
-			pos.reverse.each { |p|
-                                @resources.delete_at(p)
-			}
-			i = i + 1 
-                end
-                @resources.each { |x|
-                        if x.instance_of?(ResourceSet) then
-                                x.uniq!
-                        end
-                }
-                return self
+          i = 0
+          while i < @resources.size-1 do
+            pos = []
+              for j in i+1...@resources.size
+                                      if @resources[i].eql?(@resources[j]) then
+                pos.push(j)
+                                      end
+                              end
+            pos.reverse.each { |p|
+                                      @resources.delete_at(p)
+            }
+            i = i + 1 
+                      end
+                      @resources.each { |x|
+                              if x.instance_of?(ResourceSet) then
+                                      x.uniq!
+                              end
+                      }
+                      return self
         end
 
         def resource_file( type=nil, update=false )

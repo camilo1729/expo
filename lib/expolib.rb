@@ -16,13 +16,19 @@ def make_taktuk_result( id )
   result = $client.command_result( id )
 
 
+  #----the following cut the message about job deletion
+  #    so we won't have an error about unrecognized colomn in YAML::load
+  #    while deploying
+  ind = result['stdout'].index('[OAR_GRIDDEL]')
+  if ind
+    result['stdout'] = result['stdout'][0..ind-1]
+  end
+
   tree = YAML::load(result['stdout'])
 
-#p tree
-
+#p result.inspect
 #p tree["connectors"]
-
-#	p tree
+#p tree
 
   res = ExpoResult::new
   tree['hosts'].each_value { |h|
@@ -32,6 +38,13 @@ def make_taktuk_result( id )
       res.push(r)
     }
   }
+
+  #----display an output of command!!!
+  puts "Command: " + res[0]['command_line']
+  puts "Output: "
+  if res[0]['stdout']
+    puts res[0]['stdout']
+  end
   return [id, res]
 end
 

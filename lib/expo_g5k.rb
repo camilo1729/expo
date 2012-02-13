@@ -52,24 +52,32 @@ require "#{$reservation_type}_structures"
 
 def extract_resources(result)
   if($reservation_type == "oargrid2") then
+
     result["resources"].each { |key,value|
+      #----key - it's the name of cluster, value - all the nodes
+      #----reserved on this cluster
       cluster = key
       value.each { |key,value|
+        #----key - the job number, value - hash of 'name'=>"" and all
+        #----the names of reserved nodes
         jobname = key
         resource_set = ResourceSet::new
-	resource_set.name = jobname #$namer.get_name(cluster)
-	resource_set.properties[:gateway] = $oargrid_gw[cluster]
-	resource_set.properties[:alias] = cluster
+        resource_set.name = jobname #$namer.get_name(cluster)
+        #----$oargrid_gw is a hash of 'cluster name'=>'frontend name'
+        resource_set.properties[:gateway] = $oargrid_gw[cluster]
+        resource_set.properties[:alias] = cluster
         value.each { |key,value|
           jobid = key
           resource_set.properties[:id] = jobid
           value.each { |node|
             resource = Resource::new(:node, nil, node)
-	    resource.properties[:gateway] = $oargrid_gw[cluster]
+            resource.properties[:gateway] = $oargrid_gw[cluster]
             resource_set.push(resource)
           }
         }
-	$all.push(resource_set)
+        #----so we put in $all a hash of all reserved nodes (in all
+        #----clusters)
+        $all.push(resource_set)
       }
     }
   elsif ($reservation_type == "oargrid") then
@@ -117,8 +125,11 @@ def oargridsub(params)
     parameters = OargridsubParameters::new(nil,params[:queue],nil,params[:walltime],nil,nil,nil,nil,params[:res])
   elsif $reservation_type == "oargrid2" then
     params[:type] = "allow_classic_ssh"
+    #----create new hash and put known values of :type and :res there
     parameters = OargridsubParameters::new(params[:start_date],params[:queue],params[:type],params[:program],params[:directory],params[:walltime],params[:force],params[:verbose],params[:file],params[:res])
   end
+  #----$client was created in expo.rb
+  #----next command actually does the reservation
   reservation = $client.new_reservation($reservation_type,parameters)
   info = $client.reservation_info(reservation["reservation_number"])
   id = info["id"]
@@ -180,12 +191,14 @@ def kadeploy( nodes, params )
 end
 =end
 
+#----old tw from line 200  
+#tw = TaktukWrapper::new(\"-s #{$ssh_connector} -m #{nodes.gw} b e [ terminal_emulator kadeploy -e #{params[:env]} -f #{n.nodefile} ]\".split)
 def _kadeploy( nodes, params )
   n = nodes.uniq
   copy( n.nodefile, nodes.gw )
   cmd = "require 'taktuk_wrapper'
   require 'yaml'
-  tw = TaktukWrapper::new(\"-s #{$ssh_connector} -m #{nodes.gw} b e [ terminal_emulator kadeploy -e #{params[:env]} -f #{n.nodefile} ]\".split)
+  tw = TaktukWrapper::new(\"-s #{$ssh_connector} -m #{nodes.gw} b e [ kadeploy3 -e #{params[:env]} -f #{n.nodefile} -k ]\".split)
   tw.at_output { |r,p,l,c,h,e,t|
     rank = r
     pid = p
@@ -209,6 +222,7 @@ def _kadeploy( nodes, params )
   tw.run
   puts YAML.dump({'hosts'=>tw.hosts,'connectors'=>tw.connectors,'errors'=>tw.errors,'infos'=>tw.infos})
   "
+  
   puts "deploying : " + n.inspect
   command_result = $client.ruby_asynchronous_command(cmd)
   $client.command_wait(command_result["command_number"],1)
@@ -238,21 +252,26 @@ def _kadeploy( nodes, params )
 end
 
 def kadeploy( nodes, params )
+  #----only unique nodes (we have same nodes for diff. cores)
   n = nodes.uniq
 
+  #----read comment in the notebook. Specifies what we do when trying to
+  #    access hash value with non-existent key
   gateways = Hash::new { |hash,key|
   	hash[key] = ResourceSet::new
-	hash[key].properties[:gateway] = key
-	hash[key]
+    hash[key].properties[:gateway] = key
+    hash[key]
   }
 
+  #----for each gateway - its own set of resources
   n.each(:node) { |resource|
   	gateways[resource.gw].push( resource )
   }
   results = Array::new
   gateways.each_value { |resource_set|
-   results.push( _kadeploy( resource_set, params ) )
+    results.push( _kadeploy( resource_set, params ) )
   }
+
   return results
 end
 
@@ -261,7 +280,7 @@ def _akadeploy( nodes, params )
   n = nodes.uniq
   copy( n.nodefile, nodes.gw )
   cmd = "require 'taktuk_wrapper'
-  tw = TaktukWrapper::new(\"-s #{$ssh_connector} -m #{nodes.gw} b e [ terminal_emulator kadeploy -e #{params[:env]} -f #{n.nodefile} ]\".split)
+  tw = TaktukWrapper::new(\"-s #{$ssh_connector} -m #{nodes.gw} b e [ kadeploy3 -e #{params[:env]} -f #{n.nodefile} ]\".split)
   tw.at_output { |r,p,l,c,h,e,t|
     rank = r
     pid = p
@@ -296,16 +315,21 @@ def _akadeploy( nodes, params )
   $akadeploys_mutex.synchronize {
     $akadeploys[command_result["command_number"]] = { 'number' => n.resources.size, 'stderr' => "" }
   }
+
+  #----for use_case_1_8 command_result hash contains only one pair
+  #    "command_number"=>some number
   return command_result["command_number"]
 end
 
+#----asynchronous deployment
+#    the same as kadeploy() but calls _akadeploy instead of _kadeploy
 def akadeploy( nodes, params )
   n = nodes.uniq
 
   gateways = Hash::new { |hash,key|
   	hash[key] = ResourceSet::new
-	hash[key].properties[:gateway] = key
-	hash[key]
+    hash[key].properties[:gateway] = key
+    hash[key]
   }
 
   n.each(:node) { |resource|
@@ -322,6 +346,8 @@ end
 def kadeploy_advancement
   res = Array::new
   $akadeploys_mutex.synchronize {
+    #----$akadeploys hash contains pairs of command_number=>( number of
+    #    the nodes, stderr)
     $akadeploys.each { |id, h|
       result = $client.command_result( id )
       h['stderr'] += result['stderr']
