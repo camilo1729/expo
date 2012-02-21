@@ -279,9 +279,10 @@ end
 
 load($rest.last)
 
-if not @options[:no_cleanup]
+#I have to disable this temporarily
+#if not @options[:no_cleanup]
   # clean up reservations & deployments
-  cleanup
-end
+ # cleanup
+#end
 
 $client.close_experiment
