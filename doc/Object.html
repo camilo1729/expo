@@ -1,0 +1,2803 @@
+<!DOCTYPE html>
+
+<html>
+<head>
+<meta content="text/html; charset=UTF-8" http-equiv="Content-Type">
+
+<title>class Object - RDoc Documentation</title>
+
+<link type="text/css" media="screen" href="./rdoc.css" rel="stylesheet">
+
+<script type="text/javascript">
+  var rdoc_rel_prefix = "./";
+</script>
+
+<script type="text/javascript" charset="utf-8" src="./js/jquery.js"></script>
+<script type="text/javascript" charset="utf-8" src="./js/navigation.js"></script>
+<script type="text/javascript" charset="utf-8" src="./js/search_index.js"></script>
+<script type="text/javascript" charset="utf-8" src="./js/search.js"></script>
+<script type="text/javascript" charset="utf-8" src="./js/searcher.js"></script>
+<script type="text/javascript" charset="utf-8" src="./js/darkfish.js"></script>
+
+
+<body id="top" class="class">
+<nav id="metadata">
+  <nav id="home-section" class="section">
+  <h3 class="section-header">
+    <a href="./index.html">Home</a>
+    <a href="./table_of_contents.html#classes">Classes</a>
+    <a href="./table_of_contents.html#methods">Methods</a>
+  </h3>
+</nav>
+
+
+  <nav id="search-section" class="section project-section" class="initially-hidden">
+  <form action="#" method="get" accept-charset="utf-8">
+    <h3 class="section-header">
+      <input type="text" name="search" placeholder="Search" id="search-field"
+             title="Type to search, Up and Down to navigate, Enter to load">
+    </h3>
+  </form>
+
+  <ul id="search-results" class="initially-hidden"></ul>
+</nav>
+
+
+  <div id="file-metadata">
+    <nav id="file-list-section" class="section">
+  <h3 class="section-header">Defined In</h3>
+  <ul>
+    <li>test/tc_rctrl.rb
+    <li>test/tc_resctrl_stand_alone.rb
+    <li>test/tc_expctrl_stand_alone.rb
+    <li>test/tc_resctrl.rb
+    <li>test/tc_rctrl_stand_alone.rb
+    <li>test/tc_expctrl.rb
+    <li>test/tc_heap.rb
+    <li>test/test_reservation.rb
+    <li>setup.rb
+    <li>lib/g5k_parallel.rb
+    <li>lib/g5k_api.rb
+    <li>old/trunk/gui/wx/expo-wx-widgets.rb
+    <li>old/trunk/gui/wx/expo-wx-client.rb
+    <li>model/service_diagram.rb
+    <li>bin/expo-server.rb
+    <li>bin/expo-ctrl.rb
+    <li>bin/rctrl_server.rb
+    <li>bin/expo.rb
+    <li>bin/expctrl_server.rb
+    <li>bin/resctrl_server.rb
+    <li>demo/karo/karo.rb
+    <li>demo/karo/automaton.rb
+    <li>demo/karo/expo-karo.rb
+  </ul>
+</nav>
+
+    
+  </div>
+
+  <div id="class-metadata">
+    
+    <nav id="parent-class-section" class="section">
+  <h3 class="section-header">Parent</h3>
+  
+  <p class="link">
+  
+</nav>
+
+    <!-- Included Modules -->
+<nav id="includes-section" class="section">
+  <h3 class="section-header">Included Modules</h3>
+
+  <ul class="link-list">
+  
+  
+    <li><a class="include" href="Expo.html">Expo</a>
+  
+  
+  
+    <li><span class="include">Expo::ExpCtrlService</span>
+  
+  
+  
+    <li><span class="include">SOAP::Mapping</span>
+  
+  
+  </ul>
+</nav>
+
+    <!-- Method Quickref -->
+<nav id="method-list-section" class="section">
+  <h3 class="section-header">Methods</h3>
+
+  <ul class="link-list">
+    
+    <li><a href="#method-i-2A-2A+Lanuch+Automaton-2A-2A">#** Lanuch Automaton**</a>
+    
+    <li><a href="#method-i-atask">#atask</a>
+    
+    <li><a href="#method-i-automaton_creation_method_missing">#automaton_creation_method_missing</a>
+    
+    <li><a href="#method-i-barrier">#barrier</a>
+    
+    <li><a href="#method-i-check">#check</a>
+    
+    <li><a href="#method-i-cleanup">#cleanup</a>
+    
+    <li><a href="#method-i-close_experiment">#close_experiment</a>
+    
+    <li><a href="#method-i-convert_to_resource">#convert_to_resource</a>
+    
+    <li><a href="#method-i-copy">#copy</a>
+    
+    <li><a href="#method-i-copy2">#copy2</a>
+    
+    <li><a href="#method-i-deployment_ok-3F">#deployment_ok?</a>
+    
+    <li><a href="#method-i-fifo_generic_cmd_expo">#fifo_generic_cmd_expo</a>
+    
+    <li><a href="#method-i-g5k_deploy">#g5k_deploy</a>
+    
+    <li><a href="#method-i-g5k_init">#g5k_init</a>
+    
+    <li><a href="#method-i-g5k_reserve">#g5k_reserve</a>
+    
+    <li><a href="#method-i-g5k_run">#g5k_run</a>
+    
+    <li><a href="#method-i-hello">#hello</a>
+    
+    <li><a href="#method-i-how_many-3F">#how_many?</a>
+    
+    <li><a href="#method-i-key_for_deployment">#key_for_deployment</a>
+    
+    <li><a href="#method-i-keychain">#keychain</a>
+    
+    <li><a href="#method-i-launch_experiment">#launch_experiment</a>
+    
+    <li><a href="#method-i-load_experiment">#load_experiment</a>
+    
+    <li><a href="#method-i-make_taktuk_result">#make_taktuk_result</a>
+    
+    <li><a href="#method-i-method_missing">#method_missing</a>
+    
+    <li><a href="#method-i-monitor_experiment">#monitor_experiment</a>
+    
+    <li><a href="#method-i-monitor_stderr">#monitor_stderr</a>
+    
+    <li><a href="#method-i-monitor_stdout">#monitor_stdout</a>
+    
+    <li><a href="#method-i-multipackage_install-3F">#multipackage_install?</a>
+    
+    <li><a href="#method-i-oar_walltime">#oar_walltime</a>
+    
+    <li><a href="#method-i-orignal_method_missing">#orignal_method_missing</a>
+    
+    <li><a href="#method-i-parallel">#parallel</a>
+    
+    <li><a href="#method-i-parallel_section">#parallel_section</a>
+    
+    <li><a href="#method-i-patask">#patask</a>
+    
+    <li><a href="#method-i-print_taktuk_result">#print_taktuk_result</a>
+    
+    <li><a href="#method-i-ptask">#ptask</a>
+    
+    <li><a href="#method-i-ptask_orig">#ptask_orig</a>
+    
+    <li><a href="#method-i-ptaskfoorand">#ptaskfoorand</a>
+    
+    <li><a href="#method-i-setup_rb_error">#setup_rb_error</a>
+    
+    <li><a href="#method-i-step">#step</a>
+    
+    <li><a href="#method-i-synchronize">#synchronize</a>
+    
+    <li><a href="#method-i-task">#task</a>
+    
+    <li><a href="#method-i-valid_deployment_key-3F">#valid_deployment_key?</a>
+    
+    <li><a href="#method-i-valid_job_key-3F">#valid_job_key?</a>
+    
+    <li><a href="#method-i-wait-21">#wait!</a>
+    
+    <li><a href="#method-i-xmlrpc_server_launching">#xmlrpc_server_launching</a>
+    
+  </ul>
+</nav>
+
+  </div>
+
+  <div id="project-metadata">
+    <nav id="fileindex-section" class="section project-section">
+  <h3 class="section-header">Pages</h3>
+
+  <ul>
+  
+    <li class="file"><a href="./COPYING.html">COPYING</a>
+  
+    <li class="file"><a href="./ChangeLog.html">ChangeLog</a>
+  
+    <li class="file"><a href="./LICENSE.html">LICENSE</a>
+  
+    <li class="file"><a href="./README.html">README</a>
+  
+    <li class="file"><a href="./Rakefile.html">Rakefile</a>
+  
+    <li class="file"><a href="./debian-pkg/debian/changelog.html">changelog</a>
+  
+    <li class="file"><a href="./debian-pkg/debian/compat.html">compat</a>
+  
+    <li class="file"><a href="./debian-pkg/debian/control.html">control</a>
+  
+    <li class="file"><a href="./debian-pkg/debian/copyright.html">copyright</a>
+  
+    <li class="file"><a href="./debian-pkg/debian/rules.html">rules</a>
+  
+    <li class="file"><a href="./demo/karo/README.html">README</a>
+  
+    <li class="file"><a href="./demo/karo/TODO.html">TODO</a>
+  
+    <li class="file"><a href="./htdocs/README.html">README</a>
+  
+    <li class="file"><a href="./htdocs/Rakefile.html">Rakefile</a>
+  
+    <li class="file"><a href="./old/trunk/gui/wx/README.html">README</a>
+  
+  </ul>
+</nav>
+
+    <nav id="classindex-section" class="section project-section">
+  <h3 class="section-header">Class and Module Index</h3>
+
+  <ul class="link-list">
+  
+    <li><a href="./Expo.html">Expo</a>
+  
+    <li><a href="./Expo/AddCommandResponse.html">Expo::AddCommandResponse</a>
+  
+    <li><a href="./Expo/AddCommandsResponse.html">Expo::AddCommandsResponse</a>
+  
+    <li><a href="./Expo/AddNodesResponse.html">Expo::AddNodesResponse</a>
+  
+    <li><a href="./Expo/AddReservationResponse.html">Expo::AddReservationResponse</a>
+  
+    <li><a href="./Expo/AsynchronousCommandResponse.html">Expo::AsynchronousCommandResponse</a>
+  
+    <li><a href="./Expo/BulkCommandInfosResponse.html">Expo::BulkCommandInfosResponse</a>
+  
+    <li><a href="./Expo/BulkCommandResultsResponse.html">Expo::BulkCommandResultsResponse</a>
+  
+    <li><a href="./Expo/BulkCommandsResponse.html">Expo::BulkCommandsResponse</a>
+  
+    <li><a href="./Expo/BulkRCtrlResponse.html">Expo::BulkRCtrlResponse</a>
+  
+    <li><a href="./Expo/CloseExperimentResponse.html">Expo::CloseExperimentResponse</a>
+  
+    <li><a href="./Expo/CommandArchiveResponse.html">Expo::CommandArchiveResponse</a>
+  
+    <li><a href="./Expo/CommandDeleteResponse.html">Expo::CommandDeleteResponse</a>
+  
+    <li><a href="./Expo/CommandInfoResponse.html">Expo::CommandInfoResponse</a>
+  
+    <li><a href="./Expo/CommandInputResponse.html">Expo::CommandInputResponse</a>
+  
+    <li><a href="./Expo/CommandResponse.html">Expo::CommandResponse</a>
+  
+    <li><a href="./Expo/CommandResultResponse.html">Expo::CommandResultResponse</a>
+  
+    <li><a href="./Expo/CommandRewindResponse.html">Expo::CommandRewindResponse</a>
+  
+    <li><a href="./Expo/CommandWaitResponse.html">Expo::CommandWaitResponse</a>
+  
+    <li><a href="./Expo/CreateExperimentResponse.html">Expo::CreateExperimentResponse</a>
+  
+    <li><a href="./Expo/DelayedCommandResponse.html">Expo::DelayedCommandResponse</a>
+  
+    <li><a href="./Expo/DelayedCommandScheduler.html">Expo::DelayedCommandScheduler</a>
+  
+    <li><a href="./Expo/DeleteCommandResponse.html">Expo::DeleteCommandResponse</a>
+  
+    <li><a href="./Expo/DeleteReservationResponse.html">Expo::DeleteReservationResponse</a>
+  
+    <li><a href="./Expo/DumpExperimentResponse.html">Expo::DumpExperimentResponse</a>
+  
+    <li><a href="./Expo/ExpCtrlClient.html">Expo::ExpCtrlClient</a>
+  
+    <li><a href="./Expo/ExpCtrlClientDrbDriver.html">Expo::ExpCtrlClientDrbDriver</a>
+  
+    <li><a href="./Expo/ExpCtrlClientNoneDriver.html">Expo::ExpCtrlClientNoneDriver</a>
+  
+    <li><a href="./Expo/ExpCtrlClientXMLRPCDriver.html">Expo::ExpCtrlClientXMLRPCDriver</a>
+  
+    <li><a href="./Expo/ExpCtrlExperiment.html">Expo::ExpCtrlExperiment</a>
+  
+    <li><a href="./Expo/ExpCtrlResponse.html">Expo::ExpCtrlResponse</a>
+  
+    <li><a href="./Expo/ExpCtrlService.html">Expo::ExpCtrlService</a>
+  
+    <li><a href="./Expo/ExperimentInfoResponse.html">Expo::ExperimentInfoResponse</a>
+  
+    <li><a href="./Expo/ExperimentNumberResponse.html">Expo::ExperimentNumberResponse</a>
+  
+    <li><a href="./Expo/GenericCommandResponse.html">Expo::GenericCommandResponse</a>
+  
+    <li><a href="./Expo/GenericTask.html">Expo::GenericTask</a>
+  
+    <li><a href="./Expo/GetAllCommandsResponse.html">Expo::GetAllCommandsResponse</a>
+  
+    <li><a href="./Expo/GetAllNodesResponse.html">Expo::GetAllNodesResponse</a>
+  
+    <li><a href="./Expo/GetAllReservationsResponse.html">Expo::GetAllReservationsResponse</a>
+  
+    <li><a href="./Expo/GetAllResponse.html">Expo::GetAllResponse</a>
+  
+    <li><a href="./Expo/GetCommandInputsResponse.html">Expo::GetCommandInputsResponse</a>
+  
+    <li><a href="./Expo/GetNodesResponse.html">Expo::GetNodesResponse</a>
+  
+    <li><a href="./Expo/Heap.html">Expo::Heap</a>
+  
+    <li><a href="./Expo/InteractiveCommandResponse.html">Expo::InteractiveCommandResponse</a>
+  
+    <li><a href="./Expo/NameSet.html">Expo::NameSet</a>
+  
+    <li><a href="./Expo/NewReservationResponse.html">Expo::NewReservationResponse</a>
+  
+    <li><a href="./Expo/Oargrid2Reservation.html">Expo::Oargrid2Reservation</a>
+  
+    <li><a href="./Expo/OargridReservation.html">Expo::OargridReservation</a>
+  
+    <li><a href="./Expo/OpenExperimentResponse.html">Expo::OpenExperimentResponse</a>
+  
+    <li><a href="./Expo/OpenReservationResponse.html">Expo::OpenReservationResponse</a>
+  
+    <li><a href="./Expo/RCtrlClient.html">Expo::RCtrlClient</a>
+  
+    <li><a href="./Expo/RCtrlClientDrbDriver.html">Expo::RCtrlClientDrbDriver</a>
+  
+    <li><a href="./Expo/RCtrlClientNoneDriver.html">Expo::RCtrlClientNoneDriver</a>
+  
+    <li><a href="./Expo/RCtrlClientXMLRPCDriver.html">Expo::RCtrlClientXMLRPCDriver</a>
+  
+    <li><a href="./Expo/RCtrlCommand.html">Expo::RCtrlCommand</a>
+  
+    <li><a href="./Expo/RCtrlResponse.html">Expo::RCtrlResponse</a>
+  
+    <li><a href="./Expo/RCtrlService.html">Expo::RCtrlService</a>
+  
+    <li><a href="./Expo/RecursiveCommandResponse.html">Expo::RecursiveCommandResponse</a>
+  
+    <li><a href="./Expo/ResCtrlClient.html">Expo::ResCtrlClient</a>
+  
+    <li><a href="./Expo/ResCtrlReservation.html">Expo::ResCtrlReservation</a>
+  
+    <li><a href="./Expo/ResCtrlResponse.html">Expo::ResCtrlResponse</a>
+  
+    <li><a href="./Expo/ResCtrlService.html">Expo::ResCtrlService</a>
+  
+    <li><a href="./Expo/ReservationInfoResponse.html">Expo::ReservationInfoResponse</a>
+  
+    <li><a href="./Expo/ReservationJobResponse.html">Expo::ReservationJobResponse</a>
+  
+    <li><a href="./Expo/ReservationJobsResponse.html">Expo::ReservationJobsResponse</a>
+  
+    <li><a href="./Expo/ReservationResourcesResponse.html">Expo::ReservationResourcesResponse</a>
+  
+    <li><a href="./Expo/ReservationStatsResponse.html">Expo::ReservationStatsResponse</a>
+  
+    <li><a href="./Expo/ReservationWaitResponse.html">Expo::ReservationWaitResponse</a>
+  
+    <li><a href="./Expo/Resource.html">Expo::Resource</a>
+  
+    <li><a href="./Expo/ResourceSet.html">Expo::ResourceSet</a>
+  
+    <li><a href="./Expo/ResourceSetIterator.html">Expo::ResourceSetIterator</a>
+  
+    <li><a href="./Expo/RubyAsynchronousCommandResponse.html">Expo::RubyAsynchronousCommandResponse</a>
+  
+    <li><a href="./Expo/RubyCommandResponse.html">Expo::RubyCommandResponse</a>
+  
+    <li><a href="./Expo/RubyDelayedCommandResponse.html">Expo::RubyDelayedCommandResponse</a>
+  
+    <li><a href="./Expo/Task.html">Expo::Task</a>
+  
+    <li><a href="./Expo/TaskSet.html">Expo::TaskSet</a>
+  
+    <li><a href="./Expo/TaskStream.html">Expo::TaskStream</a>
+  
+    <li><a href="./CmdCtrl.html">CmdCtrl</a>
+  
+    <li><a href="./CmdCtrl/Commands.html">CmdCtrl::Commands</a>
+  
+    <li><a href="./CmdCtrl/Commands/Command.html">CmdCtrl::Commands::Command</a>
+  
+    <li><a href="./CmdCtrl/Commands/CommandBufferer.html">CmdCtrl::Commands::CommandBufferer</a>
+  
+    <li><a href="./CmdCtrl/Commands/InteractiveCommand.html">CmdCtrl::Commands::InteractiveCommand</a>
+  
+    <li><a href="./CmdCtrl/ParallelRunner.html">CmdCtrl::ParallelRunner</a>
+  
+    <li><a href="./CmdCtrl/ParallelRunnerResultGroup.html">CmdCtrl::ParallelRunnerResultGroup</a>
+  
+    <li><a href="./ActionList.html">ActionList</a>
+  
+    <li><a href="./BoolItem.html">BoolItem</a>
+  
+    <li><a href="./ComposedStep.html">ComposedStep</a>
+  
+    <li><a href="./ConfigItem.html">ConfigItem</a>
+  
+    <li><a href="./ConfigTable_class.html">ConfigTable_class</a>
+  
+    <li><a href="./Enumerable.html">Enumerable</a>
+  
+    <li><a href="./ExpCtrlServer.html">ExpCtrlServer</a>
+  
+    <li><a href="./ExpCtrlServerDrbDriver.html">ExpCtrlServerDrbDriver</a>
+  
+    <li><a href="./ExpCtrlServerSoapDriver.html">ExpCtrlServerSoapDriver</a>
+  
+    <li><a href="./ExpCtrlServerXMLRPCDriver.html">ExpCtrlServerXMLRPCDriver</a>
+  
+    <li><a href="./ExpCtrlTest.html">ExpCtrlTest</a>
+  
+    <li><a href="./ExpeCtrlView.html">ExpeCtrlView</a>
+  
+    <li><a href="./ExpeView.html">ExpeView</a>
+  
+    <li><a href="./ExpoClient.html">ExpoClient</a>
+  
+    <li><a href="./ExpoGui.html">ExpoGui</a>
+  
+    <li><a href="./ExpoResult.html">ExpoResult</a>
+  
+    <li><a href="./ExpoUiApp.html">ExpoUiApp</a>
+  
+    <li><a href="./FifoExpoClient.html">FifoExpoClient</a>
+  
+    <li><a href="./FifoExpoServer.html">FifoExpoServer</a>
+  
+    <li><a href="./File.html">File</a>
+  
+    <li><a href="./FileOperations.html">FileOperations</a>
+  
+    <li><a href="./HeapTest.html">HeapTest</a>
+  
+    <li><a href="./History.html">History</a>
+  
+    <li><a href="./HookScriptAPI.html">HookScriptAPI</a>
+  
+    <li><a href="./HookUtils.html">HookUtils</a>
+  
+    <li><a href="./Installer.html">Installer</a>
+  
+    <li><a href="./Karo.html">Karo</a>
+  
+    <li><a href="./Logger.html">Logger</a>
+  
+    <li><a href="./MetaConfigAPI.html">MetaConfigAPI</a>
+  
+    <li><a href="./Object.html">Object</a>
+  
+    <li><a href="./PackageSelectionItem.html">PackageSelectionItem</a>
+  
+    <li><a href="./Parallel.html">Parallel</a>
+  
+    <li><a href="./ParallelSection.html">ParallelSection</a>
+  
+    <li><a href="./PathItem.html">PathItem</a>
+  
+    <li><a href="./ProgramItem.html">ProgramItem</a>
+  
+    <li><a href="./RCtrlServer.html">RCtrlServer</a>
+  
+    <li><a href="./RCtrlServerDrbDriver.html">RCtrlServerDrbDriver</a>
+  
+    <li><a href="./RCtrlServerSoapDriver.html">RCtrlServerSoapDriver</a>
+  
+    <li><a href="./RCtrlServerXMLRPCDriver.html">RCtrlServerXMLRPCDriver</a>
+  
+    <li><a href="./RCtrlTest.html">RCtrlTest</a>
+  
+    <li><a href="./ResCtrlServer.html">ResCtrlServer</a>
+  
+    <li><a href="./ResCtrlServerDrbDriver.html">ResCtrlServerDrbDriver</a>
+  
+    <li><a href="./ResCtrlServerSoapDriver.html">ResCtrlServerSoapDriver</a>
+  
+    <li><a href="./ResCtrlServerXMLRPCDriver.html">ResCtrlServerXMLRPCDriver</a>
+  
+    <li><a href="./ResCtrlTest.html">ResCtrlTest</a>
+  
+    <li><a href="./ResourceSetTest.html">ResourceSetTest</a>
+  
+    <li><a href="./Result.html">Result</a>
+  
+    <li><a href="./SelectItem.html">SelectItem</a>
+  
+    <li><a href="./SetupError.html">SetupError</a>
+  
+    <li><a href="./Step.html">Step</a>
+  
+    <li><a href="./Steps.html">Steps</a>
+  
+    <li><a href="./TaktukWrapper.html">TaktukWrapper</a>
+  
+    <li><a href="./TaskResult.html">TaskResult</a>
+  
+    <li><a href="./TestReservation.html">TestReservation</a>
+  
+    <li><a href="./ThreadsCounter.html">ThreadsCounter</a>
+  
+    <li><a href="./ToplevelInstaller.html">ToplevelInstaller</a>
+  
+    <li><a href="./ToplevelInstallerMulti.html">ToplevelInstallerMulti</a>
+  
+    <li><a href="./Utils.html">Utils</a>
+  
+    <li><a href="./WxExpeProgram.html">WxExpeProgram</a>
+  
+    <li><a href="./WxTaskList.html">WxTaskList</a>
+  
+    <li><a href="./YAMLTreeView.html">YAMLTreeView</a>
+  
+    <li><a href="./YAMLTreeViewWindow.html">YAMLTreeViewWindow</a>
+  
+  </ul>
+</nav>
+
+  </div>
+</nav>
+
+<div id="documentation">
+  <h1 class="class">class Object</h1>
+
+  <div id="description" class="description">
+    
+  </div><!-- description -->
+
+  
+  
+  
+  <section id="5Buntitled-5D" class="documentation-section">
+    
+
+    
+
+    
+    <!-- Constants -->
+    <section id="constants-list" class="section">
+      <h3 class="section-header">Constants</h3>
+      <dl>
+      
+        <dt id="A_ID">A_ID
+        
+        <dd class="description"><pre>Actions and list of them are used to monitor experiment activity</pre>
+
+<p>Struct.new(“Action”,:id,:type,:progress,:state,:line) Struct not use
+for actions plain array used indeed to limit size of all actions index of
+field</p>
+        
+      
+        <dt id="A_LINE">A_LINE
+        
+        <dd class="description">
+        
+      
+        <dt id="A_MARKER">A_MARKER
+        
+        <dd class="description">
+        
+      
+        <dt id="A_MASK">A_MASK
+        
+        <dd class="description"><p>????</p>
+        
+      
+        <dt id="A_PROGRESS">A_PROGRESS
+        
+        <dd class="description">
+        
+      
+        <dt id="A_STATE">A_STATE
+        
+        <dd class="description">
+        
+      
+        <dt id="A_TYPE">A_TYPE
+        
+        <dd class="description">
+        
+      
+        <dt id="CONFIG_FILE">CONFIG_FILE
+        
+        <dd class="description">
+        
+      
+        <dt id="ConfigTable">ConfigTable
+        
+        <dd class="description">
+        
+      
+        <dt id="ERROR">ERROR
+        
+        <dd class="description">
+        
+      
+        <dt id="EXPE_VIEW_STATE">EXPE_VIEW_STATE
+        
+        <dd class="description">
+        
+      
+        <dt id="JOBS">JOBS
+        
+        <dd class="description">
+        
+      
+        <dt id="LOADED">LOADED
+        
+        <dd class="description">
+        
+      
+        <dt id="MARKER_ERROR">MARKER_ERROR
+        
+        <dd class="description">
+        
+      
+        <dt id="MARKER_RUNNING">MARKER_RUNNING
+        
+        <dd class="description">
+        
+      
+        <dt id="MARKER_TERMINATED">MARKER_TERMINATED
+        
+        <dd class="description">
+        
+      
+        <dt id="MISCDATA">MISCDATA
+        
+        <dd class="description">
+        
+      
+        <dt id="PORT">PORT
+        
+        <dd class="description">
+        
+      
+        <dt id="PORT2">PORT2
+        
+        <dd class="description">
+        
+      
+        <dt id="RESERVATION_ID">RESERVATION_ID
+        
+        <dd class="description">
+        
+      
+        <dt id="RESOURCES">RESOURCES
+        
+        <dd class="description">
+        
+      
+        <dt id="RUNNING">RUNNING
+        
+        <dd class="description"><p>State for action (like task or expe)</p>
+        
+      
+        <dt id="STATS">STATS
+        
+        <dd class="description">
+        
+      
+        <dt id="TERMINATED">TERMINATED
+        
+        <dd class="description">
+        
+      
+        <dt id="TERMINATING">TERMINATING
+        
+        <dd class="description">
+        
+      
+      </dl>
+    </section>
+    
+
+    
+
+    <!-- Methods -->
+    
+     <section id="public-instance-5Buntitled-5D-method-details" class="method-section section">
+      <h3 class="section-header">Public Instance Methods</h3>
+
+    
+      <div id="method-i-2A-2A+Lanuch+Automaton-2A-2A" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">** Lanuch Automaton**</span><span
+            class="method-args">()</span>
+          <span class="method-click-advice">click to toggle source</span>
+        </div>
+        
+
+        <div class="method-description">
+          
+          <p>Launch the automaton</p>
+          
+
+          
+          <div class="method-source-code" id="2A-2A+Lanuch+Automaton-2A-2A-source">
+            <pre><span class="ruby-comment"># File demo/karo/automaton.rb, line 77</span>
+<span class="ruby-identifier">puts</span> <span class="ruby-string">&quot;** Lanuch Automaton**&quot;</span>
+</pre>
+          </div><!-- 2A-2A+Lanuch+Automaton-2A-2A-source -->
+          
+        </div>
+
+        
+
+        
+      </div><!-- 2A-2A+Lanuch+Automaton-2A-2A-method -->
+
+    
+      <div id="method-i-atask" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">atask</span><span
+            class="method-args">(location, task)</span>
+          <span class="method-click-advice">click to toggle source</span>
+        </div>
+        
+
+        <div class="method-description">
+          
+          
+          
+
+          
+          <div class="method-source-code" id="atask-source">
+            <pre><span class="ruby-comment"># File bin/expo-server.rb, line 266</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">atask</span>(<span class="ruby-identifier">location</span>, <span class="ruby-identifier">task</span>)
+  <span class="ruby-identifier">cmd</span> = <span class="ruby-string">&quot;taktuk2yaml -s&quot;</span>
+  <span class="ruby-identifier">cmd</span> <span class="ruby-operator">+=</span> <span class="ruby-identifier">$ssh_connector</span>
+  <span class="ruby-identifier">cmd</span> <span class="ruby-operator">+=</span> <span class="ruby-node">&quot; -m #{location}&quot;</span>
+  <span class="ruby-identifier">cmd</span> <span class="ruby-operator">+=</span> <span class="ruby-node">&quot; b e [ #{task} ]&quot;</span>
+  <span class="ruby-identifier">command_result</span> = <span class="ruby-identifier">$client</span>.<span class="ruby-identifier">asynchronous_command</span>(<span class="ruby-identifier">cmd</span>)
+  <span class="ruby-identifier">$atasks_mutex</span>.<span class="ruby-identifier">synchronize</span> {
+    <span class="ruby-identifier">$atasks</span>[<span class="ruby-identifier">command_result</span>[<span class="ruby-string">&quot;command_number&quot;</span>]] = { <span class="ruby-string">&quot;location&quot;</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-identifier">location</span> , <span class="ruby-string">&quot;task&quot;</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-identifier">task</span> }
+  }
+<span class="ruby-keyword">end</span></pre>
+          </div><!-- atask-source -->
+          
+        </div>
+
+        
+
+        
+      </div><!-- atask-method -->
+
+    
+      <div id="method-i-automaton_creation_method_missing" class="method-detail method-alias">
+        
+        <div class="method-heading">
+          <span class="method-name">automaton_creation_method_missing</span><span
+            class="method-args">(method_sym,&block)</span>
+          <span class="method-click-advice">click to toggle source</span>
+        </div>
+        
+
+        <div class="method-description">
+          
+          
+          
+
+          
+        </div>
+
+        
+
+        
+        <div class="aliases">
+          Alias for: <a href="Object.html#method-i-method_missing">method_missing</a>
+        </div>
+        
+      </div><!-- automaton_creation_method_missing-method -->
+
+    
+      <div id="method-i-barrier" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">barrier</span><span
+            class="method-args">()</span>
+          <span class="method-click-advice">click to toggle source</span>
+        </div>
+        
+
+        <div class="method-description">
+          
+          
+          
+
+          
+          <div class="method-source-code" id="barrier-source">
+            <pre><span class="ruby-comment"># File bin/expo-server.rb, line 277</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">barrier</span>
+  <span class="ruby-identifier">trees</span> = <span class="ruby-constant">Array</span><span class="ruby-operator">::</span><span class="ruby-identifier">new</span>
+  <span class="ruby-identifier">$atasks_mutex</span>.<span class="ruby-identifier">synchronize</span> {
+    <span class="ruby-identifier">$atasks</span>.<span class="ruby-identifier">delete_if</span> { <span class="ruby-operator">|</span><span class="ruby-identifier">t</span>, <span class="ruby-identifier">val</span><span class="ruby-operator">|</span>
+      <span class="ruby-identifier">$client</span>.<span class="ruby-identifier">command_wait</span>(<span class="ruby-identifier">t</span>)
+      <span class="ruby-identifier">trees</span>.<span class="ruby-identifier">push</span>( <span class="ruby-identifier">make_taktuk_result</span>(<span class="ruby-identifier">t</span>) )
+      <span class="ruby-keyword">true</span>
+    }
+  }
+  <span class="ruby-keyword">return</span> <span class="ruby-identifier">trees</span>
+<span class="ruby-keyword">end</span></pre>
+          </div><!-- barrier-source -->
+          
+        </div>
+
+        
+
+        
+      </div><!-- barrier-method -->
+
+    
+      <div id="method-i-check" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">check</span><span
+            class="method-args">( nodes )</span>
+          <span class="method-click-advice">click to toggle source</span>
+        </div>
+        
+
+        <div class="method-description">
+          
+          <p>Check all nodes (what is default test ?) check $all</p>
+          
+
+          
+          <div class="method-source-code" id="check-source">
+            <pre><span class="ruby-comment"># File bin/expo-server.rb, line 188</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">check</span>( <span class="ruby-identifier">nodes</span> )
+
+        <span class="ruby-identifier">action</span> = <span class="ruby-identifier">$action_list</span>.<span class="ruby-identifier">add</span>(<span class="ruby-string">'check'</span>,<span class="ruby-value">0</span>,<span class="ruby-constant">RUNNING</span>)
+
+  <span class="ruby-identifier">n</span> = <span class="ruby-identifier">nodes</span>.<span class="ruby-identifier">all</span>.<span class="ruby-identifier">resources</span>.<span class="ruby-identifier">uniq</span>
+  <span class="ruby-identifier">puts</span> <span class="ruby-string">&quot;testing : &quot;</span> <span class="ruby-operator">+</span> <span class="ruby-identifier">n</span>.<span class="ruby-identifier">inspect</span>
+  <span class="ruby-identifier">test_nis</span> = <span class="ruby-string">&quot;taktuk2yaml -s&quot;</span>
+  <span class="ruby-identifier">test_nis</span> <span class="ruby-operator">+=</span> <span class="ruby-identifier">$ssh_connector</span>
+  <span class="ruby-identifier">n</span>.<span class="ruby-identifier">each</span> { <span class="ruby-operator">|</span><span class="ruby-identifier">x</span><span class="ruby-operator">|</span>
+    <span class="ruby-identifier">test_nis</span> <span class="ruby-operator">+=</span> <span class="ruby-node">&quot; -m #{x}&quot;</span>
+  }
+  <span class="ruby-identifier">test_nis</span> <span class="ruby-operator">+=</span> <span class="ruby-string">&quot; broadcast exec [ date ]&quot;</span>
+
+        <span class="ruby-keyword">begin</span>
+        <span class="ruby-identifier">command_result</span> = <span class="ruby-identifier">$client</span>.<span class="ruby-identifier">asynchronous_command</span>(<span class="ruby-identifier">test_nis</span>)
+        <span class="ruby-identifier">$client</span>.<span class="ruby-identifier">command_wait</span>(<span class="ruby-identifier">command_result</span>[<span class="ruby-string">&quot;command_number&quot;</span>],<span class="ruby-value">1</span>)
+        
+        <span class="ruby-identifier">result</span> = <span class="ruby-identifier">$client</span>.<span class="ruby-identifier">command_result</span>(<span class="ruby-identifier">command_result</span>[<span class="ruby-string">&quot;command_number&quot;</span>])
+        <span class="ruby-keyword">rescue</span>
+                <span class="ruby-identifier">puts</span> <span class="ruby-string">&quot;Warning, trouble with check: &quot;</span> <span class="ruby-operator">+</span> <span class="ruby-identifier">$!</span>
+        <span class="ruby-keyword">end</span>
+
+  <span class="ruby-identifier">tree</span> = <span class="ruby-constant">YAML</span><span class="ruby-operator">::</span><span class="ruby-identifier">load</span>( <span class="ruby-identifier">result</span>[<span class="ruby-string">&quot;stdout&quot;</span>] )
+  <span class="ruby-identifier">puts</span> <span class="ruby-string">&quot;Failing nodes :&quot;</span>
+  <span class="ruby-identifier">tree</span>[<span class="ruby-string">&quot;connectors&quot;</span>].<span class="ruby-identifier">each_value</span> { <span class="ruby-operator">|</span><span class="ruby-identifier">error</span><span class="ruby-operator">|</span>
+    <span class="ruby-keyword">if</span> <span class="ruby-identifier">error</span>[<span class="ruby-string">&quot;output&quot;</span>].<span class="ruby-identifier">scan</span>(<span class="ruby-string">&quot;initialization failed&quot;</span>).<span class="ruby-identifier">pop</span>  <span class="ruby-keyword">or</span> <span class="ruby-identifier">error</span>[<span class="ruby-string">&quot;output&quot;</span>].<span class="ruby-identifier">scan</span>(<span class="ruby-string">&quot;Name or service not known&quot;</span>).<span class="ruby-identifier">pop</span> <span class="ruby-keyword">or</span> <span class="ruby-identifier">error</span>[<span class="ruby-string">&quot;output&quot;</span>].<span class="ruby-identifier">scan</span>(<span class="ruby-string">&quot;Permission denied&quot;</span>).<span class="ruby-identifier">pop</span> <span class="ruby-keyword">then</span>
+      <span class="ruby-identifier">nodes</span>.<span class="ruby-identifier">delete</span>(<span class="ruby-identifier">error</span>[<span class="ruby-string">&quot;peer&quot;</span>])
+      <span class="ruby-identifier">puts</span> <span class="ruby-identifier">error</span>[<span class="ruby-string">&quot;peer&quot;</span>]<span class="ruby-operator">+</span><span class="ruby-string">&quot; : &quot;</span><span class="ruby-operator">+</span><span class="ruby-identifier">error</span>[<span class="ruby-string">&quot;output&quot;</span>]
+    <span class="ruby-keyword">end</span>
+  }
+
+        <span class="ruby-identifier">action</span>.<span class="ruby-identifier">progress</span> = <span class="ruby-value">100</span>
+        <span class="ruby-identifier">action</span>.<span class="ruby-identifier">state</span> = <span class="ruby-constant">TERMINATED</span>
+
+  <span class="ruby-keyword">return</span> <span class="ruby-keyword">nil</span>
+<span class="ruby-keyword">end</span></pre>
+          </div><!-- check-source -->
+          
+        </div>
+
+        
+
+        
+      </div><!-- check-method -->
+
+    
+      <div id="method-i-cleanup" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">cleanup</span><span
+            class="method-args">( job = nil, deployment = nil)</span>
+          <span class="method-click-advice">click to toggle source</span>
+        </div>
+        
+
+        <div class="method-description">
+          
+          
+          
+
+          
+          <div class="method-source-code" id="cleanup-source">
+            <pre><span class="ruby-comment"># File lib/g5k_api.rb, line 513</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">cleanup</span>( <span class="ruby-identifier">job</span> = <span class="ruby-keyword">nil</span>, <span class="ruby-identifier">deployment</span> = <span class="ruby-keyword">nil</span>)
+  <span class="ruby-identifier">synchronize</span> {
+    <span class="ruby-identifier">logger</span> = <span class="ruby-ivar">@logger</span>
+
+    <span class="ruby-keyword">if</span> <span class="ruby-identifier">job</span>.<span class="ruby-identifier">nil?</span> <span class="ruby-operator">&amp;&amp;</span> <span class="ruby-identifier">deployment</span>.<span class="ruby-identifier">nil?</span>
+      <span class="ruby-identifier">logger</span>.<span class="ruby-identifier">info</span> <span class="ruby-string">&quot;Cleaning up all jobs and deployments...&quot;</span>
+      <span class="ruby-ivar">@deployments</span>.<span class="ruby-identifier">each</span>{ <span class="ruby-operator">|</span><span class="ruby-identifier">d</span><span class="ruby-operator">|</span> <span class="ruby-identifier">d</span>.<span class="ruby-identifier">delete</span> }.<span class="ruby-identifier">clear</span>
+      <span class="ruby-ivar">@jobs</span>.<span class="ruby-identifier">each</span>{ <span class="ruby-operator">|</span><span class="ruby-identifier">j</span><span class="ruby-operator">|</span> <span class="ruby-identifier">j</span>.<span class="ruby-identifier">delete</span> }.<span class="ruby-identifier">clear</span>
+    <span class="ruby-keyword">else</span>
+      <span class="ruby-keyword">unless</span> <span class="ruby-identifier">deployment</span>.<span class="ruby-identifier">nil?</span>
+        <span class="ruby-identifier">logger</span>.<span class="ruby-identifier">info</span> <span class="ruby-node">&quot;Cleaning up deployment##{deployment['uid']}...&quot;</span>
+        <span class="ruby-ivar">@deployments</span>.<span class="ruby-identifier">delete</span>(<span class="ruby-identifier">deployment</span>) <span class="ruby-operator">&amp;&amp;</span> <span class="ruby-identifier">deployment</span>.<span class="ruby-identifier">delete</span>
+      <span class="ruby-keyword">end</span>
+      <span class="ruby-keyword">unless</span> <span class="ruby-identifier">job</span>.<span class="ruby-identifier">nil?</span>
+        <span class="ruby-identifier">logger</span>.<span class="ruby-identifier">info</span> <span class="ruby-node">&quot;Cleaning up job##{job['uid']}...&quot;</span>
+        <span class="ruby-ivar">@jobs</span>.<span class="ruby-identifier">delete</span>(<span class="ruby-identifier">job</span>) <span class="ruby-operator">&amp;&amp;</span> <span class="ruby-identifier">job</span>.<span class="ruby-identifier">delete</span>
+      <span class="ruby-keyword">end</span>
+    <span class="ruby-keyword">end</span>
+  }
+<span class="ruby-keyword">end</span></pre>
+          </div><!-- cleanup-source -->
+          
+        </div>
+
+        
+
+        
+      </div><!-- cleanup-method -->
+
+    
+      <div id="method-i-close_experiment" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">close_experiment</span><span
+            class="method-args">(arg)</span>
+          <span class="method-click-advice">click to toggle source</span>
+        </div>
+        
+
+        <div class="method-description">
+          
+          
+          
+
+          
+          <div class="method-source-code" id="close_experiment-source">
+            <pre><span class="ruby-comment"># File bin/expo-server.rb, line 160</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">close_experiment</span>(<span class="ruby-identifier">arg</span>)
+        <span class="ruby-identifier">$stdout</span>.<span class="ruby-identifier">close</span>
+        <span class="ruby-identifier">$stderr</span>.<span class="ruby-identifier">close</span>
+        <span class="ruby-identifier">$client</span>.<span class="ruby-identifier">close_experiment</span>
+<span class="ruby-keyword">end</span></pre>
+          </div><!-- close_experiment-source -->
+          
+        </div>
+
+        
+
+        
+      </div><!-- close_experiment-method -->
+
+    
+      <div id="method-i-convert_to_resource" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">convert_to_resource</span><span
+            class="method-args">(job, site)</span>
+          <span class="method-click-advice">click to toggle source</span>
+        </div>
+        
+
+        <div class="method-description">
+          
+          <p>Creating ‘resources’ from the assigned nodes to put them after into
+$all ResourceSet</p>
+          
+
+          
+          <div class="method-source-code" id="convert_to_resource-source">
+            <pre><span class="ruby-comment"># File lib/g5k_api.rb, line 311</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">convert_to_resource</span>(<span class="ruby-identifier">job</span>, <span class="ruby-identifier">site</span>)
+
+  <span class="ruby-identifier">job_name</span> = <span class="ruby-identifier">job</span>[<span class="ruby-string">'name'</span>]
+  <span class="ruby-identifier">job_nodes</span> = <span class="ruby-identifier">job</span>[<span class="ruby-string">'assigned_nodes'</span>]
+  <span class="ruby-comment"># job_id will be the same for all the clusters of one site</span>
+  <span class="ruby-identifier">job_id</span> = <span class="ruby-identifier">job</span>[<span class="ruby-string">'uid'</span>]
+
+  <span class="ruby-identifier">clusters</span> = []
+
+  <span class="ruby-identifier">regexp</span> = <span class="ruby-regexp">%r(\w*)-\w*/</span>
+  <span class="ruby-identifier">job_nodes</span>.<span class="ruby-identifier">each</span> { <span class="ruby-operator">|</span><span class="ruby-identifier">node</span><span class="ruby-operator">|</span>
+    <span class="ruby-identifier">cl</span> = <span class="ruby-identifier">regexp</span>.<span class="ruby-identifier">match</span>(<span class="ruby-identifier">node</span>)
+    <span class="ruby-identifier">clusters</span>.<span class="ruby-identifier">push</span>(<span class="ruby-identifier">cl</span>[<span class="ruby-value">1</span>])
+  }
+
+  <span class="ruby-identifier">clusters</span>.<span class="ruby-identifier">uniq!</span>
+
+  <span class="ruby-comment"># will contain hash like</span>
+  <span class="ruby-comment"># {</span>
+  <span class="ruby-comment">#   &quot;paradent&quot; =&gt; {</span>
+  <span class="ruby-comment">#     345212 =&gt; {</span>
+  <span class="ruby-comment">#       &quot;name&quot; =&gt; &quot;job_name&quot;,</span>
+  <span class="ruby-comment">#       &quot;nodes&quot; =&gt; [ &quot;paradent-1&quot;, &quot;paradent-12&quot;</span>
+  <span class="ruby-comment">#     }</span>
+  <span class="ruby-comment">#   }</span>
+  <span class="ruby-comment">#   &quot;parapluie&quot; =&gt; {</span>
+  <span class="ruby-comment">#     345212 =&gt; ...</span>
+  <span class="ruby-identifier">clusters_hash</span> = {} 
+
+  <span class="ruby-identifier">clusters</span>.<span class="ruby-identifier">each</span> { <span class="ruby-operator">|</span><span class="ruby-identifier">cluster</span><span class="ruby-operator">|</span>
+    <span class="ruby-comment">#first sub-hash </span>
+    <span class="ruby-identifier">uid_hash</span> = {}
+    <span class="ruby-comment">#second sub-hash</span>
+    <span class="ruby-identifier">nodes_hash</span> = {}
+
+    <span class="ruby-identifier">nodes_hash</span>[<span class="ruby-string">&quot;name&quot;</span>] = <span class="ruby-identifier">job_name</span> 
+
+    <span class="ruby-identifier">job_nodes</span>.<span class="ruby-identifier">each</span> { <span class="ruby-operator">|</span><span class="ruby-identifier">node</span><span class="ruby-operator">|</span>
+
+      <span class="ruby-comment">#find out the cluster to which this node belongs</span>
+      <span class="ruby-keyword">if</span> <span class="ruby-identifier">node</span> <span class="ruby-operator">=~</span> <span class="ruby-node">%r#{cluster}\w*/</span>
+
+        <span class="ruby-comment">#if there are already nodes in this cluster - add in array</span>
+        <span class="ruby-keyword">if</span> <span class="ruby-identifier">nodes_hash</span>.<span class="ruby-identifier">has_key?</span>(<span class="ruby-string">&quot;nodes&quot;</span>)
+          <span class="ruby-identifier">nodes_hash</span>[<span class="ruby-string">&quot;nodes&quot;</span>].<span class="ruby-identifier">push</span>(<span class="ruby-identifier">node</span>)
+
+        <span class="ruby-comment">#if this node is the first in this cluster - create an array</span>
+        <span class="ruby-comment">#of nodes with this node and add the array to hash</span>
+        <span class="ruby-keyword">else</span>
+          <span class="ruby-identifier">nodes_array</span> = []
+          <span class="ruby-identifier">nodes_array</span>.<span class="ruby-identifier">push</span>(<span class="ruby-identifier">node</span>)
+          <span class="ruby-identifier">nodes_hash</span>[<span class="ruby-string">&quot;nodes&quot;</span>] = <span class="ruby-identifier">nodes_array</span>
+        <span class="ruby-keyword">end</span> 
+      <span class="ruby-keyword">end</span> 
+    }
+
+    <span class="ruby-identifier">uid_hash</span>[<span class="ruby-identifier">job_id</span>] = <span class="ruby-identifier">nodes_hash</span>
+    <span class="ruby-keyword">if</span> <span class="ruby-operator">!</span>(<span class="ruby-identifier">clusters_hash</span>.<span class="ruby-identifier">has_key?</span>(<span class="ruby-identifier">cluster</span>))
+      <span class="ruby-identifier">clusters_hash</span>[<span class="ruby-identifier">cluster</span>] = <span class="ruby-identifier">uid_hash</span>
+    <span class="ruby-keyword">end</span> 
+
+  }
+   
+  <span class="ruby-identifier">clusters_hash</span>
+<span class="ruby-keyword">end</span></pre>
+          </div><!-- convert_to_resource-source -->
+          
+        </div>
+
+        
+
+        
+      </div><!-- convert_to_resource-method -->
+
+    
+      <div id="method-i-copy" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">copy</span><span
+            class="method-args">( file, destination, params = {} )</span>
+          <span class="method-click-advice">click to toggle source</span>
+        </div>
+        
+
+        <div class="method-description">
+          
+          <p>Copy nodes file on first node copy $all.nodefile, $all.first</p>
+          
+
+          
+          <div class="method-source-code" id="copy-source">
+            <pre><span class="ruby-comment"># File bin/expo-server.rb, line 343</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">copy</span>( <span class="ruby-identifier">file</span>, <span class="ruby-identifier">destination</span>, <span class="ruby-identifier">params</span> = {} )
+  <span class="ruby-keyword">if</span> <span class="ruby-identifier">params</span>[<span class="ruby-value">:path</span>] <span class="ruby-keyword">then</span>
+    <span class="ruby-identifier">path</span> = <span class="ruby-identifier">params</span>[<span class="ruby-value">:path</span>]
+  <span class="ruby-keyword">else</span>
+    <span class="ruby-identifier">path</span> = <span class="ruby-identifier">file</span>
+  <span class="ruby-keyword">end</span>
+  <span class="ruby-identifier">cmd</span> = <span class="ruby-string">&quot;scp&quot;</span>
+  <span class="ruby-identifier">cmd</span> <span class="ruby-operator">+=</span> <span class="ruby-identifier">$scp_connector</span>
+  <span class="ruby-identifier">cmd</span> <span class="ruby-operator">+=</span> <span class="ruby-string">&quot; &quot;</span>
+  <span class="ruby-identifier">cmd</span> <span class="ruby-operator">+=</span> <span class="ruby-node">&quot;#{params[:location]}:&quot;</span> <span class="ruby-keyword">if</span> ( <span class="ruby-identifier">params</span>[<span class="ruby-value">:location</span>] <span class="ruby-operator">&amp;&amp;</span> ( <span class="ruby-identifier">params</span>[<span class="ruby-value">:location</span>] <span class="ruby-operator">!=</span> <span class="ruby-string">&quot;localhost&quot;</span> ) )
+  <span class="ruby-identifier">cmd</span> <span class="ruby-operator">+=</span> <span class="ruby-node">&quot;#{file} &quot;</span>
+  <span class="ruby-identifier">cmd</span> <span class="ruby-operator">+=</span> <span class="ruby-node">&quot;#{destination}:&quot;</span> <span class="ruby-keyword">if</span> ( <span class="ruby-identifier">destination</span> <span class="ruby-operator">!=</span> <span class="ruby-string">&quot;localhost&quot;</span> )
+  <span class="ruby-identifier">cmd</span> <span class="ruby-operator">+=</span> <span class="ruby-node">&quot;#{path}&quot;</span>
+  <span class="ruby-identifier">command_result</span> = <span class="ruby-identifier">$client</span>.<span class="ruby-identifier">asynchronous_command</span>(<span class="ruby-identifier">cmd</span>)
+  <span class="ruby-identifier">$client</span>.<span class="ruby-identifier">command_wait</span>(<span class="ruby-identifier">command_result</span>[<span class="ruby-string">&quot;command_number&quot;</span>],<span class="ruby-value">1</span>)
+  <span class="ruby-identifier">result</span> = <span class="ruby-identifier">$client</span>.<span class="ruby-identifier">command_result</span>(<span class="ruby-identifier">command_result</span>[<span class="ruby-string">&quot;command_number&quot;</span>])
+  <span class="ruby-identifier">puts</span> <span class="ruby-identifier">cmd</span>
+  <span class="ruby-identifier">puts</span> <span class="ruby-identifier">result</span>[<span class="ruby-string">&quot;stdout&quot;</span>]
+  <span class="ruby-identifier">puts</span> <span class="ruby-identifier">result</span>[<span class="ruby-string">&quot;stderr&quot;</span>]
+  <span class="ruby-identifier">puts</span>
+<span class="ruby-keyword">end</span></pre>
+          </div><!-- copy-source -->
+          
+        </div>
+
+        
+
+        
+      </div><!-- copy-method -->
+
+    
+      <div id="method-i-copy2" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">copy2</span><span
+            class="method-args">(params)</span>
+          <span class="method-click-advice">click to toggle source</span>
+        </div>
+        
+
+        <div class="method-description">
+          
+          <p>copy2 :from=&gt;server_cigri, :to=&gt;“localhost”, :from_file=&gt;file,
+:to_file=&gt;dir_res_dst REQUIRED ? NOT SURE</p>
+          
+
+          
+          <div class="method-source-code" id="copy2-source">
+            <pre><span class="ruby-comment"># File bin/expo-server.rb, line 367</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">copy2</span>(<span class="ruby-identifier">params</span>)
+        <span class="ruby-keyword">if</span> <span class="ruby-identifier">params</span>[<span class="ruby-value">:to</span>] <span class="ruby-keyword">then</span>
+                <span class="ruby-identifier">to</span> = <span class="ruby-identifier">params</span>[<span class="ruby-value">:to</span>]
+        <span class="ruby-keyword">else</span>
+                <span class="ruby-identifier">to</span> = <span class="ruby-string">&quot;localhost&quot;</span>
+        <span class="ruby-keyword">end</span>
+        <span class="ruby-keyword">if</span> <span class="ruby-identifier">params</span>[<span class="ruby-value">:from</span>] <span class="ruby-keyword">then</span>
+                <span class="ruby-identifier">from</span> = <span class="ruby-identifier">params</span>[<span class="ruby-value">:from</span>]
+        <span class="ruby-keyword">else</span>
+                <span class="ruby-identifier">puts</span> <span class="ruby-string">&quot;ERROR: need :from parameter&quot;</span>
+        <span class="ruby-keyword">end</span>
+        <span class="ruby-keyword">if</span> <span class="ruby-identifier">params</span>[<span class="ruby-value">:from_file</span>] <span class="ruby-keyword">then</span>
+                <span class="ruby-identifier">from_file</span> = <span class="ruby-identifier">params</span>[<span class="ruby-value">:from_file</span>]
+        <span class="ruby-keyword">else</span>
+                <span class="ruby-identifier">puts</span> <span class="ruby-string">&quot;ERROR: need :from_file parameter&quot;</span>
+        <span class="ruby-keyword">end</span>
+        <span class="ruby-keyword">if</span> <span class="ruby-identifier">params</span>[<span class="ruby-value">:to_file</span>] <span class="ruby-keyword">then</span>
+                <span class="ruby-identifier">to_file</span> = <span class="ruby-identifier">params</span>[<span class="ruby-value">:to_file</span>]
+        <span class="ruby-keyword">else</span>
+                <span class="ruby-identifier">to_file</span> = <span class="ruby-constant">ENV</span>[<span class="ruby-string">'PWD'</span>]
+        <span class="ruby-keyword">end</span>
+
+        <span class="ruby-keyword">if</span> <span class="ruby-identifier">to</span>.<span class="ruby-identifier">class</span> <span class="ruby-operator">==</span> <span class="ruby-constant">Array</span>
+        <span class="ruby-keyword">else</span>
+        <span class="ruby-keyword">end</span>
+<span class="ruby-keyword">end</span></pre>
+          </div><!-- copy2-source -->
+          
+        </div>
+
+        
+
+        
+      </div><!-- copy2-method -->
+
+    
+      <div id="method-i-deployment_ok-3F" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">deployment_ok?</span><span
+            class="method-args">(deployment, env = {})</span>
+          <span class="method-click-advice">click to toggle source</span>
+        </div>
+        
+
+        <div class="method-description">
+          
+          <p>Returns true if the deployment is not in an error state AND the number of
+correctly deployed nodes is greater or equal than
+<code>env[:deployment_min_threshold]</code> variable</p>
+          
+
+          
+          <div class="method-source-code" id="deployment_ok-3F-source">
+            <pre><span class="ruby-comment"># File lib/g5k_api.rb, line 406</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">deployment_ok?</span>(<span class="ruby-identifier">deployment</span>, <span class="ruby-identifier">env</span> = {})
+  <span class="ruby-keyword">return</span> <span class="ruby-keyword">false</span> <span class="ruby-keyword">if</span> <span class="ruby-identifier">deployment</span>.<span class="ruby-identifier">nil?</span>
+  <span class="ruby-keyword">return</span> <span class="ruby-keyword">false</span> <span class="ruby-keyword">if</span> [<span class="ruby-string">&quot;canceled&quot;</span>, <span class="ruby-string">&quot;error&quot;</span>].<span class="ruby-identifier">include?</span> <span class="ruby-identifier">deployment</span>[<span class="ruby-string">'status'</span>]
+  <span class="ruby-identifier">nodes_ok</span> = <span class="ruby-identifier">deployment</span>[<span class="ruby-string">'result'</span>].<span class="ruby-identifier">values</span>.<span class="ruby-identifier">count</span>{<span class="ruby-operator">|</span><span class="ruby-identifier">v</span><span class="ruby-operator">|</span>
+    <span class="ruby-identifier">v</span>[<span class="ruby-string">'state'</span>] <span class="ruby-operator">==</span> <span class="ruby-string">'OK'</span>
+  } <span class="ruby-keyword">rescue</span> <span class="ruby-value">0</span>
+  <span class="ruby-identifier">nodes_ok</span>.<span class="ruby-identifier">to_f</span><span class="ruby-operator">/</span><span class="ruby-identifier">deployment</span>[<span class="ruby-string">'nodes'</span>].<span class="ruby-identifier">length</span> <span class="ruby-operator">&gt;=</span> <span class="ruby-identifier">env</span>[<span class="ruby-value">:deployment_min_threshold</span>]
+<span class="ruby-keyword">end</span></pre>
+          </div><!-- deployment_ok-3F-source -->
+          
+        </div>
+
+        
+
+        
+      </div><!-- deployment_ok-3F-method -->
+
+    
+      <div id="method-i-fifo_generic_cmd_expo" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">fifo_generic_cmd_expo</span><span
+            class="method-args">(expe_args)</span>
+          <span class="method-click-advice">click to toggle source</span>
+        </div>
+        
+
+        <div class="method-description">
+          
+          
+          
+
+          
+          <div class="method-source-code" id="fifo_generic_cmd_expo-source">
+            <pre><span class="ruby-comment"># File bin/expo-ctrl.rb, line 136</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">fifo_generic_cmd_expo</span>(<span class="ruby-identifier">expe_args</span>)
+        <span class="ruby-identifier">expe_id</span> = <span class="ruby-identifier">expe_args</span>[<span class="ruby-string">'expe_id'</span>]
+        <span class="ruby-keyword">if</span> <span class="ruby-identifier">$expe_list</span>[<span class="ruby-identifier">expe_id</span>].<span class="ruby-identifier">nil?</span>
+                <span class="ruby-keyword">return</span> <span class="ruby-node">&quot;Error experiment doesn't exist, with expe_id  :#{expe_id}&quot;</span>    
+                <span class="ruby-comment">#MUST BE COMPLETED (error retun</span>
+        <span class="ruby-keyword">else</span>
+                <span class="ruby-identifier">expe_args</span>.<span class="ruby-identifier">delete</span>(<span class="ruby-string">'expe_id'</span>)
+                <span class="ruby-identifier">response</span> = <span class="ruby-identifier">$fifo_expo_client</span>[<span class="ruby-identifier">expe_id</span>].<span class="ruby-identifier">fifo_generic_cmd</span>(<span class="ruby-identifier">expe_args</span>)
+                <span class="ruby-identifier">puts</span> <span class="ruby-string">&quot;fifo_generic_cmd_expo response&quot;</span>
+                <span class="ruby-identifier">p</span> <span class="ruby-identifier">response</span>
+                <span class="ruby-keyword">return</span> <span class="ruby-identifier">response</span>
+        <span class="ruby-keyword">end</span>
+<span class="ruby-keyword">end</span></pre>
+          </div><!-- fifo_generic_cmd_expo-source -->
+          
+        </div>
+
+        
+
+        
+      </div><!-- fifo_generic_cmd_expo-method -->
+
+    
+      <div id="method-i-g5k_deploy" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">g5k_deploy</span><span
+            class="method-args">(env) { |env| ... }</span>
+          <span class="method-click-advice">click to toggle source</span>
+        </div>
+        
+
+        <div class="method-description">
+          
+          
+          
+
+          
+          <div class="method-source-code" id="g5k_deploy-source">
+            <pre><span class="ruby-comment"># File lib/g5k_api.rb, line 251</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">g5k_deploy</span>(<span class="ruby-identifier">env</span>)
+
+  <span class="ruby-identifier">logger</span> = <span class="ruby-ivar">@logger</span>
+
+  <span class="ruby-identifier">env</span>[<span class="ruby-value">:remaining_attempts</span>] <span class="ruby-operator">||=</span> <span class="ruby-identifier">env</span>[<span class="ruby-value">:deployment_max_attempts</span>]
+  <span class="ruby-identifier">env</span>[<span class="ruby-value">:nodes</span>] = [<span class="ruby-identifier">env</span>[<span class="ruby-value">:nodes</span>]].<span class="ruby-identifier">flatten</span>.<span class="ruby-identifier">sort</span>
+  <span class="ruby-identifier">logger</span>.<span class="ruby-identifier">info</span> <span class="ruby-node">&quot;[#{env[:site]}] Launching deployment [no-deploy=#{env[:no_deploy].inspect}]...&quot;</span>
+
+
+  <span class="ruby-keyword">if</span> <span class="ruby-identifier">env</span>[<span class="ruby-value">:remaining_attempts</span>] <span class="ruby-operator">&gt;</span> <span class="ruby-value">0</span>
+    <span class="ruby-keyword">if</span> <span class="ruby-identifier">env</span>[<span class="ruby-value">:remaining_attempts</span>] <span class="ruby-operator">&lt;</span> <span class="ruby-identifier">env</span>[<span class="ruby-value">:deployment_max_attempts</span>]
+      <span class="ruby-identifier">logger</span>.<span class="ruby-identifier">info</span> <span class="ruby-string">&quot;Retrying deployment...&quot;</span>
+    <span class="ruby-keyword">end</span>
+    <span class="ruby-identifier">env</span>[<span class="ruby-value">:remaining_attempts</span>] <span class="ruby-operator">-=</span> <span class="ruby-value">1</span>
+    <span class="ruby-comment"># environment deployment (using Restfully gem)</span>
+    <span class="ruby-identifier">deployment</span> = <span class="ruby-ivar">@connection</span>.<span class="ruby-identifier">root</span>.<span class="ruby-identifier">sites</span>[<span class="ruby-identifier">env</span>[<span class="ruby-value">:site</span>].<span class="ruby-identifier">to_sym</span>].<span class="ruby-identifier">deployments</span>.<span class="ruby-identifier">submit</span>({
+      <span class="ruby-value">:nodes</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-identifier">env</span>[<span class="ruby-value">:nodes</span>],
+      <span class="ruby-value">:notifications</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-identifier">env</span>[<span class="ruby-value">:notifications</span>],
+      <span class="ruby-value">:environment</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-identifier">env</span>[<span class="ruby-value">:environment</span>],
+      <span class="ruby-value">:key</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-identifier">key_for_deployment</span>(<span class="ruby-identifier">env</span>)
+    }.<span class="ruby-identifier">merge</span>(<span class="ruby-identifier">env</span>.<span class="ruby-identifier">reject</span>{ <span class="ruby-operator">|</span><span class="ruby-identifier">k</span>,<span class="ruby-identifier">v</span><span class="ruby-operator">|</span> <span class="ruby-operator">!</span><span class="ruby-identifier">valid_deployment_key?</span>(<span class="ruby-identifier">k</span>) }))
+  <span class="ruby-keyword">else</span>
+    <span class="ruby-identifier">logger</span>.<span class="ruby-identifier">info</span> <span class="ruby-node">&quot;[#{env[:site]}] Hit the maximum number of retries. Halting.&quot;</span>
+    <span class="ruby-identifier">deployment</span> = <span class="ruby-keyword">nil</span>
+  <span class="ruby-keyword">end</span>
+
+  <span class="ruby-keyword">if</span> <span class="ruby-identifier">deployment</span>.<span class="ruby-identifier">nil?</span>
+    <span class="ruby-identifier">logger</span>.<span class="ruby-identifier">error</span> <span class="ruby-node">&quot;[#{env[:site]}] Cannot submit the deployment.&quot;</span>
+    <span class="ruby-keyword">nil</span>
+  <span class="ruby-keyword">else</span>
+    <span class="ruby-identifier">deployment</span>.<span class="ruby-identifier">reload</span>
+    <span class="ruby-identifier">synchronize</span> { <span class="ruby-ivar">@deployments</span>.<span class="ruby-identifier">push</span>(<span class="ruby-identifier">deployment</span>) }
+
+    <span class="ruby-identifier">logger</span>.<span class="ruby-identifier">info</span> <span class="ruby-node">&quot;[#{env[:site]}] Got the following deployment: #{deployment.inspect}&quot;</span>
+    <span class="ruby-identifier">logger</span>.<span class="ruby-identifier">info</span> <span class="ruby-node">&quot;[#{env[:site]}] Waiting for termination of deployment ##{deployment['uid']} in #{deployment.parent['uid']}...&quot;</span>
+
+      <span class="ruby-constant">Timeout</span>.<span class="ruby-identifier">timeout</span>(<span class="ruby-identifier">env</span>[<span class="ruby-value">:deployment_timeout</span>]) <span class="ruby-keyword">do</span>
+        <span class="ruby-keyword">while</span> <span class="ruby-identifier">deployment</span>.<span class="ruby-identifier">reload</span>[<span class="ruby-string">'status'</span>] <span class="ruby-operator">==</span> <span class="ruby-string">'processing'</span>
+          <span class="ruby-identifier">sleep</span> <span class="ruby-identifier">env</span>[<span class="ruby-value">:polling_frequency</span>]
+        <span class="ruby-keyword">end</span>
+      <span class="ruby-keyword">end</span>
+
+    <span class="ruby-keyword">if</span> <span class="ruby-identifier">deployment_ok?</span>(<span class="ruby-identifier">deployment</span>, <span class="ruby-identifier">env</span>)
+      <span class="ruby-identifier">logger</span>.<span class="ruby-identifier">info</span> <span class="ruby-node">&quot;[#{env[:site]}] Deployment is terminated: #{deployment.inspect}&quot;</span>
+      <span class="ruby-identifier">env</span>[<span class="ruby-value">:deployment</span>] = <span class="ruby-identifier">deployment</span>
+      <span class="ruby-keyword">yield</span> <span class="ruby-identifier">env</span> <span class="ruby-keyword">if</span> <span class="ruby-identifier">block_given?</span>
+      <span class="ruby-identifier">env</span>
+    <span class="ruby-keyword">else</span>
+      <span class="ruby-identifier">synchronize</span> { <span class="ruby-ivar">@deployments</span>.<span class="ruby-identifier">delete</span>(<span class="ruby-identifier">deployment</span>) }
+      <span class="ruby-identifier">logger</span>.<span class="ruby-identifier">error</span> <span class="ruby-node">&quot;[#{env[:site]}] Deployment failed: #{deployment.inspect}&quot;</span>
+      <span class="ruby-identifier">g5k_deploy</span>(<span class="ruby-identifier">env</span>)
+    <span class="ruby-keyword">end</span>
+  <span class="ruby-keyword">end</span>
+<span class="ruby-keyword">end</span></pre>
+          </div><!-- g5k_deploy-source -->
+          
+        </div>
+
+        
+
+        
+      </div><!-- g5k_deploy-method -->
+
+    
+      <div id="method-i-g5k_init" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">g5k_init</span><span
+            class="method-args">(experim_params)</span>
+          <span class="method-click-advice">click to toggle source</span>
+        </div>
+        
+
+        <div class="method-description">
+          
+          <p>redefine the options of an experiment</p>
+          
+
+          
+          <div class="method-source-code" id="g5k_init-source">
+            <pre><span class="ruby-comment"># File lib/g5k_api.rb, line 52</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">g5k_init</span>(<span class="ruby-identifier">experim_params</span>)
+  <span class="ruby-comment"># make logger easier to access</span>
+  <span class="ruby-ivar">@logger</span> = <span class="ruby-ivar">@options</span>[<span class="ruby-value">:logger</span>]
+  
+  <span class="ruby-comment"># DO WE NEED IT???</span>
+  <span class="ruby-ivar">@nodes</span> = []
+
+  <span class="ruby-ivar">@resources</span> = {}
+
+  <span class="ruby-ivar">@jobs</span> = []
+  <span class="ruby-ivar">@deployments</span> = []
+  <span class="ruby-ivar">@mutex</span> = <span class="ruby-constant">Mutex</span>.<span class="ruby-identifier">new</span>
+
+  <span class="ruby-identifier">experim_params</span>.<span class="ruby-identifier">each</span> { <span class="ruby-operator">|</span><span class="ruby-identifier">attribute</span>, <span class="ruby-identifier">value</span><span class="ruby-operator">|</span>
+    <span class="ruby-ivar">@options</span>[<span class="ruby-identifier">attribute</span>.<span class="ruby-identifier">to_sym</span>] = <span class="ruby-identifier">value</span>
+  }
+
+  <span class="ruby-keyword">if</span> <span class="ruby-ivar">@options</span>.<span class="ruby-identifier">has_key?</span>(<span class="ruby-value">:environment</span>)
+    <span class="ruby-ivar">@options</span>[<span class="ruby-value">:types</span>].<span class="ruby-identifier">push</span>(<span class="ruby-string">&quot;deploy&quot;</span>)
+  <span class="ruby-keyword">end</span>
+<span class="ruby-keyword">end</span></pre>
+          </div><!-- g5k_init-source -->
+          
+        </div>
+
+        
+
+        
+      </div><!-- g5k_init-method -->
+
+    
+      <div id="method-i-g5k_reserve" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">g5k_reserve</span><span
+            class="method-args">(options)</span>
+          <span class="method-click-advice">click to toggle source</span>
+        </div>
+        
+
+        <div class="method-description">
+          
+          <p>reserve the remote nodes with parameters specified in @options</p>
+          
+
+          
+          <div class="method-source-code" id="g5k_reserve-source">
+            <pre><span class="ruby-comment"># File lib/g5k_api.rb, line 191</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">g5k_reserve</span>(<span class="ruby-identifier">options</span>)
+
+  <span class="ruby-identifier">logger</span> = <span class="ruby-ivar">@logger</span>
+
+  <span class="ruby-comment"># payload is a hash contatining all the params of the job to submit</span>
+  <span class="ruby-identifier">payload</span> = {
+    <span class="ruby-value">:command</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-node">&quot;sleep #{@options[:walltime]}&quot;</span>
+  }.<span class="ruby-identifier">merge</span>(<span class="ruby-identifier">options</span>.<span class="ruby-identifier">reject</span> { <span class="ruby-operator">|</span><span class="ruby-identifier">k</span>,<span class="ruby-identifier">v</span><span class="ruby-operator">|</span> <span class="ruby-operator">!</span><span class="ruby-identifier">valid_job_key?</span>(<span class="ruby-identifier">k</span>) }) <span class="ruby-comment">#sort out valid payload</span>
+  
+  <span class="ruby-comment"># convert resources to OAR style</span>
+  <span class="ruby-identifier">payload</span>[<span class="ruby-value">:resources</span>] = [
+    <span class="ruby-identifier">options</span>[<span class="ruby-value">:resources</span>], <span class="ruby-node">&quot;walltime=#{oar_walltime(options)}&quot;</span>
+  ].<span class="ruby-identifier">join</span>(<span class="ruby-string">&quot;,&quot;</span>)
+
+  <span class="ruby-comment"># job submission (using Restfully gem)</span>
+  <span class="ruby-identifier">job</span> = <span class="ruby-identifier">synchronize</span> {
+    <span class="ruby-ivar">@connection</span>.<span class="ruby-identifier">root</span>.<span class="ruby-identifier">sites</span>[<span class="ruby-identifier">options</span>[<span class="ruby-value">:site</span>].<span class="ruby-identifier">to_sym</span>].<span class="ruby-identifier">jobs</span>.<span class="ruby-identifier">submit</span>(<span class="ruby-identifier">payload</span>)
+  }
+
+
+  <span class="ruby-keyword">if</span> <span class="ruby-identifier">job</span>.<span class="ruby-identifier">nil?</span>
+    <span class="ruby-identifier">logger</span>.<span class="ruby-identifier">error</span> <span class="ruby-node">&quot;[#{options[:site]}] Cannot get a job&quot;</span>
+    <span class="ruby-keyword">nil</span>
+  <span class="ruby-keyword">else</span>
+    <span class="ruby-identifier">sleep</span> <span class="ruby-value">1</span>
+    <span class="ruby-identifier">job</span>.<span class="ruby-identifier">reload</span>
+    <span class="ruby-identifier">synchronize</span> { <span class="ruby-ivar">@jobs</span>.<span class="ruby-identifier">push</span>(<span class="ruby-identifier">job</span>) }
+    <span class="ruby-identifier">logger</span>.<span class="ruby-identifier">info</span> <span class="ruby-node">&quot;[#{options[:site]}] Got the following job: #{job.inspect}&quot;</span>
+    <span class="ruby-identifier">logger</span>.<span class="ruby-identifier">info</span> <span class="ruby-node">&quot;[#{options[:site]}] Waiting for state=running for job ##{job['uid']} (expected start time=\&quot;#{Time.at(job['scheduled_at']) rescue &quot;unknown&quot;}\&quot;)...&quot;</span>
+
+      <span class="ruby-constant">Timeout</span>.<span class="ruby-identifier">timeout</span>(<span class="ruby-ivar">@options</span>[<span class="ruby-value">:submission_timeout</span>]) <span class="ruby-keyword">do</span>
+        <span class="ruby-keyword">while</span> <span class="ruby-identifier">job</span>.<span class="ruby-identifier">reload</span>[<span class="ruby-string">'state'</span>] <span class="ruby-operator">!=</span> <span class="ruby-string">'running'</span>
+          <span class="ruby-comment"># while testing jobs can be really quick, like &quot;uname&quot; or &quot;ls&quot;</span>
+          <span class="ruby-comment"># so we have to check if at the moment it is already finished</span>
+          <span class="ruby-keyword">if</span> <span class="ruby-identifier">job</span>.<span class="ruby-identifier">reload</span>[<span class="ruby-string">'state'</span>] <span class="ruby-operator">==</span> <span class="ruby-string">'terminated'</span>
+            <span class="ruby-keyword">break</span>
+          <span class="ruby-keyword">end</span>
+          <span class="ruby-identifier">sleep</span> <span class="ruby-identifier">options</span>[<span class="ruby-value">:polling_frequency</span>]
+        <span class="ruby-keyword">end</span>
+      <span class="ruby-keyword">end</span>
+
+    <span class="ruby-identifier">logger</span>.<span class="ruby-identifier">info</span> <span class="ruby-node">&quot;[#{options[:site]}] Job is running: #{job.inspect}&quot;</span>
+
+    <span class="ruby-comment"># DO WE NEED THIS??</span>
+    <span class="ruby-identifier">synchronize</span> {
+      <span class="ruby-identifier">job</span>[<span class="ruby-string">'assigned_nodes'</span>].<span class="ruby-identifier">each</span> {<span class="ruby-operator">|</span><span class="ruby-identifier">node</span><span class="ruby-operator">|</span>
+          <span class="ruby-ivar">@nodes</span>.<span class="ruby-identifier">push</span>(<span class="ruby-identifier">node</span>)
+      }
+    }
+    <span class="ruby-comment"># </span>
+
+    <span class="ruby-comment"># to be able to convert later to $all ResourceSet</span>
+    <span class="ruby-identifier">subhash</span> = <span class="ruby-identifier">convert_to_resource</span>(<span class="ruby-identifier">job</span>, <span class="ruby-identifier">options</span>[<span class="ruby-value">:site</span>])
+    <span class="ruby-identifier">synchronize</span> {
+      <span class="ruby-ivar">@resources</span>.<span class="ruby-identifier">merge!</span>(<span class="ruby-identifier">subhash</span>)
+    }
+  <span class="ruby-keyword">end</span>
+
+<span class="ruby-keyword">end</span></pre>
+          </div><!-- g5k_reserve-source -->
+          
+        </div>
+
+        
+
+        
+      </div><!-- g5k_reserve-method -->
+
+    
+      <div id="method-i-g5k_run" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">g5k_run</span><span
+            class="method-args">()</span>
+          <span class="method-click-advice">click to toggle source</span>
+        </div>
+        
+
+        <div class="method-description">
+          
+          <p>run reservation and deployment</p>
+          
+
+          
+          <div class="method-source-code" id="g5k_run-source">
+            <pre><span class="ruby-comment"># File lib/g5k_api.rb, line 75</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">g5k_run</span>
+
+  <span class="ruby-comment">#------------RESERVATION STAGE--------------------------------</span>
+  <span class="ruby-comment"># if :sites == &quot;all&quot; reserve on each site</span>
+  <span class="ruby-comment"># if :sites == &quot;any&quot; - on the site w/ the biggest number of free nodes</span>
+  <span class="ruby-comment"># otherwise reserve on the specified site(s)</span>
+  <span class="ruby-keyword">if</span> [<span class="ruby-string">&quot;all&quot;</span>, <span class="ruby-string">&quot;any&quot;</span>].<span class="ruby-identifier">include?</span>(<span class="ruby-ivar">@options</span>[<span class="ruby-value">:site</span>].<span class="ruby-identifier">to_s</span>)
+    <span class="ruby-identifier">status</span> = <span class="ruby-identifier">how_many?</span>
+    <span class="ruby-ivar">@logger</span>.<span class="ruby-identifier">info</span> <span class="ruby-node">&quot;Status=#{status.inspect}&quot;</span>
+    <span class="ruby-keyword">case</span> <span class="ruby-ivar">@options</span>[<span class="ruby-value">:site</span>].<span class="ruby-identifier">to_s</span>
+    <span class="ruby-keyword">when</span> <span class="ruby-string">&quot;all&quot;</span>
+      <span class="ruby-ivar">@sites</span> = <span class="ruby-identifier">status</span>.<span class="ruby-identifier">keys</span>
+    <span class="ruby-keyword">when</span> <span class="ruby-string">&quot;any&quot;</span>
+      <span class="ruby-ivar">@sites</span> = [<span class="ruby-identifier">status</span>.<span class="ruby-identifier">sort_by</span>{<span class="ruby-operator">|</span><span class="ruby-identifier">k</span>,<span class="ruby-identifier">v</span><span class="ruby-operator">|</span> <span class="ruby-identifier">v</span>}.<span class="ruby-identifier">last</span>[<span class="ruby-value">0</span>]]
+    <span class="ruby-keyword">end</span>
+  <span class="ruby-keyword">else</span>
+    <span class="ruby-ivar">@sites</span> = [<span class="ruby-ivar">@options</span>[<span class="ruby-value">:site</span>]].<span class="ruby-identifier">flatten</span>
+  <span class="ruby-keyword">end</span>
+
+  <span class="ruby-comment"># to keep track how many resource on each site to reserve</span>
+  <span class="ruby-ivar">@res</span> = [<span class="ruby-ivar">@options</span>[<span class="ruby-value">:resources</span>]].<span class="ruby-identifier">flatten</span>
+
+  <span class="ruby-ivar">@options</span>[<span class="ruby-value">:parallel_reserve</span>] = <span class="ruby-identifier">parallel</span>
+
+  <span class="ruby-comment"># launch parallel reservations on all the @options[:site]</span>
+  <span class="ruby-keyword">for</span> <span class="ruby-identifier">i</span> <span class="ruby-keyword">in</span> <span class="ruby-value">1</span><span class="ruby-operator">..</span><span class="ruby-ivar">@sites</span>.<span class="ruby-identifier">length</span>
+    <span class="ruby-ivar">@options</span>[<span class="ruby-value">:parallel_reserve</span>].<span class="ruby-identifier">add</span>(<span class="ruby-ivar">@options</span>.<span class="ruby-identifier">merge</span>(<span class="ruby-value">:site</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-ivar">@sites</span>[<span class="ruby-identifier">i</span><span class="ruby-operator">-</span><span class="ruby-value">1</span>], <span class="ruby-value">:resources</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-ivar">@res</span>[<span class="ruby-identifier">i</span><span class="ruby-operator">-</span><span class="ruby-value">1</span>])) <span class="ruby-keyword">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">env</span><span class="ruby-operator">|</span>
+      <span class="ruby-identifier">g5k_reserve</span>(<span class="ruby-identifier">env</span>)
+    <span class="ruby-keyword">end</span>
+  <span class="ruby-keyword">end</span>
+
+  <span class="ruby-comment"># wait till all the reservations complete</span>
+  <span class="ruby-ivar">@options</span>[<span class="ruby-value">:parallel_reserve</span>].<span class="ruby-identifier">loop!</span>
+
+
+  <span class="ruby-comment">#</span>
+  <span class="ruby-comment"># construct $all ResourceSet</span>
+  <span class="ruby-constant">Expo</span>.<span class="ruby-identifier">extract_resources_new</span>(<span class="ruby-ivar">@resources</span>)
+
+  <span class="ruby-comment">#------------DEPLOYMENT STAGE--------------------------------</span>
+  <span class="ruby-keyword">if</span> <span class="ruby-ivar">@options</span>[<span class="ruby-value">:types</span>].<span class="ruby-identifier">include?</span>(<span class="ruby-string">&quot;deploy&quot;</span>)
+
+    <span class="ruby-comment"># create the environment hash: {&quot;environment_1&quot; =&gt; [&quot;node_1&quot;, ..], ...}</span>
+    <span class="ruby-identifier">env_hash</span> = {}
+    <span class="ruby-comment">#all_copy = $all.copy</span>
+    <span class="ruby-identifier">all_2</span> = <span class="ruby-constant">ResourceSet</span><span class="ruby-operator">::</span><span class="ruby-identifier">new</span>
+    <span class="ruby-identifier">i</span> = <span class="ruby-value">0</span>
+
+    <span class="ruby-ivar">@options</span>[<span class="ruby-value">:environment</span>].<span class="ruby-identifier">each</span> { <span class="ruby-operator">|</span><span class="ruby-identifier">env</span>, <span class="ruby-identifier">nodes_num</span><span class="ruby-operator">|</span>
+      <span class="ruby-identifier">env_hash</span>[<span class="ruby-identifier">env</span>] = []
+      <span class="ruby-identifier">nodes_num</span>.<span class="ruby-identifier">times</span> {
+        
+        <span class="ruby-identifier">all_check</span> = <span class="ruby-identifier">$all</span>.<span class="ruby-identifier">copy</span>
+        <span class="ruby-comment"># find the node where env should be deployed and delete it</span>
+        <span class="ruby-identifier">$all</span>.<span class="ruby-identifier">each</span> { <span class="ruby-operator">|</span><span class="ruby-identifier">node</span><span class="ruby-operator">|</span>
+          <span class="ruby-keyword">if</span> <span class="ruby-identifier">node</span>.<span class="ruby-identifier">corresponds</span>({<span class="ruby-value">:site</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-ivar">@options</span>[<span class="ruby-value">:site</span>][<span class="ruby-identifier">i</span>]})
+            <span class="ruby-identifier">$all</span>.<span class="ruby-identifier">delete</span>(<span class="ruby-identifier">node</span>)
+            <span class="ruby-identifier">node</span>.<span class="ruby-identifier">properties</span>[<span class="ruby-value">:environment</span>] = <span class="ruby-identifier">env</span>
+            <span class="ruby-identifier">all_2</span>.<span class="ruby-identifier">push</span>(<span class="ruby-identifier">node</span>)
+            <span class="ruby-identifier">env_hash</span>[<span class="ruby-identifier">env</span>].<span class="ruby-identifier">push</span>(<span class="ruby-identifier">node</span>.<span class="ruby-identifier">properties</span>[<span class="ruby-value">:name</span>])
+            <span class="ruby-keyword">break</span>
+          <span class="ruby-keyword">end</span>
+        }
+
+        <span class="ruby-keyword">if</span> <span class="ruby-identifier">all_check</span> <span class="ruby-operator">==</span> <span class="ruby-identifier">$all</span>        <span class="ruby-comment">#nothing was deleted from $all</span>
+          <span class="ruby-comment"># take the next site and find again</span>
+          <span class="ruby-identifier">i</span> <span class="ruby-operator">+=</span> <span class="ruby-value">1</span> 
+          <span class="ruby-identifier">$all</span>.<span class="ruby-identifier">each</span> { <span class="ruby-operator">|</span><span class="ruby-identifier">node</span><span class="ruby-operator">|</span>
+            <span class="ruby-keyword">if</span> <span class="ruby-identifier">node</span>.<span class="ruby-identifier">corresponds</span>({<span class="ruby-value">:site</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-ivar">@options</span>[<span class="ruby-value">:site</span>][<span class="ruby-identifier">i</span>]})
+              <span class="ruby-identifier">$all</span>.<span class="ruby-identifier">delete</span>(<span class="ruby-identifier">node</span>)
+              <span class="ruby-identifier">node</span>.<span class="ruby-identifier">properties</span>[<span class="ruby-value">:environment</span>] = <span class="ruby-identifier">env</span>
+              <span class="ruby-identifier">all_2</span>.<span class="ruby-identifier">push</span>(<span class="ruby-identifier">node</span>)
+              <span class="ruby-identifier">env_hash</span>[<span class="ruby-identifier">env</span>].<span class="ruby-identifier">push</span>(<span class="ruby-identifier">node</span>.<span class="ruby-identifier">properties</span>[<span class="ruby-value">:name</span>])
+              <span class="ruby-keyword">break</span>
+            <span class="ruby-keyword">end</span>
+          }
+        <span class="ruby-keyword">end</span>
+      }
+    }
+    <span class="ruby-comment"># each resource now has :environment property</span>
+    <span class="ruby-identifier">$all</span> = <span class="ruby-identifier">all_2</span>
+
+
+    <span class="ruby-comment"># launch parallel deployments for each environment</span>
+    <span class="ruby-ivar">@options</span>[<span class="ruby-value">:parallel_deploy</span>] = <span class="ruby-identifier">parallel</span>
+
+    <span class="ruby-comment"># As API deploy the same environment on the same site in parallel, </span>
+    <span class="ruby-comment"># we submit deployments in</span>
+    <span class="ruby-comment"># &quot;environment_1&quot; =&gt; [ .. all the nodes of the site ]</span>
+    <span class="ruby-comment"># for each site</span>
+
+    <span class="ruby-ivar">@options</span>[<span class="ruby-value">:site</span>].<span class="ruby-identifier">each</span> { <span class="ruby-operator">|</span><span class="ruby-identifier">site</span><span class="ruby-operator">|</span>
+      
+      <span class="ruby-identifier">env_hash</span>.<span class="ruby-identifier">each</span> { <span class="ruby-operator">|</span><span class="ruby-identifier">environment</span>, <span class="ruby-identifier">nodes</span><span class="ruby-operator">|</span>
+        
+        <span class="ruby-ivar">@options</span>[<span class="ruby-value">:environment</span>] = <span class="ruby-identifier">environment</span>
+        <span class="ruby-comment"># find all the reserved nodes from this site</span>
+        <span class="ruby-ivar">@options</span>[<span class="ruby-value">:nodes</span>] = <span class="ruby-identifier">nodes</span>.<span class="ruby-identifier">find_all</span> { <span class="ruby-operator">|</span><span class="ruby-identifier">node</span><span class="ruby-operator">|</span>
+          <span class="ruby-identifier">node</span> <span class="ruby-operator">=~</span> <span class="ruby-node">%r\S*.#{site}.\w*/</span>
+        }
+
+        <span class="ruby-keyword">if</span> <span class="ruby-keyword">not</span> <span class="ruby-ivar">@options</span>[<span class="ruby-value">:nodes</span>].<span class="ruby-identifier">empty?</span>
+          <span class="ruby-ivar">@options</span>[<span class="ruby-value">:parallel_deploy</span>].<span class="ruby-identifier">add</span>(<span class="ruby-ivar">@options</span>.<span class="ruby-identifier">merge</span>(<span class="ruby-value">:site</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-identifier">site</span>)) { <span class="ruby-operator">|</span><span class="ruby-identifier">env</span><span class="ruby-operator">|</span>
+            <span class="ruby-identifier">g5k_deploy</span>(<span class="ruby-identifier">env</span>)
+          }
+        <span class="ruby-keyword">end</span>
+      }
+    }
+
+    <span class="ruby-comment">#wait for all the deployments to finish</span>
+    <span class="ruby-ivar">@options</span>[<span class="ruby-value">:parallel_deploy</span>].<span class="ruby-identifier">loop!</span>
+  <span class="ruby-keyword">end</span>
+
+<span class="ruby-keyword">end</span></pre>
+          </div><!-- g5k_run-source -->
+          
+        </div>
+
+        
+
+        
+      </div><!-- g5k_run-method -->
+
+    
+      <div id="method-i-hello" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">hello</span><span
+            class="method-args">(args)</span>
+          <span class="method-click-advice">click to toggle source</span>
+        </div>
+        
+
+        <div class="method-description">
+          
+          
+          
+
+          
+          <div class="method-source-code" id="hello-source">
+            <pre><span class="ruby-comment"># File bin/expo-ctrl.rb, line 30</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">hello</span>(<span class="ruby-identifier">args</span>)
+        <span class="ruby-node">&quot;hello: #{args}&quot;</span>
+<span class="ruby-keyword">end</span></pre>
+          </div><!-- hello-source -->
+          
+        </div>
+
+        
+
+        
+      </div><!-- hello-method -->
+
+    
+      <div id="method-i-how_many-3F" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">how_many?</span><span
+            class="method-args">(options = {})</span>
+          <span class="method-click-advice">click to toggle source</span>
+        </div>
+        
+
+        <div class="method-description">
+          
+          <p>Returns the number of nodes that correspond to the specified state
+criteria, for each site requested. @param [Hash] options the options to
+filter the result with. @option options [String,Array] :hard (:alive) a
+symbol or array of symbols specifying the hardware status(es) that must be
+matched by the nodes to be counted. @option options [String,Array] :soft
+([:free, :besteffort]) a symbol or array of symbols specifying the system
+status(es) that must be matched by the nodes to be counted. @option options
+[String,Array] :in (all) a symbol or array of symbols specifying the sites
+of interest.</p>
+
+<p>@example How many nodes are alive &amp;&amp; (free || besteffort) in rennes
+and nancy?</p>
+
+<pre class="ruby"><span class="ruby-identifier">how_many?</span>(:<span class="ruby-identifier">hard</span> =<span class="ruby-operator">&gt;</span> :<span class="ruby-identifier">alive</span>, :<span class="ruby-identifier">soft</span> =<span class="ruby-operator">&gt;</span> [:<span class="ruby-identifier">free</span>, :<span class="ruby-identifier">besteffort</span>], :<span class="ruby-keyword">in</span> =<span class="ruby-operator">&gt;</span> [:<span class="ruby-identifier">rennes</span>, :<span class="ruby-identifier">nancy</span>]) <span class="ruby-comment"># =&gt; {:rennes =&gt; 40, :nancy =&gt; 23}</span>
+</pre>
+          
+
+          
+          <div class="method-source-code" id="how_many-3F-source">
+            <pre><span class="ruby-comment"># File lib/g5k_api.rb, line 494</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">how_many?</span>(<span class="ruby-identifier">options</span> = {})
+  <span class="ruby-identifier">options</span> = {<span class="ruby-value">:hard</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-value">:alive</span>, <span class="ruby-value">:soft</span> =<span class="ruby-operator">&gt;</span> [<span class="ruby-value">:free</span>, <span class="ruby-value">:besteffort</span>]}.<span class="ruby-identifier">merge</span>(<span class="ruby-identifier">options</span>)
+  <span class="ruby-identifier">count</span> = {}
+
+  <span class="ruby-identifier">sites</span> = [<span class="ruby-identifier">options</span>[<span class="ruby-value">:in</span>]].<span class="ruby-identifier">flatten</span>.<span class="ruby-identifier">compact</span>.<span class="ruby-identifier">map</span>(&amp;<span class="ruby-value">:to_s</span>)
+  <span class="ruby-identifier">hard_state</span> = [<span class="ruby-identifier">options</span>[<span class="ruby-value">:hard</span>]].<span class="ruby-identifier">flatten</span>.<span class="ruby-identifier">compact</span>.<span class="ruby-identifier">map</span>(&amp;<span class="ruby-value">:to_s</span>)
+  <span class="ruby-identifier">soft_state</span> = [<span class="ruby-identifier">options</span>[<span class="ruby-value">:soft</span>]].<span class="ruby-identifier">flatten</span>.<span class="ruby-identifier">compact</span>.<span class="ruby-identifier">map</span>(&amp;<span class="ruby-value">:to_s</span>)
+
+  <span class="ruby-ivar">@connection</span>.<span class="ruby-identifier">root</span>.<span class="ruby-identifier">sites</span>.<span class="ruby-identifier">each</span> <span class="ruby-keyword">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">site</span><span class="ruby-operator">|</span>
+    <span class="ruby-keyword">next</span> <span class="ruby-keyword">if</span> <span class="ruby-operator">!</span><span class="ruby-identifier">sites</span>.<span class="ruby-identifier">empty?</span> <span class="ruby-operator">&amp;&amp;</span> <span class="ruby-operator">!</span><span class="ruby-identifier">sites</span>.<span class="ruby-identifier">include?</span>(<span class="ruby-identifier">site</span>[<span class="ruby-string">'uid'</span>])
+    <span class="ruby-identifier">count</span>[<span class="ruby-identifier">site</span>[<span class="ruby-string">'uid'</span>].<span class="ruby-identifier">to_sym</span>] = <span class="ruby-identifier">site</span>.<span class="ruby-identifier">status</span>.<span class="ruby-identifier">count</span> <span class="ruby-keyword">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">ns</span><span class="ruby-operator">|</span>
+      <span class="ruby-identifier">hard_state</span>.<span class="ruby-identifier">include?</span>(<span class="ruby-identifier">ns</span>[<span class="ruby-string">'hardware_state'</span>]) <span class="ruby-operator">&amp;&amp;</span>
+      <span class="ruby-identifier">soft_state</span>.<span class="ruby-identifier">include?</span>(<span class="ruby-identifier">ns</span>[<span class="ruby-string">'system_state'</span>])
+    <span class="ruby-keyword">end</span>
+  <span class="ruby-keyword">end</span>
+
+  <span class="ruby-identifier">count</span>
+<span class="ruby-keyword">end</span></pre>
+          </div><!-- how_many-3F-source -->
+          
+        </div>
+
+        
+
+        
+      </div><!-- how_many-3F-method -->
+
+    
+      <div id="method-i-key_for_deployment" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">key_for_deployment</span><span
+            class="method-args">(env)</span>
+          <span class="method-click-advice">click to toggle source</span>
+        </div>
+        
+
+        <div class="method-description">
+          
+          <p>Returns a valid key for the deployment If the public_key points to a file,
+read it If the public_key is a URI, fetch it</p>
+          
+
+          
+          <div class="method-source-code" id="key_for_deployment-source">
+            <pre><span class="ruby-comment"># File lib/g5k_api.rb, line 419</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">key_for_deployment</span>(<span class="ruby-identifier">env</span>)
+  <span class="ruby-identifier">env</span>[<span class="ruby-value">:public_key</span>] = <span class="ruby-identifier">keychain</span>(<span class="ruby-value">:public</span>)
+  <span class="ruby-identifier">uri</span> = <span class="ruby-constant">URI</span>.<span class="ruby-identifier">parse</span>(<span class="ruby-identifier">env</span>[<span class="ruby-value">:public_key</span>])
+  <span class="ruby-keyword">case</span> <span class="ruby-identifier">uri</span>
+  <span class="ruby-keyword">when</span> <span class="ruby-constant">URI</span><span class="ruby-operator">::</span><span class="ruby-constant">HTTP</span>, <span class="ruby-constant">URI</span><span class="ruby-operator">::</span><span class="ruby-constant">HTTPS</span>
+    <span class="ruby-identifier">connection</span>.<span class="ruby-identifier">get</span>(<span class="ruby-identifier">uri</span>.<span class="ruby-identifier">to_s</span>).<span class="ruby-identifier">body</span>
+  <span class="ruby-keyword">else</span>
+    <span class="ruby-constant">File</span>.<span class="ruby-identifier">read</span>(<span class="ruby-identifier">env</span>[<span class="ruby-value">:public_key</span>])
+  <span class="ruby-keyword">end</span>
+<span class="ruby-keyword">end</span></pre>
+          </div><!-- key_for_deployment-source -->
+          
+        </div>
+
+        
+
+        
+      </div><!-- key_for_deployment-method -->
+
+    
+      <div id="method-i-keychain" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">keychain</span><span
+            class="method-args">(key_type = nil)</span>
+          <span class="method-click-advice">click to toggle source</span>
+        </div>
+        
+
+        <div class="method-description">
+          
+          <p>Finds the first SSH key that has both public and private parts in the
+<code>~/.ssh</code> directory. @return [Array&lt;String,String&gt;] the
+public_key_path and private_key_path if <code>key_type</code> is
+<code>nil</code>. @return [String] the public key if
+<code>key_type=:public</code>, or the private key if
+<code>key_type=:private</code>.</p>
+          
+
+          
+          <div class="method-source-code" id="keychain-source">
+            <pre><span class="ruby-comment"># File lib/g5k_api.rb, line 434</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">keychain</span>(<span class="ruby-identifier">key_type</span> = <span class="ruby-keyword">nil</span>)
+  <span class="ruby-identifier">public_key</span> = <span class="ruby-keyword">nil</span>
+  <span class="ruby-identifier">private_key</span> = <span class="ruby-keyword">nil</span>
+  <span class="ruby-constant">Dir</span>[<span class="ruby-constant">File</span>.<span class="ruby-identifier">expand_path</span>(<span class="ruby-string">&quot;~/.ssh/*.pub&quot;</span>)].<span class="ruby-identifier">each</span> <span class="ruby-keyword">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">file</span><span class="ruby-operator">|</span>
+    <span class="ruby-identifier">public_key</span> = <span class="ruby-identifier">file</span>
+    <span class="ruby-identifier">private_key</span> = <span class="ruby-constant">File</span>.<span class="ruby-identifier">join</span>(
+      <span class="ruby-constant">File</span>.<span class="ruby-identifier">dirname</span>(<span class="ruby-identifier">public_key</span>),
+      <span class="ruby-constant">File</span>.<span class="ruby-identifier">basename</span>(<span class="ruby-identifier">public_key</span>, <span class="ruby-string">&quot;.pub&quot;</span>)
+    )
+    <span class="ruby-keyword">if</span> <span class="ruby-constant">File</span>.<span class="ruby-identifier">exist?</span>(<span class="ruby-identifier">private_key</span>) <span class="ruby-operator">&amp;&amp;</span> <span class="ruby-constant">File</span>.<span class="ruby-identifier">readable?</span>(<span class="ruby-identifier">private_key</span>)
+      <span class="ruby-keyword">break</span>
+    <span class="ruby-keyword">else</span>
+      <span class="ruby-identifier">private_key</span> = <span class="ruby-keyword">nil</span>
+    <span class="ruby-keyword">end</span>
+  <span class="ruby-keyword">end</span>
+  <span class="ruby-keyword">case</span> <span class="ruby-identifier">key_type</span>
+  <span class="ruby-keyword">when</span> <span class="ruby-value">:public</span>
+    <span class="ruby-identifier">public_key</span>
+  <span class="ruby-keyword">when</span> <span class="ruby-value">:private</span>
+    <span class="ruby-identifier">private_key</span>
+  <span class="ruby-keyword">else</span>
+    [<span class="ruby-identifier">public_key</span>, <span class="ruby-identifier">private_key</span>]
+  <span class="ruby-keyword">end</span>
+<span class="ruby-keyword">end</span></pre>
+          </div><!-- keychain-source -->
+          
+        </div>
+
+        
+
+        
+      </div><!-- keychain-method -->
+
+    
+      <div id="method-i-launch_experiment" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">launch_experiment</span><span
+            class="method-args">(expe_args)</span>
+          <span class="method-click-advice">click to toggle source</span>
+        </div>
+        
+
+        <div class="method-description">
+          
+          
+          
+
+          
+          <div class="method-source-code" id="launch_experiment-source">
+            <pre><span class="ruby-comment"># File bin/expo-ctrl.rb, line 54</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">launch_experiment</span>(<span class="ruby-identifier">expe_args</span>)
+        <span class="ruby-identifier">puts</span> <span class="ruby-string">'launch_experiment'</span>
+        <span class="ruby-identifier">puts</span> <span class="ruby-string">&quot;expe args&quot;</span>
+        <span class="ruby-identifier">p</span> <span class="ruby-identifier">expe_args</span>
+        <span class="ruby-identifier">expe_id</span> = <span class="ruby-identifier">expe_args</span>[<span class="ruby-string">'expe_id'</span>]
+
+        <span class="ruby-keyword">if</span> <span class="ruby-identifier">$expe_list</span>[<span class="ruby-identifier">expe_id</span>].<span class="ruby-identifier">nil?</span>
+                <span class="ruby-comment">#MUST BE COMPLETED (error retun</span>
+                <span class="ruby-keyword">return</span> <span class="ruby-node">&quot;Error experiment doesn't exist, with expe_id  :#{expe_id}&quot;</span>    
+        <span class="ruby-keyword">else</span>
+                <span class="ruby-identifier">expe</span> = <span class="ruby-identifier">$expe_list</span>[<span class="ruby-identifier">expe_id</span>]
+                <span class="ruby-identifier">p</span> <span class="ruby-identifier">expe</span>
+
+                <span class="ruby-identifier">options</span> = <span class="ruby-string">''</span>
+                <span class="ruby-identifier">options</span> = <span class="ruby-node">&quot;-- #{expe_args['options']}&quot;</span> <span class="ruby-keyword">if</span>  <span class="ruby-operator">!</span><span class="ruby-identifier">expe_args</span>[<span class="ruby-string">'options'</span>].<span class="ruby-identifier">nil?</span>
+
+                <span class="ruby-identifier">p</span> <span class="ruby-node">&quot;expo-server.rb -e #{expe.id} #{options} #{expe.file} &amp;&quot;</span> 
+                <span class="ruby-comment">#system(&quot;ruby -d /home/auguste/Prog/rctrl/bin/expo-server.rb -e #{expe.id} #{expe.file} &amp;&quot; ) </span>
+
+                <span class="ruby-identifier">system</span>(<span class="ruby-node">&quot;expo-server.rb -e #{expe.id} #{options} #{expe.file} &amp;&quot;</span> ) 
+
+<span class="ruby-comment">#               system(&quot;ruby -d /home/auguste/Prog/rctrl/bin/expo-server.rb -e #{expe.id} #{options} #{expe.file} &amp;&quot;)</span>
+
+
+                <span class="ruby-identifier">$fifo_expo_client</span>[<span class="ruby-identifier">expe</span>.<span class="ruby-identifier">id</span>] = <span class="ruby-constant">FifoExpoClient</span>.<span class="ruby-identifier">new</span>(<span class="ruby-identifier">expe</span>.<span class="ruby-identifier">id</span>)
+
+                <span class="ruby-identifier">expe</span>.<span class="ruby-identifier">state</span> = <span class="ruby-constant">RUNNING</span> 
+
+
+                <span class="ruby-identifier">puts</span> <span class="ruby-node">&quot;#########################################&quot;</span>
+                <span class="ruby-identifier">$thread_eo</span> <span class="ruby-operator">&lt;&lt;</span> <span class="ruby-constant">Thread</span>.<span class="ruby-identifier">new</span>{<span class="ruby-identifier">monitor_stdout</span>(<span class="ruby-identifier">expe</span>)}
+                <span class="ruby-identifier">$thread_eo</span> <span class="ruby-operator">&lt;&lt;</span> <span class="ruby-constant">Thread</span>.<span class="ruby-identifier">new</span>{<span class="ruby-identifier">monitor_stderr</span>(<span class="ruby-identifier">expe</span>)}
+
+
+                <span class="ruby-keyword">return</span> <span class="ruby-string">&quot;ok&quot;</span>
+        <span class="ruby-keyword">end</span>
+<span class="ruby-keyword">end</span></pre>
+          </div><!-- launch_experiment-source -->
+          
+        </div>
+
+        
+
+        
+      </div><!-- launch_experiment-method -->
+
+    
+      <div id="method-i-load_experiment" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">load_experiment</span><span
+            class="method-args">(expe_args)</span>
+          <span class="method-click-advice">click to toggle source</span>
+        </div>
+        
+
+        <div class="method-description">
+          
+          
+          
+
+          
+          <div class="method-source-code" id="load_experiment-source">
+            <pre><span class="ruby-comment"># File bin/expo-ctrl.rb, line 35</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">load_experiment</span>(<span class="ruby-identifier">expe_args</span>)
+        <span class="ruby-identifier">puts</span> <span class="ruby-string">'load_experiment'</span>
+        <span class="ruby-identifier">expe_id</span> = <span class="ruby-identifier">expe_args</span>[<span class="ruby-string">'expe_id'</span>]
+        <span class="ruby-keyword">if</span> <span class="ruby-operator">!</span><span class="ruby-identifier">$expe_list</span>[<span class="ruby-identifier">expe_id</span>].<span class="ruby-identifier">nil?</span>
+                <span class="ruby-comment">#MUST BE COMPLETED (error retun</span>
+                <span class="ruby-comment">#return &quot;Error expe_id already exists #{expe_id}&quot;</span>
+                <span class="ruby-comment">#MUST test if expe is in Running state</span>
+                <span class="ruby-identifier">puts</span> <span class="ruby-node">&quot;Warning we delete expe entry: #{expe_id} with state: #{$expe_list[expe_id].state}&quot;</span>
+                <span class="ruby-identifier">$expe_list</span>.<span class="ruby-identifier">delete</span>(<span class="ruby-identifier">expe_id</span>)
+        <span class="ruby-keyword">end</span>
+
+        <span class="ruby-identifier">expe_file</span> = <span class="ruby-identifier">expe_args</span>[<span class="ruby-string">'expe_file'</span>]
+        <span class="ruby-identifier">expe_program</span> = <span class="ruby-constant">File</span>.<span class="ruby-identifier">read</span>(<span class="ruby-identifier">expe_file</span>)
+
+        <span class="ruby-identifier">$expe_list</span>[<span class="ruby-identifier">expe_id</span>] = <span class="ruby-constant">Struct</span><span class="ruby-operator">::</span><span class="ruby-constant">Experiment</span>.<span class="ruby-identifier">new</span>(<span class="ruby-identifier">expe_id</span>,<span class="ruby-identifier">expe_file</span>,<span class="ruby-identifier">expe_program</span>,<span class="ruby-string">'loaded'</span>, <span class="ruby-constant">Monitor</span>.<span class="ruby-identifier">new</span>,<span class="ruby-string">&quot;&quot;</span>,<span class="ruby-string">&quot;&quot;</span>)
+
+        <span class="ruby-keyword">return</span>(<span class="ruby-identifier">expe_program</span>)
+<span class="ruby-keyword">end</span></pre>
+          </div><!-- load_experiment-source -->
+          
+        </div>
+
+        
+
+        
+      </div><!-- load_experiment-method -->
+
+    
+      <div id="method-i-make_taktuk_result" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">make_taktuk_result</span><span
+            class="method-args">( id )</span>
+          <span class="method-click-advice">click to toggle source</span>
+        </div>
+        
+
+        <div class="method-description">
+          
+          
+          
+
+          
+          <div class="method-source-code" id="make_taktuk_result-source">
+            <pre><span class="ruby-comment"># File bin/expo-server.rb, line 239</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">make_taktuk_result</span>( <span class="ruby-identifier">id</span> )
+  <span class="ruby-identifier">result</span> = <span class="ruby-identifier">$client</span>.<span class="ruby-identifier">command_result</span>( <span class="ruby-identifier">id</span> )
+  <span class="ruby-identifier">tree</span> = <span class="ruby-constant">YAML</span><span class="ruby-operator">::</span><span class="ruby-identifier">load</span>(<span class="ruby-identifier">result</span>[<span class="ruby-string">'stdout'</span>])
+  <span class="ruby-identifier">res</span> = <span class="ruby-constant">ExpoResult</span><span class="ruby-operator">::</span><span class="ruby-identifier">new</span>
+  <span class="ruby-identifier">tree</span>[<span class="ruby-string">'hosts'</span>].<span class="ruby-identifier">each_value</span> { <span class="ruby-operator">|</span><span class="ruby-identifier">h</span><span class="ruby-operator">|</span>
+    <span class="ruby-identifier">h</span>[<span class="ruby-string">'commands'</span>].<span class="ruby-identifier">each_value</span> { <span class="ruby-operator">|</span><span class="ruby-identifier">x</span><span class="ruby-operator">|</span>
+      <span class="ruby-identifier">r</span> = <span class="ruby-constant">TaskResult</span><span class="ruby-operator">::</span><span class="ruby-identifier">new</span>
+      <span class="ruby-identifier">r</span>.<span class="ruby-identifier">merge!</span>( {<span class="ruby-string">'host_name'</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-identifier">h</span>[<span class="ruby-string">'host_name'</span>], <span class="ruby-string">'rank'</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-identifier">h</span>[<span class="ruby-string">'rank'</span>], <span class="ruby-string">'command_line'</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-identifier">x</span>[<span class="ruby-string">'command_line'</span>], <span class="ruby-string">'stdout'</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-identifier">x</span>[<span class="ruby-string">'output'</span>], <span class="ruby-string">'stderr'</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-identifier">x</span>[<span class="ruby-string">'error'</span>], <span class="ruby-string">'status'</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-identifier">x</span>[<span class="ruby-string">'status'</span>], <span class="ruby-string">'start_time'</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-identifier">x</span>[<span class="ruby-string">'start_date'</span>], <span class="ruby-string">'end_time'</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-identifier">x</span>[<span class="ruby-string">'stop_date'</span>] } )
+      <span class="ruby-identifier">res</span>.<span class="ruby-identifier">push</span>(<span class="ruby-identifier">r</span>)
+    }
+  }
+  <span class="ruby-keyword">return</span> [<span class="ruby-identifier">id</span>, <span class="ruby-identifier">res</span>]
+<span class="ruby-keyword">end</span></pre>
+          </div><!-- make_taktuk_result-source -->
+          
+        </div>
+
+        
+
+        
+      </div><!-- make_taktuk_result-method -->
+
+    
+      <div id="method-i-method_missing" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">method_missing</span><span
+            class="method-args">(method_sym,&block)</span>
+          <span class="method-click-advice">click to toggle source</span>
+        </div>
+        
+
+        <div class="method-description">
+          
+          <p><a href="Object.html#method-i-method_missing">#method_missing</a> to
+address composedstep instantiation</p>
+          
+
+          
+          <div class="method-source-code" id="method_missing-source">
+            <pre><span class="ruby-comment"># File demo/karo/karo.rb, line 183</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">method_missing</span>(<span class="ruby-identifier">method_sym</span>,&amp;<span class="ruby-identifier">block</span>)
+
+        <span class="ruby-identifier">puts</span> <span class="ruby-identifier">method_sym</span>
+        <span class="ruby-comment">#TODO test if method_sym is present as nextstep in the list of already registered steps</span>
+        <span class="ruby-identifier">$current_karo</span>.<span class="ruby-identifier">composedstep</span>(<span class="ruby-identifier">method_sym</span>,<span class="ruby-identifier">block</span>)
+<span class="ruby-keyword">end</span></pre>
+          </div><!-- method_missing-source -->
+          
+        </div>
+
+        
+        <div class="aliases">
+          Also aliased as: <a href="Object.html#method-i-orignal_method_missing">orignal_method_missing</a>, <a href="Object.html#method-i-automaton_creation_method_missing">automaton_creation_method_missing</a>
+        </div>
+        
+
+        
+      </div><!-- method_missing-method -->
+
+    
+      <div id="method-i-monitor_experiment" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">monitor_experiment</span><span
+            class="method-args">(expe_args)</span>
+          <span class="method-click-advice">click to toggle source</span>
+        </div>
+        
+
+        <div class="method-description">
+          
+          
+          
+
+          
+          <div class="method-source-code" id="monitor_experiment-source">
+            <pre><span class="ruby-comment"># File bin/expo-ctrl.rb, line 92</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">monitor_experiment</span>(<span class="ruby-identifier">expe_args</span>)
+        <span class="ruby-identifier">expe_id</span> = <span class="ruby-identifier">expe_args</span>[<span class="ruby-string">'expe_id'</span>]
+        <span class="ruby-identifier">expe</span> = <span class="ruby-identifier">$expe_list</span>[<span class="ruby-identifier">expe_id</span>]
+        <span class="ruby-identifier">response</span> = {}
+
+        <span class="ruby-keyword">if</span> <span class="ruby-identifier">expe</span>.<span class="ruby-identifier">nil?</span>
+                <span class="ruby-keyword">return</span> {<span class="ruby-string">'err'</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-node">&quot;Error experiment doesn't exist, with expe_id  :#{expe_id}&quot;</span>}
+                <span class="ruby-comment">#MUST BE COMPLETED (return error code and message accordingly)</span>
+        <span class="ruby-keyword">else</span>
+                <span class="ruby-keyword">if</span> <span class="ruby-identifier">expe_args</span>[<span class="ruby-string">'cmd'</span>] <span class="ruby-operator">==</span> <span class="ruby-string">'get_action_status'</span>
+
+                        <span class="ruby-identifier">puts</span> <span class="ruby-string">'get_action_status......waiting'</span>
+
+                        <span class="ruby-identifier">expe_args</span>.<span class="ruby-identifier">delete</span>(<span class="ruby-string">'expe_id'</span>)
+                        <span class="ruby-identifier">response</span> = <span class="ruby-identifier">$fifo_expo_client</span>[<span class="ruby-identifier">expe_id</span>].<span class="ruby-identifier">fifo_generic_cmd</span>(<span class="ruby-identifier">expe_args</span>)
+
+                        <span class="ruby-identifier">puts</span> <span class="ruby-string">'get_action_status......reponse'</span>
+                        <span class="ruby-identifier">p</span> <span class="ruby-identifier">response</span>           
+        
+                <span class="ruby-keyword">end</span>
+
+                <span class="ruby-identifier">response</span>[<span class="ruby-string">'stdout'</span>]=<span class="ruby-string">''</span>
+                <span class="ruby-identifier">response</span>[<span class="ruby-string">'stderr'</span>]=<span class="ruby-string">''</span>
+                <span class="ruby-comment">#new stdout/stderr ?</span>
+                <span class="ruby-identifier">expe</span>.<span class="ruby-identifier">lock_eo</span>.<span class="ruby-identifier">synchronize</span> <span class="ruby-keyword">do</span>
+                        <span class="ruby-keyword">if</span> <span class="ruby-identifier">expe</span>.<span class="ruby-identifier">buffer_stdout</span>.<span class="ruby-identifier">length</span> <span class="ruby-operator">&gt;</span> <span class="ruby-value">0</span>
+
+                                <span class="ruby-identifier">puts</span> <span class="ruby-string">&quot;-------------------&quot;</span> 
+                                <span class="ruby-identifier">puts</span> <span class="ruby-identifier">expe</span>.<span class="ruby-identifier">buffer_stdout</span>
+                                <span class="ruby-identifier">puts</span> <span class="ruby-string">&quot;-------------------&quot;</span> 
+
+                                <span class="ruby-identifier">response</span>[<span class="ruby-string">'stdout'</span>] = <span class="ruby-identifier">expe</span>.<span class="ruby-identifier">buffer_stdout</span>
+                                <span class="ruby-identifier">expe</span>.<span class="ruby-identifier">buffer_stdout</span> = <span class="ruby-string">''</span>
+                        <span class="ruby-keyword">end</span>
+                        <span class="ruby-keyword">if</span> <span class="ruby-identifier">expe</span>.<span class="ruby-identifier">buffer_stderr</span>.<span class="ruby-identifier">length</span> <span class="ruby-operator">&gt;</span> <span class="ruby-value">0</span>
+                                <span class="ruby-identifier">response</span>[<span class="ruby-string">'stderr'</span>] = <span class="ruby-identifier">expe</span>.<span class="ruby-identifier">buffer_stderr</span>
+                                <span class="ruby-identifier">expe</span>.<span class="ruby-identifier">buffer_stderr</span> = <span class="ruby-string">''</span>
+                        <span class="ruby-keyword">end</span>
+                <span class="ruby-keyword">end</span>
+                <span class="ruby-keyword">return</span> <span class="ruby-identifier">response</span>
+        <span class="ruby-keyword">end</span>
+<span class="ruby-keyword">end</span></pre>
+          </div><!-- monitor_experiment-source -->
+          
+        </div>
+
+        
+
+        
+      </div><!-- monitor_experiment-method -->
+
+    
+      <div id="method-i-monitor_stderr" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">monitor_stderr</span><span
+            class="method-args">(expe)</span>
+          <span class="method-click-advice">click to toggle source</span>
+        </div>
+        
+
+        <div class="method-description">
+          
+          
+          
+
+          
+          <div class="method-source-code" id="monitor_stderr-source">
+            <pre><span class="ruby-comment"># File bin/expo-ctrl.rb, line 173</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">monitor_stderr</span>(<span class="ruby-identifier">expe</span>)
+        <span class="ruby-constant">File</span>.<span class="ruby-identifier">open</span>(<span class="ruby-node">&quot;/tmp/stderr_#{expe.id}&quot;</span>) <span class="ruby-keyword">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">file</span><span class="ruby-operator">|</span>
+                <span class="ruby-keyword">while</span> <span class="ruby-identifier">line</span> = <span class="ruby-identifier">file</span>.<span class="ruby-identifier">gets</span>
+                        <span class="ruby-identifier">puts</span> <span class="ruby-identifier">line</span>
+                        <span class="ruby-identifier">expe</span>.<span class="ruby-identifier">lock_eo</span>.<span class="ruby-identifier">synchronize</span>{<span class="ruby-identifier">expe</span>.<span class="ruby-identifier">buffer_stderr</span> <span class="ruby-operator">&lt;&lt;</span> <span class="ruby-identifier">line</span>}
+                <span class="ruby-keyword">end</span>
+        <span class="ruby-keyword">end</span>
+<span class="ruby-keyword">end</span></pre>
+          </div><!-- monitor_stderr-source -->
+          
+        </div>
+
+        
+
+        
+      </div><!-- monitor_stderr-method -->
+
+    
+      <div id="method-i-monitor_stdout" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">monitor_stdout</span><span
+            class="method-args">(expe)</span>
+          <span class="method-click-advice">click to toggle source</span>
+        </div>
+        
+
+        <div class="method-description">
+          
+          
+          
+
+          
+          <div class="method-source-code" id="monitor_stdout-source">
+            <pre><span class="ruby-comment"># File bin/expo-ctrl.rb, line 151</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">monitor_stdout</span>(<span class="ruby-identifier">expe</span>)
+        <span class="ruby-identifier">puts</span> <span class="ruby-node">&quot;monitor_stdout #{expe.id}&quot;</span>
+  <span class="ruby-identifier">sleep</span> <span class="ruby-value">3</span>
+        
+        <span class="ruby-identifier">nb_read_bytes</span> = <span class="ruby-value">0</span>
+
+        <span class="ruby-keyword">while</span> <span class="ruby-identifier">expe</span>.<span class="ruby-identifier">state</span> <span class="ruby-operator">==</span> <span class="ruby-constant">RUNNING</span>
+                <span class="ruby-constant">File</span>.<span class="ruby-identifier">open</span>(<span class="ruby-node">&quot;/tmp/stdout_#{expe.id}&quot;</span>) <span class="ruby-keyword">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">file</span><span class="ruby-operator">|</span>
+                        <span class="ruby-identifier">file</span>.<span class="ruby-identifier">seek</span>(<span class="ruby-identifier">nb_read_bytes</span>, <span class="ruby-constant">IO</span><span class="ruby-operator">::</span><span class="ruby-constant">SEEK_SET</span>)
+                        <span class="ruby-keyword">while</span> <span class="ruby-identifier">line</span> = <span class="ruby-identifier">file</span>.<span class="ruby-identifier">gets</span>
+                                <span class="ruby-identifier">puts</span> <span class="ruby-string">'°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°'</span>
+                                <span class="ruby-identifier">puts</span> <span class="ruby-identifier">line</span>
+                                <span class="ruby-identifier">puts</span> <span class="ruby-string">'°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°'</span>
+                                <span class="ruby-identifier">expe</span>.<span class="ruby-identifier">lock_eo</span>.<span class="ruby-identifier">synchronize</span>{<span class="ruby-identifier">expe</span>.<span class="ruby-identifier">buffer_stdout</span> <span class="ruby-operator">&lt;&lt;</span> <span class="ruby-identifier">line</span>}
+                                <span class="ruby-identifier">nb_read_bytes</span> <span class="ruby-operator">+=</span> <span class="ruby-identifier">line</span>.<span class="ruby-identifier">length</span>
+                        <span class="ruby-keyword">end</span>
+                <span class="ruby-keyword">end</span>
+        <span class="ruby-keyword">end</span>
+
+        <span class="ruby-identifier">puts</span> <span class="ruby-string">'EEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEND'</span>
+<span class="ruby-keyword">end</span></pre>
+          </div><!-- monitor_stdout-source -->
+          
+        </div>
+
+        
+
+        
+      </div><!-- monitor_stdout-method -->
+
+    
+      <div id="method-i-multipackage_install-3F" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">multipackage_install?</span><span
+            class="method-args">()</span>
+          <span class="method-click-advice">click to toggle source</span>
+        </div>
+        
+
+        <div class="method-description">
+          
+          
+          
+
+          
+          <div class="method-source-code" id="multipackage_install-3F-source">
+            <pre><span class="ruby-comment"># File setup.rb, line 55</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">multipackage_install?</span>
+  <span class="ruby-constant">FileTest</span>.<span class="ruby-identifier">directory?</span>(<span class="ruby-constant">File</span>.<span class="ruby-identifier">dirname</span>(<span class="ruby-identifier">$0</span>) <span class="ruby-operator">+</span> <span class="ruby-string">'/packages'</span>)
+<span class="ruby-keyword">end</span></pre>
+          </div><!-- multipackage_install-3F-source -->
+          
+        </div>
+
+        
+
+        
+      </div><!-- multipackage_install-3F-method -->
+
+    
+      <div id="method-i-oar_walltime" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">oar_walltime</span><span
+            class="method-args">(env)</span>
+          <span class="method-click-advice">click to toggle source</span>
+        </div>
+        
+
+        <div class="method-description">
+          
+          <p>convert the walltime in seconds into oar-style walltime</p>
+          
+
+          
+          <div class="method-source-code" id="oar_walltime-source">
+            <pre><span class="ruby-comment"># File lib/g5k_api.rb, line 379</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">oar_walltime</span>(<span class="ruby-identifier">env</span>)
+  <span class="ruby-identifier">walltime</span> = <span class="ruby-identifier">env</span>[<span class="ruby-value">:walltime</span>]
+  <span class="ruby-identifier">hours</span> = (<span class="ruby-identifier">walltime</span><span class="ruby-operator">/</span><span class="ruby-value">3600</span>).<span class="ruby-identifier">floor</span>
+  <span class="ruby-identifier">minutes</span> = ((<span class="ruby-identifier">walltime</span><span class="ruby-operator">-</span>(<span class="ruby-identifier">hours</span>*<span class="ruby-value">3600</span>))<span class="ruby-operator">/</span><span class="ruby-value">60</span>).<span class="ruby-identifier">floor</span>
+  <span class="ruby-identifier">seconds</span> = <span class="ruby-identifier">walltime</span><span class="ruby-operator">-</span><span class="ruby-identifier">hours</span>*<span class="ruby-value">3600</span><span class="ruby-operator">-</span><span class="ruby-identifier">minutes</span>*<span class="ruby-value">60</span>
+  <span class="ruby-string">&quot;%02d:%02d:%02d&quot;</span> <span class="ruby-operator">%</span> [<span class="ruby-identifier">hours</span>, <span class="ruby-identifier">minutes</span>, <span class="ruby-identifier">seconds</span>]
+<span class="ruby-keyword">end</span></pre>
+          </div><!-- oar_walltime-source -->
+          
+        </div>
+
+        
+
+        
+      </div><!-- oar_walltime-method -->
+
+    
+      <div id="method-i-orignal_method_missing" class="method-detail method-alias">
+        
+        <div class="method-heading">
+          <span class="method-name">orignal_method_missing</span><span
+            class="method-args">(method_sym,&block)</span>
+          <span class="method-click-advice">click to toggle source</span>
+        </div>
+        
+
+        <div class="method-description">
+          
+          <p>aliasing to allow original <a
+href="Object.html#method-i-method_missing">#method_missing</a> retreiving
+when necessary</p>
+          
+
+          
+        </div>
+
+        
+
+        
+        <div class="aliases">
+          Alias for: <a href="Object.html#method-i-method_missing">method_missing</a>
+        </div>
+        
+      </div><!-- orignal_method_missing-method -->
+
+    
+      <div id="method-i-parallel" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">parallel</span><span
+            class="method-args">(options = {}) { |p| ... }</span>
+          <span class="method-click-advice">click to toggle source</span>
+        </div>
+        
+
+        <div class="method-description">
+          
+          <p>Primite that returns a new <a href="Parallel.html">Parallel</a> object. 
+<code>Parallel#loop!</code> must be explicitly called to wait for the
+threads within the <code>Parallel</code> object.</p>
+
+<p>@param [Hash] options a hash of additional options to pass.</p>
+
+<p>If option <code>:ignore_thread_exceptions</code> is given and true, then
+standard exceptions (including timeouts) that occur in one of the threads
+will be ignored (only an error log will be displayed). This is useful if
+you are doing multi-site campaigns.</p>
+          
+
+          
+          <div class="method-source-code" id="parallel-source">
+            <pre><span class="ruby-comment"># File lib/g5k_api.rb, line 473</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">parallel</span>(<span class="ruby-identifier">options</span> = {}, &amp;<span class="ruby-identifier">block</span>)
+  <span class="ruby-identifier">p</span> = <span class="ruby-constant">Parallel</span>.<span class="ruby-identifier">new</span>({<span class="ruby-value">:logger</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-ivar">@logger</span>}.<span class="ruby-identifier">merge</span>(<span class="ruby-identifier">options</span>))
+  <span class="ruby-keyword">yield</span> <span class="ruby-identifier">p</span> <span class="ruby-keyword">if</span> <span class="ruby-identifier">block_given?</span>
+  <span class="ruby-identifier">p</span>
+<span class="ruby-keyword">end</span></pre>
+          </div><!-- parallel-source -->
+          
+        </div>
+
+        
+
+        
+      </div><!-- parallel-method -->
+
+    
+      <div id="method-i-parallel_section" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">parallel_section</span><span
+            class="method-args">(&block)</span>
+          <span class="method-click-advice">click to toggle source</span>
+        </div>
+        
+
+        <div class="method-description">
+          
+          
+          
+
+          
+          <div class="method-source-code" id="parallel_section-source">
+            <pre><span class="ruby-comment"># File bin/expo-server.rb, line 336</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">parallel_section</span>(&amp;<span class="ruby-identifier">block</span>)
+  <span class="ruby-constant">ParallelSection</span><span class="ruby-operator">::</span><span class="ruby-identifier">new</span>(&amp;<span class="ruby-identifier">block</span>)
+<span class="ruby-keyword">end</span></pre>
+          </div><!-- parallel_section-source -->
+          
+        </div>
+
+        
+
+        
+      </div><!-- parallel_section-method -->
+
+    
+      <div id="method-i-patask" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">patask</span><span
+            class="method-args">(location, targets, task)</span>
+          <span class="method-click-advice">click to toggle source</span>
+        </div>
+        
+
+        <div class="method-description">
+          
+          
+          
+
+          
+          <div class="method-source-code" id="patask-source">
+            <pre><span class="ruby-comment"># File bin/expo-server.rb, line 304</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">patask</span>(<span class="ruby-identifier">location</span>, <span class="ruby-identifier">targets</span>, <span class="ruby-identifier">task</span>)
+  <span class="ruby-identifier">cmd</span> = <span class="ruby-string">&quot;taktuk2yaml -s&quot;</span>
+  <span class="ruby-identifier">cmd</span> <span class="ruby-operator">+=</span> <span class="ruby-identifier">$ssh_connector</span>
+  <span class="ruby-identifier">cmd</span> <span class="ruby-operator">+=</span> <span class="ruby-node">&quot; -m #{location}&quot;</span>
+  <span class="ruby-identifier">cmd</span> <span class="ruby-operator">+=</span> <span class="ruby-string">&quot; -[&quot;</span>
+  <span class="ruby-identifier">targets</span>.<span class="ruby-identifier">all</span>.<span class="ruby-identifier">resources</span>.<span class="ruby-identifier">each</span> { <span class="ruby-operator">|</span><span class="ruby-identifier">node</span><span class="ruby-operator">|</span>
+    <span class="ruby-identifier">cmd</span> <span class="ruby-operator">+=</span> <span class="ruby-node">&quot; -m #{node}&quot;</span>
+  }
+  <span class="ruby-identifier">cmd</span> <span class="ruby-operator">+=</span> <span class="ruby-node">&quot; downcast exec [ #{task} ]&quot;</span>
+  <span class="ruby-identifier">cmd</span> <span class="ruby-operator">+=</span> <span class="ruby-string">&quot; -]&quot;</span>
+  <span class="ruby-identifier">command_result</span> = <span class="ruby-identifier">$client</span>.<span class="ruby-identifier">asynchronous_command</span>(<span class="ruby-identifier">cmd</span>)
+  <span class="ruby-identifier">$atasks_mutex</span>.<span class="ruby-identifier">synchronize</span> {
+    <span class="ruby-identifier">$atasks</span>[<span class="ruby-identifier">command_result</span>[<span class="ruby-string">&quot;command_number&quot;</span>]] = { <span class="ruby-string">&quot;location&quot;</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-identifier">location</span> , <span class="ruby-string">&quot;task&quot;</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-identifier">task</span> }
+  }
+<span class="ruby-keyword">end</span></pre>
+          </div><!-- patask-source -->
+          
+        </div>
+
+        
+
+        
+      </div><!-- patask-method -->
+
+    
+      <div id="method-i-print_taktuk_result" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">print_taktuk_result</span><span
+            class="method-args">( res )</span>
+          <span class="method-click-advice">click to toggle source</span>
+        </div>
+        
+
+        <div class="method-description">
+          
+          <p>Copy data from home directory to tmp on $all gateway (here gdx gw) task
+$all.gw, “scp ~/data  #{$all.first}:/tmp/”</p>
+          
+
+          
+          <div class="method-source-code" id="print_taktuk_result-source">
+            <pre><span class="ruby-comment"># File bin/expo-server.rb, line 228</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">print_taktuk_result</span>( <span class="ruby-identifier">res</span> )
+  <span class="ruby-identifier">res</span>.<span class="ruby-identifier">each</span> { <span class="ruby-operator">|</span><span class="ruby-identifier">r</span><span class="ruby-operator">|</span>
+    <span class="ruby-identifier">puts</span> <span class="ruby-identifier">r</span>[<span class="ruby-string">'host_name'</span>] <span class="ruby-operator">+</span> <span class="ruby-string">&quot; :&quot;</span>
+    <span class="ruby-identifier">puts</span> <span class="ruby-identifier">r</span>[<span class="ruby-string">'start_time'</span>].<span class="ruby-identifier">to_s</span> <span class="ruby-operator">+</span> <span class="ruby-string">&quot; - &quot;</span> <span class="ruby-operator">+</span> <span class="ruby-identifier">r</span>[<span class="ruby-string">'end_time'</span>].<span class="ruby-identifier">to_s</span> 
+    <span class="ruby-identifier">puts</span> <span class="ruby-identifier">r</span>[<span class="ruby-string">'command_line'</span>];
+    <span class="ruby-identifier">puts</span> <span class="ruby-identifier">r</span>[<span class="ruby-string">'stdout'</span>];
+    <span class="ruby-identifier">puts</span> <span class="ruby-identifier">r</span>[<span class="ruby-string">'stderr'</span>];
+    <span class="ruby-identifier">puts</span>
+  }
+<span class="ruby-keyword">end</span></pre>
+          </div><!-- print_taktuk_result-source -->
+          
+        </div>
+
+        
+
+        
+      </div><!-- print_taktuk_result-method -->
+
+    
+      <div id="method-i-ptask" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">ptask</span><span
+            class="method-args">(location, targets, task)</span>
+          <span class="method-click-advice">click to toggle source</span>
+        </div>
+        
+
+        <div class="method-description">
+          
+          
+          
+
+          
+          <div class="method-source-code" id="ptask-source">
+            <pre><span class="ruby-comment"># File bin/expo-server.rb, line 289</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">ptask</span>(<span class="ruby-identifier">location</span>, <span class="ruby-identifier">targets</span>, <span class="ruby-identifier">task</span>)
+  <span class="ruby-identifier">cmd</span> = <span class="ruby-string">&quot;taktuk2yaml -s&quot;</span>
+  <span class="ruby-identifier">cmd</span> <span class="ruby-operator">+=</span> <span class="ruby-identifier">$ssh_connector</span>
+  <span class="ruby-identifier">cmd</span> <span class="ruby-operator">+=</span> <span class="ruby-node">&quot; -m #{location}&quot;</span>
+  <span class="ruby-identifier">cmd</span> <span class="ruby-operator">+=</span> <span class="ruby-string">&quot; -[&quot;</span>
+  <span class="ruby-identifier">targets</span>.<span class="ruby-identifier">all</span>.<span class="ruby-identifier">resources</span>.<span class="ruby-identifier">each</span> { <span class="ruby-operator">|</span><span class="ruby-identifier">node</span><span class="ruby-operator">|</span>
+    <span class="ruby-identifier">cmd</span> <span class="ruby-operator">+=</span> <span class="ruby-node">&quot; -m #{node}&quot;</span>
+  }
+  <span class="ruby-identifier">cmd</span> <span class="ruby-operator">+=</span> <span class="ruby-node">&quot; downcast exec [ #{task} ]&quot;</span>
+  <span class="ruby-identifier">cmd</span> <span class="ruby-operator">+=</span> <span class="ruby-string">&quot; -]&quot;</span>
+  <span class="ruby-identifier">command_result</span> = <span class="ruby-identifier">$client</span>.<span class="ruby-identifier">asynchronous_command</span>(<span class="ruby-identifier">cmd</span>)
+  <span class="ruby-identifier">$client</span>.<span class="ruby-identifier">command_wait</span>(<span class="ruby-identifier">command_result</span>[<span class="ruby-string">&quot;command_number&quot;</span>],<span class="ruby-value">1</span>)
+  <span class="ruby-keyword">return</span> <span class="ruby-identifier">make_taktuk_result</span>(<span class="ruby-identifier">command_result</span>[<span class="ruby-string">&quot;command_number&quot;</span>])
+<span class="ruby-keyword">end</span></pre>
+          </div><!-- ptask-source -->
+          
+        </div>
+
+        
+
+        
+      </div><!-- ptask-method -->
+
+    
+      <div id="method-i-ptask_orig" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">ptask_orig</span><span
+            class="method-args">(location, targets, task)</span>
+          <span class="method-click-advice">click to toggle source</span>
+        </div>
+        
+
+        <div class="method-description">
+          
+          
+          
+
+          
+          <div class="method-source-code" id="ptask_orig-source">
+            <pre><span class="ruby-comment"># File demo/karo/expo-karo.rb, line 220</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">ptask_orig</span>(<span class="ruby-identifier">location</span>, <span class="ruby-identifier">targets</span>, <span class="ruby-identifier">task</span>)
+  <span class="ruby-identifier">cmd</span> = <span class="ruby-string">&quot;taktuk2yaml -s&quot;</span>
+  <span class="ruby-identifier">cmd</span> <span class="ruby-operator">+=</span> <span class="ruby-identifier">$ssh_connector</span>
+  <span class="ruby-identifier">cmd</span> <span class="ruby-operator">+=</span> <span class="ruby-node">&quot; -m #{location}&quot;</span>
+  <span class="ruby-identifier">cmd</span> <span class="ruby-operator">+=</span> <span class="ruby-string">&quot; -[&quot;</span>
+  <span class="ruby-identifier">targets</span>.<span class="ruby-identifier">flatten</span>(<span class="ruby-value">:node</span>).<span class="ruby-identifier">each</span>(<span class="ruby-value">:node</span>) { <span class="ruby-operator">|</span><span class="ruby-identifier">node</span><span class="ruby-operator">|</span>
+    <span class="ruby-identifier">cmd</span> <span class="ruby-operator">+=</span> <span class="ruby-node">&quot; -m #{node}&quot;</span>
+  }
+  <span class="ruby-identifier">cmd</span> <span class="ruby-operator">+=</span> <span class="ruby-node">&quot; downcast exec [ #{task} ]&quot;</span>
+  <span class="ruby-identifier">cmd</span> <span class="ruby-operator">+=</span> <span class="ruby-string">&quot; -]&quot;</span>
+  <span class="ruby-identifier">command_result</span> = <span class="ruby-identifier">$client</span>.<span class="ruby-identifier">asynchronous_command</span>(<span class="ruby-identifier">cmd</span>)
+  <span class="ruby-identifier">$client</span>.<span class="ruby-identifier">command_wait</span>(<span class="ruby-identifier">command_result</span>[<span class="ruby-string">&quot;command_number&quot;</span>],<span class="ruby-value">1</span>)
+  <span class="ruby-keyword">return</span> <span class="ruby-identifier">make_taktuk_result</span>(<span class="ruby-identifier">command_result</span>[<span class="ruby-string">&quot;command_number&quot;</span>])
+<span class="ruby-keyword">end</span></pre>
+          </div><!-- ptask_orig-source -->
+          
+        </div>
+
+        
+
+        
+      </div><!-- ptask_orig-method -->
+
+    
+      <div id="method-i-ptaskfoorand" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">ptaskfoorand</span><span
+            class="method-args">(task, rset, *params)</span>
+          <span class="method-click-advice">click to toggle source</span>
+        </div>
+        
+
+        <div class="method-description">
+          
+          
+          
+
+          
+          <div class="method-source-code" id="ptaskfoorand-source">
+            <pre><span class="ruby-comment"># File demo/karo/expo-karo.rb, line 148</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">ptaskfoorand</span>(<span class="ruby-identifier">task</span>, <span class="ruby-identifier">rset</span>, *<span class="ruby-identifier">params</span>)
+        <span class="ruby-identifier">puts</span> <span class="ruby-identifier">task</span>
+
+        <span class="ruby-identifier">nb_good</span> = <span class="ruby-identifier">rand</span>(<span class="ruby-identifier">rset</span>.<span class="ruby-identifier">resources</span>.<span class="ruby-identifier">length</span> <span class="ruby-operator">+</span> <span class="ruby-value">1</span>)
+        <span class="ruby-identifier">puts</span> <span class="ruby-node">&quot;Nb good resources: #{nb_good}&quot;</span>
+
+        <span class="ruby-comment">#create a resource set</span>
+        <span class="ruby-identifier">rset_good</span> = <span class="ruby-constant">ResourceSet</span><span class="ruby-operator">::</span><span class="ruby-identifier">new</span>()
+        <span class="ruby-identifier">rset_good</span>.<span class="ruby-identifier">properties</span>[<span class="ruby-value">:history</span>] =       <span class="ruby-identifier">rset</span>.<span class="ruby-identifier">properties</span>[<span class="ruby-value">:history</span>].<span class="ruby-identifier">clone</span>
+        
+        <span class="ruby-comment">#create a resource set</span>
+        <span class="ruby-identifier">rset_bad</span> = <span class="ruby-constant">ResourceSet</span><span class="ruby-operator">::</span><span class="ruby-identifier">new</span>()
+        <span class="ruby-identifier">rset_bad</span>.<span class="ruby-identifier">properties</span>[<span class="ruby-value">:history</span>] =        <span class="ruby-identifier">rset</span>.<span class="ruby-identifier">properties</span>[<span class="ruby-value">:history</span>].<span class="ruby-identifier">clone</span>
+        
+        <span class="ruby-identifier">rset</span>.<span class="ruby-identifier">resources</span>.<span class="ruby-identifier">each_with_index</span> <span class="ruby-keyword">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">r</span>,<span class="ruby-identifier">i</span><span class="ruby-operator">|</span>
+                <span class="ruby-keyword">if</span> <span class="ruby-identifier">i</span> <span class="ruby-operator">&lt;</span> <span class="ruby-identifier">nb_good</span>
+                        <span class="ruby-identifier">rset_good</span>.<span class="ruby-identifier">push</span>(<span class="ruby-identifier">r</span>)
+                <span class="ruby-keyword">else</span>
+                        <span class="ruby-identifier">rset_bad</span>.<span class="ruby-identifier">push</span>(<span class="ruby-identifier">r</span>)
+                <span class="ruby-keyword">end</span>
+        <span class="ruby-keyword">end</span>
+
+        <span class="ruby-identifier">r</span> = <span class="ruby-constant">Result</span>.<span class="ruby-identifier">new</span>(<span class="ruby-identifier">rset</span>)
+        <span class="ruby-identifier">r</span>.<span class="ruby-identifier">rset_good</span> = <span class="ruby-identifier">rset_good</span>
+        <span class="ruby-identifier">r</span>.<span class="ruby-identifier">rset_bad</span> = <span class="ruby-identifier">rset_bad</span>
+
+        <span class="ruby-keyword">return</span> <span class="ruby-identifier">r</span>
+<span class="ruby-keyword">end</span></pre>
+          </div><!-- ptaskfoorand-source -->
+          
+        </div>
+
+        
+
+        
+      </div><!-- ptaskfoorand-method -->
+
+    
+      <div id="method-i-setup_rb_error" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">setup_rb_error</span><span
+            class="method-args">(msg)</span>
+          <span class="method-click-advice">click to toggle source</span>
+        </div>
+        
+
+        <div class="method-description">
+          
+          
+          
+
+          
+          <div class="method-source-code" id="setup_rb_error-source">
+            <pre><span class="ruby-comment"># File setup.rb, line 39</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">setup_rb_error</span>(<span class="ruby-identifier">msg</span>)
+  <span class="ruby-identifier">raise</span> <span class="ruby-constant">SetupError</span>, <span class="ruby-identifier">msg</span>
+<span class="ruby-keyword">end</span></pre>
+          </div><!-- setup_rb_error-source -->
+          
+        </div>
+
+        
+
+        
+      </div><!-- setup_rb_error-method -->
+
+    
+      <div id="method-i-step" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">step</span><span
+            class="method-args">(name,options=nil)</span>
+          <span class="method-click-advice">click to toggle source</span>
+        </div>
+        
+
+        <div class="method-description">
+          
+          
+          
+
+          
+          <div class="method-source-code" id="step-source">
+            <pre><span class="ruby-comment"># File demo/karo/karo.rb, line 174</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">step</span>(<span class="ruby-identifier">name</span>,<span class="ruby-identifier">options</span>=<span class="ruby-keyword">nil</span>)
+        <span class="ruby-identifier">$current_karo</span>.<span class="ruby-identifier">step</span>(<span class="ruby-identifier">name</span>,<span class="ruby-identifier">options</span>)
+<span class="ruby-keyword">end</span></pre>
+          </div><!-- step-source -->
+          
+        </div>
+
+        
+
+        
+      </div><!-- step-method -->
+
+    
+      <div id="method-i-synchronize" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">synchronize</span><span
+            class="method-args">(&block)</span>
+          <span class="method-click-advice">click to toggle source</span>
+        </div>
+        
+
+        <div class="method-description">
+          
+          
+          
+
+          
+          <div class="method-source-code" id="synchronize-source">
+            <pre><span class="ruby-comment"># File lib/g5k_parallel.rb, line 62</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">synchronize</span>(&amp;<span class="ruby-identifier">block</span>)
+  <span class="ruby-ivar">@threads</span>.<span class="ruby-identifier">synchronize</span>(&amp;<span class="ruby-identifier">block</span>)
+<span class="ruby-keyword">end</span></pre>
+          </div><!-- synchronize-source -->
+          
+        </div>
+
+        
+
+        
+      </div><!-- synchronize-method -->
+
+    
+      <div id="method-i-task" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">task</span><span
+            class="method-args">(location, task)</span>
+          <span class="method-click-advice">click to toggle source</span>
+        </div>
+        
+
+        <div class="method-description">
+          
+          
+          
+
+          
+          <div class="method-source-code" id="task-source">
+            <pre><span class="ruby-comment"># File bin/expo-server.rb, line 253</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">task</span>(<span class="ruby-identifier">location</span>, <span class="ruby-identifier">task</span>)
+        <span class="ruby-identifier">action</span> = <span class="ruby-identifier">$action_list</span>.<span class="ruby-identifier">add</span>(<span class="ruby-string">'task'</span>,<span class="ruby-value">50</span>,<span class="ruby-constant">RUNNING</span>)
+  <span class="ruby-identifier">cmd</span> = <span class="ruby-string">&quot;taktuk2yaml -s&quot;</span>
+  <span class="ruby-identifier">cmd</span> <span class="ruby-operator">+=</span> <span class="ruby-identifier">$ssh_connector</span>
+  <span class="ruby-identifier">cmd</span> <span class="ruby-operator">+=</span> <span class="ruby-node">&quot; -m #{location}&quot;</span>
+  <span class="ruby-identifier">cmd</span> <span class="ruby-operator">+=</span> <span class="ruby-node">&quot; b e [ #{task} ]&quot;</span>
+  <span class="ruby-identifier">command_result</span> = <span class="ruby-identifier">$client</span>.<span class="ruby-identifier">asynchronous_command</span>(<span class="ruby-identifier">cmd</span>)
+  <span class="ruby-identifier">$client</span>.<span class="ruby-identifier">command_wait</span>(<span class="ruby-identifier">command_result</span>[<span class="ruby-string">&quot;command_number&quot;</span>],<span class="ruby-value">1</span>)
+        <span class="ruby-identifier">action</span>.<span class="ruby-identifier">progress</span> = <span class="ruby-value">100</span>
+        <span class="ruby-identifier">action</span>.<span class="ruby-identifier">state</span> = <span class="ruby-constant">TERMINATED</span>
+  <span class="ruby-keyword">return</span> <span class="ruby-identifier">make_taktuk_result</span>( <span class="ruby-identifier">command_result</span>[<span class="ruby-string">&quot;command_number&quot;</span>] )
+<span class="ruby-keyword">end</span></pre>
+          </div><!-- task-source -->
+          
+        </div>
+
+        
+
+        
+      </div><!-- task-method -->
+
+    
+      <div id="method-i-valid_deployment_key-3F" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">valid_deployment_key?</span><span
+            class="method-args">(k)</span>
+          <span class="method-click-advice">click to toggle source</span>
+        </div>
+        
+
+        <div class="method-description">
+          
+          <p>Used to filter out keys from environment hash when submitting a deployment.
+@return [Boolean] true if <code>k</code> is a valid deployment attribute.
+Otherwise false.</p>
+          
+
+          
+          <div class="method-source-code" id="valid_deployment_key-3F-source">
+            <pre><span class="ruby-comment"># File lib/g5k_api.rb, line 398</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">valid_deployment_key?</span>(<span class="ruby-identifier">k</span>)
+  [<span class="ruby-value">:key</span>, <span class="ruby-value">:environment</span>, <span class="ruby-value">:notifications</span>, <span class="ruby-value">:nodes</span>, <span class="ruby-value">:version</span>, <span class="ruby-value">:block_device</span>, <span class="ruby-value">:partition_number</span>, <span class="ruby-value">:vlan</span>, <span class="ruby-value">:reformat_tmp</span>, <span class="ruby-value">:disable_disk_partitioning</span>, <span class="ruby-value">:disable_bootloader_install</span>, <span class="ruby-value">:ignore_nodes_deploying</span>].<span class="ruby-identifier">include?</span>(<span class="ruby-identifier">k</span>)
+<span class="ruby-keyword">end</span></pre>
+          </div><!-- valid_deployment_key-3F-source -->
+          
+        </div>
+
+        
+
+        
+      </div><!-- valid_deployment_key-3F-method -->
+
+    
+      <div id="method-i-valid_job_key-3F" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">valid_job_key?</span><span
+            class="method-args">(k)</span>
+          <span class="method-click-advice">click to toggle source</span>
+        </div>
+        
+
+        <div class="method-description">
+          
+          <p>Used to filter out keys from environment hash when submitting a job.
+@return [Boolean] true if <code>k</code> is a valid deployment attribute.</p>
+          
+
+          
+          <div class="method-source-code" id="valid_job_key-3F-source">
+            <pre><span class="ruby-comment"># File lib/g5k_api.rb, line 391</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">valid_job_key?</span>(<span class="ruby-identifier">k</span>)                                                                                                                 
+  [<span class="ruby-value">:resources</span>, <span class="ruby-value">:reservation</span>, <span class="ruby-value">:command</span>, <span class="ruby-value">:directory</span>, <span class="ruby-value">:properties</span>, <span class="ruby-value">:types</span>, <span class="ruby-value">:queue</span>, <span class="ruby-value">:name</span>, <span class="ruby-value">:project</span>, <span class="ruby-value">:notifications</span>].<span class="ruby-identifier">include?</span>(<span class="ruby-identifier">k</span>)
+<span class="ruby-keyword">end</span></pre>
+          </div><!-- valid_job_key-3F-source -->
+          
+        </div>
+
+        
+
+        
+      </div><!-- valid_job_key-3F-method -->
+
+    
+      <div id="method-i-wait-21" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">wait!</span><span
+            class="method-args">()</span>
+          <span class="method-click-advice">click to toggle source</span>
+        </div>
+        
+
+        <div class="method-description">
+          
+          <p>Wait for all other threads before resuming execution of the current thread.</p>
+          
+
+          
+          <div class="method-source-code" id="wait-21-source">
+            <pre><span class="ruby-comment"># File lib/g5k_parallel.rb, line 67</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">wait!</span>
+  <span class="ruby-identifier">synchronize</span> {
+    <span class="ruby-keyword">if</span> <span class="ruby-identifier">thread</span> = <span class="ruby-ivar">@threads</span>.<span class="ruby-identifier">find</span>{<span class="ruby-operator">|</span><span class="ruby-identifier">t</span><span class="ruby-operator">|</span> <span class="ruby-identifier">t</span> <span class="ruby-operator">==</span> <span class="ruby-constant">Thread</span>.<span class="ruby-identifier">current</span>}
+      <span class="ruby-identifier">thread</span>[<span class="ruby-value">:waiting</span>] = <span class="ruby-keyword">true</span>
+      <span class="ruby-ivar">@condition</span>.<span class="ruby-identifier">wait</span>
+      <span class="ruby-identifier">thread</span>[<span class="ruby-value">:waiting</span>] = <span class="ruby-keyword">false</span>
+    <span class="ruby-keyword">end</span>
+  }
+  <span class="ruby-keyword">self</span>
+<span class="ruby-keyword">end</span></pre>
+          </div><!-- wait-21-source -->
+          
+        </div>
+
+        
+
+        
+      </div><!-- wait-21-method -->
+
+    
+      <div id="method-i-xmlrpc_server_launching" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">xmlrpc_server_launching</span><span
+            class="method-args">(port)</span>
+          <span class="method-click-advice">click to toggle source</span>
+        </div>
+        
+
+        <div class="method-description">
+          
+          
+          
+
+          
+          <div class="method-source-code" id="xmlrpc_server_launching-source">
+            <pre><span class="ruby-comment"># File bin/expo-ctrl.rb, line 182</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">xmlrpc_server_launching</span>(<span class="ruby-identifier">port</span>)
+
+        <span class="ruby-identifier">xml_servlet</span> = <span class="ruby-constant">XMLRPC</span><span class="ruby-operator">::</span><span class="ruby-constant">WEBrickServlet</span>.<span class="ruby-identifier">new</span>
+
+        <span class="ruby-identifier">xml_servlet</span>.<span class="ruby-identifier">add_handler</span>(<span class="ruby-string">&quot;hello&quot;</span>) { <span class="ruby-operator">|</span><span class="ruby-identifier">arg</span><span class="ruby-operator">|</span> <span class="ruby-identifier">hello</span>(<span class="ruby-identifier">arg</span>) }
+        <span class="ruby-identifier">xml_servlet</span>.<span class="ruby-identifier">add_handler</span>(<span class="ruby-string">&quot;launch_experiment&quot;</span>) { <span class="ruby-operator">|</span><span class="ruby-identifier">arg</span><span class="ruby-operator">|</span> <span class="ruby-identifier">launch_experiment</span>(<span class="ruby-identifier">arg</span>) }
+        <span class="ruby-identifier">xml_servlet</span>.<span class="ruby-identifier">add_handler</span>(<span class="ruby-string">&quot;load_experiment&quot;</span>) { <span class="ruby-operator">|</span><span class="ruby-identifier">arg</span><span class="ruby-operator">|</span> <span class="ruby-identifier">load_experiment</span>(<span class="ruby-identifier">arg</span>) }      
+        <span class="ruby-identifier">xml_servlet</span>.<span class="ruby-identifier">add_handler</span>(<span class="ruby-string">&quot;monitor_experiment&quot;</span>) { <span class="ruby-operator">|</span><span class="ruby-identifier">arg</span><span class="ruby-operator">|</span> <span class="ruby-identifier">monitor_experiment</span>(<span class="ruby-identifier">arg</span>) }
+
+        <span class="ruby-identifier">xml_servlet</span>.<span class="ruby-identifier">add_handler</span>(<span class="ruby-string">&quot;fifo_generic_cmd_expo&quot;</span>) { <span class="ruby-operator">|</span><span class="ruby-identifier">arg</span><span class="ruby-operator">|</span> <span class="ruby-identifier">fifo_generic_cmd_expo</span>(<span class="ruby-identifier">arg</span>) }
+
+        <span class="ruby-identifier">xml_servlet</span>.<span class="ruby-identifier">add_multicall</span> <span class="ruby-comment"># Add support for multicall</span>
+        <span class="ruby-identifier">server</span> = <span class="ruby-constant">WEBrick</span><span class="ruby-operator">::</span><span class="ruby-constant">HTTPServer</span>.<span class="ruby-identifier">new</span>(<span class="ruby-value">:Port</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-identifier">port</span>)
+        <span class="ruby-identifier">server</span>.<span class="ruby-identifier">mount</span>(<span class="ruby-string">&quot;/expo&quot;</span>, <span class="ruby-identifier">xml_servlet</span>)
+        <span class="ruby-identifier">trap</span>(<span class="ruby-string">&quot;INT&quot;</span>){ <span class="ruby-identifier">server</span>.<span class="ruby-identifier">shutdown</span> }
+        <span class="ruby-identifier">server</span>.<span class="ruby-identifier">start</span>
+<span class="ruby-keyword">end</span></pre>
+          </div><!-- xmlrpc_server_launching-source -->
+          
+        </div>
+
+        
+
+        
+      </div><!-- xmlrpc_server_launching-method -->
+
+    
+    </section><!-- public-instance-method-details -->
+  
+  </section><!-- 5Buntitled-5D -->
+
+</div><!-- documentation -->
+
+
+<footer id="validator-badges">
+  <p><a href="http://validator.w3.org/check/referer">[Validate]</a>
+  <p>Generated by <a href="https://github.com/rdoc/rdoc">RDoc</a> 3.12.
+  <p>Generated with the <a href="http://deveiate.org/projects/Darkfish-Rdoc/">Darkfish Rdoc Generator</a> 3.
+</footer>
+

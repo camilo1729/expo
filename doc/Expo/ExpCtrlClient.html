@@ -1,0 +1,2015 @@
+<!DOCTYPE html>
+
+<html>
+<head>
+<meta content="text/html; charset=UTF-8" http-equiv="Content-Type">
+
+<title>class Expo::ExpCtrlClient - RDoc Documentation</title>
+
+<link type="text/css" media="screen" href="../rdoc.css" rel="stylesheet">
+
+<script type="text/javascript">
+  var rdoc_rel_prefix = "../";
+</script>
+
+<script type="text/javascript" charset="utf-8" src="../js/jquery.js"></script>
+<script type="text/javascript" charset="utf-8" src="../js/navigation.js"></script>
+<script type="text/javascript" charset="utf-8" src="../js/search_index.js"></script>
+<script type="text/javascript" charset="utf-8" src="../js/search.js"></script>
+<script type="text/javascript" charset="utf-8" src="../js/searcher.js"></script>
+<script type="text/javascript" charset="utf-8" src="../js/darkfish.js"></script>
+
+
+<body id="top" class="class">
+<nav id="metadata">
+  <nav id="home-section" class="section">
+  <h3 class="section-header">
+    <a href="../index.html">Home</a>
+    <a href="../table_of_contents.html#classes">Classes</a>
+    <a href="../table_of_contents.html#methods">Methods</a>
+  </h3>
+</nav>
+
+
+  <nav id="search-section" class="section project-section" class="initially-hidden">
+  <form action="#" method="get" accept-charset="utf-8">
+    <h3 class="section-header">
+      <input type="text" name="search" placeholder="Search" id="search-field"
+             title="Type to search, Up and Down to navigate, Enter to load">
+    </h3>
+  </form>
+
+  <ul id="search-results" class="initially-hidden"></ul>
+</nav>
+
+
+  <div id="file-metadata">
+    <nav id="file-list-section" class="section">
+  <h3 class="section-header">Defined In</h3>
+  <ul>
+    <li>lib/expctrl/expctrl_expctrlclient.rb
+  </ul>
+</nav>
+
+    
+  </div>
+
+  <div id="class-metadata">
+    
+    <nav id="parent-class-section" class="section">
+  <h3 class="section-header">Parent</h3>
+  
+  <p class="link"><a href="../Object.html">Object</a>
+  
+</nav>
+
+    
+    <!-- Method Quickref -->
+<nav id="method-list-section" class="section">
+  <h3 class="section-header">Methods</h3>
+
+  <ul class="link-list">
+    
+    <li><a href="#method-c-new">::new</a>
+    
+    <li><a href="#method-i-all">#all</a>
+    
+    <li><a href="#method-i-asynchronous_command">#asynchronous_command</a>
+    
+    <li><a href="#method-i-bulk_command_infos">#bulk_command_infos</a>
+    
+    <li><a href="#method-i-bulk_command_results">#bulk_command_results</a>
+    
+    <li><a href="#method-i-bulk_commands">#bulk_commands</a>
+    
+    <li><a href="#method-i-close_experiment">#close_experiment</a>
+    
+    <li><a href="#method-i-command">#command</a>
+    
+    <li><a href="#method-i-command_archive">#command_archive</a>
+    
+    <li><a href="#method-i-command_delete">#command_delete</a>
+    
+    <li><a href="#method-i-command_info">#command_info</a>
+    
+    <li><a href="#method-i-command_input">#command_input</a>
+    
+    <li><a href="#method-i-command_result">#command_result</a>
+    
+    <li><a href="#method-i-command_rewind">#command_rewind</a>
+    
+    <li><a href="#method-i-command_wait">#command_wait</a>
+    
+    <li><a href="#method-i-commands">#commands</a>
+    
+    <li><a href="#method-i-delayed_command">#delayed_command</a>
+    
+    <li><a href="#method-i-delete_reservation">#delete_reservation</a>
+    
+    <li><a href="#method-i-dump_commands_memory_friendly">#dump_commands_memory_friendly</a>
+    
+    <li><a href="#method-i-dump_experiment">#dump_experiment</a>
+    
+    <li><a href="#method-i-experiment_number">#experiment_number</a>
+    
+    <li><a href="#method-i-get_command_inputs">#get_command_inputs</a>
+    
+    <li><a href="#method-i-interactive_command">#interactive_command</a>
+    
+    <li><a href="#method-i-method_missing">#method_missing</a>
+    
+    <li><a href="#method-i-new_reservation">#new_reservation</a>
+    
+    <li><a href="#method-i-nodes">#nodes</a>
+    
+    <li><a href="#method-i-open_experiment">#open_experiment</a>
+    
+    <li><a href="#method-i-open_reservation">#open_reservation</a>
+    
+    <li><a href="#method-i-recursive_command">#recursive_command</a>
+    
+    <li><a href="#method-i-reservation_info">#reservation_info</a>
+    
+    <li><a href="#method-i-reservation_job">#reservation_job</a>
+    
+    <li><a href="#method-i-reservation_jobs">#reservation_jobs</a>
+    
+    <li><a href="#method-i-reservation_resources">#reservation_resources</a>
+    
+    <li><a href="#method-i-reservation_stats">#reservation_stats</a>
+    
+    <li><a href="#method-i-reservation_wait">#reservation_wait</a>
+    
+    <li><a href="#method-i-reservations">#reservations</a>
+    
+    <li><a href="#method-i-ruby_asynchronous_command">#ruby_asynchronous_command</a>
+    
+    <li><a href="#method-i-ruby_command">#ruby_command</a>
+    
+    <li><a href="#method-i-ruby_delayed_command">#ruby_delayed_command</a>
+    
+  </ul>
+</nav>
+
+  </div>
+
+  <div id="project-metadata">
+    <nav id="fileindex-section" class="section project-section">
+  <h3 class="section-header">Pages</h3>
+
+  <ul>
+  
+    <li class="file"><a href="../COPYING.html">COPYING</a>
+  
+    <li class="file"><a href="../ChangeLog.html">ChangeLog</a>
+  
+    <li class="file"><a href="../LICENSE.html">LICENSE</a>
+  
+    <li class="file"><a href="../README.html">README</a>
+  
+    <li class="file"><a href="../Rakefile.html">Rakefile</a>
+  
+    <li class="file"><a href="../debian-pkg/debian/changelog.html">changelog</a>
+  
+    <li class="file"><a href="../debian-pkg/debian/compat.html">compat</a>
+  
+    <li class="file"><a href="../debian-pkg/debian/control.html">control</a>
+  
+    <li class="file"><a href="../debian-pkg/debian/copyright.html">copyright</a>
+  
+    <li class="file"><a href="../debian-pkg/debian/rules.html">rules</a>
+  
+    <li class="file"><a href="../demo/karo/README.html">README</a>
+  
+    <li class="file"><a href="../demo/karo/TODO.html">TODO</a>
+  
+    <li class="file"><a href="../htdocs/README.html">README</a>
+  
+    <li class="file"><a href="../htdocs/Rakefile.html">Rakefile</a>
+  
+    <li class="file"><a href="../old/trunk/gui/wx/README.html">README</a>
+  
+  </ul>
+</nav>
+
+    <nav id="classindex-section" class="section project-section">
+  <h3 class="section-header">Class and Module Index</h3>
+
+  <ul class="link-list">
+  
+    <li><a href="../Expo.html">Expo</a>
+  
+    <li><a href="../Expo/AddCommandResponse.html">Expo::AddCommandResponse</a>
+  
+    <li><a href="../Expo/AddCommandsResponse.html">Expo::AddCommandsResponse</a>
+  
+    <li><a href="../Expo/AddNodesResponse.html">Expo::AddNodesResponse</a>
+  
+    <li><a href="../Expo/AddReservationResponse.html">Expo::AddReservationResponse</a>
+  
+    <li><a href="../Expo/AsynchronousCommandResponse.html">Expo::AsynchronousCommandResponse</a>
+  
+    <li><a href="../Expo/BulkCommandInfosResponse.html">Expo::BulkCommandInfosResponse</a>
+  
+    <li><a href="../Expo/BulkCommandResultsResponse.html">Expo::BulkCommandResultsResponse</a>
+  
+    <li><a href="../Expo/BulkCommandsResponse.html">Expo::BulkCommandsResponse</a>
+  
+    <li><a href="../Expo/BulkRCtrlResponse.html">Expo::BulkRCtrlResponse</a>
+  
+    <li><a href="../Expo/CloseExperimentResponse.html">Expo::CloseExperimentResponse</a>
+  
+    <li><a href="../Expo/CommandArchiveResponse.html">Expo::CommandArchiveResponse</a>
+  
+    <li><a href="../Expo/CommandDeleteResponse.html">Expo::CommandDeleteResponse</a>
+  
+    <li><a href="../Expo/CommandInfoResponse.html">Expo::CommandInfoResponse</a>
+  
+    <li><a href="../Expo/CommandInputResponse.html">Expo::CommandInputResponse</a>
+  
+    <li><a href="../Expo/CommandResponse.html">Expo::CommandResponse</a>
+  
+    <li><a href="../Expo/CommandResultResponse.html">Expo::CommandResultResponse</a>
+  
+    <li><a href="../Expo/CommandRewindResponse.html">Expo::CommandRewindResponse</a>
+  
+    <li><a href="../Expo/CommandWaitResponse.html">Expo::CommandWaitResponse</a>
+  
+    <li><a href="../Expo/CreateExperimentResponse.html">Expo::CreateExperimentResponse</a>
+  
+    <li><a href="../Expo/DelayedCommandResponse.html">Expo::DelayedCommandResponse</a>
+  
+    <li><a href="../Expo/DelayedCommandScheduler.html">Expo::DelayedCommandScheduler</a>
+  
+    <li><a href="../Expo/DeleteCommandResponse.html">Expo::DeleteCommandResponse</a>
+  
+    <li><a href="../Expo/DeleteReservationResponse.html">Expo::DeleteReservationResponse</a>
+  
+    <li><a href="../Expo/DumpExperimentResponse.html">Expo::DumpExperimentResponse</a>
+  
+    <li><a href="../Expo/ExpCtrlClient.html">Expo::ExpCtrlClient</a>
+  
+    <li><a href="../Expo/ExpCtrlClientDrbDriver.html">Expo::ExpCtrlClientDrbDriver</a>
+  
+    <li><a href="../Expo/ExpCtrlClientNoneDriver.html">Expo::ExpCtrlClientNoneDriver</a>
+  
+    <li><a href="../Expo/ExpCtrlClientXMLRPCDriver.html">Expo::ExpCtrlClientXMLRPCDriver</a>
+  
+    <li><a href="../Expo/ExpCtrlExperiment.html">Expo::ExpCtrlExperiment</a>
+  
+    <li><a href="../Expo/ExpCtrlResponse.html">Expo::ExpCtrlResponse</a>
+  
+    <li><a href="../Expo/ExpCtrlService.html">Expo::ExpCtrlService</a>
+  
+    <li><a href="../Expo/ExperimentInfoResponse.html">Expo::ExperimentInfoResponse</a>
+  
+    <li><a href="../Expo/ExperimentNumberResponse.html">Expo::ExperimentNumberResponse</a>
+  
+    <li><a href="../Expo/GenericCommandResponse.html">Expo::GenericCommandResponse</a>
+  
+    <li><a href="../Expo/GenericTask.html">Expo::GenericTask</a>
+  
+    <li><a href="../Expo/GetAllCommandsResponse.html">Expo::GetAllCommandsResponse</a>
+  
+    <li><a href="../Expo/GetAllNodesResponse.html">Expo::GetAllNodesResponse</a>
+  
+    <li><a href="../Expo/GetAllReservationsResponse.html">Expo::GetAllReservationsResponse</a>
+  
+    <li><a href="../Expo/GetAllResponse.html">Expo::GetAllResponse</a>
+  
+    <li><a href="../Expo/GetCommandInputsResponse.html">Expo::GetCommandInputsResponse</a>
+  
+    <li><a href="../Expo/GetNodesResponse.html">Expo::GetNodesResponse</a>
+  
+    <li><a href="../Expo/Heap.html">Expo::Heap</a>
+  
+    <li><a href="../Expo/InteractiveCommandResponse.html">Expo::InteractiveCommandResponse</a>
+  
+    <li><a href="../Expo/NameSet.html">Expo::NameSet</a>
+  
+    <li><a href="../Expo/NewReservationResponse.html">Expo::NewReservationResponse</a>
+  
+    <li><a href="../Expo/Oargrid2Reservation.html">Expo::Oargrid2Reservation</a>
+  
+    <li><a href="../Expo/OargridReservation.html">Expo::OargridReservation</a>
+  
+    <li><a href="../Expo/OpenExperimentResponse.html">Expo::OpenExperimentResponse</a>
+  
+    <li><a href="../Expo/OpenReservationResponse.html">Expo::OpenReservationResponse</a>
+  
+    <li><a href="../Expo/RCtrlClient.html">Expo::RCtrlClient</a>
+  
+    <li><a href="../Expo/RCtrlClientDrbDriver.html">Expo::RCtrlClientDrbDriver</a>
+  
+    <li><a href="../Expo/RCtrlClientNoneDriver.html">Expo::RCtrlClientNoneDriver</a>
+  
+    <li><a href="../Expo/RCtrlClientXMLRPCDriver.html">Expo::RCtrlClientXMLRPCDriver</a>
+  
+    <li><a href="../Expo/RCtrlCommand.html">Expo::RCtrlCommand</a>
+  
+    <li><a href="../Expo/RCtrlResponse.html">Expo::RCtrlResponse</a>
+  
+    <li><a href="../Expo/RCtrlService.html">Expo::RCtrlService</a>
+  
+    <li><a href="../Expo/RecursiveCommandResponse.html">Expo::RecursiveCommandResponse</a>
+  
+    <li><a href="../Expo/ResCtrlClient.html">Expo::ResCtrlClient</a>
+  
+    <li><a href="../Expo/ResCtrlReservation.html">Expo::ResCtrlReservation</a>
+  
+    <li><a href="../Expo/ResCtrlResponse.html">Expo::ResCtrlResponse</a>
+  
+    <li><a href="../Expo/ResCtrlService.html">Expo::ResCtrlService</a>
+  
+    <li><a href="../Expo/ReservationInfoResponse.html">Expo::ReservationInfoResponse</a>
+  
+    <li><a href="../Expo/ReservationJobResponse.html">Expo::ReservationJobResponse</a>
+  
+    <li><a href="../Expo/ReservationJobsResponse.html">Expo::ReservationJobsResponse</a>
+  
+    <li><a href="../Expo/ReservationResourcesResponse.html">Expo::ReservationResourcesResponse</a>
+  
+    <li><a href="../Expo/ReservationStatsResponse.html">Expo::ReservationStatsResponse</a>
+  
+    <li><a href="../Expo/ReservationWaitResponse.html">Expo::ReservationWaitResponse</a>
+  
+    <li><a href="../Expo/Resource.html">Expo::Resource</a>
+  
+    <li><a href="../Expo/ResourceSet.html">Expo::ResourceSet</a>
+  
+    <li><a href="../Expo/ResourceSetIterator.html">Expo::ResourceSetIterator</a>
+  
+    <li><a href="../Expo/RubyAsynchronousCommandResponse.html">Expo::RubyAsynchronousCommandResponse</a>
+  
+    <li><a href="../Expo/RubyCommandResponse.html">Expo::RubyCommandResponse</a>
+  
+    <li><a href="../Expo/RubyDelayedCommandResponse.html">Expo::RubyDelayedCommandResponse</a>
+  
+    <li><a href="../Expo/Task.html">Expo::Task</a>
+  
+    <li><a href="../Expo/TaskSet.html">Expo::TaskSet</a>
+  
+    <li><a href="../Expo/TaskStream.html">Expo::TaskStream</a>
+  
+    <li><a href="../CmdCtrl.html">CmdCtrl</a>
+  
+    <li><a href="../CmdCtrl/Commands.html">CmdCtrl::Commands</a>
+  
+    <li><a href="../CmdCtrl/Commands/Command.html">CmdCtrl::Commands::Command</a>
+  
+    <li><a href="../CmdCtrl/Commands/CommandBufferer.html">CmdCtrl::Commands::CommandBufferer</a>
+  
+    <li><a href="../CmdCtrl/Commands/InteractiveCommand.html">CmdCtrl::Commands::InteractiveCommand</a>
+  
+    <li><a href="../CmdCtrl/ParallelRunner.html">CmdCtrl::ParallelRunner</a>
+  
+    <li><a href="../CmdCtrl/ParallelRunnerResultGroup.html">CmdCtrl::ParallelRunnerResultGroup</a>
+  
+    <li><a href="../ActionList.html">ActionList</a>
+  
+    <li><a href="../BoolItem.html">BoolItem</a>
+  
+    <li><a href="../ComposedStep.html">ComposedStep</a>
+  
+    <li><a href="../ConfigItem.html">ConfigItem</a>
+  
+    <li><a href="../ConfigTable_class.html">ConfigTable_class</a>
+  
+    <li><a href="../Enumerable.html">Enumerable</a>
+  
+    <li><a href="../ExpCtrlServer.html">ExpCtrlServer</a>
+  
+    <li><a href="../ExpCtrlServerDrbDriver.html">ExpCtrlServerDrbDriver</a>
+  
+    <li><a href="../ExpCtrlServerSoapDriver.html">ExpCtrlServerSoapDriver</a>
+  
+    <li><a href="../ExpCtrlServerXMLRPCDriver.html">ExpCtrlServerXMLRPCDriver</a>
+  
+    <li><a href="../ExpCtrlTest.html">ExpCtrlTest</a>
+  
+    <li><a href="../ExpeCtrlView.html">ExpeCtrlView</a>
+  
+    <li><a href="../ExpeView.html">ExpeView</a>
+  
+    <li><a href="../ExpoClient.html">ExpoClient</a>
+  
+    <li><a href="../ExpoGui.html">ExpoGui</a>
+  
+    <li><a href="../ExpoResult.html">ExpoResult</a>
+  
+    <li><a href="../ExpoUiApp.html">ExpoUiApp</a>
+  
+    <li><a href="../FifoExpoClient.html">FifoExpoClient</a>
+  
+    <li><a href="../FifoExpoServer.html">FifoExpoServer</a>
+  
+    <li><a href="../File.html">File</a>
+  
+    <li><a href="../FileOperations.html">FileOperations</a>
+  
+    <li><a href="../HeapTest.html">HeapTest</a>
+  
+    <li><a href="../History.html">History</a>
+  
+    <li><a href="../HookScriptAPI.html">HookScriptAPI</a>
+  
+    <li><a href="../HookUtils.html">HookUtils</a>
+  
+    <li><a href="../Installer.html">Installer</a>
+  
+    <li><a href="../Karo.html">Karo</a>
+  
+    <li><a href="../Logger.html">Logger</a>
+  
+    <li><a href="../MetaConfigAPI.html">MetaConfigAPI</a>
+  
+    <li><a href="../Object.html">Object</a>
+  
+    <li><a href="../PackageSelectionItem.html">PackageSelectionItem</a>
+  
+    <li><a href="../Parallel.html">Parallel</a>
+  
+    <li><a href="../ParallelSection.html">ParallelSection</a>
+  
+    <li><a href="../PathItem.html">PathItem</a>
+  
+    <li><a href="../ProgramItem.html">ProgramItem</a>
+  
+    <li><a href="../RCtrlServer.html">RCtrlServer</a>
+  
+    <li><a href="../RCtrlServerDrbDriver.html">RCtrlServerDrbDriver</a>
+  
+    <li><a href="../RCtrlServerSoapDriver.html">RCtrlServerSoapDriver</a>
+  
+    <li><a href="../RCtrlServerXMLRPCDriver.html">RCtrlServerXMLRPCDriver</a>
+  
+    <li><a href="../RCtrlTest.html">RCtrlTest</a>
+  
+    <li><a href="../ResCtrlServer.html">ResCtrlServer</a>
+  
+    <li><a href="../ResCtrlServerDrbDriver.html">ResCtrlServerDrbDriver</a>
+  
+    <li><a href="../ResCtrlServerSoapDriver.html">ResCtrlServerSoapDriver</a>
+  
+    <li><a href="../ResCtrlServerXMLRPCDriver.html">ResCtrlServerXMLRPCDriver</a>
+  
+    <li><a href="../ResCtrlTest.html">ResCtrlTest</a>
+  
+    <li><a href="../ResourceSetTest.html">ResourceSetTest</a>
+  
+    <li><a href="../Result.html">Result</a>
+  
+    <li><a href="../SelectItem.html">SelectItem</a>
+  
+    <li><a href="../SetupError.html">SetupError</a>
+  
+    <li><a href="../Step.html">Step</a>
+  
+    <li><a href="../Steps.html">Steps</a>
+  
+    <li><a href="../TaktukWrapper.html">TaktukWrapper</a>
+  
+    <li><a href="../TaskResult.html">TaskResult</a>
+  
+    <li><a href="../TestReservation.html">TestReservation</a>
+  
+    <li><a href="../ThreadsCounter.html">ThreadsCounter</a>
+  
+    <li><a href="../ToplevelInstaller.html">ToplevelInstaller</a>
+  
+    <li><a href="../ToplevelInstallerMulti.html">ToplevelInstallerMulti</a>
+  
+    <li><a href="../Utils.html">Utils</a>
+  
+    <li><a href="../WxExpeProgram.html">WxExpeProgram</a>
+  
+    <li><a href="../WxTaskList.html">WxTaskList</a>
+  
+    <li><a href="../YAMLTreeView.html">YAMLTreeView</a>
+  
+    <li><a href="../YAMLTreeViewWindow.html">YAMLTreeViewWindow</a>
+  
+  </ul>
+</nav>
+
+  </div>
+</nav>
+
+<div id="documentation">
+  <h1 class="class">class Expo::ExpCtrlClient</h1>
+
+  <div id="description" class="description">
+    
+  </div><!-- description -->
+
+  
+  
+  
+  <section id="5Buntitled-5D" class="documentation-section">
+    
+
+    
+
+    
+
+    
+
+    <!-- Methods -->
+    
+     <section id="public-class-5Buntitled-5D-method-details" class="method-section section">
+      <h3 class="section-header">Public Class Methods</h3>
+
+    
+      <div id="method-c-new" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">new</span><span
+            class="method-args">(server=nil)</span>
+          <span class="method-click-advice">click to toggle source</span>
+        </div>
+        
+
+        <div class="method-description">
+          
+          
+          
+
+          
+          <div class="method-source-code" id="new-source">
+            <pre><span class="ruby-comment"># File lib/expctrl/expctrl_expctrlclient.rb, line 58</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">initialize</span>(<span class="ruby-identifier">server</span>=<span class="ruby-keyword">nil</span>)
+        <span class="ruby-ivar">@expctrl_client</span> = <span class="ruby-keyword">nil</span>
+        
+        <span class="ruby-keyword">if</span> <span class="ruby-operator">!</span>(<span class="ruby-identifier">server</span><span class="ruby-operator">=~</span> <span class="ruby-regexp">%r^http:\/\/|^druby:\/\//</span>)
+                <span class="ruby-identifier">server</span> = <span class="ruby-string">&quot;druby://&quot;</span> <span class="ruby-operator">+</span> <span class="ruby-identifier">server</span> <span class="ruby-keyword">if</span>      <span class="ruby-identifier">$RMI</span> <span class="ruby-operator">==</span> <span class="ruby-string">'drb'</span>
+                <span class="ruby-identifier">server</span> = <span class="ruby-string">&quot;http://&quot;</span> <span class="ruby-operator">+</span> <span class="ruby-identifier">server</span> <span class="ruby-keyword">if</span>       <span class="ruby-identifier">$RMI</span> <span class="ruby-operator">==</span> <span class="ruby-string">'soap'</span>
+        <span class="ruby-keyword">end</span>
+
+        <span class="ruby-keyword">if</span> <span class="ruby-identifier">$RMI</span> <span class="ruby-operator">==</span> <span class="ruby-string">'soap'</span>
+                <span class="ruby-identifier">require</span> <span class="ruby-string">'soap/rpc/driver'</span>
+                <span class="ruby-ivar">@expctrl_client</span> = <span class="ruby-constant">SOAP</span><span class="ruby-operator">::</span><span class="ruby-constant">RPC</span><span class="ruby-operator">::</span><span class="ruby-constant">Driver</span><span class="ruby-operator">::</span><span class="ruby-identifier">new</span>(<span class="ruby-identifier">server</span>,<span class="ruby-constant">NS</span>)
+                <span class="ruby-identifier">$RMI_COMMANDS_EXPCTRL</span>.<span class="ruby-identifier">each</span> {<span class="ruby-operator">|</span><span class="ruby-identifier">command</span><span class="ruby-operator">|</span> <span class="ruby-ivar">@expctrl_client</span>.<span class="ruby-identifier">add_method</span>(*<span class="ruby-identifier">command</span>)}
+        <span class="ruby-keyword">elsif</span> <span class="ruby-identifier">$RMI</span> <span class="ruby-operator">==</span> <span class="ruby-string">'xmlrpc'</span>
+                <span class="ruby-identifier">expctrl_client_driver</span> =<span class="ruby-string">&quot;ExpCtrlClientXMLRPCDriver&quot;</span>
+        <span class="ruby-keyword">elsif</span> <span class="ruby-identifier">$RMI</span> <span class="ruby-operator">==</span> <span class="ruby-string">'none'</span>
+                <span class="ruby-identifier">expctrl_client_driver</span> =<span class="ruby-string">&quot;ExpCtrlClientNoneDriver&quot;</span>
+        <span class="ruby-keyword">else</span>
+                <span class="ruby-identifier">$RMI</span> = <span class="ruby-string">'drb'</span>
+                <span class="ruby-identifier">expctrl_client_driver</span> =<span class="ruby-string">&quot;ExpCtrlClientDrbDriver&quot;</span>
+        <span class="ruby-keyword">end</span> 
+
+        <span class="ruby-identifier">eval</span> <span class="ruby-node">&quot;@expctrl_client = #{expctrl_client_driver}.new(server)&quot;</span> <span class="ruby-keyword">if</span> <span class="ruby-keyword">not</span> <span class="ruby-ivar">@expctrl_client</span>
+
+        <span class="ruby-identifier">connect</span> = <span class="ruby-keyword">false</span>
+<span class="ruby-identifier">i</span> = <span class="ruby-value">1</span>
+
+        <span class="ruby-keyword">while</span> <span class="ruby-operator">!</span><span class="ruby-identifier">connect</span> <span class="ruby-keyword">and</span> <span class="ruby-identifier">$POLLING</span>
+                <span class="ruby-keyword">begin</span>
+                        <span class="ruby-identifier">response</span> =<span class="ruby-ivar">@expctrl_client</span>.<span class="ruby-identifier">ruby_command</span>(<span class="ruby-string">&quot;puts 'hello'&quot;</span>)
+                        <span class="ruby-identifier">connect</span> = <span class="ruby-keyword">true</span>
+                <span class="ruby-keyword">rescue</span>
+                        <span class="ruby-identifier">puts</span> <span class="ruby-identifier">$!</span>
+                        <span class="ruby-identifier">puts</span> <span class="ruby-node">&quot;Can't connect to Server, wait #{i} sec. before retry:&quot;</span> <span class="ruby-operator">+</span> <span class="ruby-identifier">$!</span>
+                        <span class="ruby-identifier">sleep</span> <span class="ruby-identifier">i</span>
+                        <span class="ruby-identifier">i</span> = <span class="ruby-value">2</span> * <span class="ruby-identifier">i</span>
+                        <span class="ruby-identifier">raise</span> <span class="ruby-string">&quot;Connection to Server Error: &quot;</span> <span class="ruby-operator">+</span> <span class="ruby-identifier">$!</span>  <span class="ruby-keyword">if</span> <span class="ruby-identifier">i</span> <span class="ruby-operator">&gt;</span> <span class="ruby-value">60</span>
+                <span class="ruby-keyword">end</span>
+        <span class="ruby-keyword">end</span>
+        <span class="ruby-keyword">if</span> <span class="ruby-identifier">$RMI</span> <span class="ruby-operator">==</span> <span class="ruby-string">'none'</span>
+                <span class="ruby-ivar">@client</span> = <span class="ruby-ivar">@expctrl_client</span>
+        <span class="ruby-keyword">else</span>
+                <span class="ruby-ivar">@client</span> = <span class="ruby-constant">ResCtrlClient</span><span class="ruby-operator">::</span><span class="ruby-identifier">new</span>(<span class="ruby-identifier">server</span>)
+        <span class="ruby-keyword">end</span>
+        <span class="ruby-ivar">@experiment_number</span> = <span class="ruby-keyword">nil</span>
+        <span class="ruby-ivar">@commands_mutex</span> = <span class="ruby-constant">Mutex</span><span class="ruby-operator">::</span><span class="ruby-identifier">new</span>
+        <span class="ruby-ivar">@commands</span> = <span class="ruby-constant">Array</span><span class="ruby-operator">::</span><span class="ruby-identifier">new</span>
+        <span class="ruby-ivar">@reservations_mutex</span> = <span class="ruby-constant">Mutex</span><span class="ruby-operator">::</span><span class="ruby-identifier">new</span>
+        <span class="ruby-ivar">@reservations</span> = <span class="ruby-constant">Array</span><span class="ruby-operator">::</span><span class="ruby-identifier">new</span>
+        <span class="ruby-ivar">@nodes_mutex</span> = <span class="ruby-constant">Mutex</span><span class="ruby-operator">::</span><span class="ruby-identifier">new</span>
+        <span class="ruby-ivar">@nodes</span> = <span class="ruby-constant">Hash</span><span class="ruby-operator">::</span><span class="ruby-identifier">new</span>
+<span class="ruby-keyword">end</span></pre>
+          </div><!-- new-source -->
+          
+        </div>
+
+        
+
+        
+      </div><!-- new-method -->
+
+    
+    </section><!-- public-class-method-details -->
+  
+     <section id="public-instance-5Buntitled-5D-method-details" class="method-section section">
+      <h3 class="section-header">Public Instance Methods</h3>
+
+    
+      <div id="method-i-all" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">all</span><span
+            class="method-args">()</span>
+          <span class="method-click-advice">click to toggle source</span>
+        </div>
+        
+
+        <div class="method-description">
+          
+          
+          
+
+          
+          <div class="method-source-code" id="all-source">
+            <pre><span class="ruby-comment"># File lib/expctrl/expctrl_expctrlclient.rb, line 399</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">all</span>
+  <span class="ruby-identifier">response</span> = <span class="ruby-identifier">reservations</span>
+  <span class="ruby-identifier">r</span> = <span class="ruby-identifier">response</span>[<span class="ruby-string">&quot;reservations&quot;</span>]
+  <span class="ruby-identifier">response</span> = <span class="ruby-identifier">commands</span>
+  <span class="ruby-identifier">c</span> = <span class="ruby-identifier">response</span>[<span class="ruby-string">&quot;commands&quot;</span>]
+  <span class="ruby-identifier">response</span> = <span class="ruby-identifier">nodes</span>
+  <span class="ruby-identifier">n</span> = <span class="ruby-identifier">response</span>[<span class="ruby-string">&quot;nodes&quot;</span>]
+  <span class="ruby-identifier">create_time</span> = <span class="ruby-keyword">nil</span>
+  <span class="ruby-identifier">h</span> = <span class="ruby-keyword">nil</span>
+  <span class="ruby-identifier">info</span> = <span class="ruby-keyword">nil</span>
+  <span class="ruby-keyword">if</span> <span class="ruby-ivar">@experiment_number</span> <span class="ruby-keyword">then</span>
+    <span class="ruby-identifier">response</span> = <span class="ruby-identifier">experiment_info</span>( <span class="ruby-ivar">@experiment_number</span> )
+    <span class="ruby-identifier">info</span> = <span class="ruby-identifier">response</span>.<span class="ruby-identifier">result</span>
+  <span class="ruby-keyword">end</span>
+  <span class="ruby-identifier">response</span> = <span class="ruby-constant">GetAllResponse</span><span class="ruby-operator">::</span><span class="ruby-identifier">new</span>
+  <span class="ruby-identifier">response</span>.<span class="ruby-identifier">result</span> = { <span class="ruby-string">&quot;nodes&quot;</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-identifier">n</span>, <span class="ruby-string">&quot;commands&quot;</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-identifier">c</span>, <span class="ruby-string">&quot;reservations&quot;</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-identifier">r</span> , <span class="ruby-string">&quot;experiment_info&quot;</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-identifier">info</span>  }
+  <span class="ruby-keyword">return</span> <span class="ruby-identifier">response</span>
+<span class="ruby-keyword">end</span></pre>
+          </div><!-- all-source -->
+          
+        </div>
+
+        
+
+        
+      </div><!-- all-method -->
+
+    
+      <div id="method-i-asynchronous_command" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">asynchronous_command</span><span
+            class="method-args">( command_line )</span>
+          <span class="method-click-advice">click to toggle source</span>
+        </div>
+        
+
+        <div class="method-description">
+          
+          
+          
+
+          
+          <div class="method-source-code" id="asynchronous_command-source">
+            <pre><span class="ruby-comment"># File lib/expctrl/expctrl_expctrlclient.rb, line 261</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">asynchronous_command</span>( <span class="ruby-identifier">command_line</span> )
+  <span class="ruby-identifier">response</span> = <span class="ruby-ivar">@client</span>.<span class="ruby-identifier">asynchronous_command</span>( <span class="ruby-identifier">command_line</span> )
+  <span class="ruby-keyword">if</span> <span class="ruby-ivar">@experiment_number</span> <span class="ruby-keyword">then</span>
+    <span class="ruby-identifier">add_command</span>( <span class="ruby-ivar">@experiment_number</span>, <span class="ruby-identifier">response</span>[<span class="ruby-string">&quot;command_number&quot;</span>] )
+  <span class="ruby-keyword">else</span>
+    <span class="ruby-ivar">@commands_mutex</span>.<span class="ruby-identifier">synchronize</span> { <span class="ruby-ivar">@commands</span>.<span class="ruby-identifier">push</span>( <span class="ruby-identifier">response</span>[<span class="ruby-string">&quot;command_number&quot;</span>] ) }
+  <span class="ruby-keyword">end</span>
+  <span class="ruby-keyword">return</span> <span class="ruby-identifier">response</span>
+<span class="ruby-keyword">end</span></pre>
+          </div><!-- asynchronous_command-source -->
+          
+        </div>
+
+        
+
+        
+      </div><!-- asynchronous_command-method -->
+
+    
+      <div id="method-i-bulk_command_infos" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">bulk_command_infos</span><span
+            class="method-args">(command_numbers)</span>
+          <span class="method-click-advice">click to toggle source</span>
+        </div>
+        
+
+        <div class="method-description">
+          
+          
+          
+
+          
+          <div class="method-source-code" id="bulk_command_infos-source">
+            <pre><span class="ruby-comment"># File lib/expctrl/expctrl_expctrlclient.rb, line 152</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">bulk_command_infos</span>(<span class="ruby-identifier">command_numbers</span>)
+  <span class="ruby-keyword">return</span> <span class="ruby-ivar">@client</span>.<span class="ruby-identifier">bulk_command_infos</span>(<span class="ruby-identifier">command_numbers</span>)
+<span class="ruby-keyword">end</span></pre>
+          </div><!-- bulk_command_infos-source -->
+          
+        </div>
+
+        
+
+        
+      </div><!-- bulk_command_infos-method -->
+
+    
+      <div id="method-i-bulk_command_results" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">bulk_command_results</span><span
+            class="method-args">(command_numbers)</span>
+          <span class="method-click-advice">click to toggle source</span>
+        </div>
+        
+
+        <div class="method-description">
+          
+          
+          
+
+          
+          <div class="method-source-code" id="bulk_command_results-source">
+            <pre><span class="ruby-comment"># File lib/expctrl/expctrl_expctrlclient.rb, line 164</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">bulk_command_results</span>(<span class="ruby-identifier">command_numbers</span>)
+  <span class="ruby-keyword">return</span> <span class="ruby-ivar">@client</span>.<span class="ruby-identifier">bulk_command_results</span>(<span class="ruby-identifier">command_numbers</span>)
+<span class="ruby-keyword">end</span></pre>
+          </div><!-- bulk_command_results-source -->
+          
+        </div>
+
+        
+
+        
+      </div><!-- bulk_command_results-method -->
+
+    
+      <div id="method-i-bulk_commands" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">bulk_commands</span><span
+            class="method-args">( commands )</span>
+          <span class="method-click-advice">click to toggle source</span>
+        </div>
+        
+
+        <div class="method-description">
+          
+          
+          
+
+          
+          <div class="method-source-code" id="bulk_commands-source">
+            <pre><span class="ruby-comment"># File lib/expctrl/expctrl_expctrlclient.rb, line 271</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">bulk_commands</span>( <span class="ruby-identifier">commands</span> )
+  <span class="ruby-identifier">response</span> = <span class="ruby-ivar">@client</span>.<span class="ruby-identifier">bulk_commands</span>( <span class="ruby-identifier">commands</span> )
+  <span class="ruby-keyword">if</span> <span class="ruby-ivar">@experiment_number</span> <span class="ruby-keyword">then</span>
+    <span class="ruby-identifier">command_numbers</span> = <span class="ruby-constant">Array</span><span class="ruby-operator">::</span><span class="ruby-identifier">new</span>
+    <span class="ruby-identifier">response</span>.<span class="ruby-identifier">each_value</span> { <span class="ruby-operator">|</span><span class="ruby-identifier">r</span><span class="ruby-operator">|</span>
+      <span class="ruby-identifier">command_numbers</span>.<span class="ruby-identifier">push</span>(<span class="ruby-identifier">r</span>[<span class="ruby-string">&quot;command_number&quot;</span>])
+    }
+    <span class="ruby-identifier">add_commands</span>( <span class="ruby-ivar">@experiment_number</span>, <span class="ruby-identifier">command_numbers</span>)
+  <span class="ruby-keyword">else</span>
+    <span class="ruby-ivar">@commands_mutex</span>.<span class="ruby-identifier">synchronize</span> { 
+      <span class="ruby-identifier">response</span>.<span class="ruby-identifier">each_value</span> { <span class="ruby-operator">|</span><span class="ruby-identifier">r</span><span class="ruby-operator">|</span>
+        <span class="ruby-ivar">@commands</span>.<span class="ruby-identifier">push</span>( <span class="ruby-identifier">r</span>[<span class="ruby-string">&quot;command_number&quot;</span>] ) 
+      }
+    }
+  <span class="ruby-keyword">end</span>
+  <span class="ruby-keyword">return</span> <span class="ruby-identifier">response</span>
+<span class="ruby-keyword">end</span></pre>
+          </div><!-- bulk_commands-source -->
+          
+        </div>
+
+        
+
+        
+      </div><!-- bulk_commands-method -->
+
+    
+      <div id="method-i-close_experiment" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">close_experiment</span><span
+            class="method-args">()</span>
+          <span class="method-click-advice">click to toggle source</span>
+        </div>
+        
+
+        <div class="method-description">
+          
+          
+          
+
+          
+          <div class="method-source-code" id="close_experiment-source">
+            <pre><span class="ruby-comment"># File lib/expctrl/expctrl_expctrlclient.rb, line 473</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">close_experiment</span>
+  <span class="ruby-ivar">@experiment_number</span> = <span class="ruby-keyword">nil</span>
+  <span class="ruby-keyword">return</span> <span class="ruby-constant">CloseExperimentResponse</span><span class="ruby-operator">::</span><span class="ruby-identifier">new</span>
+<span class="ruby-keyword">end</span></pre>
+          </div><!-- close_experiment-source -->
+          
+        </div>
+
+        
+
+        
+      </div><!-- close_experiment-method -->
+
+    
+      <div id="method-i-command" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">command</span><span
+            class="method-args">( command_line )</span>
+          <span class="method-click-advice">click to toggle source</span>
+        </div>
+        
+
+        <div class="method-description">
+          
+          
+          
+
+          
+          <div class="method-source-code" id="command-source">
+            <pre><span class="ruby-comment"># File lib/expctrl/expctrl_expctrlclient.rb, line 241</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">command</span>( <span class="ruby-identifier">command_line</span> )
+  <span class="ruby-identifier">response</span> = <span class="ruby-ivar">@client</span>.<span class="ruby-identifier">command</span>( <span class="ruby-identifier">command_line</span> )
+  <span class="ruby-keyword">if</span> <span class="ruby-ivar">@experiment_number</span> <span class="ruby-keyword">then</span>
+    <span class="ruby-identifier">add_command</span>( <span class="ruby-ivar">@experiment_number</span>, <span class="ruby-identifier">response</span>[<span class="ruby-string">&quot;command_number&quot;</span>] )
+  <span class="ruby-keyword">else</span>
+    <span class="ruby-ivar">@commands_mutex</span>.<span class="ruby-identifier">synchronize</span> { <span class="ruby-ivar">@commands</span>.<span class="ruby-identifier">push</span>( <span class="ruby-identifier">response</span>[<span class="ruby-string">&quot;command_number&quot;</span>] ) }
+  <span class="ruby-keyword">end</span>
+  <span class="ruby-keyword">return</span> <span class="ruby-identifier">response</span>
+<span class="ruby-keyword">end</span></pre>
+          </div><!-- command-source -->
+          
+        </div>
+
+        
+
+        
+      </div><!-- command-method -->
+
+    
+      <div id="method-i-command_archive" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">command_archive</span><span
+            class="method-args">(command_number)</span>
+          <span class="method-click-advice">click to toggle source</span>
+        </div>
+        
+
+        <div class="method-description">
+          
+          
+          
+
+          
+          <div class="method-source-code" id="command_archive-source">
+            <pre><span class="ruby-comment"># File lib/expctrl/expctrl_expctrlclient.rb, line 144</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">command_archive</span>(<span class="ruby-identifier">command_number</span>)
+  <span class="ruby-keyword">return</span> <span class="ruby-ivar">@client</span>.<span class="ruby-identifier">command_archive</span>(<span class="ruby-identifier">command_number</span>)
+<span class="ruby-keyword">end</span></pre>
+          </div><!-- command_archive-source -->
+          
+        </div>
+
+        
+
+        
+      </div><!-- command_archive-method -->
+
+    
+      <div id="method-i-command_delete" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">command_delete</span><span
+            class="method-args">(command_number)</span>
+          <span class="method-click-advice">click to toggle source</span>
+        </div>
+        
+
+        <div class="method-description">
+          
+          
+          
+
+          
+          <div class="method-source-code" id="command_delete-source">
+            <pre><span class="ruby-comment"># File lib/expctrl/expctrl_expctrlclient.rb, line 251</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">command_delete</span>(<span class="ruby-identifier">command_number</span>)
+  <span class="ruby-identifier">response</span> = <span class="ruby-ivar">@client</span>.<span class="ruby-identifier">command_delete</span>(<span class="ruby-identifier">command_number</span>)
+  <span class="ruby-keyword">if</span> <span class="ruby-ivar">@experiment_number</span> <span class="ruby-keyword">then</span>
+    <span class="ruby-identifier">delete_command</span>( <span class="ruby-ivar">@experiment_number</span>, <span class="ruby-identifier">command_number</span> )
+  <span class="ruby-keyword">else</span>
+    <span class="ruby-ivar">@commands_mutex</span>.<span class="ruby-identifier">synchronize</span> { <span class="ruby-ivar">@commands</span>.<span class="ruby-identifier">delete</span>(<span class="ruby-identifier">command_number</span>) }
+  <span class="ruby-keyword">end</span>
+  <span class="ruby-keyword">return</span> <span class="ruby-identifier">response</span>
+<span class="ruby-keyword">end</span></pre>
+          </div><!-- command_delete-source -->
+          
+        </div>
+
+        
+
+        
+      </div><!-- command_delete-method -->
+
+    
+      <div id="method-i-command_info" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">command_info</span><span
+            class="method-args">(command_number)</span>
+          <span class="method-click-advice">click to toggle source</span>
+        </div>
+        
+
+        <div class="method-description">
+          
+          
+          
+
+          
+          <div class="method-source-code" id="command_info-source">
+            <pre><span class="ruby-comment"># File lib/expctrl/expctrl_expctrlclient.rb, line 148</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">command_info</span>(<span class="ruby-identifier">command_number</span>)
+  <span class="ruby-keyword">return</span> <span class="ruby-ivar">@client</span>.<span class="ruby-identifier">command_info</span>(<span class="ruby-identifier">command_number</span>)
+<span class="ruby-keyword">end</span></pre>
+          </div><!-- command_info-source -->
+          
+        </div>
+
+        
+
+        
+      </div><!-- command_info-method -->
+
+    
+      <div id="method-i-command_input" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">command_input</span><span
+            class="method-args">(command_number,input)</span>
+          <span class="method-click-advice">click to toggle source</span>
+        </div>
+        
+
+        <div class="method-description">
+          
+          
+          
+
+          
+          <div class="method-source-code" id="command_input-source">
+            <pre><span class="ruby-comment"># File lib/expctrl/expctrl_expctrlclient.rb, line 156</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">command_input</span>(<span class="ruby-identifier">command_number</span>,<span class="ruby-identifier">input</span>)
+  <span class="ruby-keyword">return</span> <span class="ruby-ivar">@client</span>.<span class="ruby-identifier">command_input</span>(<span class="ruby-identifier">command_number</span>,<span class="ruby-identifier">input</span>)
+<span class="ruby-keyword">end</span></pre>
+          </div><!-- command_input-source -->
+          
+        </div>
+
+        
+
+        
+      </div><!-- command_input-method -->
+
+    
+      <div id="method-i-command_result" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">command_result</span><span
+            class="method-args">(command_number)</span>
+          <span class="method-click-advice">click to toggle source</span>
+        </div>
+        
+
+        <div class="method-description">
+          
+          
+          
+
+          
+          <div class="method-source-code" id="command_result-source">
+            <pre><span class="ruby-comment"># File lib/expctrl/expctrl_expctrlclient.rb, line 160</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">command_result</span>(<span class="ruby-identifier">command_number</span>)
+  <span class="ruby-keyword">return</span> <span class="ruby-ivar">@client</span>.<span class="ruby-identifier">command_result</span>(<span class="ruby-identifier">command_number</span>)
+<span class="ruby-keyword">end</span></pre>
+          </div><!-- command_result-source -->
+          
+        </div>
+
+        
+
+        
+      </div><!-- command_result-method -->
+
+    
+      <div id="method-i-command_rewind" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">command_rewind</span><span
+            class="method-args">(command_number)</span>
+          <span class="method-click-advice">click to toggle source</span>
+        </div>
+        
+
+        <div class="method-description">
+          
+          
+          
+
+          
+          <div class="method-source-code" id="command_rewind-source">
+            <pre><span class="ruby-comment"># File lib/expctrl/expctrl_expctrlclient.rb, line 172</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">command_rewind</span>(<span class="ruby-identifier">command_number</span>)
+  <span class="ruby-keyword">return</span> <span class="ruby-ivar">@client</span>.<span class="ruby-identifier">command_rewind</span>(<span class="ruby-identifier">command_number</span>)
+<span class="ruby-keyword">end</span></pre>
+          </div><!-- command_rewind-source -->
+          
+        </div>
+
+        
+
+        
+      </div><!-- command_rewind-method -->
+
+    
+      <div id="method-i-command_wait" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">command_wait</span><span
+            class="method-args">(command_number, polling_time = 10, delay = 0, &block)</span>
+          <span class="method-click-advice">click to toggle source</span>
+        </div>
+        
+
+        <div class="method-description">
+          
+          
+          
+
+          
+          <div class="method-source-code" id="command_wait-source">
+            <pre><span class="ruby-comment"># File lib/expctrl/expctrl_expctrlclient.rb, line 477</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">command_wait</span>(<span class="ruby-identifier">command_number</span>, <span class="ruby-identifier">polling_time</span> = <span class="ruby-value">10</span>, <span class="ruby-identifier">delay</span> = <span class="ruby-value">0</span>, &amp;<span class="ruby-identifier">block</span>)
+
+        <span class="ruby-identifier">raise</span> <span class="ruby-string">&quot;Polling_time cannot be 0&quot;</span> <span class="ruby-keyword">if</span> <span class="ruby-identifier">polling_time</span> <span class="ruby-operator">==</span> <span class="ruby-value">0</span>
+        <span class="ruby-identifier">response</span> = <span class="ruby-identifier">command_info</span>(<span class="ruby-identifier">command_number</span>)
+        <span class="ruby-identifier">info</span> = <span class="ruby-identifier">response</span>.<span class="ruby-identifier">result</span>
+        <span class="ruby-identifier">response</span> = <span class="ruby-constant">CommandWaitResponse</span><span class="ruby-operator">::</span><span class="ruby-identifier">new</span>
+        <span class="ruby-keyword">if</span> <span class="ruby-identifier">block</span>
+              <span class="ruby-identifier">t</span> = <span class="ruby-constant">Thread</span><span class="ruby-operator">::</span><span class="ruby-identifier">new</span> {
+                        <span class="ruby-identifier">info</span> = <span class="ruby-identifier">internal_command_wait</span>(<span class="ruby-identifier">command_number</span>, <span class="ruby-identifier">delay</span>, <span class="ruby-identifier">polling_time</span>, <span class="ruby-identifier">info</span>)
+                        <span class="ruby-identifier">block</span>.<span class="ruby-identifier">call</span>(<span class="ruby-identifier">info</span>)
+             }
+                <span class="ruby-identifier">response</span>.<span class="ruby-identifier">result</span> = <span class="ruby-identifier">info</span>
+                <span class="ruby-keyword">return</span> <span class="ruby-identifier">response</span>
+        <span class="ruby-keyword">else</span>
+             <span class="ruby-identifier">response</span>.<span class="ruby-identifier">result</span> = <span class="ruby-identifier">internal_command_wait</span>(<span class="ruby-identifier">command_number</span>, <span class="ruby-identifier">delay</span>, <span class="ruby-identifier">polling_time</span>, <span class="ruby-identifier">info</span>)
+                <span class="ruby-keyword">return</span> <span class="ruby-identifier">response</span>
+        <span class="ruby-keyword">end</span>
+<span class="ruby-keyword">end</span></pre>
+          </div><!-- command_wait-source -->
+          
+        </div>
+
+        
+
+        
+      </div><!-- command_wait-method -->
+
+    
+      <div id="method-i-commands" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">commands</span><span
+            class="method-args">()</span>
+          <span class="method-click-advice">click to toggle source</span>
+        </div>
+        
+
+        <div class="method-description">
+          
+          
+          
+
+          
+          <div class="method-source-code" id="commands-source">
+            <pre><span class="ruby-comment"># File lib/expctrl/expctrl_expctrlclient.rb, line 379</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">commands</span>
+  <span class="ruby-keyword">if</span> <span class="ruby-ivar">@experiment_number</span> <span class="ruby-keyword">then</span>
+    <span class="ruby-identifier">response</span> = <span class="ruby-identifier">get_all_commands</span>( <span class="ruby-ivar">@experiment_number</span> )
+  <span class="ruby-keyword">else</span>
+    <span class="ruby-identifier">response</span> = <span class="ruby-constant">GetAllCommandsResponse</span><span class="ruby-operator">::</span><span class="ruby-identifier">new</span>
+    <span class="ruby-ivar">@commands_mutex</span>.<span class="ruby-identifier">synchronize</span> { <span class="ruby-identifier">response</span>[<span class="ruby-string">&quot;commands&quot;</span>] = <span class="ruby-constant">Array</span><span class="ruby-operator">::</span><span class="ruby-identifier">new</span>( <span class="ruby-ivar">@commands</span> ) }
+  <span class="ruby-keyword">end</span>
+  <span class="ruby-keyword">return</span> <span class="ruby-identifier">response</span>
+<span class="ruby-keyword">end</span></pre>
+          </div><!-- commands-source -->
+          
+        </div>
+
+        
+
+        
+      </div><!-- commands-method -->
+
+    
+      <div id="method-i-delayed_command" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">delayed_command</span><span
+            class="method-args">( command_line, date )</span>
+          <span class="method-click-advice">click to toggle source</span>
+        </div>
+        
+
+        <div class="method-description">
+          
+          
+          
+
+          
+          <div class="method-source-code" id="delayed_command-source">
+            <pre><span class="ruby-comment"># File lib/expctrl/expctrl_expctrlclient.rb, line 299</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">delayed_command</span>( <span class="ruby-identifier">command_line</span>, <span class="ruby-identifier">date</span> )
+  <span class="ruby-identifier">response</span> = <span class="ruby-ivar">@client</span>.<span class="ruby-identifier">delayed_command</span>( <span class="ruby-identifier">command_line</span>, <span class="ruby-identifier">date</span> )
+  <span class="ruby-keyword">if</span> <span class="ruby-ivar">@experiment_number</span> <span class="ruby-keyword">then</span>
+    <span class="ruby-identifier">add_command</span>( <span class="ruby-ivar">@experiment_number</span>, <span class="ruby-identifier">response</span>[<span class="ruby-string">&quot;command_number&quot;</span>] )
+  <span class="ruby-keyword">else</span>
+    <span class="ruby-ivar">@commands_mutex</span>.<span class="ruby-identifier">synchronize</span> { <span class="ruby-ivar">@commands</span>.<span class="ruby-identifier">push</span>( <span class="ruby-identifier">response</span>[<span class="ruby-string">&quot;command_number&quot;</span>] ) }
+  <span class="ruby-keyword">end</span>
+  <span class="ruby-keyword">return</span> <span class="ruby-identifier">response</span>
+<span class="ruby-keyword">end</span></pre>
+          </div><!-- delayed_command-source -->
+          
+        </div>
+
+        
+
+        
+      </div><!-- delayed_command-method -->
+
+    
+      <div id="method-i-delete_reservation" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">delete_reservation</span><span
+            class="method-args">(reservation_number)</span>
+          <span class="method-click-advice">click to toggle source</span>
+        </div>
+        
+
+        <div class="method-description">
+          
+          
+          
+
+          
+          <div class="method-source-code" id="delete_reservation-source">
+            <pre><span class="ruby-comment"># File lib/expctrl/expctrl_expctrlclient.rb, line 200</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">delete_reservation</span>(<span class="ruby-identifier">reservation_number</span>)
+  <span class="ruby-keyword">return</span> <span class="ruby-ivar">@client</span>.<span class="ruby-identifier">delete_reservation</span>(<span class="ruby-identifier">reservation_number</span>)
+<span class="ruby-keyword">end</span></pre>
+          </div><!-- delete_reservation-source -->
+          
+        </div>
+
+        
+
+        
+      </div><!-- delete_reservation-method -->
+
+    
+      <div id="method-i-dump_commands_memory_friendly" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">dump_commands_memory_friendly</span><span
+            class="method-args">(file)</span>
+          <span class="method-click-advice">click to toggle source</span>
+        </div>
+        
+
+        <div class="method-description">
+          
+          
+          
+
+          
+          <div class="method-source-code" id="dump_commands_memory_friendly-source">
+            <pre><span class="ruby-comment"># File lib/expctrl/expctrl_expctrlclient.rb, line 418</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">dump_commands_memory_friendly</span>(<span class="ruby-identifier">file</span>)
+  <span class="ruby-identifier">exp</span> = <span class="ruby-identifier">all</span>.<span class="ruby-identifier">result</span>
+ 
+ 
+  <span class="ruby-identifier">exp</span>[<span class="ruby-string">&quot;commands&quot;</span>].<span class="ruby-identifier">each</span> <span class="ruby-keyword">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">cmd_number</span><span class="ruby-operator">|</span>
+    <span class="ruby-identifier">cmd</span> = <span class="ruby-constant">Hash</span><span class="ruby-operator">::</span><span class="ruby-identifier">new</span>
+    <span class="ruby-identifier">cmd</span>[<span class="ruby-string">&quot;number&quot;</span>] = <span class="ruby-identifier">cmd_number</span>
+    <span class="ruby-identifier">response</span> = <span class="ruby-identifier">command_info</span>( <span class="ruby-identifier">cmd_number</span> )
+    <span class="ruby-identifier">cmd</span>[<span class="ruby-string">&quot;info&quot;</span>] = <span class="ruby-identifier">response</span>.<span class="ruby-identifier">result</span>
+    <span class="ruby-identifier">command_rewind</span>( <span class="ruby-identifier">cmd_number</span> )
+    <span class="ruby-identifier">response</span> = <span class="ruby-identifier">command_result</span>( <span class="ruby-identifier">cmd_number</span> )
+    <span class="ruby-identifier">cmd</span>[<span class="ruby-string">&quot;result&quot;</span>] = <span class="ruby-identifier">response</span>.<span class="ruby-identifier">result</span>
+    <span class="ruby-identifier">response</span> = <span class="ruby-identifier">get_command_inputs</span>( <span class="ruby-identifier">cmd_number</span> )
+    <span class="ruby-identifier">cmd</span>[<span class="ruby-string">&quot;inputs&quot;</span>] = <span class="ruby-identifier">response</span>.<span class="ruby-identifier">result</span>[<span class="ruby-string">&quot;inputs&quot;</span>]
+    <span class="ruby-identifier">file</span>.<span class="ruby-identifier">puts</span> <span class="ruby-constant">YAML</span><span class="ruby-operator">::</span><span class="ruby-identifier">dump</span>(<span class="ruby-identifier">cmd</span>)
+  <span class="ruby-keyword">end</span>
+
+<span class="ruby-keyword">end</span></pre>
+          </div><!-- dump_commands_memory_friendly-source -->
+          
+        </div>
+
+        
+
+        
+      </div><!-- dump_commands_memory_friendly-method -->
+
+    
+      <div id="method-i-dump_experiment" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">dump_experiment</span><span
+            class="method-args">()</span>
+          <span class="method-click-advice">click to toggle source</span>
+        </div>
+        
+
+        <div class="method-description">
+          
+          
+          
+
+          
+          <div class="method-source-code" id="dump_experiment-source">
+            <pre><span class="ruby-comment"># File lib/expctrl/expctrl_expctrlclient.rb, line 437</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">dump_experiment</span>
+  <span class="ruby-identifier">exp</span> = <span class="ruby-identifier">all</span>.<span class="ruby-identifier">result</span>
+ 
+  <span class="ruby-identifier">res</span> = <span class="ruby-constant">Hash</span><span class="ruby-operator">::</span><span class="ruby-identifier">new</span>
+  <span class="ruby-identifier">exp</span>[<span class="ruby-string">&quot;reservations&quot;</span>].<span class="ruby-identifier">each</span> <span class="ruby-keyword">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">reservation_number</span><span class="ruby-operator">|</span>
+    <span class="ruby-identifier">re</span> = <span class="ruby-constant">Hash</span><span class="ruby-operator">::</span><span class="ruby-identifier">new</span>
+    <span class="ruby-identifier">result</span> = <span class="ruby-identifier">reservation_info</span>( <span class="ruby-identifier">reservation_number</span> ).<span class="ruby-identifier">result</span>
+    <span class="ruby-identifier">re</span>[<span class="ruby-string">&quot;info&quot;</span>] = <span class="ruby-identifier">result</span>
+    <span class="ruby-identifier">exp</span>[<span class="ruby-string">&quot;commands&quot;</span>].<span class="ruby-identifier">push</span> <span class="ruby-identifier">result</span>[<span class="ruby-string">&quot;command_number&quot;</span>] <span class="ruby-keyword">if</span> <span class="ruby-identifier">result</span>[<span class="ruby-string">&quot;command_number&quot;</span>]
+    <span class="ruby-identifier">exp</span>[<span class="ruby-string">&quot;commands&quot;</span>].<span class="ruby-identifier">push</span> <span class="ruby-identifier">result</span>[<span class="ruby-string">&quot;resources_command_number&quot;</span>] <span class="ruby-keyword">if</span> <span class="ruby-identifier">result</span>[<span class="ruby-string">&quot;resources_command_number&quot;</span>]
+    <span class="ruby-identifier">exp</span>[<span class="ruby-string">&quot;commands&quot;</span>].<span class="ruby-identifier">push</span> <span class="ruby-identifier">result</span>[<span class="ruby-string">&quot;delete_command_number&quot;</span>] <span class="ruby-keyword">if</span> <span class="ruby-identifier">result</span>[<span class="ruby-string">&quot;delete_command_number&quot;</span>]
+    <span class="ruby-identifier">re</span>[<span class="ruby-string">&quot;resources&quot;</span>] = <span class="ruby-identifier">reservation_resources</span>( <span class="ruby-identifier">reservation_number</span> )[<span class="ruby-string">&quot;resources&quot;</span>]
+    <span class="ruby-identifier">re</span>[<span class="ruby-string">&quot;jobs&quot;</span>] = <span class="ruby-identifier">reservation_jobs</span>( <span class="ruby-identifier">reservation_number</span> )[<span class="ruby-string">&quot;jobs&quot;</span>]
+    <span class="ruby-identifier">res</span>[<span class="ruby-identifier">reservation_number</span>] = <span class="ruby-identifier">re</span>
+  <span class="ruby-keyword">end</span>
+  <span class="ruby-identifier">exp</span>[<span class="ruby-string">&quot;reservations&quot;</span>] = <span class="ruby-identifier">res</span>
+  
+  <span class="ruby-identifier">cmds</span> = <span class="ruby-constant">Hash</span><span class="ruby-operator">::</span><span class="ruby-identifier">new</span>
+  <span class="ruby-identifier">exp</span>[<span class="ruby-string">&quot;commands&quot;</span>].<span class="ruby-identifier">each</span> <span class="ruby-keyword">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">cmd_number</span><span class="ruby-operator">|</span>
+    <span class="ruby-identifier">cmd</span> = <span class="ruby-constant">Hash</span><span class="ruby-operator">::</span><span class="ruby-identifier">new</span>
+    <span class="ruby-identifier">response</span> = <span class="ruby-identifier">command_info</span>( <span class="ruby-identifier">cmd_number</span> )
+    <span class="ruby-identifier">cmd</span>[<span class="ruby-string">&quot;info&quot;</span>] = <span class="ruby-identifier">response</span>.<span class="ruby-identifier">result</span>
+    <span class="ruby-identifier">command_rewind</span>( <span class="ruby-identifier">cmd_number</span> )
+    <span class="ruby-identifier">response</span> = <span class="ruby-identifier">command_result</span>( <span class="ruby-identifier">cmd_number</span> )
+    <span class="ruby-identifier">cmd</span>[<span class="ruby-string">&quot;result&quot;</span>] = <span class="ruby-identifier">response</span>.<span class="ruby-identifier">result</span>
+    <span class="ruby-identifier">response</span> = <span class="ruby-identifier">get_command_inputs</span>( <span class="ruby-identifier">cmd_number</span> )
+    <span class="ruby-identifier">cmd</span>[<span class="ruby-string">&quot;inputs&quot;</span>] = <span class="ruby-identifier">response</span>.<span class="ruby-identifier">result</span>[<span class="ruby-string">&quot;inputs&quot;</span>]
+    <span class="ruby-identifier">cmds</span>[<span class="ruby-identifier">cmd_number</span>] = <span class="ruby-identifier">cmd</span>
+  <span class="ruby-keyword">end</span>
+  <span class="ruby-identifier">exp</span>[<span class="ruby-string">&quot;commands&quot;</span>] = <span class="ruby-identifier">cmds</span>
+
+  <span class="ruby-identifier">response</span> = <span class="ruby-constant">DumpExperimentResponse</span><span class="ruby-operator">::</span><span class="ruby-identifier">new</span>
+  <span class="ruby-identifier">response</span>.<span class="ruby-identifier">result</span> = <span class="ruby-identifier">exp</span>
+  <span class="ruby-keyword">return</span> <span class="ruby-identifier">response</span>
+<span class="ruby-keyword">end</span></pre>
+          </div><!-- dump_experiment-source -->
+          
+        </div>
+
+        
+
+        
+      </div><!-- dump_experiment-method -->
+
+    
+      <div id="method-i-experiment_number" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">experiment_number</span><span
+            class="method-args">()</span>
+          <span class="method-click-advice">click to toggle source</span>
+        </div>
+        
+
+        <div class="method-description">
+          
+          <p>def initialize(server)</p>
+
+<pre>super(server, NS)
+@client = ResCtrlClient::new(server)
+@experiment_number = nil
+@commands_mutex = Mutex::new
+@commands = Array::new
+@reservations_mutex = Mutex::new
+@reservations = Array::new
+@nodes_mutex = Mutex::new
+@nodes = Hash::new
+add_method('create_experiment')
+add_method('add_command','experiment_number','command_number')
+add_method('add_commands','experiment_number','command_numbers')
+add_method('add_reservation','experiment_number','reservation_number')
+add_method('add_nodes','experiment_number','nodes_name','nodes')
+add_method('get_nodes','experiment_number','nodes_name')
+add_method('get_all_nodes','experiment_number')
+add_method('get_all_commands','experiment_number')
+add_method('get_all_reservations','experiment_number')
+add_method('experiment_info','experiment_number')
+add_method('delete_command','experiment_number','command_number')</pre>
+
+<p>end</p>
+          
+
+          
+          <div class="method-source-code" id="experiment_number-source">
+            <pre><span class="ruby-comment"># File lib/expctrl/expctrl_expctrlclient.rb, line 138</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">experiment_number</span>
+  <span class="ruby-identifier">response</span> = <span class="ruby-constant">ExperimentNumberResponse</span><span class="ruby-operator">::</span><span class="ruby-identifier">new</span>
+  <span class="ruby-identifier">response</span>[<span class="ruby-string">&quot;experiment_number&quot;</span>] = <span class="ruby-ivar">@experiment_number</span>
+  <span class="ruby-keyword">return</span> <span class="ruby-identifier">response</span>
+<span class="ruby-keyword">end</span></pre>
+          </div><!-- experiment_number-source -->
+          
+        </div>
+
+        
+
+        
+      </div><!-- experiment_number-method -->
+
+    
+      <div id="method-i-get_command_inputs" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">get_command_inputs</span><span
+            class="method-args">(command_number)</span>
+          <span class="method-click-advice">click to toggle source</span>
+        </div>
+        
+
+        <div class="method-description">
+          
+          
+          
+
+          
+          <div class="method-source-code" id="get_command_inputs-source">
+            <pre><span class="ruby-comment"># File lib/expctrl/expctrl_expctrlclient.rb, line 168</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">get_command_inputs</span>(<span class="ruby-identifier">command_number</span>)
+  <span class="ruby-keyword">return</span> <span class="ruby-ivar">@client</span>.<span class="ruby-identifier">get_command_inputs</span>(<span class="ruby-identifier">command_number</span>)
+<span class="ruby-keyword">end</span></pre>
+          </div><!-- get_command_inputs-source -->
+          
+        </div>
+
+        
+
+        
+      </div><!-- get_command_inputs-method -->
+
+    
+      <div id="method-i-interactive_command" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">interactive_command</span><span
+            class="method-args">( command_line )</span>
+          <span class="method-click-advice">click to toggle source</span>
+        </div>
+        
+
+        <div class="method-description">
+          
+          
+          
+
+          
+          <div class="method-source-code" id="interactive_command-source">
+            <pre><span class="ruby-comment"># File lib/expctrl/expctrl_expctrlclient.rb, line 289</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">interactive_command</span>( <span class="ruby-identifier">command_line</span> )
+  <span class="ruby-identifier">response</span> = <span class="ruby-ivar">@client</span>.<span class="ruby-identifier">interactive_command</span>( <span class="ruby-identifier">command_line</span> )
+  <span class="ruby-keyword">if</span> <span class="ruby-ivar">@experiment_number</span> <span class="ruby-keyword">then</span>
+    <span class="ruby-identifier">add_command</span>( <span class="ruby-ivar">@experiment_number</span>, <span class="ruby-identifier">response</span>[<span class="ruby-string">&quot;command_number&quot;</span>] )
+  <span class="ruby-keyword">else</span>
+    <span class="ruby-ivar">@commands_mutex</span>.<span class="ruby-identifier">synchronize</span> { <span class="ruby-ivar">@commands</span>.<span class="ruby-identifier">push</span>( <span class="ruby-identifier">response</span>[<span class="ruby-string">&quot;command_number&quot;</span>] ) }
+  <span class="ruby-keyword">end</span>
+  <span class="ruby-keyword">return</span> <span class="ruby-identifier">response</span>
+<span class="ruby-keyword">end</span></pre>
+          </div><!-- interactive_command-source -->
+          
+        </div>
+
+        
+
+        
+      </div><!-- interactive_command-method -->
+
+    
+      <div id="method-i-method_missing" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">method_missing</span><span
+            class="method-args">(method_id, *args)</span>
+          <span class="method-click-advice">click to toggle source</span>
+        </div>
+        
+
+        <div class="method-description">
+          
+          
+          
+
+          
+          <div class="method-source-code" id="method_missing-source">
+            <pre><span class="ruby-comment"># File lib/expctrl/expctrl_expctrlclient.rb, line 110</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">method_missing</span>(<span class="ruby-identifier">method_id</span>, *<span class="ruby-identifier">args</span>)
+        <span class="ruby-identifier">response</span> = <span class="ruby-ivar">@expctrl_client</span>.<span class="ruby-identifier">send</span>(<span class="ruby-identifier">method_id</span>.<span class="ruby-identifier">id2name</span>, *<span class="ruby-identifier">args</span>)
+        <span class="ruby-keyword">return</span> <span class="ruby-identifier">response</span>
+<span class="ruby-keyword">end</span></pre>
+          </div><!-- method_missing-source -->
+          
+        </div>
+
+        
+
+        
+      </div><!-- method_missing-method -->
+
+    
+      <div id="method-i-new_reservation" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">new_reservation</span><span
+            class="method-args">( type, parameters )</span>
+          <span class="method-click-advice">click to toggle source</span>
+        </div>
+        
+
+        <div class="method-description">
+          
+          
+          
+
+          
+          <div class="method-source-code" id="new_reservation-source">
+            <pre><span class="ruby-comment"># File lib/expctrl/expctrl_expctrlclient.rb, line 221</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">new_reservation</span>( <span class="ruby-identifier">type</span>, <span class="ruby-identifier">parameters</span> )
+  <span class="ruby-identifier">response</span> = <span class="ruby-ivar">@client</span>.<span class="ruby-identifier">new_reservation</span>( <span class="ruby-identifier">type</span>, <span class="ruby-identifier">parameters</span> )
+  <span class="ruby-keyword">if</span> <span class="ruby-ivar">@experiment_number</span> <span class="ruby-keyword">then</span>
+    <span class="ruby-identifier">add_reservation</span>( <span class="ruby-ivar">@experiment_number</span>, <span class="ruby-identifier">response</span>[<span class="ruby-string">&quot;reservation_number&quot;</span>] )
+  <span class="ruby-keyword">else</span>
+    <span class="ruby-ivar">@reservations_mutex</span>.<span class="ruby-identifier">synchronize</span> { <span class="ruby-ivar">@reservations</span>.<span class="ruby-identifier">push</span>( <span class="ruby-identifier">response</span>[<span class="ruby-string">&quot;reservation_number&quot;</span>] ) }
+  <span class="ruby-keyword">end</span>
+  <span class="ruby-keyword">return</span> <span class="ruby-identifier">response</span>
+<span class="ruby-keyword">end</span></pre>
+          </div><!-- new_reservation-source -->
+          
+        </div>
+
+        
+
+        
+      </div><!-- new_reservation-method -->
+
+    
+      <div id="method-i-nodes" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">nodes</span><span
+            class="method-args">( nodes_name=nil, nds=nil )</span>
+          <span class="method-click-advice">click to toggle source</span>
+        </div>
+        
+
+        <div class="method-description">
+          
+          
+          
+
+          
+          <div class="method-source-code" id="nodes-source">
+            <pre><span class="ruby-comment"># File lib/expctrl/expctrl_expctrlclient.rb, line 349</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">nodes</span>( <span class="ruby-identifier">nodes_name</span>=<span class="ruby-keyword">nil</span>, <span class="ruby-identifier">nds</span>=<span class="ruby-keyword">nil</span> )
+  <span class="ruby-identifier">response</span> = <span class="ruby-keyword">nil</span>
+  <span class="ruby-keyword">if</span> <span class="ruby-ivar">@experiment_number</span> <span class="ruby-keyword">then</span>
+    <span class="ruby-keyword">if</span> <span class="ruby-identifier">nodes_name</span> <span class="ruby-keyword">then</span>
+      <span class="ruby-keyword">if</span> <span class="ruby-identifier">nds</span> <span class="ruby-keyword">then</span>
+        <span class="ruby-identifier">response</span> = <span class="ruby-identifier">add_nodes</span>( <span class="ruby-ivar">@experiment_number</span>, <span class="ruby-identifier">nodes_name</span>, <span class="ruby-identifier">nds</span> )
+      <span class="ruby-keyword">else</span>
+        <span class="ruby-identifier">response</span> = <span class="ruby-identifier">get_nodes</span>( <span class="ruby-ivar">@experiment_number</span>, <span class="ruby-identifier">nodes_name</span> )
+      <span class="ruby-keyword">end</span>
+    <span class="ruby-keyword">else</span>
+      <span class="ruby-identifier">response</span> = <span class="ruby-identifier">get_all_nodes</span>( <span class="ruby-ivar">@experiment_number</span> )
+    <span class="ruby-keyword">end</span>
+  <span class="ruby-keyword">else</span>
+    <span class="ruby-keyword">if</span> <span class="ruby-identifier">nodes_name</span> <span class="ruby-keyword">then</span>
+      <span class="ruby-keyword">if</span> <span class="ruby-identifier">nds</span> <span class="ruby-keyword">then</span>
+        <span class="ruby-ivar">@nodes_mutex</span>.<span class="ruby-identifier">synchronize</span> { <span class="ruby-ivar">@nodes</span>[<span class="ruby-identifier">nodes_name</span>] = <span class="ruby-identifier">nds</span> }
+      <span class="ruby-keyword">else</span>
+        <span class="ruby-identifier">response</span> = <span class="ruby-constant">GetNodesResponse</span><span class="ruby-operator">::</span><span class="ruby-identifier">new</span>
+        <span class="ruby-ivar">@nodes_mutex</span>.<span class="ruby-identifier">synchronize</span> { <span class="ruby-identifier">response</span>[<span class="ruby-string">&quot;nodes&quot;</span>] = <span class="ruby-ivar">@nodes</span>[<span class="ruby-identifier">nodes_name</span>] }
+        <span class="ruby-identifier">raise</span> <span class="ruby-string">&quot;Invalid nodes name&quot;</span> <span class="ruby-keyword">if</span> <span class="ruby-operator">!</span><span class="ruby-identifier">response</span>[<span class="ruby-string">&quot;nodes&quot;</span>]
+      <span class="ruby-keyword">end</span>      
+    <span class="ruby-keyword">else</span>
+      <span class="ruby-identifier">response</span> = <span class="ruby-constant">GetAllNodesResponse</span><span class="ruby-operator">::</span><span class="ruby-identifier">new</span>
+      <span class="ruby-identifier">response</span>[<span class="ruby-string">&quot;nodes&quot;</span>] = <span class="ruby-constant">Hash</span><span class="ruby-operator">::</span><span class="ruby-identifier">new</span>
+      <span class="ruby-ivar">@nodes_mutex</span>.<span class="ruby-identifier">synchronize</span> { <span class="ruby-identifier">response</span>[<span class="ruby-string">&quot;nodes&quot;</span>].<span class="ruby-identifier">replace</span>( <span class="ruby-ivar">@nodes</span> ) }
+    <span class="ruby-keyword">end</span>
+  <span class="ruby-keyword">end</span>
+  <span class="ruby-keyword">return</span> <span class="ruby-identifier">response</span>
+<span class="ruby-keyword">end</span></pre>
+          </div><!-- nodes-source -->
+          
+        </div>
+
+        
+
+        
+      </div><!-- nodes-method -->
+
+    
+      <div id="method-i-open_experiment" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">open_experiment</span><span
+            class="method-args">( experiment_number = nil )</span>
+          <span class="method-click-advice">click to toggle source</span>
+        </div>
+        
+
+        <div class="method-description">
+          
+          <p>def <a
+href="ExpCtrlClient.html#method-i-reservation_wait">#reservation_wait</a>(reservation_number,
+polling_time = 10, delay = 0, &amp;block)</p>
+
+<pre>return @client.reservation_wait(reservation_number, polling_time , delay, &amp;block)</pre>
+
+<p>end</p>
+          
+
+          
+          <div class="method-source-code" id="open_experiment-source">
+            <pre><span class="ruby-comment"># File lib/expctrl/expctrl_expctrlclient.rb, line 208</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">open_experiment</span>( <span class="ruby-identifier">experiment_number</span> = <span class="ruby-keyword">nil</span> )
+  <span class="ruby-keyword">if</span> <span class="ruby-identifier">experiment_number</span> <span class="ruby-keyword">then</span>
+    <span class="ruby-identifier">experiment_info</span>( <span class="ruby-identifier">experiment_number</span> )
+    <span class="ruby-ivar">@experiment_number</span> = <span class="ruby-identifier">experiment_number</span>
+  <span class="ruby-keyword">else</span>
+    <span class="ruby-identifier">result</span> = <span class="ruby-identifier">create_experiment</span>
+    <span class="ruby-ivar">@experiment_number</span> = <span class="ruby-identifier">result</span>[<span class="ruby-string">&quot;experiment_number&quot;</span>]
+  <span class="ruby-keyword">end</span>
+  <span class="ruby-identifier">response</span> = <span class="ruby-constant">OpenExperimentResponse</span><span class="ruby-operator">::</span><span class="ruby-identifier">new</span>
+  <span class="ruby-identifier">response</span>[<span class="ruby-string">&quot;experiment_number&quot;</span>] = <span class="ruby-ivar">@experiment_number</span>
+  <span class="ruby-keyword">return</span> <span class="ruby-identifier">response</span>
+<span class="ruby-keyword">end</span></pre>
+          </div><!-- open_experiment-source -->
+          
+        </div>
+
+        
+
+        
+      </div><!-- open_experiment-method -->
+
+    
+      <div id="method-i-open_reservation" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">open_reservation</span><span
+            class="method-args">( type, id )</span>
+          <span class="method-click-advice">click to toggle source</span>
+        </div>
+        
+
+        <div class="method-description">
+          
+          
+          
+
+          
+          <div class="method-source-code" id="open_reservation-source">
+            <pre><span class="ruby-comment"># File lib/expctrl/expctrl_expctrlclient.rb, line 231</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">open_reservation</span>( <span class="ruby-identifier">type</span>, <span class="ruby-identifier">id</span> )
+  <span class="ruby-identifier">response</span> = <span class="ruby-ivar">@client</span>.<span class="ruby-identifier">open_reservation</span>( <span class="ruby-identifier">type</span>, <span class="ruby-identifier">id</span> )
+  <span class="ruby-keyword">if</span> <span class="ruby-ivar">@experiment_number</span> <span class="ruby-keyword">then</span>
+    <span class="ruby-identifier">add_reservation</span>( <span class="ruby-ivar">@experiment_number</span>, <span class="ruby-identifier">response</span>[<span class="ruby-string">&quot;reservation_number&quot;</span>] )
+  <span class="ruby-keyword">else</span>
+    <span class="ruby-ivar">@reservations_mutex</span>.<span class="ruby-identifier">synchronize</span> { <span class="ruby-ivar">@reservations</span>.<span class="ruby-identifier">push</span>( <span class="ruby-identifier">response</span>[<span class="ruby-string">&quot;reservation_number&quot;</span>] ) }
+  <span class="ruby-keyword">end</span>
+  <span class="ruby-keyword">return</span> <span class="ruby-identifier">response</span>
+<span class="ruby-keyword">end</span></pre>
+          </div><!-- open_reservation-source -->
+          
+        </div>
+
+        
+
+        
+      </div><!-- open_reservation-method -->
+
+    
+      <div id="method-i-recursive_command" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">recursive_command</span><span
+            class="method-args">( server_name, command, parameters )</span>
+          <span class="method-click-advice">click to toggle source</span>
+        </div>
+        
+
+        <div class="method-description">
+          
+          
+          
+
+          
+          <div class="method-source-code" id="recursive_command-source">
+            <pre><span class="ruby-comment"># File lib/expctrl/expctrl_expctrlclient.rb, line 339</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">recursive_command</span>( <span class="ruby-identifier">server_name</span>, <span class="ruby-identifier">command</span>, <span class="ruby-identifier">parameters</span> )
+  <span class="ruby-identifier">response</span> = <span class="ruby-ivar">@client</span>.<span class="ruby-identifier">recursive_command</span>( <span class="ruby-identifier">server_name</span>, <span class="ruby-identifier">command</span>, <span class="ruby-identifier">parameters</span> )
+  <span class="ruby-keyword">if</span> <span class="ruby-ivar">@experiment_number</span> <span class="ruby-keyword">then</span>
+    <span class="ruby-identifier">add_command</span>( <span class="ruby-ivar">@experiment_number</span>, <span class="ruby-identifier">response</span>[<span class="ruby-string">&quot;command_number&quot;</span>] )
+  <span class="ruby-keyword">else</span>
+    <span class="ruby-ivar">@commands_mutex</span>.<span class="ruby-identifier">synchronize</span> { <span class="ruby-ivar">@commands</span>.<span class="ruby-identifier">push</span>( <span class="ruby-identifier">response</span>[<span class="ruby-string">&quot;command_number&quot;</span>] ) }
+  <span class="ruby-keyword">end</span>
+  <span class="ruby-keyword">return</span> <span class="ruby-identifier">response</span>
+<span class="ruby-keyword">end</span></pre>
+          </div><!-- recursive_command-source -->
+          
+        </div>
+
+        
+
+        
+      </div><!-- recursive_command-method -->
+
+    
+      <div id="method-i-reservation_info" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">reservation_info</span><span
+            class="method-args">(reservation_number)</span>
+          <span class="method-click-advice">click to toggle source</span>
+        </div>
+        
+
+        <div class="method-description">
+          
+          <p>def <a
+href="ExpCtrlClient.html#method-i-command_wait">#command_wait</a>(command_number,
+polling_time = 10, delay = 0, &amp;block)</p>
+
+<pre>return @client.command_wait(command_number, polling_time , delay, &amp;block)</pre>
+
+<p>end</p>
+          
+
+          
+          <div class="method-source-code" id="reservation_info-source">
+            <pre><span class="ruby-comment"># File lib/expctrl/expctrl_expctrlclient.rb, line 180</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">reservation_info</span>(<span class="ruby-identifier">reservation_number</span>)
+  <span class="ruby-keyword">return</span> <span class="ruby-ivar">@client</span>.<span class="ruby-identifier">reservation_info</span>(<span class="ruby-identifier">reservation_number</span>)
+<span class="ruby-keyword">end</span></pre>
+          </div><!-- reservation_info-source -->
+          
+        </div>
+
+        
+
+        
+      </div><!-- reservation_info-method -->
+
+    
+      <div id="method-i-reservation_job" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">reservation_job</span><span
+            class="method-args">(reservation_number, job_name, cluster_name)</span>
+          <span class="method-click-advice">click to toggle source</span>
+        </div>
+        
+
+        <div class="method-description">
+          
+          
+          
+
+          
+          <div class="method-source-code" id="reservation_job-source">
+            <pre><span class="ruby-comment"># File lib/expctrl/expctrl_expctrlclient.rb, line 196</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">reservation_job</span>(<span class="ruby-identifier">reservation_number</span>, <span class="ruby-identifier">job_name</span>, <span class="ruby-identifier">cluster_name</span>)
+  <span class="ruby-keyword">return</span> <span class="ruby-ivar">@client</span>.<span class="ruby-identifier">reservation_job</span>(<span class="ruby-identifier">reservation_number</span>, <span class="ruby-identifier">job_name</span>, <span class="ruby-identifier">cluster_name</span>)
+<span class="ruby-keyword">end</span></pre>
+          </div><!-- reservation_job-source -->
+          
+        </div>
+
+        
+
+        
+      </div><!-- reservation_job-method -->
+
+    
+      <div id="method-i-reservation_jobs" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">reservation_jobs</span><span
+            class="method-args">(reservation_number)</span>
+          <span class="method-click-advice">click to toggle source</span>
+        </div>
+        
+
+        <div class="method-description">
+          
+          
+          
+
+          
+          <div class="method-source-code" id="reservation_jobs-source">
+            <pre><span class="ruby-comment"># File lib/expctrl/expctrl_expctrlclient.rb, line 192</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">reservation_jobs</span>(<span class="ruby-identifier">reservation_number</span>)
+  <span class="ruby-keyword">return</span> <span class="ruby-ivar">@client</span>.<span class="ruby-identifier">reservation_jobs</span>(<span class="ruby-identifier">reservation_number</span>)
+<span class="ruby-keyword">end</span></pre>
+          </div><!-- reservation_jobs-source -->
+          
+        </div>
+
+        
+
+        
+      </div><!-- reservation_jobs-method -->
+
+    
+      <div id="method-i-reservation_resources" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">reservation_resources</span><span
+            class="method-args">(reservation_number)</span>
+          <span class="method-click-advice">click to toggle source</span>
+        </div>
+        
+
+        <div class="method-description">
+          
+          
+          
+
+          
+          <div class="method-source-code" id="reservation_resources-source">
+            <pre><span class="ruby-comment"># File lib/expctrl/expctrl_expctrlclient.rb, line 188</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">reservation_resources</span>(<span class="ruby-identifier">reservation_number</span>)
+  <span class="ruby-keyword">return</span> <span class="ruby-ivar">@client</span>.<span class="ruby-identifier">reservation_resources</span>(<span class="ruby-identifier">reservation_number</span>)
+<span class="ruby-keyword">end</span></pre>
+          </div><!-- reservation_resources-source -->
+          
+        </div>
+
+        
+
+        
+      </div><!-- reservation_resources-method -->
+
+    
+      <div id="method-i-reservation_stats" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">reservation_stats</span><span
+            class="method-args">(type, parameters)</span>
+          <span class="method-click-advice">click to toggle source</span>
+        </div>
+        
+
+        <div class="method-description">
+          
+          
+          
+
+          
+          <div class="method-source-code" id="reservation_stats-source">
+            <pre><span class="ruby-comment"># File lib/expctrl/expctrl_expctrlclient.rb, line 184</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">reservation_stats</span>(<span class="ruby-identifier">type</span>, <span class="ruby-identifier">parameters</span>)
+  <span class="ruby-keyword">return</span> <span class="ruby-ivar">@client</span>.<span class="ruby-identifier">reservation_stats</span>(<span class="ruby-identifier">type</span>, <span class="ruby-identifier">parameters</span>)
+<span class="ruby-keyword">end</span></pre>
+          </div><!-- reservation_stats-source -->
+          
+        </div>
+
+        
+
+        
+      </div><!-- reservation_stats-method -->
+
+    
+      <div id="method-i-reservation_wait" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">reservation_wait</span><span
+            class="method-args">(reservation_number, polling_time = 10, delay = 0, &block)</span>
+          <span class="method-click-advice">click to toggle source</span>
+        </div>
+        
+
+        <div class="method-description">
+          
+          
+          
+
+          
+          <div class="method-source-code" id="reservation_wait-source">
+            <pre><span class="ruby-comment"># File lib/expctrl/expctrl_expctrlclient.rb, line 496</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">reservation_wait</span>(<span class="ruby-identifier">reservation_number</span>, <span class="ruby-identifier">polling_time</span> = <span class="ruby-value">10</span>, <span class="ruby-identifier">delay</span> = <span class="ruby-value">0</span>, &amp;<span class="ruby-identifier">block</span>)
+        <span class="ruby-identifier">raise</span> <span class="ruby-string">&quot;Polling_time cannot be 0&quot;</span> <span class="ruby-keyword">if</span> <span class="ruby-identifier">polling_time</span> <span class="ruby-operator">==</span> <span class="ruby-value">0</span>
+        <span class="ruby-identifier">info</span> = <span class="ruby-identifier">reservation_info</span>(<span class="ruby-identifier">reservation_number</span>).<span class="ruby-identifier">result</span>
+        <span class="ruby-identifier">response</span> = <span class="ruby-constant">ReservationWaitResponse</span><span class="ruby-operator">::</span><span class="ruby-identifier">new</span>
+        <span class="ruby-keyword">if</span> <span class="ruby-identifier">block</span>
+                <span class="ruby-identifier">t</span> = <span class="ruby-constant">Thread</span><span class="ruby-operator">::</span><span class="ruby-identifier">new</span> {
+                        <span class="ruby-identifier">info</span> = <span class="ruby-identifier">internal_reservation_wait</span>(<span class="ruby-identifier">reservation_number</span>, <span class="ruby-identifier">delay</span>, <span class="ruby-identifier">polling_time</span>, <span class="ruby-identifier">info</span>)
+                        <span class="ruby-identifier">block</span>.<span class="ruby-identifier">call</span>(<span class="ruby-identifier">info</span>)
+                }
+                <span class="ruby-identifier">response</span>.<span class="ruby-identifier">result</span> = <span class="ruby-identifier">info</span>
+                <span class="ruby-keyword">return</span> <span class="ruby-identifier">response</span>
+        <span class="ruby-keyword">else</span>
+                <span class="ruby-identifier">response</span>.<span class="ruby-identifier">result</span> = <span class="ruby-identifier">internal_reservation_wait</span>(<span class="ruby-identifier">reservation_number</span>, <span class="ruby-identifier">delay</span>, <span class="ruby-identifier">polling_time</span>, <span class="ruby-identifier">info</span>)
+                <span class="ruby-keyword">return</span> <span class="ruby-identifier">response</span>
+        <span class="ruby-keyword">end</span>
+<span class="ruby-keyword">end</span></pre>
+          </div><!-- reservation_wait-source -->
+          
+        </div>
+
+        
+
+        
+      </div><!-- reservation_wait-method -->
+
+    
+      <div id="method-i-reservations" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">reservations</span><span
+            class="method-args">()</span>
+          <span class="method-click-advice">click to toggle source</span>
+        </div>
+        
+
+        <div class="method-description">
+          
+          
+          
+
+          
+          <div class="method-source-code" id="reservations-source">
+            <pre><span class="ruby-comment"># File lib/expctrl/expctrl_expctrlclient.rb, line 389</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">reservations</span>
+  <span class="ruby-keyword">if</span> <span class="ruby-ivar">@experiment_number</span> <span class="ruby-keyword">then</span>
+    <span class="ruby-identifier">response</span> = <span class="ruby-identifier">get_all_reservations</span>( <span class="ruby-ivar">@experiment_number</span> )
+  <span class="ruby-keyword">else</span>
+    <span class="ruby-identifier">response</span> = <span class="ruby-constant">GetAllReservationsResponse</span><span class="ruby-operator">::</span><span class="ruby-identifier">new</span>
+    <span class="ruby-ivar">@reservations_mutex</span>.<span class="ruby-identifier">synchronize</span> { <span class="ruby-identifier">response</span>[<span class="ruby-string">&quot;reservations&quot;</span>] = <span class="ruby-constant">Array</span><span class="ruby-operator">::</span><span class="ruby-identifier">new</span>( <span class="ruby-ivar">@reservations</span> ) }
+  <span class="ruby-keyword">end</span>
+  <span class="ruby-keyword">return</span> <span class="ruby-identifier">response</span>
+<span class="ruby-keyword">end</span></pre>
+          </div><!-- reservations-source -->
+          
+        </div>
+
+        
+
+        
+      </div><!-- reservations-method -->
+
+    
+      <div id="method-i-ruby_asynchronous_command" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">ruby_asynchronous_command</span><span
+            class="method-args">( ruby_script )</span>
+          <span class="method-click-advice">click to toggle source</span>
+        </div>
+        
+
+        <div class="method-description">
+          
+          
+          
+
+          
+          <div class="method-source-code" id="ruby_asynchronous_command-source">
+            <pre><span class="ruby-comment"># File lib/expctrl/expctrl_expctrlclient.rb, line 319</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">ruby_asynchronous_command</span>( <span class="ruby-identifier">ruby_script</span> )
+  <span class="ruby-identifier">response</span> = <span class="ruby-ivar">@client</span>.<span class="ruby-identifier">ruby_asynchronous_command</span>( <span class="ruby-identifier">ruby_script</span> )
+  <span class="ruby-keyword">if</span> <span class="ruby-ivar">@experiment_number</span> <span class="ruby-keyword">then</span>
+    <span class="ruby-identifier">add_command</span>( <span class="ruby-ivar">@experiment_number</span>, <span class="ruby-identifier">response</span>[<span class="ruby-string">&quot;command_number&quot;</span>] )
+  <span class="ruby-keyword">else</span>
+    <span class="ruby-ivar">@commands_mutex</span>.<span class="ruby-identifier">synchronize</span> { <span class="ruby-ivar">@commands</span>.<span class="ruby-identifier">push</span>( <span class="ruby-identifier">response</span>[<span class="ruby-string">&quot;command_number&quot;</span>] ) }
+  <span class="ruby-keyword">end</span>
+  <span class="ruby-keyword">return</span> <span class="ruby-identifier">response</span>
+<span class="ruby-keyword">end</span></pre>
+          </div><!-- ruby_asynchronous_command-source -->
+          
+        </div>
+
+        
+
+        
+      </div><!-- ruby_asynchronous_command-method -->
+
+    
+      <div id="method-i-ruby_command" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">ruby_command</span><span
+            class="method-args">( ruby_script )</span>
+          <span class="method-click-advice">click to toggle source</span>
+        </div>
+        
+
+        <div class="method-description">
+          
+          
+          
+
+          
+          <div class="method-source-code" id="ruby_command-source">
+            <pre><span class="ruby-comment"># File lib/expctrl/expctrl_expctrlclient.rb, line 309</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">ruby_command</span>( <span class="ruby-identifier">ruby_script</span> )
+  <span class="ruby-identifier">response</span> = <span class="ruby-ivar">@client</span>.<span class="ruby-identifier">ruby_command</span>( <span class="ruby-identifier">ruby_script</span> )
+  <span class="ruby-keyword">if</span> <span class="ruby-ivar">@experiment_number</span> <span class="ruby-keyword">then</span>
+    <span class="ruby-identifier">add_command</span>( <span class="ruby-ivar">@experiment_number</span>, <span class="ruby-identifier">response</span>[<span class="ruby-string">&quot;command_number&quot;</span>] )
+  <span class="ruby-keyword">else</span>
+    <span class="ruby-ivar">@commands_mutex</span>.<span class="ruby-identifier">synchronize</span> { <span class="ruby-ivar">@commands</span>.<span class="ruby-identifier">push</span>( <span class="ruby-identifier">response</span>[<span class="ruby-string">&quot;command_number&quot;</span>] ) }
+  <span class="ruby-keyword">end</span>
+  <span class="ruby-keyword">return</span> <span class="ruby-identifier">response</span>
+<span class="ruby-keyword">end</span></pre>
+          </div><!-- ruby_command-source -->
+          
+        </div>
+
+        
+
+        
+      </div><!-- ruby_command-method -->
+
+    
+      <div id="method-i-ruby_delayed_command" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">ruby_delayed_command</span><span
+            class="method-args">( ruby_script, date )</span>
+          <span class="method-click-advice">click to toggle source</span>
+        </div>
+        
+
+        <div class="method-description">
+          
+          
+          
+
+          
+          <div class="method-source-code" id="ruby_delayed_command-source">
+            <pre><span class="ruby-comment"># File lib/expctrl/expctrl_expctrlclient.rb, line 329</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">ruby_delayed_command</span>( <span class="ruby-identifier">ruby_script</span>, <span class="ruby-identifier">date</span> )
+  <span class="ruby-identifier">response</span> = <span class="ruby-ivar">@client</span>.<span class="ruby-identifier">ruby_delayed_command</span>( <span class="ruby-identifier">ruby_script</span>, <span class="ruby-identifier">date</span> )
+  <span class="ruby-keyword">if</span> <span class="ruby-ivar">@experiment_number</span> <span class="ruby-keyword">then</span>
+    <span class="ruby-identifier">add_command</span>( <span class="ruby-ivar">@experiment_number</span>, <span class="ruby-identifier">response</span>[<span class="ruby-string">&quot;command_number&quot;</span>] )
+  <span class="ruby-keyword">else</span>
+    <span class="ruby-ivar">@commands_mutex</span>.<span class="ruby-identifier">synchronize</span> { <span class="ruby-ivar">@commands</span>.<span class="ruby-identifier">push</span>( <span class="ruby-identifier">response</span>[<span class="ruby-string">&quot;command_number&quot;</span>] ) }
+  <span class="ruby-keyword">end</span>
+  <span class="ruby-keyword">return</span> <span class="ruby-identifier">response</span>
+<span class="ruby-keyword">end</span></pre>
+          </div><!-- ruby_delayed_command-source -->
+          
+        </div>
+
+        
+
+        
+      </div><!-- ruby_delayed_command-method -->
+
+    
+    </section><!-- public-instance-method-details -->
+  
+  </section><!-- 5Buntitled-5D -->
+
+</div><!-- documentation -->
+
+
+<footer id="validator-badges">
+  <p><a href="http://validator.w3.org/check/referer">[Validate]</a>
+  <p>Generated by <a href="https://github.com/rdoc/rdoc">RDoc</a> 3.12.
+  <p>Generated with the <a href="http://deveiate.org/projects/Darkfish-Rdoc/">Darkfish Rdoc Generator</a> 3.
+</footer>
+

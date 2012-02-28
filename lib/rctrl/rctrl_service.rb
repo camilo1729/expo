@@ -162,7 +162,7 @@ public
   #Creates a new command, command_line, that is run on the server, the command_number is returned
   def asynchronous_command(command_line)
     return generic_command( { "command_line" => command_line, "asynchronous" => true } )
-  end
+e end
 
   #runs an interactive command on the server
   def interactive_command(command_line)

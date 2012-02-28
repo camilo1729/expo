@@ -1,4 +1,4 @@
-#!/usr/bin/ruby
+	#!/ureqsr/bin/ruby
 
 #require rubygems explicitely to ease the debugging RUBYOPTS=""
 require 'rubygems'
@@ -10,7 +10,7 @@ require 'taskset'
 require 'thread'
 
 require 'g5k_api' #for cleanup after the experiment is finished
-
+$cli
 port = 15783
 
 include Expo
@@ -284,5 +284,6 @@ load($rest.last)
   # clean up reservations & deployments
  # cleanup
 #end
+
 
 $client.close_experiment

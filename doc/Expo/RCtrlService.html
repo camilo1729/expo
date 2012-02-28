@@ -1,0 +1,1276 @@
+<!DOCTYPE html>
+
+<html>
+<head>
+<meta content="text/html; charset=UTF-8" http-equiv="Content-Type">
+
+<title>class Expo::RCtrlService - RDoc Documentation</title>
+
+<link type="text/css" media="screen" href="../rdoc.css" rel="stylesheet">
+
+<script type="text/javascript">
+  var rdoc_rel_prefix = "../";
+</script>
+
+<script type="text/javascript" charset="utf-8" src="../js/jquery.js"></script>
+<script type="text/javascript" charset="utf-8" src="../js/navigation.js"></script>
+<script type="text/javascript" charset="utf-8" src="../js/search_index.js"></script>
+<script type="text/javascript" charset="utf-8" src="../js/search.js"></script>
+<script type="text/javascript" charset="utf-8" src="../js/searcher.js"></script>
+<script type="text/javascript" charset="utf-8" src="../js/darkfish.js"></script>
+
+
+<body id="top" class="class">
+<nav id="metadata">
+  <nav id="home-section" class="section">
+  <h3 class="section-header">
+    <a href="../index.html">Home</a>
+    <a href="../table_of_contents.html#classes">Classes</a>
+    <a href="../table_of_contents.html#methods">Methods</a>
+  </h3>
+</nav>
+
+
+  <nav id="search-section" class="section project-section" class="initially-hidden">
+  <form action="#" method="get" accept-charset="utf-8">
+    <h3 class="section-header">
+      <input type="text" name="search" placeholder="Search" id="search-field"
+             title="Type to search, Up and Down to navigate, Enter to load">
+    </h3>
+  </form>
+
+  <ul id="search-results" class="initially-hidden"></ul>
+</nav>
+
+
+  <div id="file-metadata">
+    <nav id="file-list-section" class="section">
+  <h3 class="section-header">Defined In</h3>
+  <ul>
+    <li>lib/rctrl/rctrl_service.rb
+    <li>lib/rctrl/rctrl_rctrlclient.rb
+  </ul>
+</nav>
+
+    
+  </div>
+
+  <div id="class-metadata">
+    
+    <nav id="parent-class-section" class="section">
+  <h3 class="section-header">Parent</h3>
+  
+  <p class="link"><a href="../Object.html">Object</a>
+  
+</nav>
+
+    
+    <!-- Method Quickref -->
+<nav id="method-list-section" class="section">
+  <h3 class="section-header">Methods</h3>
+
+  <ul class="link-list">
+    
+    <li><a href="#method-c-new">::new</a>
+    
+    <li><a href="#method-i-asynchronous_command">#asynchronous_command</a>
+    
+    <li><a href="#method-i-bulk_command_infos">#bulk_command_infos</a>
+    
+    <li><a href="#method-i-bulk_command_results">#bulk_command_results</a>
+    
+    <li><a href="#method-i-bulk_commands">#bulk_commands</a>
+    
+    <li><a href="#method-i-command">#command</a>
+    
+    <li><a href="#method-i-command_archive">#command_archive</a>
+    
+    <li><a href="#method-i-command_delete">#command_delete</a>
+    
+    <li><a href="#method-i-command_info">#command_info</a>
+    
+    <li><a href="#method-i-command_input">#command_input</a>
+    
+    <li><a href="#method-i-command_result">#command_result</a>
+    
+    <li><a href="#method-i-command_rewind">#command_rewind</a>
+    
+    <li><a href="#method-i-delayed_command">#delayed_command</a>
+    
+    <li><a href="#method-i-generic_command">#generic_command</a>
+    
+    <li><a href="#method-i-get_command_inputs">#get_command_inputs</a>
+    
+    <li><a href="#method-i-interactive_command">#interactive_command</a>
+    
+    <li><a href="#method-i-recursive_command">#recursive_command</a>
+    
+    <li><a href="#method-i-ruby_asynchronous_command">#ruby_asynchronous_command</a>
+    
+    <li><a href="#method-i-ruby_command">#ruby_command</a>
+    
+    <li><a href="#method-i-ruby_delayed_command">#ruby_delayed_command</a>
+    
+  </ul>
+</nav>
+
+  </div>
+
+  <div id="project-metadata">
+    <nav id="fileindex-section" class="section project-section">
+  <h3 class="section-header">Pages</h3>
+
+  <ul>
+  
+    <li class="file"><a href="../COPYING.html">COPYING</a>
+  
+    <li class="file"><a href="../ChangeLog.html">ChangeLog</a>
+  
+    <li class="file"><a href="../LICENSE.html">LICENSE</a>
+  
+    <li class="file"><a href="../README.html">README</a>
+  
+    <li class="file"><a href="../Rakefile.html">Rakefile</a>
+  
+    <li class="file"><a href="../debian-pkg/debian/changelog.html">changelog</a>
+  
+    <li class="file"><a href="../debian-pkg/debian/compat.html">compat</a>
+  
+    <li class="file"><a href="../debian-pkg/debian/control.html">control</a>
+  
+    <li class="file"><a href="../debian-pkg/debian/copyright.html">copyright</a>
+  
+    <li class="file"><a href="../debian-pkg/debian/rules.html">rules</a>
+  
+    <li class="file"><a href="../demo/karo/README.html">README</a>
+  
+    <li class="file"><a href="../demo/karo/TODO.html">TODO</a>
+  
+    <li class="file"><a href="../htdocs/README.html">README</a>
+  
+    <li class="file"><a href="../htdocs/Rakefile.html">Rakefile</a>
+  
+    <li class="file"><a href="../old/trunk/gui/wx/README.html">README</a>
+  
+  </ul>
+</nav>
+
+    <nav id="classindex-section" class="section project-section">
+  <h3 class="section-header">Class and Module Index</h3>
+
+  <ul class="link-list">
+  
+    <li><a href="../Expo.html">Expo</a>
+  
+    <li><a href="../Expo/AddCommandResponse.html">Expo::AddCommandResponse</a>
+  
+    <li><a href="../Expo/AddCommandsResponse.html">Expo::AddCommandsResponse</a>
+  
+    <li><a href="../Expo/AddNodesResponse.html">Expo::AddNodesResponse</a>
+  
+    <li><a href="../Expo/AddReservationResponse.html">Expo::AddReservationResponse</a>
+  
+    <li><a href="../Expo/AsynchronousCommandResponse.html">Expo::AsynchronousCommandResponse</a>
+  
+    <li><a href="../Expo/BulkCommandInfosResponse.html">Expo::BulkCommandInfosResponse</a>
+  
+    <li><a href="../Expo/BulkCommandResultsResponse.html">Expo::BulkCommandResultsResponse</a>
+  
+    <li><a href="../Expo/BulkCommandsResponse.html">Expo::BulkCommandsResponse</a>
+  
+    <li><a href="../Expo/BulkRCtrlResponse.html">Expo::BulkRCtrlResponse</a>
+  
+    <li><a href="../Expo/CloseExperimentResponse.html">Expo::CloseExperimentResponse</a>
+  
+    <li><a href="../Expo/CommandArchiveResponse.html">Expo::CommandArchiveResponse</a>
+  
+    <li><a href="../Expo/CommandDeleteResponse.html">Expo::CommandDeleteResponse</a>
+  
+    <li><a href="../Expo/CommandInfoResponse.html">Expo::CommandInfoResponse</a>
+  
+    <li><a href="../Expo/CommandInputResponse.html">Expo::CommandInputResponse</a>
+  
+    <li><a href="../Expo/CommandResponse.html">Expo::CommandResponse</a>
+  
+    <li><a href="../Expo/CommandResultResponse.html">Expo::CommandResultResponse</a>
+  
+    <li><a href="../Expo/CommandRewindResponse.html">Expo::CommandRewindResponse</a>
+  
+    <li><a href="../Expo/CommandWaitResponse.html">Expo::CommandWaitResponse</a>
+  
+    <li><a href="../Expo/CreateExperimentResponse.html">Expo::CreateExperimentResponse</a>
+  
+    <li><a href="../Expo/DelayedCommandResponse.html">Expo::DelayedCommandResponse</a>
+  
+    <li><a href="../Expo/DelayedCommandScheduler.html">Expo::DelayedCommandScheduler</a>
+  
+    <li><a href="../Expo/DeleteCommandResponse.html">Expo::DeleteCommandResponse</a>
+  
+    <li><a href="../Expo/DeleteReservationResponse.html">Expo::DeleteReservationResponse</a>
+  
+    <li><a href="../Expo/DumpExperimentResponse.html">Expo::DumpExperimentResponse</a>
+  
+    <li><a href="../Expo/ExpCtrlClient.html">Expo::ExpCtrlClient</a>
+  
+    <li><a href="../Expo/ExpCtrlClientDrbDriver.html">Expo::ExpCtrlClientDrbDriver</a>
+  
+    <li><a href="../Expo/ExpCtrlClientNoneDriver.html">Expo::ExpCtrlClientNoneDriver</a>
+  
+    <li><a href="../Expo/ExpCtrlClientXMLRPCDriver.html">Expo::ExpCtrlClientXMLRPCDriver</a>
+  
+    <li><a href="../Expo/ExpCtrlExperiment.html">Expo::ExpCtrlExperiment</a>
+  
+    <li><a href="../Expo/ExpCtrlResponse.html">Expo::ExpCtrlResponse</a>
+  
+    <li><a href="../Expo/ExpCtrlService.html">Expo::ExpCtrlService</a>
+  
+    <li><a href="../Expo/ExperimentInfoResponse.html">Expo::ExperimentInfoResponse</a>
+  
+    <li><a href="../Expo/ExperimentNumberResponse.html">Expo::ExperimentNumberResponse</a>
+  
+    <li><a href="../Expo/GenericCommandResponse.html">Expo::GenericCommandResponse</a>
+  
+    <li><a href="../Expo/GenericTask.html">Expo::GenericTask</a>
+  
+    <li><a href="../Expo/GetAllCommandsResponse.html">Expo::GetAllCommandsResponse</a>
+  
+    <li><a href="../Expo/GetAllNodesResponse.html">Expo::GetAllNodesResponse</a>
+  
+    <li><a href="../Expo/GetAllReservationsResponse.html">Expo::GetAllReservationsResponse</a>
+  
+    <li><a href="../Expo/GetAllResponse.html">Expo::GetAllResponse</a>
+  
+    <li><a href="../Expo/GetCommandInputsResponse.html">Expo::GetCommandInputsResponse</a>
+  
+    <li><a href="../Expo/GetNodesResponse.html">Expo::GetNodesResponse</a>
+  
+    <li><a href="../Expo/Heap.html">Expo::Heap</a>
+  
+    <li><a href="../Expo/InteractiveCommandResponse.html">Expo::InteractiveCommandResponse</a>
+  
+    <li><a href="../Expo/NameSet.html">Expo::NameSet</a>
+  
+    <li><a href="../Expo/NewReservationResponse.html">Expo::NewReservationResponse</a>
+  
+    <li><a href="../Expo/Oargrid2Reservation.html">Expo::Oargrid2Reservation</a>
+  
+    <li><a href="../Expo/OargridReservation.html">Expo::OargridReservation</a>
+  
+    <li><a href="../Expo/OpenExperimentResponse.html">Expo::OpenExperimentResponse</a>
+  
+    <li><a href="../Expo/OpenReservationResponse.html">Expo::OpenReservationResponse</a>
+  
+    <li><a href="../Expo/RCtrlClient.html">Expo::RCtrlClient</a>
+  
+    <li><a href="../Expo/RCtrlClientDrbDriver.html">Expo::RCtrlClientDrbDriver</a>
+  
+    <li><a href="../Expo/RCtrlClientNoneDriver.html">Expo::RCtrlClientNoneDriver</a>
+  
+    <li><a href="../Expo/RCtrlClientXMLRPCDriver.html">Expo::RCtrlClientXMLRPCDriver</a>
+  
+    <li><a href="../Expo/RCtrlCommand.html">Expo::RCtrlCommand</a>
+  
+    <li><a href="../Expo/RCtrlResponse.html">Expo::RCtrlResponse</a>
+  
+    <li><a href="../Expo/RCtrlService.html">Expo::RCtrlService</a>
+  
+    <li><a href="../Expo/RecursiveCommandResponse.html">Expo::RecursiveCommandResponse</a>
+  
+    <li><a href="../Expo/ResCtrlClient.html">Expo::ResCtrlClient</a>
+  
+    <li><a href="../Expo/ResCtrlReservation.html">Expo::ResCtrlReservation</a>
+  
+    <li><a href="../Expo/ResCtrlResponse.html">Expo::ResCtrlResponse</a>
+  
+    <li><a href="../Expo/ResCtrlService.html">Expo::ResCtrlService</a>
+  
+    <li><a href="../Expo/ReservationInfoResponse.html">Expo::ReservationInfoResponse</a>
+  
+    <li><a href="../Expo/ReservationJobResponse.html">Expo::ReservationJobResponse</a>
+  
+    <li><a href="../Expo/ReservationJobsResponse.html">Expo::ReservationJobsResponse</a>
+  
+    <li><a href="../Expo/ReservationResourcesResponse.html">Expo::ReservationResourcesResponse</a>
+  
+    <li><a href="../Expo/ReservationStatsResponse.html">Expo::ReservationStatsResponse</a>
+  
+    <li><a href="../Expo/ReservationWaitResponse.html">Expo::ReservationWaitResponse</a>
+  
+    <li><a href="../Expo/Resource.html">Expo::Resource</a>
+  
+    <li><a href="../Expo/ResourceSet.html">Expo::ResourceSet</a>
+  
+    <li><a href="../Expo/ResourceSetIterator.html">Expo::ResourceSetIterator</a>
+  
+    <li><a href="../Expo/RubyAsynchronousCommandResponse.html">Expo::RubyAsynchronousCommandResponse</a>
+  
+    <li><a href="../Expo/RubyCommandResponse.html">Expo::RubyCommandResponse</a>
+  
+    <li><a href="../Expo/RubyDelayedCommandResponse.html">Expo::RubyDelayedCommandResponse</a>
+  
+    <li><a href="../Expo/Task.html">Expo::Task</a>
+  
+    <li><a href="../Expo/TaskSet.html">Expo::TaskSet</a>
+  
+    <li><a href="../Expo/TaskStream.html">Expo::TaskStream</a>
+  
+    <li><a href="../CmdCtrl.html">CmdCtrl</a>
+  
+    <li><a href="../CmdCtrl/Commands.html">CmdCtrl::Commands</a>
+  
+    <li><a href="../CmdCtrl/Commands/Command.html">CmdCtrl::Commands::Command</a>
+  
+    <li><a href="../CmdCtrl/Commands/CommandBufferer.html">CmdCtrl::Commands::CommandBufferer</a>
+  
+    <li><a href="../CmdCtrl/Commands/InteractiveCommand.html">CmdCtrl::Commands::InteractiveCommand</a>
+  
+    <li><a href="../CmdCtrl/ParallelRunner.html">CmdCtrl::ParallelRunner</a>
+  
+    <li><a href="../CmdCtrl/ParallelRunnerResultGroup.html">CmdCtrl::ParallelRunnerResultGroup</a>
+  
+    <li><a href="../ActionList.html">ActionList</a>
+  
+    <li><a href="../BoolItem.html">BoolItem</a>
+  
+    <li><a href="../ComposedStep.html">ComposedStep</a>
+  
+    <li><a href="../ConfigItem.html">ConfigItem</a>
+  
+    <li><a href="../ConfigTable_class.html">ConfigTable_class</a>
+  
+    <li><a href="../Enumerable.html">Enumerable</a>
+  
+    <li><a href="../ExpCtrlServer.html">ExpCtrlServer</a>
+  
+    <li><a href="../ExpCtrlServerDrbDriver.html">ExpCtrlServerDrbDriver</a>
+  
+    <li><a href="../ExpCtrlServerSoapDriver.html">ExpCtrlServerSoapDriver</a>
+  
+    <li><a href="../ExpCtrlServerXMLRPCDriver.html">ExpCtrlServerXMLRPCDriver</a>
+  
+    <li><a href="../ExpCtrlTest.html">ExpCtrlTest</a>
+  
+    <li><a href="../ExpeCtrlView.html">ExpeCtrlView</a>
+  
+    <li><a href="../ExpeView.html">ExpeView</a>
+  
+    <li><a href="../ExpoClient.html">ExpoClient</a>
+  
+    <li><a href="../ExpoGui.html">ExpoGui</a>
+  
+    <li><a href="../ExpoResult.html">ExpoResult</a>
+  
+    <li><a href="../ExpoUiApp.html">ExpoUiApp</a>
+  
+    <li><a href="../FifoExpoClient.html">FifoExpoClient</a>
+  
+    <li><a href="../FifoExpoServer.html">FifoExpoServer</a>
+  
+    <li><a href="../File.html">File</a>
+  
+    <li><a href="../FileOperations.html">FileOperations</a>
+  
+    <li><a href="../HeapTest.html">HeapTest</a>
+  
+    <li><a href="../History.html">History</a>
+  
+    <li><a href="../HookScriptAPI.html">HookScriptAPI</a>
+  
+    <li><a href="../HookUtils.html">HookUtils</a>
+  
+    <li><a href="../Installer.html">Installer</a>
+  
+    <li><a href="../Karo.html">Karo</a>
+  
+    <li><a href="../Logger.html">Logger</a>
+  
+    <li><a href="../MetaConfigAPI.html">MetaConfigAPI</a>
+  
+    <li><a href="../Object.html">Object</a>
+  
+    <li><a href="../PackageSelectionItem.html">PackageSelectionItem</a>
+  
+    <li><a href="../Parallel.html">Parallel</a>
+  
+    <li><a href="../ParallelSection.html">ParallelSection</a>
+  
+    <li><a href="../PathItem.html">PathItem</a>
+  
+    <li><a href="../ProgramItem.html">ProgramItem</a>
+  
+    <li><a href="../RCtrlServer.html">RCtrlServer</a>
+  
+    <li><a href="../RCtrlServerDrbDriver.html">RCtrlServerDrbDriver</a>
+  
+    <li><a href="../RCtrlServerSoapDriver.html">RCtrlServerSoapDriver</a>
+  
+    <li><a href="../RCtrlServerXMLRPCDriver.html">RCtrlServerXMLRPCDriver</a>
+  
+    <li><a href="../RCtrlTest.html">RCtrlTest</a>
+  
+    <li><a href="../ResCtrlServer.html">ResCtrlServer</a>
+  
+    <li><a href="../ResCtrlServerDrbDriver.html">ResCtrlServerDrbDriver</a>
+  
+    <li><a href="../ResCtrlServerSoapDriver.html">ResCtrlServerSoapDriver</a>
+  
+    <li><a href="../ResCtrlServerXMLRPCDriver.html">ResCtrlServerXMLRPCDriver</a>
+  
+    <li><a href="../ResCtrlTest.html">ResCtrlTest</a>
+  
+    <li><a href="../ResourceSetTest.html">ResourceSetTest</a>
+  
+    <li><a href="../Result.html">Result</a>
+  
+    <li><a href="../SelectItem.html">SelectItem</a>
+  
+    <li><a href="../SetupError.html">SetupError</a>
+  
+    <li><a href="../Step.html">Step</a>
+  
+    <li><a href="../Steps.html">Steps</a>
+  
+    <li><a href="../TaktukWrapper.html">TaktukWrapper</a>
+  
+    <li><a href="../TaskResult.html">TaskResult</a>
+  
+    <li><a href="../TestReservation.html">TestReservation</a>
+  
+    <li><a href="../ThreadsCounter.html">ThreadsCounter</a>
+  
+    <li><a href="../ToplevelInstaller.html">ToplevelInstaller</a>
+  
+    <li><a href="../ToplevelInstallerMulti.html">ToplevelInstallerMulti</a>
+  
+    <li><a href="../Utils.html">Utils</a>
+  
+    <li><a href="../WxExpeProgram.html">WxExpeProgram</a>
+  
+    <li><a href="../WxTaskList.html">WxTaskList</a>
+  
+    <li><a href="../YAMLTreeView.html">YAMLTreeView</a>
+  
+    <li><a href="../YAMLTreeViewWindow.html">YAMLTreeViewWindow</a>
+  
+  </ul>
+</nav>
+
+  </div>
+</nav>
+
+<div id="documentation">
+  <h1 class="class">class Expo::RCtrlService</h1>
+
+  <div id="description" class="description">
+    
+  </div><!-- description -->
+
+  
+  
+  
+  <section id="5Buntitled-5D" class="documentation-section">
+    
+
+    
+
+    
+
+    
+
+    <!-- Methods -->
+    
+     <section id="public-class-5Buntitled-5D-method-details" class="method-section section">
+      <h3 class="section-header">Public Class Methods</h3>
+
+    
+      <div id="method-c-new" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">new</span><span
+            class="method-args">( archive_level = nil, archive_path = nil )</span>
+          <span class="method-click-advice">click to toggle source</span>
+        </div>
+        
+
+        <div class="method-description">
+          
+          <p>creates a new server</p>
+          
+
+          
+          <div class="method-source-code" id="new-source">
+            <pre><span class="ruby-comment"># File lib/rctrl/rctrl_service.rb, line 16</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">initialize</span>( <span class="ruby-identifier">archive_level</span> = <span class="ruby-keyword">nil</span>, <span class="ruby-identifier">archive_path</span> = <span class="ruby-keyword">nil</span> )
+  <span class="ruby-comment">#other servers we might know of</span>
+  <span class="ruby-ivar">@server_hash</span> = <span class="ruby-constant">Hash</span><span class="ruby-operator">::</span><span class="ruby-identifier">new</span>
+  <span class="ruby-ivar">@server_mutex</span> = <span class="ruby-constant">Mutex</span><span class="ruby-operator">::</span><span class="ruby-identifier">new</span>
+  <span class="ruby-comment">#hash of the commands that are run or have been run on the server</span>
+  <span class="ruby-ivar">@command_hash</span> = <span class="ruby-constant">Hash</span><span class="ruby-operator">::</span><span class="ruby-identifier">new</span>
+  <span class="ruby-comment">#the first command number</span>
+  <span class="ruby-ivar">@command_number</span> = <span class="ruby-value">0</span>
+  <span class="ruby-ivar">@command_mutex</span> = <span class="ruby-constant">Mutex</span><span class="ruby-operator">::</span><span class="ruby-identifier">new</span>
+  <span class="ruby-comment">#a new scheduler for delayed commands</span>
+  <span class="ruby-ivar">@command_scheduler</span> = <span class="ruby-constant">DelayedCommandScheduler</span><span class="ruby-operator">::</span><span class="ruby-identifier">new</span>
+  <span class="ruby-identifier">@@instance_number</span> <span class="ruby-operator">+=</span> <span class="ruby-value">1</span>
+  <span class="ruby-ivar">@archive</span> = <span class="ruby-identifier">archive_level</span>
+  <span class="ruby-keyword">if</span> <span class="ruby-identifier">archive_level</span> <span class="ruby-keyword">then</span>
+    <span class="ruby-keyword">if</span> <span class="ruby-identifier">archive_path</span> <span class="ruby-keyword">then</span>
+      <span class="ruby-ivar">@save_directory</span> = <span class="ruby-identifier">archive_path</span>
+    <span class="ruby-keyword">else</span>
+      <span class="ruby-ivar">@save_directory</span> = <span class="ruby-node">&quot;rctrl-#{Time::now}-#{Process::pid}-#{@@instance_number}&quot;</span>
+    <span class="ruby-keyword">end</span>
+    <span class="ruby-constant">Dir</span><span class="ruby-operator">::</span><span class="ruby-identifier">mkdir</span>(<span class="ruby-ivar">@save_directory</span>)
+  <span class="ruby-keyword">end</span>
+<span class="ruby-keyword">end</span></pre>
+          </div><!-- new-source -->
+          
+        </div>
+
+        
+
+        
+      </div><!-- new-method -->
+
+    
+    </section><!-- public-class-method-details -->
+  
+     <section id="public-instance-5Buntitled-5D-method-details" class="method-section section">
+      <h3 class="section-header">Public Instance Methods</h3>
+
+    
+      <div id="method-i-asynchronous_command" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">asynchronous_command</span><span
+            class="method-args">(command_line)</span>
+          <span class="method-click-advice">click to toggle source</span>
+        </div>
+        
+
+        <div class="method-description">
+          
+          <p>Creates a new command, command_line, that is run on the server, the
+command_number is returned</p>
+          
+
+          
+          <div class="method-source-code" id="asynchronous_command-source">
+            <pre><span class="ruby-comment"># File lib/rctrl/rctrl_service.rb, line 163</span>
+  <span class="ruby-keyword">def</span> <span class="ruby-identifier">asynchronous_command</span>(<span class="ruby-identifier">command_line</span>)
+    <span class="ruby-keyword">return</span> <span class="ruby-identifier">generic_command</span>( { <span class="ruby-string">&quot;command_line&quot;</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-identifier">command_line</span>, <span class="ruby-string">&quot;asynchronous&quot;</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-keyword">true</span> } )
+<span class="ruby-identifier">e</span> <span class="ruby-keyword">end</span></pre>
+          </div><!-- asynchronous_command-source -->
+          
+        </div>
+
+        
+
+        
+      </div><!-- asynchronous_command-method -->
+
+    
+      <div id="method-i-bulk_command_infos" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">bulk_command_infos</span><span
+            class="method-args">(command_numbers)</span>
+          <span class="method-click-advice">click to toggle source</span>
+        </div>
+        
+
+        <div class="method-description">
+          
+          
+          
+
+          
+          <div class="method-source-code" id="bulk_command_infos-source">
+            <pre><span class="ruby-comment"># File lib/rctrl/rctrl_service.rb, line 210</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">bulk_command_infos</span>(<span class="ruby-identifier">command_numbers</span>)
+  <span class="ruby-identifier">response</span> = <span class="ruby-constant">BulkCommandInfosResponse</span><span class="ruby-operator">::</span><span class="ruby-identifier">new</span>
+  <span class="ruby-identifier">command_numbers</span>.<span class="ruby-identifier">each</span> { <span class="ruby-operator">|</span><span class="ruby-identifier">i</span><span class="ruby-operator">|</span>
+    <span class="ruby-identifier">response</span>[<span class="ruby-identifier">i</span>] = <span class="ruby-keyword">self</span>.<span class="ruby-identifier">command_info</span>(<span class="ruby-identifier">i</span>)
+  }
+  <span class="ruby-keyword">return</span> <span class="ruby-identifier">response</span>
+<span class="ruby-keyword">end</span></pre>
+          </div><!-- bulk_command_infos-source -->
+          
+        </div>
+
+        
+
+        
+      </div><!-- bulk_command_infos-method -->
+
+    
+      <div id="method-i-bulk_command_results" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">bulk_command_results</span><span
+            class="method-args">(command_numbers)</span>
+          <span class="method-click-advice">click to toggle source</span>
+        </div>
+        
+
+        <div class="method-description">
+          
+          
+          
+
+          
+          <div class="method-source-code" id="bulk_command_results-source">
+            <pre><span class="ruby-comment"># File lib/rctrl/rctrl_service.rb, line 202</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">bulk_command_results</span>(<span class="ruby-identifier">command_numbers</span>)
+  <span class="ruby-identifier">response</span> = <span class="ruby-constant">BulkCommandResultsResponse</span><span class="ruby-operator">::</span><span class="ruby-identifier">new</span>
+  <span class="ruby-identifier">command_numbers</span>.<span class="ruby-identifier">each</span> { <span class="ruby-operator">|</span><span class="ruby-identifier">i</span><span class="ruby-operator">|</span>
+    <span class="ruby-identifier">response</span>[<span class="ruby-identifier">i</span>] = <span class="ruby-keyword">self</span>.<span class="ruby-identifier">command_result</span>(<span class="ruby-identifier">i</span>)
+  }
+  <span class="ruby-keyword">return</span> <span class="ruby-identifier">response</span>
+<span class="ruby-keyword">end</span></pre>
+          </div><!-- bulk_command_results-source -->
+          
+        </div>
+
+        
+
+        
+      </div><!-- bulk_command_results-method -->
+
+    
+      <div id="method-i-bulk_commands" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">bulk_commands</span><span
+            class="method-args">(commands)</span>
+          <span class="method-click-advice">click to toggle source</span>
+        </div>
+        
+
+        <div class="method-description">
+          
+          
+          
+
+          
+          <div class="method-source-code" id="bulk_commands-source">
+            <pre><span class="ruby-comment"># File lib/rctrl/rctrl_service.rb, line 192</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">bulk_commands</span>(<span class="ruby-identifier">commands</span>)
+  <span class="ruby-identifier">response</span> = <span class="ruby-constant">BulkCommandsResponse</span><span class="ruby-operator">::</span><span class="ruby-identifier">new</span>
+  <span class="ruby-identifier">commands</span>.<span class="ruby-identifier">each_index</span> { <span class="ruby-operator">|</span><span class="ruby-identifier">i</span><span class="ruby-operator">|</span>
+    <span class="ruby-identifier">command</span>, <span class="ruby-identifier">parameters</span> = <span class="ruby-identifier">commands</span>[<span class="ruby-identifier">i</span>]
+    <span class="ruby-identifier">target_method</span> = <span class="ruby-keyword">self</span>.<span class="ruby-identifier">method</span>(<span class="ruby-identifier">command</span>)
+    <span class="ruby-identifier">response</span>[<span class="ruby-identifier">i</span>] = <span class="ruby-identifier">target_method</span>.<span class="ruby-identifier">call</span>(*<span class="ruby-identifier">parameters</span>)
+  }
+  <span class="ruby-keyword">return</span> <span class="ruby-identifier">response</span>
+<span class="ruby-keyword">end</span></pre>
+          </div><!-- bulk_commands-source -->
+          
+        </div>
+
+        
+
+        
+      </div><!-- bulk_commands-method -->
+
+    
+      <div id="method-i-command" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">command</span><span
+            class="method-args">(command_line)</span>
+          <span class="method-click-advice">click to toggle source</span>
+        </div>
+        
+
+        <div class="method-description">
+          
+          <p>runs command_line and wait for it to finish, then returns command number,
+status and outputs</p>
+          
+
+          
+          <div class="method-source-code" id="command-source">
+            <pre><span class="ruby-comment"># File lib/rctrl/rctrl_service.rb, line 158</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">command</span>(<span class="ruby-identifier">command_line</span>)
+  <span class="ruby-keyword">return</span> <span class="ruby-identifier">generic_command</span>( { <span class="ruby-string">&quot;command_line&quot;</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-identifier">command_line</span> } )
+<span class="ruby-keyword">end</span></pre>
+          </div><!-- command-source -->
+          
+        </div>
+
+        
+
+        
+      </div><!-- command-method -->
+
+    
+      <div id="method-i-command_archive" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">command_archive</span><span
+            class="method-args">( command_number )</span>
+          <span class="method-click-advice">click to toggle source</span>
+        </div>
+        
+
+        <div class="method-description">
+          
+          
+          
+
+          
+          <div class="method-source-code" id="command_archive-source">
+            <pre><span class="ruby-comment"># File lib/rctrl/rctrl_service.rb, line 340</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">command_archive</span>( <span class="ruby-identifier">command_number</span> )
+  <span class="ruby-identifier">c</span> = <span class="ruby-identifier">get_command</span>(<span class="ruby-identifier">command_number</span>)
+  <span class="ruby-identifier">c</span>.<span class="ruby-identifier">archive</span>(<span class="ruby-node">&quot;#{@save_directory}/#{command_number}&quot;</span>) <span class="ruby-keyword">if</span> <span class="ruby-ivar">@archive</span>
+  <span class="ruby-keyword">return</span> <span class="ruby-constant">CommandArchiveResponse</span><span class="ruby-operator">::</span><span class="ruby-identifier">new</span>   
+<span class="ruby-keyword">end</span></pre>
+          </div><!-- command_archive-source -->
+          
+        </div>
+
+        
+
+        
+      </div><!-- command_archive-method -->
+
+    
+      <div id="method-i-command_delete" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">command_delete</span><span
+            class="method-args">( command_number )</span>
+          <span class="method-click-advice">click to toggle source</span>
+        </div>
+        
+
+        <div class="method-description">
+          
+          
+          
+
+          
+          <div class="method-source-code" id="command_delete-source">
+            <pre><span class="ruby-comment"># File lib/rctrl/rctrl_service.rb, line 335</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">command_delete</span>( <span class="ruby-identifier">command_number</span> )
+  <span class="ruby-identifier">del_command</span>( <span class="ruby-identifier">command_number</span> )   
+  <span class="ruby-keyword">return</span> <span class="ruby-constant">CommandDeleteResponse</span><span class="ruby-operator">::</span><span class="ruby-identifier">new</span>
+<span class="ruby-keyword">end</span></pre>
+          </div><!-- command_delete-source -->
+          
+        </div>
+
+        
+
+        
+      </div><!-- command_delete-method -->
+
+    
+      <div id="method-i-command_info" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">command_info</span><span
+            class="method-args">(command_number)</span>
+          <span class="method-click-advice">click to toggle source</span>
+        </div>
+        
+
+        <div class="method-description">
+          
+          <p>returns most information about a command registerd in the server, given
+it’s command number. info returned are : the command line, if the command
+is started, the time it started, if it finisehd, the time it finished, if
+it is a scheduled command, the time it is scheduled to start, if the
+command is a ruby command and it’s script raises “Invalid command
+number” if the command number is invalid</p>
+          
+
+          
+          <div class="method-source-code" id="command_info-source">
+            <pre><span class="ruby-comment"># File lib/rctrl/rctrl_service.rb, line 247</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">command_info</span>(<span class="ruby-identifier">command_number</span>)
+
+  <span class="ruby-comment">#get the command associated with the command number</span>
+  <span class="ruby-comment">#&quot;Invalid command number&quot; is raised if command number is invalid</span>
+  <span class="ruby-identifier">c</span> = <span class="ruby-identifier">get_command</span>(<span class="ruby-identifier">command_number</span>)
+  <span class="ruby-identifier">response</span> = <span class="ruby-constant">CommandInfoResponse</span><span class="ruby-operator">::</span><span class="ruby-identifier">new</span>
+  <span class="ruby-keyword">if</span> <span class="ruby-identifier">c</span>.<span class="ruby-identifier">cmd</span> <span class="ruby-keyword">then</span>
+    <span class="ruby-identifier">response</span>[<span class="ruby-string">&quot;command_line&quot;</span>] = <span class="ruby-identifier">c</span>.<span class="ruby-identifier">cmd</span>.<span class="ruby-identifier">cmd</span>
+    <span class="ruby-identifier">response</span>[<span class="ruby-string">&quot;started&quot;</span>] = <span class="ruby-identifier">c</span>.<span class="ruby-identifier">started</span>
+    <span class="ruby-identifier">response</span>[<span class="ruby-string">&quot;archived&quot;</span>] = <span class="ruby-identifier">c</span>.<span class="ruby-identifier">archived</span>
+  <span class="ruby-keyword">end</span>
+  <span class="ruby-keyword">if</span> <span class="ruby-identifier">c</span>.<span class="ruby-identifier">started</span> <span class="ruby-keyword">then</span>
+    <span class="ruby-identifier">response</span>[<span class="ruby-string">&quot;start_time&quot;</span>] = <span class="ruby-identifier">c</span>.<span class="ruby-identifier">start_time</span>
+    <span class="ruby-identifier">response</span>[<span class="ruby-string">&quot;pid&quot;</span>] = <span class="ruby-identifier">c</span>.<span class="ruby-identifier">cmd</span>.<span class="ruby-identifier">pid</span>
+  <span class="ruby-keyword">end</span>
+  <span class="ruby-identifier">response</span>[<span class="ruby-string">&quot;finished&quot;</span>] = <span class="ruby-identifier">c</span>.<span class="ruby-identifier">finished</span>
+  <span class="ruby-keyword">if</span> <span class="ruby-identifier">c</span>.<span class="ruby-identifier">finished</span> <span class="ruby-keyword">then</span>
+    <span class="ruby-identifier">response</span>[<span class="ruby-string">&quot;end_time&quot;</span>] = <span class="ruby-identifier">c</span>.<span class="ruby-identifier">end_time</span>
+  <span class="ruby-keyword">end</span>
+  <span class="ruby-identifier">response</span>[<span class="ruby-string">&quot;scheduled&quot;</span>] = <span class="ruby-identifier">c</span>.<span class="ruby-identifier">scheduled</span>
+  <span class="ruby-keyword">if</span> <span class="ruby-identifier">c</span>.<span class="ruby-identifier">scheduled</span> <span class="ruby-keyword">then</span>
+    <span class="ruby-identifier">response</span>[<span class="ruby-string">&quot;scheduled_time&quot;</span>] = <span class="ruby-identifier">c</span>.<span class="ruby-identifier">scheduled_time</span>
+  <span class="ruby-keyword">end</span>
+  <span class="ruby-identifier">response</span>[<span class="ruby-string">&quot;ruby_command&quot;</span>] = <span class="ruby-identifier">c</span>.<span class="ruby-identifier">ruby_command</span>
+  <span class="ruby-keyword">if</span> <span class="ruby-identifier">c</span>.<span class="ruby-identifier">ruby_command</span> <span class="ruby-keyword">then</span>
+    <span class="ruby-identifier">response</span>[<span class="ruby-string">&quot;ruby_script&quot;</span>] = <span class="ruby-identifier">c</span>.<span class="ruby-identifier">ruby_script</span>
+  <span class="ruby-keyword">end</span>
+  <span class="ruby-identifier">response</span>[<span class="ruby-string">&quot;recursive&quot;</span>] = <span class="ruby-identifier">c</span>.<span class="ruby-identifier">recursive</span>
+  <span class="ruby-keyword">if</span> <span class="ruby-identifier">c</span>.<span class="ruby-identifier">recursive</span> <span class="ruby-keyword">then</span>
+    <span class="ruby-identifier">response</span>[<span class="ruby-string">&quot;server_name&quot;</span>] = <span class="ruby-identifier">c</span>.<span class="ruby-identifier">server_name</span>
+    <span class="ruby-identifier">response</span>[<span class="ruby-string">&quot;command&quot;</span>] = <span class="ruby-identifier">c</span>.<span class="ruby-identifier">command</span>
+    <span class="ruby-identifier">response</span>[<span class="ruby-string">&quot;parameters&quot;</span>] = <span class="ruby-identifier">c</span>.<span class="ruby-identifier">parameters</span>
+    <span class="ruby-identifier">response</span>[<span class="ruby-string">&quot;command_response&quot;</span>] = <span class="ruby-identifier">c</span>.<span class="ruby-identifier">command_response</span>
+  <span class="ruby-keyword">end</span>
+  <span class="ruby-keyword">return</span> <span class="ruby-identifier">response</span>
+<span class="ruby-keyword">end</span></pre>
+          </div><!-- command_info-source -->
+          
+        </div>
+
+        
+
+        
+      </div><!-- command_info-method -->
+
+    
+      <div id="method-i-command_input" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">command_input</span><span
+            class="method-args">(command_number, input)</span>
+          <span class="method-click-advice">click to toggle source</span>
+        </div>
+        
+
+        <div class="method-description">
+          
+          <p>send an input to the command command_number raises “Invalid command
+number”</p>
+          
+
+          
+          <div class="method-source-code" id="command_input-source">
+            <pre><span class="ruby-comment"># File lib/rctrl/rctrl_service.rb, line 235</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">command_input</span>(<span class="ruby-identifier">command_number</span>, <span class="ruby-identifier">input</span>)
+  <span class="ruby-identifier">c</span> = <span class="ruby-identifier">get_command</span>(<span class="ruby-identifier">command_number</span>)
+  <span class="ruby-keyword">if</span> <span class="ruby-identifier">c</span>.<span class="ruby-identifier">cmd</span> <span class="ruby-keyword">then</span>
+    <span class="ruby-identifier">c</span>.<span class="ruby-identifier">add_input</span>(<span class="ruby-identifier">input</span>)
+    <span class="ruby-identifier">c</span>.<span class="ruby-identifier">cmd</span>.<span class="ruby-identifier">puts</span>(<span class="ruby-identifier">input</span>)
+  <span class="ruby-keyword">end</span>
+  <span class="ruby-keyword">return</span> <span class="ruby-constant">CommandInputResponse</span><span class="ruby-operator">::</span><span class="ruby-identifier">new</span>
+<span class="ruby-keyword">end</span></pre>
+          </div><!-- command_input-source -->
+          
+        </div>
+
+        
+
+        
+      </div><!-- command_input-method -->
+
+    
+      <div id="method-i-command_result" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">command_result</span><span
+            class="method-args">(command_number)</span>
+          <span class="method-click-advice">click to toggle source</span>
+        </div>
+        
+
+        <div class="method-description">
+          
+          <p>returns the status of the command, and the unread outputs so far</p>
+          
+
+          
+          <div class="method-source-code" id="command_result-source">
+            <pre><span class="ruby-comment"># File lib/rctrl/rctrl_service.rb, line 219</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">command_result</span>(<span class="ruby-identifier">command_number</span>)
+  <span class="ruby-identifier">response</span> = <span class="ruby-constant">CommandResultResponse</span><span class="ruby-operator">::</span><span class="ruby-identifier">new</span>
+  <span class="ruby-identifier">c</span> = <span class="ruby-identifier">get_command</span>(<span class="ruby-identifier">command_number</span>)
+  <span class="ruby-keyword">if</span> <span class="ruby-identifier">c</span>.<span class="ruby-identifier">cmd</span> <span class="ruby-keyword">then</span>
+    <span class="ruby-identifier">response</span>[<span class="ruby-string">&quot;exited&quot;</span>] = <span class="ruby-identifier">c</span>.<span class="ruby-identifier">cmd</span>.<span class="ruby-identifier">exited?</span>
+    <span class="ruby-keyword">if</span> <span class="ruby-identifier">response</span>[<span class="ruby-string">&quot;exited&quot;</span>] <span class="ruby-keyword">then</span>
+      <span class="ruby-identifier">response</span>[<span class="ruby-string">&quot;exit_status&quot;</span>] = <span class="ruby-identifier">c</span>.<span class="ruby-identifier">cmd</span>.<span class="ruby-identifier">status</span>.<span class="ruby-identifier">exitstatus</span>
+    <span class="ruby-keyword">end</span>
+    <span class="ruby-identifier">response</span>[<span class="ruby-string">&quot;stdout&quot;</span>] = <span class="ruby-identifier">c</span>.<span class="ruby-identifier">cmd</span>.<span class="ruby-identifier">read_stdout</span>
+    <span class="ruby-identifier">response</span>[<span class="ruby-string">&quot;stderr&quot;</span>] = <span class="ruby-identifier">c</span>.<span class="ruby-identifier">cmd</span>.<span class="ruby-identifier">read_stderr</span>
+  <span class="ruby-keyword">end</span>
+  <span class="ruby-keyword">return</span> <span class="ruby-identifier">response</span>
+<span class="ruby-keyword">end</span></pre>
+          </div><!-- command_result-source -->
+          
+        </div>
+
+        
+
+        
+      </div><!-- command_result-method -->
+
+    
+      <div id="method-i-command_rewind" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">command_rewind</span><span
+            class="method-args">(command_number)</span>
+          <span class="method-click-advice">click to toggle source</span>
+        </div>
+        
+
+        <div class="method-description">
+          
+          <p>rewinds the command outputs to read them again raises “Invalid command
+number”</p>
+          
+
+          
+          <div class="method-source-code" id="command_rewind-source">
+            <pre><span class="ruby-comment"># File lib/rctrl/rctrl_service.rb, line 326</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">command_rewind</span>(<span class="ruby-identifier">command_number</span>)
+  <span class="ruby-identifier">c</span> = <span class="ruby-identifier">get_command</span>(<span class="ruby-identifier">command_number</span>)
+  <span class="ruby-keyword">if</span> <span class="ruby-identifier">c</span>.<span class="ruby-identifier">cmd</span> <span class="ruby-keyword">then</span>
+    <span class="ruby-identifier">c</span>.<span class="ruby-identifier">cmd</span>.<span class="ruby-identifier">rewind_stdout</span>
+    <span class="ruby-identifier">c</span>.<span class="ruby-identifier">cmd</span>.<span class="ruby-identifier">rewind_stderr</span>
+  <span class="ruby-keyword">end</span>
+  <span class="ruby-keyword">return</span> <span class="ruby-constant">CommandRewindResponse</span><span class="ruby-operator">::</span><span class="ruby-identifier">new</span>
+<span class="ruby-keyword">end</span></pre>
+          </div><!-- command_rewind-source -->
+          
+        </div>
+
+        
+
+        
+      </div><!-- command_rewind-method -->
+
+    
+      <div id="method-i-delayed_command" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">delayed_command</span><span
+            class="method-args">(command_line, date)</span>
+          <span class="method-click-advice">click to toggle source</span>
+        </div>
+        
+
+        <div class="method-description">
+          
+          <p>creates a command to be run at the given date</p>
+          
+
+          
+          <div class="method-source-code" id="delayed_command-source">
+            <pre><span class="ruby-comment"># File lib/rctrl/rctrl_service.rb, line 173</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">delayed_command</span>(<span class="ruby-identifier">command_line</span>, <span class="ruby-identifier">date</span>)
+  <span class="ruby-keyword">return</span> <span class="ruby-identifier">generic_command</span>( { <span class="ruby-string">&quot;command_line&quot;</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-identifier">command_line</span>, <span class="ruby-string">&quot;delayed&quot;</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-keyword">true</span>, <span class="ruby-string">&quot;date&quot;</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-identifier">date</span> } )
+<span class="ruby-keyword">end</span></pre>
+          </div><!-- delayed_command-source -->
+          
+        </div>
+
+        
+
+        
+      </div><!-- delayed_command-method -->
+
+    
+      <div id="method-i-generic_command" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">generic_command</span><span
+            class="method-args">(params)</span>
+          <span class="method-click-advice">click to toggle source</span>
+        </div>
+        
+
+        <div class="method-description">
+          
+          
+          
+
+          
+          <div class="method-source-code" id="generic_command-source">
+            <pre><span class="ruby-comment"># File lib/rctrl/rctrl_service.rb, line 108</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">generic_command</span>(<span class="ruby-identifier">params</span>)
+  <span class="ruby-identifier">c</span>=<span class="ruby-keyword">nil</span>
+  <span class="ruby-identifier">response</span> = <span class="ruby-constant">GenericCommandResponse</span><span class="ruby-operator">::</span><span class="ruby-identifier">new</span>
+  
+  <span class="ruby-keyword">if</span> <span class="ruby-identifier">params</span>[<span class="ruby-string">&quot;ruby_command&quot;</span>] <span class="ruby-keyword">then</span>
+    <span class="ruby-identifier">c</span> =  <span class="ruby-constant">RCtrlCommand</span><span class="ruby-operator">::</span><span class="ruby-identifier">new</span>(<span class="ruby-constant">CmdCtrl</span><span class="ruby-operator">::</span><span class="ruby-constant">Commands</span><span class="ruby-operator">::</span><span class="ruby-constant">CommandBufferer</span><span class="ruby-operator">::</span><span class="ruby-identifier">new</span>( <span class="ruby-constant">CmdCtrl</span><span class="ruby-operator">::</span><span class="ruby-constant">Commands</span><span class="ruby-operator">::</span><span class="ruby-constant">Command</span><span class="ruby-operator">::</span><span class="ruby-identifier">new</span>{ <span class="ruby-identifier">eval</span>(<span class="ruby-identifier">params</span>[<span class="ruby-string">&quot;ruby_script&quot;</span>]) } ) )
+    <span class="ruby-identifier">c</span>.<span class="ruby-identifier">set_ruby_script</span>(<span class="ruby-identifier">params</span>[<span class="ruby-string">&quot;ruby_script&quot;</span>])
+  <span class="ruby-keyword">else</span>
+    <span class="ruby-keyword">if</span> <span class="ruby-identifier">params</span>[<span class="ruby-string">&quot;interactive&quot;</span>] <span class="ruby-keyword">then</span>
+      <span class="ruby-identifier">c</span> = <span class="ruby-constant">RCtrlCommand</span><span class="ruby-operator">::</span><span class="ruby-identifier">new</span>(<span class="ruby-constant">CmdCtrl</span><span class="ruby-operator">::</span><span class="ruby-constant">Commands</span><span class="ruby-operator">::</span><span class="ruby-constant">CommandBufferer</span><span class="ruby-operator">::</span><span class="ruby-identifier">new</span>( <span class="ruby-constant">CmdCtrl</span><span class="ruby-operator">::</span><span class="ruby-constant">Commands</span><span class="ruby-operator">::</span><span class="ruby-constant">InteractiveCommand</span><span class="ruby-operator">::</span><span class="ruby-identifier">new</span>(<span class="ruby-identifier">params</span>[<span class="ruby-string">&quot;command_line&quot;</span>]) ) )
+    <span class="ruby-keyword">else</span>
+      <span class="ruby-identifier">c</span> =  <span class="ruby-constant">RCtrlCommand</span><span class="ruby-operator">::</span><span class="ruby-identifier">new</span>(<span class="ruby-constant">CmdCtrl</span><span class="ruby-operator">::</span><span class="ruby-constant">Commands</span><span class="ruby-operator">::</span><span class="ruby-constant">CommandBufferer</span><span class="ruby-operator">::</span><span class="ruby-identifier">new</span>( <span class="ruby-constant">CmdCtrl</span><span class="ruby-operator">::</span><span class="ruby-constant">Commands</span><span class="ruby-operator">::</span><span class="ruby-constant">Command</span><span class="ruby-operator">::</span><span class="ruby-identifier">new</span>(<span class="ruby-identifier">params</span>[<span class="ruby-string">&quot;command_line&quot;</span>]) ) )
+    <span class="ruby-keyword">end</span>
+  <span class="ruby-keyword">end</span>
+
+  <span class="ruby-keyword">if</span> <span class="ruby-identifier">params</span>[<span class="ruby-string">&quot;delayed&quot;</span>] <span class="ruby-keyword">or</span> <span class="ruby-identifier">params</span>[<span class="ruby-string">&quot;asynchronous&quot;</span>] <span class="ruby-keyword">then</span>
+    <span class="ruby-identifier">c</span>.<span class="ruby-identifier">cmd</span>.<span class="ruby-identifier">on_exit</span> <span class="ruby-keyword">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">status</span>, <span class="ruby-identifier">cmd</span><span class="ruby-operator">|</span>
+      <span class="ruby-identifier">c</span>.<span class="ruby-identifier">set_end_time</span>
+      <span class="ruby-identifier">c</span>.<span class="ruby-identifier">archive</span>(<span class="ruby-node">&quot;#{@save_directory}/#{response[&quot;command_number&quot;]}&quot;</span>) <span class="ruby-keyword">if</span> <span class="ruby-ivar">@archive</span> <span class="ruby-operator">==</span> <span class="ruby-value">1</span>
+    <span class="ruby-keyword">end</span>
+  <span class="ruby-keyword">end</span>
+
+  <span class="ruby-keyword">if</span> <span class="ruby-identifier">params</span>[<span class="ruby-string">&quot;delayed&quot;</span>] <span class="ruby-keyword">then</span>
+    <span class="ruby-identifier">c</span>.<span class="ruby-identifier">scheduled</span> = <span class="ruby-keyword">true</span>
+    <span class="ruby-identifier">c</span>.<span class="ruby-identifier">scheduled_time</span> = <span class="ruby-identifier">params</span>[<span class="ruby-string">&quot;date&quot;</span>]
+  <span class="ruby-keyword">end</span>
+
+  <span class="ruby-identifier">response</span>[<span class="ruby-string">&quot;command_number&quot;</span>] = <span class="ruby-identifier">register_command</span>(<span class="ruby-identifier">c</span>)
+
+  <span class="ruby-identifier">c</span>.<span class="ruby-identifier">archive</span>(<span class="ruby-node">&quot;#{@save_directory}/#{response[&quot;command_number&quot;]}&quot;</span>) <span class="ruby-keyword">if</span> <span class="ruby-ivar">@archive</span> <span class="ruby-operator">==</span> <span class="ruby-value">2</span>
+
+  <span class="ruby-keyword">if</span> <span class="ruby-keyword">not</span> <span class="ruby-identifier">params</span>[<span class="ruby-string">&quot;delayed&quot;</span>] <span class="ruby-keyword">then</span>
+    <span class="ruby-identifier">c</span>.<span class="ruby-identifier">set_start_time</span>
+    <span class="ruby-identifier">c</span>.<span class="ruby-identifier">cmd</span>.<span class="ruby-identifier">run</span>
+    <span class="ruby-keyword">if</span> <span class="ruby-keyword">not</span> <span class="ruby-identifier">params</span>[<span class="ruby-string">&quot;asynchronous&quot;</span>] <span class="ruby-keyword">then</span>
+      <span class="ruby-identifier">c</span>.<span class="ruby-identifier">cmd</span>.<span class="ruby-identifier">wait</span>
+      <span class="ruby-identifier">c</span>.<span class="ruby-identifier">set_end_time</span>
+      <span class="ruby-identifier">c</span>.<span class="ruby-identifier">archive</span>(<span class="ruby-node">&quot;#{@save_directory}/#{response[&quot;command_number&quot;]}&quot;</span>) <span class="ruby-keyword">if</span> <span class="ruby-ivar">@archive</span> <span class="ruby-operator">==</span> <span class="ruby-value">1</span>
+      <span class="ruby-identifier">response</span>[<span class="ruby-string">&quot;exit_status&quot;</span>] = <span class="ruby-identifier">c</span>.<span class="ruby-identifier">cmd</span>.<span class="ruby-identifier">status</span>.<span class="ruby-identifier">exitstatus</span>
+      <span class="ruby-identifier">response</span>[<span class="ruby-string">&quot;stdout&quot;</span>] = <span class="ruby-identifier">c</span>.<span class="ruby-identifier">cmd</span>.<span class="ruby-identifier">read_stdout</span>
+      <span class="ruby-identifier">response</span>[<span class="ruby-string">&quot;stderr&quot;</span>] = <span class="ruby-identifier">c</span>.<span class="ruby-identifier">cmd</span>.<span class="ruby-identifier">read_stderr</span>
+    <span class="ruby-keyword">end</span>
+  <span class="ruby-keyword">end</span>
+
+  <span class="ruby-keyword">return</span> <span class="ruby-identifier">response</span>
+
+<span class="ruby-keyword">end</span></pre>
+          </div><!-- generic_command-source -->
+          
+        </div>
+
+        
+
+        
+      </div><!-- generic_command-method -->
+
+    
+      <div id="method-i-get_command_inputs" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">get_command_inputs</span><span
+            class="method-args">(command_number)</span>
+          <span class="method-click-advice">click to toggle source</span>
+        </div>
+        
+
+        <div class="method-description">
+          
+          <p>get the inputs sent to command command_number raises “Invalid command
+number”</p>
+          
+
+          
+          <div class="method-source-code" id="get_command_inputs-source">
+            <pre><span class="ruby-comment"># File lib/rctrl/rctrl_service.rb, line 286</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">get_command_inputs</span>(<span class="ruby-identifier">command_number</span>)
+  <span class="ruby-identifier">c</span> = <span class="ruby-identifier">get_command</span>(<span class="ruby-identifier">command_number</span>)
+  <span class="ruby-identifier">response</span> = <span class="ruby-constant">GetCommandInputsResponse</span><span class="ruby-operator">::</span><span class="ruby-identifier">new</span>
+  <span class="ruby-keyword">if</span> <span class="ruby-identifier">c</span>.<span class="ruby-identifier">cmd</span> <span class="ruby-keyword">then</span>
+    <span class="ruby-identifier">response</span>[<span class="ruby-string">&quot;inputs&quot;</span>] =  <span class="ruby-identifier">c</span>.<span class="ruby-identifier">get_inputs</span>
+  <span class="ruby-keyword">else</span>
+    <span class="ruby-identifier">response</span>[<span class="ruby-string">&quot;inputs&quot;</span>] = <span class="ruby-keyword">nil</span>
+  <span class="ruby-keyword">end</span>
+  <span class="ruby-keyword">return</span> <span class="ruby-identifier">response</span>
+<span class="ruby-keyword">end</span></pre>
+          </div><!-- get_command_inputs-source -->
+          
+        </div>
+
+        
+
+        
+      </div><!-- get_command_inputs-method -->
+
+    
+      <div id="method-i-interactive_command" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">interactive_command</span><span
+            class="method-args">(command_line)</span>
+          <span class="method-click-advice">click to toggle source</span>
+        </div>
+        
+
+        <div class="method-description">
+          
+          <p>runs an interactive command on the server</p>
+          
+
+          
+          <div class="method-source-code" id="interactive_command-source">
+            <pre><span class="ruby-comment"># File lib/rctrl/rctrl_service.rb, line 168</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">interactive_command</span>(<span class="ruby-identifier">command_line</span>)
+  <span class="ruby-keyword">return</span> <span class="ruby-identifier">generic_command</span>( { <span class="ruby-string">&quot;command_line&quot;</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-identifier">command_line</span>, <span class="ruby-string">&quot;asynchronous&quot;</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-keyword">true</span>, <span class="ruby-string">&quot;interactive&quot;</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-keyword">true</span> } )
+<span class="ruby-keyword">end</span></pre>
+          </div><!-- interactive_command-source -->
+          
+        </div>
+
+        
+
+        
+      </div><!-- interactive_command-method -->
+
+    
+      <div id="method-i-recursive_command" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">recursive_command</span><span
+            class="method-args">(server_name, command, parameters)</span>
+          <span class="method-click-advice">click to toggle source</span>
+        </div>
+        
+
+        <div class="method-description">
+          
+          <p>the command is passed to the server_name server which should handle it an
+exception is raised if the server cannot be contacted</p>
+          
+
+          
+          <div class="method-source-code" id="recursive_command-source">
+            <pre><span class="ruby-comment"># File lib/rctrl/rctrl_service.rb, line 299</span>
+  <span class="ruby-keyword">def</span> <span class="ruby-identifier">recursive_command</span>(<span class="ruby-identifier">server_name</span>, <span class="ruby-identifier">command</span>, <span class="ruby-identifier">parameters</span>)
+    <span class="ruby-identifier">server</span> = <span class="ruby-identifier">get_server_ref</span>(<span class="ruby-identifier">server_name</span>)
+    <span class="ruby-identifier">response</span> = <span class="ruby-constant">RecursiveCommandResponse</span><span class="ruby-operator">::</span><span class="ruby-identifier">new</span>
+    <span class="ruby-identifier">parameters_array</span> = []
+    <span class="ruby-keyword">if</span> <span class="ruby-identifier">$RMI</span> <span class="ruby-operator">==</span> <span class="ruby-string">'soap'</span>
+            <span class="ruby-identifier">parameters</span>.<span class="ruby-identifier">__xmlele</span>.<span class="ruby-identifier">collect</span> { <span class="ruby-operator">|</span><span class="ruby-identifier">x</span>, <span class="ruby-identifier">y</span><span class="ruby-operator">|</span> <span class="ruby-identifier">parameters_array</span>.<span class="ruby-identifier">push</span>(<span class="ruby-identifier">y</span>) }
+    <span class="ruby-keyword">else</span>
+            <span class="ruby-identifier">parameters</span>.<span class="ruby-identifier">each</span> { <span class="ruby-operator">|</span><span class="ruby-identifier">y</span><span class="ruby-operator">|</span> <span class="ruby-identifier">parameters_array</span>.<span class="ruby-identifier">push</span>(<span class="ruby-identifier">y</span>) }
+    <span class="ruby-keyword">end</span>
+    <span class="ruby-identifier">c</span> = <span class="ruby-constant">RCtrlCommand</span><span class="ruby-operator">::</span><span class="ruby-identifier">new</span>(<span class="ruby-keyword">nil</span>)
+    <span class="ruby-identifier">response</span>[<span class="ruby-string">&quot;command_number&quot;</span>] = <span class="ruby-identifier">register_command</span>(<span class="ruby-identifier">c</span>)
+<span class="ruby-comment">#    puts &quot;#{command} : #{parameters_array.inspect}&quot;</span>
+    <span class="ruby-identifier">response</span>[<span class="ruby-string">&quot;command_result&quot;</span>] = <span class="ruby-identifier">server</span>.<span class="ruby-identifier">send</span>(<span class="ruby-identifier">command</span>, *<span class="ruby-identifier">parameters_array</span>)
+    <span class="ruby-identifier">c</span>.<span class="ruby-identifier">set_recursive</span>(<span class="ruby-identifier">server_name</span>, <span class="ruby-identifier">command</span>, <span class="ruby-identifier">parameters</span>, <span class="ruby-identifier">response</span>[<span class="ruby-string">&quot;command_result&quot;</span>])
+    
+<span class="ruby-comment">#    target_method = server.method(command)</span>
+<span class="ruby-comment">#    parameters_array = []</span>
+<span class="ruby-comment">#    parameters.__xmlele.collect { |x, y| parameters_array.push(y) }</span>
+<span class="ruby-comment">#    c = RCtrlCommand::new(nil)</span>
+<span class="ruby-comment">#    response[&quot;command_number&quot;] = register_command(c)</span>
+<span class="ruby-comment">#    response[&quot;command_result&quot;] = target_method.call(*parameters_array).result</span>
+<span class="ruby-comment">#    c.set_recursive(server_name, command, parameters, response[&quot;command_result&quot;])</span>
+    <span class="ruby-keyword">return</span> <span class="ruby-identifier">response</span>
+  <span class="ruby-keyword">end</span></pre>
+          </div><!-- recursive_command-source -->
+          
+        </div>
+
+        
+
+        
+      </div><!-- recursive_command-method -->
+
+    
+      <div id="method-i-ruby_asynchronous_command" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">ruby_asynchronous_command</span><span
+            class="method-args">(ruby_script)</span>
+          <span class="method-click-advice">click to toggle source</span>
+        </div>
+        
+
+        <div class="method-description">
+          
+          <p>runs a ruby script on the server in the server context</p>
+          
+
+          
+          <div class="method-source-code" id="ruby_asynchronous_command-source">
+            <pre><span class="ruby-comment"># File lib/rctrl/rctrl_service.rb, line 188</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">ruby_asynchronous_command</span>(<span class="ruby-identifier">ruby_script</span>)
+  <span class="ruby-keyword">return</span> <span class="ruby-identifier">generic_command</span>( { <span class="ruby-string">&quot;ruby_script&quot;</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-identifier">ruby_script</span>, <span class="ruby-string">&quot;ruby_command&quot;</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-keyword">true</span>, <span class="ruby-string">&quot;asynchronous&quot;</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-keyword">true</span> } )
+<span class="ruby-keyword">end</span></pre>
+          </div><!-- ruby_asynchronous_command-source -->
+          
+        </div>
+
+        
+
+        
+      </div><!-- ruby_asynchronous_command-method -->
+
+    
+      <div id="method-i-ruby_command" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">ruby_command</span><span
+            class="method-args">(ruby_script)</span>
+          <span class="method-click-advice">click to toggle source</span>
+        </div>
+        
+
+        <div class="method-description">
+          
+          <p>runs the ruby script on the server in the server context</p>
+          
+
+          
+          <div class="method-source-code" id="ruby_command-source">
+            <pre><span class="ruby-comment"># File lib/rctrl/rctrl_service.rb, line 178</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">ruby_command</span>(<span class="ruby-identifier">ruby_script</span>)
+  <span class="ruby-keyword">return</span> <span class="ruby-identifier">generic_command</span>( { <span class="ruby-string">&quot;ruby_script&quot;</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-identifier">ruby_script</span>, <span class="ruby-string">&quot;ruby_command&quot;</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-keyword">true</span> } )
+<span class="ruby-keyword">end</span></pre>
+          </div><!-- ruby_command-source -->
+          
+        </div>
+
+        
+
+        
+      </div><!-- ruby_command-method -->
+
+    
+      <div id="method-i-ruby_delayed_command" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">ruby_delayed_command</span><span
+            class="method-args">(ruby_script, date)</span>
+          <span class="method-click-advice">click to toggle source</span>
+        </div>
+        
+
+        <div class="method-description">
+          
+          <p>runs a ruby script at the given date in the server context</p>
+          
+
+          
+          <div class="method-source-code" id="ruby_delayed_command-source">
+            <pre><span class="ruby-comment"># File lib/rctrl/rctrl_service.rb, line 183</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">ruby_delayed_command</span>(<span class="ruby-identifier">ruby_script</span>, <span class="ruby-identifier">date</span>)
+  <span class="ruby-keyword">return</span> <span class="ruby-identifier">generic_command</span>( { <span class="ruby-string">&quot;ruby_script&quot;</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-identifier">ruby_script</span>, <span class="ruby-string">&quot;ruby_command&quot;</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-keyword">true</span>, <span class="ruby-string">&quot;delayed&quot;</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-keyword">true</span>, <span class="ruby-string">&quot;date&quot;</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-identifier">date</span> } )
+<span class="ruby-keyword">end</span></pre>
+          </div><!-- ruby_delayed_command-source -->
+          
+        </div>
+
+        
+
+        
+      </div><!-- ruby_delayed_command-method -->
+
+    
+    </section><!-- public-instance-method-details -->
+  
+  </section><!-- 5Buntitled-5D -->
+
+</div><!-- documentation -->
+
+
+<footer id="validator-badges">
+  <p><a href="http://validator.w3.org/check/referer">[Validate]</a>
+  <p>Generated by <a href="https://github.com/rdoc/rdoc">RDoc</a> 3.12.
+  <p>Generated with the <a href="http://deveiate.org/projects/Darkfish-Rdoc/">Darkfish Rdoc Generator</a> 3.
+</footer>
+

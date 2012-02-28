@@ -25,10 +25,12 @@ class NameSet
         end
 
 end
-
+#A Resource maps a computational resource to an object which keeps 
+#Certains characteritics such as type, name, gateway.
 class Resource
         attr_accessor :type, :properties
-        def initialize( type, properties=nil, name=nil )
+        #Creates a new Resource Object.
+	def initialize( type, properties=nil, name=nil )
                 @type = type
                 @properties = Hash::new
                 if properties then
@@ -41,15 +43,18 @@ class Resource
                 end
         end
 
+	#return the name of the resource.
         def name
                 return @properties[:name]
         end
 
+	#Sets the name of the resource.
         def name=(name)
                 @properties[:name] = name
                 return self
         end
 
+	#Returns the name of the resource.
         def to_s
                 return @properties[:name]
         end
@@ -64,17 +69,21 @@ class Resource
                 }
                 return true
         end
-
+      
+	#Creates a copy of the resource object.
         def copy
                 result = Resource::new(@type)
                 result.properties.replace( @properties )
                 return result
         end
 
+	#Equality, Two Resource objects are equal if they have the 
+	#same type and the same properties as well.
         def ==( res )
                 @type == res.type and @properties == res.properties
         end
 
+	#Returns true if self and other are the same object.
         def eql?( res )
                 if self.class == res.class and @type == res.type then
 			@properties.each_pair { |key,value|
@@ -86,6 +95,7 @@ class Resource
 		end
         end
 
+	#Returns the name of the gateway
 	def gateway
 		return @properties[:gateway] if @properties[:gateway]
 		return "localhost"
@@ -93,6 +103,8 @@ class Resource
 
 	alias gw gateway
 
+	#Use to make the list of machines for
+	#the taktuk command
         def make_taktuk_command(cmd)
                 return " -m #{self.name}"
         end
@@ -110,6 +122,7 @@ class ResourceSet < Resource
                 @resource_files = Hash::new
         end
 
+	#Creates a copy of the ResourceSet Object
         def copy
                 result = ResourceSet::new
                 result.properties.replace( @properties )
@@ -119,11 +132,13 @@ class ResourceSet < Resource
                 return result
         end
 
+	#Add a Resource object to the ResourceSet
         def push( resource )
           @resources.push( resource )
           return self
         end
 
+	# Return the first element which is an object of the Resource Class
         def first ( type=nil )
                 @resources.each { |resource|
                         if resource.type == type then
@@ -230,6 +245,8 @@ class ResourceSet < Resource
                 return self
         end
 
+	#Puts all the resource hierarchy into one ResourceSet.
+	#The type can be either :node or :resource_set.
         def flatten( type = nil )
                 set = ResourceSet::new
                 @resources.each { |resource|
@@ -255,7 +272,9 @@ class ResourceSet < Resource
 
         alias all flatten
 
-
+	#Creates groups of increasing size based on
+	# the slice_step paramater. This goes until the 
+	# size of the ResourceSet.
         def each_slice( type = nil, slice_step = 1, &block)
                 i = 1
                 number = 0
@@ -284,10 +303,14 @@ class ResourceSet < Resource
                 end 
         end
 
+	#Invokes the block for each set of power of two resources.
         def each_slice_power2( type = nil, &block )
                 self.each_slice( type, lambda { |i| i*i }, &block )
         end
 
+	#Calls block once for each element in self, depending on the type of resource.
+	#if the type is :resource_set, it is going to iterate over the several resoruce sets defined.
+	#:node it is the default type which iterates over all the resources defined in the resource set.
         def each( type = nil, &block )
                 it = ResourceSetIterator::new(self, type)
                 while it.resource do
@@ -300,10 +323,12 @@ class ResourceSet < Resource
                 super and @resources == set.resources
         end
 
+	#Equality between to resoruce sets.
         def eql?( set )
                 super and @resources == set.resources
         end
 
+	# Return a ResourceSet with unique elements.
         def uniq
                 set = self.copy
                 return set.uniq!
@@ -331,6 +356,8 @@ class ResourceSet < Resource
                       return self
         end
 
+	#Generates and return the path of the file which contains the list of the tipe of resource
+	#specify by the argument type.
         def resource_file( type=nil, update=false )
                 if ( not @resource_files[type] ) or update then
                         @resource_files[type] = Tempfile::new("#{type}")
@@ -344,12 +371,18 @@ class ResourceSet < Resource
                 return @resource_files[type].path
         end
 
+	#Generates and return the path of the file which contains the list  of the nodes' hostnames. Sometimes it is handy to have it.
+	#eg. Use it with mpi.	 
         def node_file( update=false )
                 resource_file( :node, update )
         end
 
 	alias nodefile node_file
 
+	#Creates the taktuk command to execute on the ResourceSet
+	#It takes into account if the resources are grouped under
+	#different gatways in order to perform this execution more
+        #efficiently.
         def make_taktuk_command(cmd)
                 str_cmd = ""
                 #pd : séparation resource set/noeuds

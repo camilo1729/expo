@@ -79,7 +79,7 @@ class ExpCtrlClient
 		eval "@expctrl_client = #{expctrl_client_driver}.new(server)" if not @expctrl_client
 
 		connect = false
-		i = 1
+	i = 1
 
 		while !connect and $POLLING
 			begin
