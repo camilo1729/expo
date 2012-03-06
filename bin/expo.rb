@@ -1,4 +1,4 @@
-	#!/ureqsr/bin/ruby
+#!/usr/bin/ruby
 
 #require rubygems explicitely to ease the debugging RUBYOPTS=""
 require 'rubygems'

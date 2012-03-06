@@ -273,8 +273,8 @@ class ResourceSet < Resource
         alias all flatten
 
 	#Creates groups of increasing size based on
-	# the slice_step paramater. This goes until the 
-	# size of the ResourceSet.
+	#the slice_step paramater. This goes until the 
+	#size of the ResourceSet.
         def each_slice( type = nil, slice_step = 1, &block)
                 i = 1
                 number = 0
@@ -317,6 +317,43 @@ class ResourceSet < Resource
                         block.call( it.resource )
                         it.next
                 end
+        end
+	
+	#Returns the number of resources in the ResourceSet
+	def length()
+                count=0
+                self.each(:node){ |resource|
+                        count+=1
+                }
+                return count
+        end
+
+	#Extract part of a resourceSet.
+	#It can be used with a range as a parameter.
+	#For example $all[1..6] extract resources from 1 to 6
+        def []( index )
+              count=0
+              if index.kind_of?(Range) then
+                        resource_set = ResourceSet::new
+                        it = ResourceSetIterator::new(self,:node)
+                        self.each(:node){ |node|
+                                resource=it.resource
+                                if resource then
+                                        if (count >= index.first ) and (count <= index.max) then
+                                                resource_set.resources.push( resource )
+                                        end
+                                end
+                                count+=1
+                                it.next
+                        }
+                        return resource_set
+              end
+              self.each(:node){ |resource|
+                   if count==index then
+                           return resource
+                   end
+                   count+=1
+              }
         end
 
         def ==( set )

@@ -64,9 +64,10 @@ class Task < GenericTask
                 @command = command
                 @resources = resources
         end
-
+	#Execute a command over the resource set defined at the
+	#moment the Task object was created
         def execute
-                cmd = "taktuk2yaml -s"
+                cmd = "ruby taktuk2yaml.rb -s"
                 cmd += $ssh_connector
                 cmd += @resources.make_taktuk_command(self.command)
                 command_result = $client.asynchronous_command(cmd)
@@ -78,7 +79,8 @@ class Task < GenericTask
 		return @resources.make_taktuk_command(self.command)
 	end
 end
-
+#TaskSet defines a set of task which are executed in parallel over the
+#resources specified in the individual tasks.
 class TaskSet < GenericTask
         attr_accessor :tasks
         def initialize( name = nil )
@@ -86,13 +88,17 @@ class TaskSet < GenericTask
                 @tasks = Array::new
         end
 
+	#Add task to the set.
         def push( task )
                 @tasks.push( task )
 		return self
         end
 
+	#Execute the task in the set in parallel.
+	#Just one taktuk command is created 
+	#which contains each of the commands in the set
         def execute
-                cmd = "taktuk2yaml -s"
+                cmd = "ruby taktuk2yaml.rb -s"
                 cmd += $ssh_connector
                 @tasks.each { |t|
                         cmd += t.make_taktuk_command
@@ -110,7 +116,7 @@ class TaskSet < GenericTask
 		return cmd
 	end
 end
-
+# Execute commands in parallel over a set of resources
 class TaskStream < GenericTask
         attr_accessor :tasks
         def initialize( name = nil )
@@ -122,7 +128,8 @@ class TaskStream < GenericTask
                 @tasks.push( task )
 		return self
         end
-
+	#Execute the commands in parallel.
+	#it uses one taktuk command for each command in the set
         def execute
 		results = Array::new
                 @tasks.each { |t|

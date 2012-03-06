@@ -15,3 +15,11 @@ date command the result of the command is unused. After that each resource
 from gdx runs the sleep 1 command. The duration of those commands is
 automatically logged. The duration of the command for each resource is
 printed on screen. The mean is also displayed.
+
+## 2 Use Case
+
+{coderay:: ruby}{include_file: {filename: src/use_cases_1_0.rb, process_output:
+false, escape_html: false}}{coderay}
+
+
+
