@@ -21,5 +21,11 @@ printed on screen. The mean is also displayed.
 {coderay:: ruby}{include_file: {filename: src/use_cases_1_0.rb, process_output:
 false, escape_html: false}}{coderay}
 
+## 3 Use Case
+
+{coderay:: ruby}{include_file: {filename: src/task_class.rb, process_output:
+false, escape_html: false}}{coderay}
+
+In this example the class Task is use in order to execute the especific task in parallel over the resource Set.
 
 

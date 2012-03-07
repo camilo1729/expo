@@ -195,6 +195,8 @@
   
     <li><a href="../Expo/ExperimentNumberResponse.html">Expo::ExperimentNumberResponse</a>
   
+    <li><a href="../Expo/ExpoResult.html">Expo::ExpoResult</a>
+  
     <li><a href="../Expo/GenericCommandResponse.html">Expo::GenericCommandResponse</a>
   
     <li><a href="../Expo/GenericTask.html">Expo::GenericTask</a>
@@ -276,6 +278,8 @@
     <li><a href="../Expo/RubyDelayedCommandResponse.html">Expo::RubyDelayedCommandResponse</a>
   
     <li><a href="../Expo/Task.html">Expo::Task</a>
+  
+    <li><a href="../Expo/TaskResult.html">Expo::TaskResult</a>
   
     <li><a href="../Expo/TaskSet.html">Expo::TaskSet</a>
   
@@ -430,6 +434,9 @@
 
   <div id="description" class="description">
     
+<p><a href="TaskSet.html">TaskSet</a> defines a set of task which are executed
+in parallel over the resources specified in the individual tasks.</p>
+
   </div><!-- description -->
 
   
@@ -486,7 +493,7 @@
 
           
           <div class="method-source-code" id="new-source">
-            <pre><span class="ruby-comment"># File lib/taskset.rb, line 84</span>
+            <pre><span class="ruby-comment"># File lib/taskset.rb, line 86</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">initialize</span>( <span class="ruby-identifier">name</span> = <span class="ruby-keyword">nil</span> )
         <span class="ruby-keyword">super</span>( <span class="ruby-value">:task_set</span>, <span class="ruby-keyword">nil</span>, <span class="ruby-identifier">name</span> )
         <span class="ruby-ivar">@tasks</span> = <span class="ruby-constant">Array</span><span class="ruby-operator">::</span><span class="ruby-identifier">new</span>
@@ -518,14 +525,15 @@
 
         <div class="method-description">
           
-          
+          <p>Execute the task in the set in parallel. Just one taktuk command is created
+which contains each of the commands in the set</p>
           
 
           
           <div class="method-source-code" id="execute-source">
-            <pre><span class="ruby-comment"># File lib/taskset.rb, line 94</span>
+            <pre><span class="ruby-comment"># File lib/taskset.rb, line 100</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">execute</span>
-        <span class="ruby-identifier">cmd</span> = <span class="ruby-string">&quot;taktuk2yaml -s&quot;</span>
+        <span class="ruby-identifier">cmd</span> = <span class="ruby-string">&quot;ruby taktuk2yaml.rb -s&quot;</span>
         <span class="ruby-identifier">cmd</span> <span class="ruby-operator">+=</span> <span class="ruby-identifier">$ssh_connector</span>
         <span class="ruby-ivar">@tasks</span>.<span class="ruby-identifier">each</span> { <span class="ruby-operator">|</span><span class="ruby-identifier">t</span><span class="ruby-operator">|</span>
                 <span class="ruby-identifier">cmd</span> <span class="ruby-operator">+=</span> <span class="ruby-identifier">t</span>.<span class="ruby-identifier">make_taktuk_command</span>
@@ -560,7 +568,7 @@
 
           
           <div class="method-source-code" id="make_taktuk_command-source">
-            <pre><span class="ruby-comment"># File lib/taskset.rb, line 105</span>
+            <pre><span class="ruby-comment"># File lib/taskset.rb, line 111</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">make_taktuk_command</span>
         <span class="ruby-identifier">cmd</span> = <span class="ruby-string">&quot;&quot;</span>
         <span class="ruby-ivar">@tasks</span>.<span class="ruby-identifier">each</span> { <span class="ruby-operator">|</span><span class="ruby-identifier">t</span><span class="ruby-operator">|</span>
@@ -589,12 +597,12 @@
 
         <div class="method-description">
           
-          
+          <p>Add task to the set.</p>
           
 
           
           <div class="method-source-code" id="push-source">
-            <pre><span class="ruby-comment"># File lib/taskset.rb, line 89</span>
+            <pre><span class="ruby-comment"># File lib/taskset.rb, line 92</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">push</span>( <span class="ruby-identifier">task</span> )
         <span class="ruby-ivar">@tasks</span>.<span class="ruby-identifier">push</span>( <span class="ruby-identifier">task</span> )
         <span class="ruby-keyword">return</span> <span class="ruby-keyword">self</span>

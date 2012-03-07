@@ -48,7 +48,6 @@
   <h3 class="section-header">Defined In</h3>
   <ul>
     <li>bin/expo-server.rb
-    <li>bin/expo.rb
     <li>demo/karo/expo-karo.rb
   </ul>
 </nav>
@@ -73,8 +72,6 @@
   <ul class="link-list">
     
     <li><a href="#method-i-duration">#duration</a>
-    
-    <li><a href="#method-i-mean_duration">#mean_duration</a>
     
   </ul>
 </nav>
@@ -193,6 +190,8 @@
   
     <li><a href="./Expo/ExperimentNumberResponse.html">Expo::ExperimentNumberResponse</a>
   
+    <li><a href="./Expo/ExpoResult.html">Expo::ExpoResult</a>
+  
     <li><a href="./Expo/GenericCommandResponse.html">Expo::GenericCommandResponse</a>
   
     <li><a href="./Expo/GenericTask.html">Expo::GenericTask</a>
@@ -274,6 +273,8 @@
     <li><a href="./Expo/RubyDelayedCommandResponse.html">Expo::RubyDelayedCommandResponse</a>
   
     <li><a href="./Expo/Task.html">Expo::Task</a>
+  
+    <li><a href="./Expo/TaskResult.html">Expo::TaskResult</a>
   
     <li><a href="./Expo/TaskSet.html">Expo::TaskSet</a>
   
@@ -480,40 +481,6 @@
 
         
       </div><!-- duration-method -->
-
-    
-      <div id="method-i-mean_duration" class="method-detail ">
-        
-        <div class="method-heading">
-          <span class="method-name">mean_duration</span><span
-            class="method-args">()</span>
-          <span class="method-click-advice">click to toggle source</span>
-        </div>
-        
-
-        <div class="method-description">
-          
-          <p>def duration</p>
-          
-
-          
-          <div class="method-source-code" id="mean_duration-source">
-            <pre><span class="ruby-comment"># File bin/expo.rb, line 56</span>
-<span class="ruby-keyword">def</span> <span class="ruby-identifier">mean_duration</span>
-  <span class="ruby-identifier">sum</span> = <span class="ruby-value">0</span>
-  <span class="ruby-identifier">time</span> = <span class="ruby-value">0</span>
-  <span class="ruby-keyword">self</span>.<span class="ruby-identifier">each</span> { <span class="ruby-operator">|</span><span class="ruby-identifier">t</span><span class="ruby-operator">|</span> <span class="ruby-identifier">sum</span> <span class="ruby-operator">+=</span> <span class="ruby-identifier">t</span>.<span class="ruby-identifier">duration</span> }
-  <span class="ruby-identifier">time</span> = <span class="ruby-identifier">sum</span> <span class="ruby-operator">/</span> <span class="ruby-keyword">self</span>.<span class="ruby-identifier">length</span> <span class="ruby-keyword">if</span> <span class="ruby-keyword">self</span>.<span class="ruby-identifier">length</span> <span class="ruby-operator">&gt;</span> <span class="ruby-value">0</span>
-  <span class="ruby-keyword">return</span> <span class="ruby-identifier">time</span>
-<span class="ruby-keyword">end</span></pre>
-          </div><!-- mean_duration-source -->
-          
-        </div>
-
-        
-
-        
-      </div><!-- mean_duration-method -->
 
     
     </section><!-- public-instance-method-details -->

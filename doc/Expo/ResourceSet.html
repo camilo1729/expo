@@ -74,6 +74,8 @@
     
     <li><a href="#method-i-3D-3D">#==</a>
     
+    <li><a href="#method-i-5B-5D">#[]</a>
+    
     <li><a href="#method-i-all">#all</a>
     
     <li><a href="#method-i-copy">#copy</a>
@@ -99,6 +101,8 @@
     <li><a href="#method-i-flatten">#flatten</a>
     
     <li><a href="#method-i-flatten-21">#flatten!</a>
+    
+    <li><a href="#method-i-length">#length</a>
     
     <li><a href="#method-i-make_taktuk_command">#make_taktuk_command</a>
     
@@ -235,6 +239,8 @@
   
     <li><a href="../Expo/ExperimentNumberResponse.html">Expo::ExperimentNumberResponse</a>
   
+    <li><a href="../Expo/ExpoResult.html">Expo::ExpoResult</a>
+  
     <li><a href="../Expo/GenericCommandResponse.html">Expo::GenericCommandResponse</a>
   
     <li><a href="../Expo/GenericTask.html">Expo::GenericTask</a>
@@ -316,6 +322,8 @@
     <li><a href="../Expo/RubyDelayedCommandResponse.html">Expo::RubyDelayedCommandResponse</a>
   
     <li><a href="../Expo/Task.html">Expo::Task</a>
+  
+    <li><a href="../Expo/TaskResult.html">Expo::TaskResult</a>
   
     <li><a href="../Expo/TaskSet.html">Expo::TaskSet</a>
   
@@ -564,7 +572,7 @@
 
           
           <div class="method-source-code" id="3D-3D-source">
-            <pre><span class="ruby-comment"># File lib/resourceset.rb, line 322</span>
+            <pre><span class="ruby-comment"># File lib/resourceset.rb, line 359</span>
 <span class="ruby-keyword">def</span> <span class="ruby-operator">==</span>( <span class="ruby-identifier">set</span> )
         <span class="ruby-keyword">super</span> <span class="ruby-keyword">and</span> <span class="ruby-ivar">@resources</span> <span class="ruby-operator">==</span> <span class="ruby-identifier">set</span>.<span class="ruby-identifier">resources</span>
 <span class="ruby-keyword">end</span></pre>
@@ -576,6 +584,58 @@
 
         
       </div><!-- 3D-3D-method -->
+
+    
+      <div id="method-i-5B-5D" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">[]</span><span
+            class="method-args">( index )</span>
+          <span class="method-click-advice">click to toggle source</span>
+        </div>
+        
+
+        <div class="method-description">
+          
+          <p>Extract part of a resourceSet. It can be used with a range as a parameter.
+For example $<a href="http://1..6">all</a> extract resources from 1 to 6</p>
+          
+
+          
+          <div class="method-source-code" id="5B-5D-source">
+            <pre><span class="ruby-comment"># File lib/resourceset.rb, line 334</span>
+<span class="ruby-keyword">def</span> <span class="ruby-operator">[]</span>( <span class="ruby-identifier">index</span> )
+      <span class="ruby-identifier">count</span>=<span class="ruby-value">0</span>
+      <span class="ruby-keyword">if</span> <span class="ruby-identifier">index</span>.<span class="ruby-identifier">kind_of?</span>(<span class="ruby-constant">Range</span>) <span class="ruby-keyword">then</span>
+                <span class="ruby-identifier">resource_set</span> = <span class="ruby-constant">ResourceSet</span><span class="ruby-operator">::</span><span class="ruby-identifier">new</span>
+                <span class="ruby-identifier">it</span> = <span class="ruby-constant">ResourceSetIterator</span><span class="ruby-operator">::</span><span class="ruby-identifier">new</span>(<span class="ruby-keyword">self</span>,<span class="ruby-value">:node</span>)
+                <span class="ruby-keyword">self</span>.<span class="ruby-identifier">each</span>(<span class="ruby-value">:node</span>){ <span class="ruby-operator">|</span><span class="ruby-identifier">node</span><span class="ruby-operator">|</span>
+                        <span class="ruby-identifier">resource</span>=<span class="ruby-identifier">it</span>.<span class="ruby-identifier">resource</span>
+                        <span class="ruby-keyword">if</span> <span class="ruby-identifier">resource</span> <span class="ruby-keyword">then</span>
+                                <span class="ruby-keyword">if</span> (<span class="ruby-identifier">count</span> <span class="ruby-operator">&gt;=</span> <span class="ruby-identifier">index</span>.<span class="ruby-identifier">first</span> ) <span class="ruby-keyword">and</span> (<span class="ruby-identifier">count</span> <span class="ruby-operator">&lt;=</span> <span class="ruby-identifier">index</span>.<span class="ruby-identifier">max</span>) <span class="ruby-keyword">then</span>
+                                        <span class="ruby-identifier">resource_set</span>.<span class="ruby-identifier">resources</span>.<span class="ruby-identifier">push</span>( <span class="ruby-identifier">resource</span> )
+                                <span class="ruby-keyword">end</span>
+                        <span class="ruby-keyword">end</span>
+                        <span class="ruby-identifier">count</span><span class="ruby-operator">+=</span><span class="ruby-value">1</span>
+                        <span class="ruby-identifier">it</span>.<span class="ruby-identifier">next</span>
+                }
+                <span class="ruby-keyword">return</span> <span class="ruby-identifier">resource_set</span>
+      <span class="ruby-keyword">end</span>
+      <span class="ruby-keyword">self</span>.<span class="ruby-identifier">each</span>(<span class="ruby-value">:node</span>){ <span class="ruby-operator">|</span><span class="ruby-identifier">resource</span><span class="ruby-operator">|</span>
+           <span class="ruby-keyword">if</span> <span class="ruby-identifier">count</span><span class="ruby-operator">==</span><span class="ruby-identifier">index</span> <span class="ruby-keyword">then</span>
+                   <span class="ruby-keyword">return</span> <span class="ruby-identifier">resource</span>
+           <span class="ruby-keyword">end</span>
+           <span class="ruby-identifier">count</span><span class="ruby-operator">+=</span><span class="ruby-value">1</span>
+      }
+<span class="ruby-keyword">end</span></pre>
+          </div><!-- 5B-5D-source -->
+          
+        </div>
+
+        
+
+        
+      </div><!-- 5B-5D-method -->
 
     
       <div id="method-i-all" class="method-detail method-alias">
@@ -937,7 +997,7 @@ goes until the  size of the <a href="ResourceSet.html">ResourceSet</a>.</p>
 
           
           <div class="method-source-code" id="eql-3F-source">
-            <pre><span class="ruby-comment"># File lib/resourceset.rb, line 327</span>
+            <pre><span class="ruby-comment"># File lib/resourceset.rb, line 364</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">eql?</span>( <span class="ruby-identifier">set</span> )
         <span class="ruby-keyword">super</span> <span class="ruby-keyword">and</span> <span class="ruby-ivar">@resources</span> <span class="ruby-operator">==</span> <span class="ruby-identifier">set</span>.<span class="ruby-identifier">resources</span>
 <span class="ruby-keyword">end</span></pre>
@@ -1072,6 +1132,41 @@ href="ResourceSet.html">ResourceSet</a>. The type can be either :node or
       </div><!-- flatten-21-method -->
 
     
+      <div id="method-i-length" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">length</span><span
+            class="method-args">()</span>
+          <span class="method-click-advice">click to toggle source</span>
+        </div>
+        
+
+        <div class="method-description">
+          
+          <p>Returns the number of resources in the <a
+href="ResourceSet.html">ResourceSet</a></p>
+          
+
+          
+          <div class="method-source-code" id="length-source">
+            <pre><span class="ruby-comment"># File lib/resourceset.rb, line 323</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">length</span>()
+        <span class="ruby-identifier">count</span>=<span class="ruby-value">0</span>
+        <span class="ruby-keyword">self</span>.<span class="ruby-identifier">each</span>(<span class="ruby-value">:node</span>){ <span class="ruby-operator">|</span><span class="ruby-identifier">resource</span><span class="ruby-operator">|</span>
+                <span class="ruby-identifier">count</span><span class="ruby-operator">+=</span><span class="ruby-value">1</span>
+        }
+        <span class="ruby-keyword">return</span> <span class="ruby-identifier">count</span>
+<span class="ruby-keyword">end</span></pre>
+          </div><!-- length-source -->
+          
+        </div>
+
+        
+
+        
+      </div><!-- length-method -->
+
+    
       <div id="method-i-make_taktuk_command" class="method-detail ">
         
         <div class="method-heading">
@@ -1091,7 +1186,7 @@ execution more efficiently.</p>
 
           
           <div class="method-source-code" id="make_taktuk_command-source">
-            <pre><span class="ruby-comment"># File lib/resourceset.rb, line 386</span>
+            <pre><span class="ruby-comment"># File lib/resourceset.rb, line 423</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">make_taktuk_command</span>(<span class="ruby-identifier">cmd</span>)
         <span class="ruby-identifier">str_cmd</span> = <span class="ruby-string">&quot;&quot;</span>
         <span class="ruby-comment">#pd : séparation resource set/noeuds</span>
@@ -1171,7 +1266,7 @@ nodes’ hostnames. Sometimes it is handy to have it. eg. Use it with mpi.</p>
 
           
           <div class="method-source-code" id="node_file-source">
-            <pre><span class="ruby-comment"># File lib/resourceset.rb, line 376</span>
+            <pre><span class="ruby-comment"># File lib/resourceset.rb, line 413</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">node_file</span>( <span class="ruby-identifier">update</span>=<span class="ruby-keyword">false</span> )
         <span class="ruby-identifier">resource_file</span>( <span class="ruby-value">:node</span>, <span class="ruby-identifier">update</span> )
 <span class="ruby-keyword">end</span></pre>
@@ -1265,7 +1360,7 @@ tipe of resource specify by the argument type.</p>
 
           
           <div class="method-source-code" id="resource_file-source">
-            <pre><span class="ruby-comment"># File lib/resourceset.rb, line 361</span>
+            <pre><span class="ruby-comment"># File lib/resourceset.rb, line 398</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">resource_file</span>( <span class="ruby-identifier">type</span>=<span class="ruby-keyword">nil</span>, <span class="ruby-identifier">update</span>=<span class="ruby-keyword">false</span> )
         <span class="ruby-keyword">if</span> ( <span class="ruby-keyword">not</span> <span class="ruby-ivar">@resource_files</span>[<span class="ruby-identifier">type</span>] ) <span class="ruby-keyword">or</span> <span class="ruby-identifier">update</span> <span class="ruby-keyword">then</span>
                 <span class="ruby-ivar">@resource_files</span>[<span class="ruby-identifier">type</span>] = <span class="ruby-constant">Tempfile</span><span class="ruby-operator">::</span><span class="ruby-identifier">new</span>(<span class="ruby-node">&quot;#{type}&quot;</span>)
@@ -1392,7 +1487,7 @@ tipe of resource specify by the argument type.</p>
 
           
           <div class="method-source-code" id="uniq-source">
-            <pre><span class="ruby-comment"># File lib/resourceset.rb, line 332</span>
+            <pre><span class="ruby-comment"># File lib/resourceset.rb, line 369</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">uniq</span>
         <span class="ruby-identifier">set</span> = <span class="ruby-keyword">self</span>.<span class="ruby-identifier">copy</span>
         <span class="ruby-keyword">return</span> <span class="ruby-identifier">set</span>.<span class="ruby-identifier">uniq!</span>
@@ -1423,7 +1518,7 @@ tipe of resource specify by the argument type.</p>
 
           
           <div class="method-source-code" id="uniq-21-source">
-            <pre><span class="ruby-comment"># File lib/resourceset.rb, line 337</span>
+            <pre><span class="ruby-comment"># File lib/resourceset.rb, line 374</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">uniq!</span>
   <span class="ruby-identifier">i</span> = <span class="ruby-value">0</span>
   <span class="ruby-keyword">while</span> <span class="ruby-identifier">i</span> <span class="ruby-operator">&lt;</span> <span class="ruby-ivar">@resources</span>.<span class="ruby-identifier">size</span><span class="ruby-operator">-</span><span class="ruby-value">1</span> <span class="ruby-keyword">do</span>

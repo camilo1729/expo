@@ -1,92 +1,223 @@
-/* andreas07 - an open source xhtml/css website layout by Andreas Viklund - http://andreasviklund.com . Free to use for any purpose as long as the proper credits are given for the original design work.
+/* andreas03 - an open source xhtml/css website layout by Andreas Viklund - http://andreasviklund.com . Free to use for any purpose as long as the proper credits are given to the original author.
 
-Version: 1.1, November 28, 2005 */
+Version: 1.2
+(Nov 28, 2005)
 
-/**************** Page and tag styles ****************/
+Screen layout: */
 
-body
-{margin:0; padding:0; color:#303030; background:#fafafa url(images/bodybg.gif) top left repeat-y; font:76% Verdana,Tahoma,sans-serif;}
+body{
+margin:0;
+padding:30px 0;
+font:76% tahoma,verdana,sans-serif;
+background:#047 url(images/bodybg.png) repeat-x fixed;
+color:#222;
+}
 
-ul
-{list-style:circle; margin:15px 0 20px 0; font-size:0.9em;}
+#thetop{
+margin:0;
+}
 
-li
-{margin:0 0 8px 25px;}
+#container{
+width:720px;
+margin:0 auto;
+padding:20px 20px 0 20px;
+background:#fff url(images/contbg.png) no-repeat;
+color:#222;
+}
 
-a
-{color:#d85d5d; font-weight:bold; text-decoration:none;}
+a{
+text-decoration:none;
+background-color:inherit;
+color:#26c;
+}
 
-a:hover
-{color:#505050; text-decoration:underline;}
+a:hover {
+text-decoration:underline;
+}
 
-img
-{float:left; margin:0 15px 15px 0; padding:1px; background:#ffffff; border:1px solid #d0d0d0;}
+a img{
+border:0;
+}
 
-a img
-{border-color:#d85d5d;}
+p{
+margin:0 0 15px 0;
+line-height:1.5em;
+}
 
-a img:hover
-{background:#d85d5d; border-color:#d85d5d;}
+#main p,#sidebar p{
+padding:0 0 0 10px;
+}
 
-/**************** Sidebar area styles ****************/
+#logo{
+float:left;
+width:240px;
+margin:0 20px 0 0;
+padding:0 0 25px 0;
+background:#eee;
+border:4px solid #dde;
+text-align:center;
+color:#555;
+overflow:auto;
+}
 
-#sidebar
-{position:absolute; top:0; left:0; width:220px; height:100%; overflow:auto; background:#e0e0e0 url(images/sidebarbg.gif) top right repeat-y; text-align:right;}
+#logo h1{
+margin:50px 5px 1px 5px;
+letter-spacing:-3px;
+}
 
-body > #sidebar
-{position:fixed;}
+#logo a{
+background-color:inherit;
+color:#26a;
+text-decoration:none;
+}
 
-#sidebar h1
-{margin:20px 18px 0 5px; color:#d85d5d; font-size:1.6em; letter-spacing:-2px; text-align:right;}
+#logo a:hover{
+background-color:inherit;
+color:#69e;
+}
 
-#sidebar h2, #sidebar h3
-{margin:0 20px 18px 5px; color:#808080; font-size:1.1em; font-weight:bold; letter-spacing:-1px; text-align:right;}
+#tagline{
+text-align:center;
+font-size:1.2em;
+}
 
-#sidebar h3
-{margin:20px 18px 4px 5px; color:#606060;}
+#intro p{
+line-height:1.5em;
+}
 
-#sidebar  p
-{margin:0 20px 18px 5px; color:#606060; font-size:0.8em;}
+#main{
+float:left;
+width:530px;
+margin-right:20px;
+padding:0;
+}
 
-#sidebar a
-{color:#808080}
+#main h2 {
+display:block;
+margin:30px 0 10px 0;
+padding:5px 0 5px 8px;
+background:#eee url(images/gradient2.png) repeat-x;
+color:#222;
+border-top:1px solid #ddd;
+border-right:1px solid #bbb;
+border-bottom:1px solid #bbb;
+border-left:1px solid #ddd;
+text-decoration:none;
+}
 
-#sidebar ul
-{margin-right: 20px; margin-left: 5px; list-style-type: none;}
+#sidebar{
+width:155px;
+float:right;
+margin-top:20px;
+font-size:1em;
+line-height:1.3em;
+}
 
-#sidebar li
-{margin: 0px; padding-left: 5px;}
+#sidebar p, #sidebar .linklist {
+font-size:0.9em;
+}
 
-/**************** Navigation menu styles ****************/
+#sidebar ul.linklist {
+list-style-type: none;
+margin: 0px;
+padding: 5px 0px 5px 8px;
+}
 
-#menu ul
-{list-style-type: none; margin: 0px; padding: 0px; font-size: 1.0em;}
+#sidebar #menu ul {
+list-style-type: none;
+margin: 0px;
+padding: 0px;
+}
 
-#menu li
-{margin: 0px; padding: 0px}
+#sidebar #menu li a, #sidebar #menu li span, .sidelink{
+display:block;
+width:140px;
+margin:3px 10px 2px 0;
+padding:5px 0 5px 8px;
+font-size:1.1em;
+font-weight:bold;
+text-align:left;
+background:#eee url(images/gradient1.png) repeat-x;
+color:#26c;
+border-top:1px solid #ddd;
+border-right:1px solid #bbb;
+border-bottom:1px solid #bbb;
+border-left:1px solid #ddd;
+}
 
-#menu a,  #menu span
-{display:block; width:202px; padding:5px 18px 5px 0; color:#606060; background:#e0e0e0 url(images/sidebarbg.gif) top right repeat-y; font-size:1.8em; font-weight:normal; text-decoration:none; letter-spacing:-2px;}
+#sidebar #menu li a:hover, #sidebar li.webgen-menu-item-selected a, #sidebar li.webgen-menu-item-selected span, .sidelink:hover, .menuheader {
+background:#fff url(images/gradient2.png) repeat-x;
+color:#222;
+border-top:1px solid #ddd;
+border-right:1px solid #888;
+border-bottom:1px solid #888;
+border-left:1px solid #ddd;
+text-decoration:none;
+}
 
-#menu a:hover, #menu span:hover
-{color:#303030; background:#f0f0f0 url(images/sidebarbg.gif) top right repeat-y;}
+#footer{
+margin:0 auto 20px auto;
+width:760px;
+background:#fff url(images/footerbg.png) bottom left no-repeat;
+padding:0 0 5px 0;
+font-size:0.9em;
+color:#888;
+text-align:center;
+}
 
-#menu li.webgen-menu-item-selected a, #menu li.webgen-menu-item-selected span
-{padding:5px 18px 5px 0; background:#fafafa; border-top:2px solid #c0c0c0; border-bottom:2px solid #c0c0c0;}
+h1,h2,h3,h4{
+margin:0 0 10px 0;
+font-weight:normal;
+}
 
-#menu li.webgen-menu-item-selected a:hover, #menu li.webgen-menu-item-selected span:hover
-{color:#505050; background:#fafafa;}
+h1{
+font-size:2.8em;
+}
 
-/**************** Content area styles ****************/
+h2{
+margin:0 0 4px 0;
+font-size:1.8em;
+}
 
-#content
-{width:520px; margin:0 0 0 240px; padding:20px 0; background:#fafafa;}
+h3{
+margin:20px 0 8px 0;
+font-size:1.4em;
+}
 
-#content p
-{margin:0 0 20px 0; line-height:1.5em;}
+h4{
+margin:10px 0 5px 0;
+font-size:1.2em;
+}
 
-#content h1
-{margin:0; color:#808080; font-weight:normal; font-size:2.5em; letter-spacing:-2px; text-align:center;}
+.clear{
+clear:both;
+margin:0;
+}
 
-#content h2
-{clear:both; margin:30px 0 10px 0; color:#d85d5d; font-weight:normal; font-size: 2em; letter-spacing:-2px;}
+.right{
+text-align:right;
+}
+
+.internallink{
+font-size:0.9em;
+text-align:center;
+}
+
+.block{
+padding:20px;
+background:#eee;
+color:#222;
+border:2px solid #ddd;
+}
+
+.credit{
+color:#888;
+background-color:inherit;
+}
+
+.hide{
+display:none;
+}
+
+/* Original open source design by Andreas Viklund - http://andreasviklund.com
+Released through OSWD.org */

@@ -51,22 +51,6 @@ $ssh_connector = ""
 
 $scp_connector = "-o StrictHostKeyChecking=no"
 
-class ExpoResult < Array
-  #def duration
-  def mean_duration
-    sum = 0
-    time = 0
-    self.each { |t| sum += t.duration }
-    time = sum / self.length if self.length > 0
-    return time
-  end
-end
-
-class TaskResult < Hash
-  def duration
-    return self['end_time'] - self['start_time']
-  end
-end
 
 at_exit {
   barrier

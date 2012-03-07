@@ -434,7 +434,7 @@ class ExpCtrlClient
 
   end
 
-  def dump_experiment
+  def dump_experiment(file)
     exp = all.result
  
     res = Hash::new
@@ -467,6 +467,7 @@ class ExpCtrlClient
 
     response = DumpExperimentResponse::new
     response.result = exp
+    File.open(file,'w+'){ |f| f.puts YAML::dump(response)}
     return response
   end
 

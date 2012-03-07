@@ -8,3 +8,8 @@ description:
   For configuration purposes, use the config.yaml file.
 ---
 note: This file can be deleted!
+
+How to update the Expo site:
+
+rsync -avz . cristianruiz@scm.gforge.inria.fr:/home/groups/expo/htdocs/
+

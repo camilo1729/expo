@@ -193,6 +193,8 @@
   
     <li><a href="../Expo/ExperimentNumberResponse.html">Expo::ExperimentNumberResponse</a>
   
+    <li><a href="../Expo/ExpoResult.html">Expo::ExpoResult</a>
+  
     <li><a href="../Expo/GenericCommandResponse.html">Expo::GenericCommandResponse</a>
   
     <li><a href="../Expo/GenericTask.html">Expo::GenericTask</a>
@@ -274,6 +276,8 @@
     <li><a href="../Expo/RubyDelayedCommandResponse.html">Expo::RubyDelayedCommandResponse</a>
   
     <li><a href="../Expo/Task.html">Expo::Task</a>
+  
+    <li><a href="../Expo/TaskResult.html">Expo::TaskResult</a>
   
     <li><a href="../Expo/TaskSet.html">Expo::TaskSet</a>
   
@@ -523,7 +527,7 @@
 
           
           <div class="method-source-code" id="new-source">
-            <pre><span class="ruby-comment"># File lib/resourceset.rb, line 443</span>
+            <pre><span class="ruby-comment"># File lib/resourceset.rb, line 480</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">initialize</span>( <span class="ruby-identifier">resource_set</span>, <span class="ruby-identifier">type</span>=<span class="ruby-keyword">nil</span>)
         <span class="ruby-ivar">@resource_set</span> = <span class="ruby-identifier">resource_set</span>
         <span class="ruby-ivar">@iterator</span> = <span class="ruby-keyword">nil</span>
@@ -580,7 +584,7 @@
 
           
           <div class="method-source-code" id="next-source">
-            <pre><span class="ruby-comment"># File lib/resourceset.rb, line 478</span>
+            <pre><span class="ruby-comment"># File lib/resourceset.rb, line 515</span>
 <span class="ruby-keyword">def</span> <span class="ruby-keyword">next</span>
         <span class="ruby-identifier">res</span> = <span class="ruby-keyword">nil</span>
         <span class="ruby-ivar">@current</span> <span class="ruby-operator">+=</span> <span class="ruby-value">1</span> <span class="ruby-keyword">if</span> <span class="ruby-keyword">not</span> <span class="ruby-ivar">@iterator</span>
@@ -635,7 +639,7 @@
 
           
           <div class="method-source-code" id="resource-source">
-            <pre><span class="ruby-comment"># File lib/resourceset.rb, line 468</span>
+            <pre><span class="ruby-comment"># File lib/resourceset.rb, line 505</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">resource</span>
         <span class="ruby-keyword">return</span> <span class="ruby-keyword">nil</span> <span class="ruby-keyword">if</span>( <span class="ruby-ivar">@current</span> <span class="ruby-operator">&gt;=</span> <span class="ruby-ivar">@resource_set</span>.<span class="ruby-identifier">resources</span>.<span class="ruby-identifier">size</span> )
         <span class="ruby-keyword">if</span> <span class="ruby-ivar">@iterator</span> <span class="ruby-keyword">then</span>

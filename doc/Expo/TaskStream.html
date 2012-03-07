@@ -193,6 +193,8 @@
   
     <li><a href="../Expo/ExperimentNumberResponse.html">Expo::ExperimentNumberResponse</a>
   
+    <li><a href="../Expo/ExpoResult.html">Expo::ExpoResult</a>
+  
     <li><a href="../Expo/GenericCommandResponse.html">Expo::GenericCommandResponse</a>
   
     <li><a href="../Expo/GenericTask.html">Expo::GenericTask</a>
@@ -274,6 +276,8 @@
     <li><a href="../Expo/RubyDelayedCommandResponse.html">Expo::RubyDelayedCommandResponse</a>
   
     <li><a href="../Expo/Task.html">Expo::Task</a>
+  
+    <li><a href="../Expo/TaskResult.html">Expo::TaskResult</a>
   
     <li><a href="../Expo/TaskSet.html">Expo::TaskSet</a>
   
@@ -428,6 +432,8 @@
 
   <div id="description" class="description">
     
+<p>Execute commands in parallel over a set of resources</p>
+
   </div><!-- description -->
 
   
@@ -484,7 +490,7 @@
 
           
           <div class="method-source-code" id="new-source">
-            <pre><span class="ruby-comment"># File lib/taskset.rb, line 116</span>
+            <pre><span class="ruby-comment"># File lib/taskset.rb, line 122</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">initialize</span>( <span class="ruby-identifier">name</span> = <span class="ruby-keyword">nil</span> )
         <span class="ruby-keyword">super</span>( <span class="ruby-value">:task_stream</span>, <span class="ruby-keyword">nil</span>, <span class="ruby-identifier">name</span> )
         <span class="ruby-ivar">@tasks</span> = <span class="ruby-constant">Array</span><span class="ruby-operator">::</span><span class="ruby-identifier">new</span>
@@ -516,12 +522,13 @@
 
         <div class="method-description">
           
-          
+          <p>Execute the commands in parallel. it uses one taktuk command for each
+command in the set</p>
           
 
           
           <div class="method-source-code" id="execute-source">
-            <pre><span class="ruby-comment"># File lib/taskset.rb, line 126</span>
+            <pre><span class="ruby-comment"># File lib/taskset.rb, line 133</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">execute</span>
         <span class="ruby-identifier">results</span> = <span class="ruby-constant">Array</span><span class="ruby-operator">::</span><span class="ruby-identifier">new</span>
         <span class="ruby-ivar">@tasks</span>.<span class="ruby-identifier">each</span> { <span class="ruby-operator">|</span><span class="ruby-identifier">t</span><span class="ruby-operator">|</span>
@@ -555,7 +562,7 @@
 
           
           <div class="method-source-code" id="push-source">
-            <pre><span class="ruby-comment"># File lib/taskset.rb, line 121</span>
+            <pre><span class="ruby-comment"># File lib/taskset.rb, line 127</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">push</span>( <span class="ruby-identifier">task</span> )
         <span class="ruby-ivar">@tasks</span>.<span class="ruby-identifier">push</span>( <span class="ruby-identifier">task</span> )
         <span class="ruby-keyword">return</span> <span class="ruby-keyword">self</span>

@@ -5,7 +5,7 @@
 require 'expo_g5k'
 
 #Reservation
-oargridsub :res => "paravent:rdef=\"/nodes=4\",gdx:rdef=\"/nodes=5\""
+oargridsub :res => "grenoble:nodes=4,luxembourg:nodes=5"
 
 #Check all nodes (which is default test ?)
 check $all
