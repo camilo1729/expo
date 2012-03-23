@@ -17,8 +17,8 @@ class ResCtrlReservation
     @jobs = nil
     @deleted = false
     @delete_time = nil
-    @delete_command_number = nil
-    @delete_command_status = nil
+    @delete_command_number = nil #this is not used
+    @delete_command_status = nil #this is not used
     @misc_data = nil
   end
 

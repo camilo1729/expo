@@ -59,44 +59,6 @@ at_exit {
 # !! we don't need check anymore. Reservation is checked automatically
 # in g5k_run
 
-=begin
-def check( nodes )
-  n = nodes.flatten(:node).uniq
-  puts "testing : " + n.inspect
-  #----CHANGED HERE
-  #test_nis = "taktuk2yaml -s"
-  #test_nis = "ruby taktuk2yaml.rb --connector /usr/bin/oarsh -f $OAR_FILE_NODES -s"
-  test_nis = "ruby taktuk2yaml.rb -s"
-  
-  test_nis += $ssh_connector
-  n.each(:node) { |x|
-    test_nis += " -m #{x}"
-  }
-  test_nis += " broadcast exec [ date ]"
-  #----for the first test test_nis = taktuk2yaml -s -m bordereau-78.bordeaux.grid5000.fr -m
-  #----capricorne-49.lyon.grid5000.fr broadcast exec [ date ]
-  command_result = $client.asynchronous_command(test_nis)
-  $client.command_wait(command_result["command_number"],1)
-  result = $client.command_result(command_result["command_number"])
-
-  tree = YAML::load( result["stdout"] )
-
-  #----for debugging
-  #puts "dates :"
-  #puts result["stdout"];
-  
-  puts "Failing nodes :"
-  tree["connectors"].each_value { |error|
-
-    if error["output"].scan("initialization failed").pop  or error["output"].scan("Name or service not known").pop or error["output"].scan("Permission denied").pop then
-      nodes.delete_if {|resource| resource.name == error["peer"] }
-      puts error["peer"]+" : "+error["output"]
-    end
-  }
-  puts
-  return nil
-end
-=end
 
 #Copy data from home directory to tmp on $all gateway (here gdx gw)
 #task $all.gw, "scp ~/data  #{$all.first}:/tmp/"

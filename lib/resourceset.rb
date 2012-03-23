@@ -333,9 +333,9 @@ class ResourceSet < Resource
 	#For example $all[1..6] extract resources from 1 to 6
         def []( index )
               count=0
+              resource_set = ResourceSet::new
+              it = ResourceSetIterator::new(self,:node)
               if index.kind_of?(Range) then
-                        resource_set = ResourceSet::new
-                        it = ResourceSetIterator::new(self,:node)
                         self.each(:node){ |node|
                                 resource=it.resource
                                 if resource then
@@ -349,12 +349,31 @@ class ResourceSet < Resource
                         return resource_set
               end
               self.each(:node){ |resource|
-                   if count==index then
-                           return resource
-                   end
+		   resource=it.resource
+	           if resource then
+                   	if count==index then
+			   resource_set.resources.push( resource )
+                           return resource_set
+                   	end
+		   end
                    count+=1
               }
         end
+
+	# Return a resouce or an array of resources.	
+	def to_resource
+	    	if self.length == 1
+			self.each(:node){ |resource|
+				return resource
+			}
+		else
+			resource_array=Array::new
+			self.each(:node){ |resource|
+				resource_array.push( resource )
+				}
+			return resource_array
+		end
+	end
 
         def ==( set )
                 super and @resources == set.resources
