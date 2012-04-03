@@ -1,5 +1,9 @@
 module Expo
 
+
+
+
+
 class ExpoResult < Array
   #def duration
   def mean_duration
@@ -16,6 +20,34 @@ class TaskResult < Hash
     return self['end_time'] - self['start_time']
   end
 end
+
+
+def task(location, task)
+  #cmd = "taktuk2yaml -s"
+  cmd = "ruby taktuk2yaml.rb -s"
+  cmd += $ssh_connector
+  cmd += " -l #{$ssh_user}" if $ssh_user != ""
+  cmd += " -t #{$ssh_timeout}" if $ssh_timeout != ""
+  cmd += " -m #{location}"
+  cmd += " b e [ #{task} ]"
+  command_result = $client.asynchronous_command(cmd)
+  $client.command_wait(command_result["command_number"],1)
+  #command_result = $client.command(cmd)
+
+  return make_taktuk_result( command_result["command_number"] )
+end
+
+def simpletask(location,task)
+  cmd = "ssh -o \"ConnectTimeout 10\""
+  cmd += " lig_expe@#{location}"
+  cmd += " #{task} "
+  command_result = $client.asynchronous_command(cmd)
+  $client.command_wait(command_result["command_number"],1)
+  result = $client.command_result(command_result["command_number"])
+  puts result['stdout']
+  puts result['stderr']
+end
+
 
 
 
@@ -58,11 +90,17 @@ def make_taktuk_result( id )
   }
 
   #----display an output of command!!!
-  puts "Command: " + res[0]['command_line']
-  puts "Output: "
-  if res[0]['stdout']
-    puts res[0]['stdout']
+  if( res[0].nil?) then
+	puts "Error Contacting the node"
+  else
+  	puts "Command: " + res[0]['command_line']
+  	puts "Output: "
+  	if !res[0]['stdout'].nil?
+    		puts res[0]['stdout']
+  	end
   end
+
+ 
   return [id, res]
 end
 

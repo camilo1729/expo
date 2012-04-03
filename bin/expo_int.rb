@@ -33,4 +33,8 @@ $all = ResourceSet::new
 
 $ssh_connector =""
 
+$ssh_user =""
+
+$ssh_timeout = ""
+
 

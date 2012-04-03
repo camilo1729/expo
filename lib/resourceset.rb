@@ -435,6 +435,24 @@ class ResourceSet < Resource
 
 	alias nodefile node_file
 
+	#Generates a directory.xml file for using as a resources 
+	#For Gush.
+	def make_gush_file( update = false)
+		gush_file = File::new("directory.xml","w+")
+		gush_file.puts("<?xml version=\"1.0\" encoding=\"UTF-8\"?>")
+		gush_file.puts("<gush>")
+		resource_set = self.flatten(:node)
+		resource_set.each{ |resource|
+			gush_file.puts( "<resource_manager type=\"ssh\">")
+			gush_file.puts("<node hostname=\"#{resource.properties[:name]}:15400\" user=\"lig_expe\" group=\"local\" />" )
+
+			gush_file.puts("</resource_manager>")
+		}
+		gush_file.puts("</gush>")
+		gush_file.close
+		return gush_file.path
+	end
+
 	#Creates the taktuk command to execute on the ResourceSet
 	#It takes into account if the resources are grouped under
 	#different gatways in order to perform this execution more

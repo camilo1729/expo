@@ -5,6 +5,9 @@ require 'thread'
 require "xmlrpc/client"
 require 'parseconfig'
 
+
+$loaded=false
+
 def get_resources
     Expo.get_machines()
 end
@@ -14,6 +17,9 @@ module Expo
 
 def self.get_machines
 
+   puts "already Charged" if $loaded
+   return nil if $loaded
+   $loaded=true if !$loaded
    #puts "Putting some planet lab nodes in the resources variable"
    server = XMLRPC::Client.new2("https://www.planet-lab.eu/PLCAPI/")
    #gettring the parameters from configuration file
@@ -40,13 +46,16 @@ def self.get_machines
    }
 end
 
-  def check( nodes )
+def check( nodes )
 	n = nodes.flatten(:node).uniq
 	puts "Testing: " + n.inspect
 
 	test_nis = "ruby taktuk2yaml.rb -s"
 	
-	 test_nis += $ssh_connector
+	test_nis += $ssh_connector
+	test_nis += " -l #{$ssh_user}" if $ssh_user != ""
+  	test_nis += " -t #{$ssh_timeout}" if $ssh_timeout != ""
+
   	n.each(:node) { |x|
     		test_nis += " -m #{x}"
   	}
@@ -61,7 +70,7 @@ end
         puts "Failing nodes :"
         tree["connectors"].each_value { |error|
  
-	if error["output"].scan("Connection timed out").pop or error["output"].scan("Connection closed by remote host").pop or error["output"].scan("Permission denied").pop or error["output"].scan("Name or service not known").pop
+	if error["output"].scan("Connection timed out").pop or error["output"].scan("Connection closed by remote host").pop or error["output"].scan("Permission denied").pop or error["output"].scan("Name or service not known").pop or error["output"].scan("vserver ... suexec").pop then 
  		nodes.delete_if {|resource| resource.name == error["peer"] }
                 puts error["peer"]+" : "+error["output"]
          end
