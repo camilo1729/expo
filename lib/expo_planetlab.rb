@@ -56,21 +56,21 @@ def check( nodes )
 	test_nis += " -l #{$ssh_user}" if $ssh_user != ""
   	test_nis += " -t #{$ssh_timeout}" if $ssh_timeout != ""
 
-  	n.each(:node) { |x|
-    		test_nis += " -m #{x}"
-  	}
-  	test_nis += " broadcast exec [ date ]"
+  	#n.each(:node) { |x|
+    	#	test_nis += " -m #{x}"
+  	#}
+  	#test_nis += " broadcast exec [ date ]"
+	test_nis += nodes.make_taktuk_command("date")
+	puts "Command generated #{test_nis}"
   	command_result = $client.asynchronous_command(test_nis)
   	$client.command_wait(command_result["command_number"],1)
 	result = $client.command_result(command_result["command_number"])
 	tree = YAML::load( result["stdout"] )
-  #            #puts "dates :"
-  #              #puts result["stdout"];
   #                
         puts "Failing nodes :"
         tree["connectors"].each_value { |error|
  
-	if error["output"].scan("Connection timed out").pop or error["output"].scan("Connection closed by remote host").pop or error["output"].scan("Permission denied").pop or error["output"].scan("Name or service not known").pop or error["output"].scan("vserver ... suexec").pop then 
+	if error["output"].scan("Connection timed out").pop or error["output"].scan("DOING SOMETHING NASTY").pop or error["output"].scan("timeouted").pop or error["output"].scan("Connection closed by remote host").pop or error["output"].scan("Permission denied").pop or error["output"].scan("Name or service not known").pop or error["output"].scan("vserver ... suexec").pop then 
  		nodes.delete_if {|resource| resource.name == error["peer"] }
                 puts error["peer"]+" : "+error["output"]
          end

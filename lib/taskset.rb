@@ -69,8 +69,8 @@ class Task < GenericTask
         def execute
                 cmd = "ruby taktuk2yaml.rb -s"
                 cmd += $ssh_connector
-		cmd += " -l #{$ssh_user}" if $ssh_user != ""
-		cmd += " -t #{$ssh_timeout}" if $ssh_timeout != ""
+		cmd += " -l #{$ssh_user}" if !$ssh_user.nil?
+		cmd += " -t #{$ssh_timeout}" if !$ssh_timeout.nil?
                 cmd += @resources.make_taktuk_command(self.command)
                 command_result = $client.asynchronous_command(cmd)
                 $client.command_wait(command_result["command_number"],1)
