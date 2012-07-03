@@ -6,6 +6,7 @@
 $RMI = 'soap'
 $POLLING = false
 
+require 'rubygems'
 require 'expctrl'
 require 'expctrl_server'
 require 'thread'

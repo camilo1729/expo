@@ -11,6 +11,7 @@ at_exit {
 $RMI = 'soap'
 $POLLING = false
 
+require 'rubygems'
 require 'rctrl'
 require 'rctrl_server'
 require 'date'

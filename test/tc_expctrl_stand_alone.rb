@@ -6,6 +6,7 @@
 $RMI = 'none'
 $POLLING = false
 
+require 'rubygems'
 require 'expctrl'
 require 'test/unit'
 require 'test_reservation'

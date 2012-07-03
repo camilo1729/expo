@@ -6,6 +6,7 @@
 $RMI = 'soap'
 $POLLING = false
 
+require 'rubygems'
 require 'resctrl'
 require 'resctrl_server'
 require 'test/unit'

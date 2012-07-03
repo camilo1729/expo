@@ -2,6 +2,7 @@
 
 [ '../lib', 'lib' ].each { |d| $:.unshift(d) if File::directory?(d) }
 
+require 'rubygems'
 require 'resourceset'
 require 'test/unit'
 require 'yaml'

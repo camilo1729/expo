@@ -181,6 +181,7 @@ def copy( file, destination, params = {} )
   cmd += " "
   #here we have params[:location]==localhost for use_case_1_1.rb
   #cmd += "#{params[:location]}:" if ( params[:location] && ( params[:location] != "localhost" ) )
+  cmd += "-r " if ( params[:directory])
   cmd += "#{file} "
   cmd += "#{destination}:" if ( destination.to_s != "localhost" )
   cmd += "#{path}"
@@ -226,10 +227,10 @@ end
 load($rest.last)
 
 #I have to disable this temporarily
-#if not @options[:no_cleanup]
+if not @options[:no_cleanup]
   # clean up reservations & deployments
- # cleanup
-#end
+  cleanup
+end
 
 
 $client.close_experiment
