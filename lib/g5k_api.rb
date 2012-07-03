@@ -218,6 +218,7 @@ def g5k_reserve(options)
     logger.info "[#{options[:site]}] Got the following job: #{job.inspect}"
     logger.info "[#{options[:site]}] Waiting for state=running for job ##{job['uid']} (expected start time=\"#{Time.at(job['scheduled_at']) rescue "unknown"}\")..."
 
+   begin
       Timeout.timeout(@options[:submission_timeout]) do
         while job.reload['state'] != 'running'
           # while testing jobs can be really quick, like "uname" or "ls"
@@ -228,7 +229,10 @@ def g5k_reserve(options)
           sleep options[:polling_frequency]
         end
       end
-
+	rescue Timeout::Error => e
+		logger.info "Time out was achieved exiting and cleaning"
+		cleanup
+   end
     logger.info "[#{options[:site]}] Job is running: #{job.inspect}"
 
     # DO WE NEED THIS??

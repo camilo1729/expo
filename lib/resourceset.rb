@@ -239,7 +239,7 @@ class ResourceSet < Resource
                         if block.call(@resources[i]) then
                                 @resources.delete_at(i)
                         elsif @resources[i].kind_of?(ResourceSet) then
-                                @resources[i].delete_all_if( &block )
+                                @resources[i].delete_if( &block )
                         end
                 }
                 return self
@@ -308,6 +308,10 @@ class ResourceSet < Resource
                 self.each_slice( type, lambda { |i| i*i }, &block )
         end
 
+	def each_slice_double( type = nil, &block )
+		self.each_slice( type, lambda { |i| 2**i }, &block )
+	end
+
 	#Calls block once for each element in self, depending on the type of resource.
 	#if the type is :resource_set, it is going to iterate over the several resoruce sets defined.
 	#:node it is the default type which iterates over all the resources defined in the resource set.
@@ -357,6 +361,7 @@ class ResourceSet < Resource
                    	end
 		   end
                    count+=1
+		   it.next
               }
         end
 

@@ -26,15 +26,36 @@ def task(location, task)
   #cmd = "taktuk2yaml -s"
   cmd = "ruby taktuk2yaml.rb -s"
   cmd += $ssh_connector
-  cmd += " -l #{$ssh_user}" if $ssh_user != ""
-  cmd += " -t #{$ssh_timeout}" if $ssh_timeout != ""
+  cmd += " -l #{$ssh_user}" if !$ssh_user.nil?
+  cmd += " -t #{$ssh_timeout}" if !$ssh_timeout.nil?
   cmd += " -m #{location}"
   cmd += " b e [ #{task} ]"
+  puts "command: #{cmd}"
   command_result = $client.asynchronous_command(cmd)
   $client.command_wait(command_result["command_number"],1)
   #command_result = $client.command(cmd)
 
   return make_taktuk_result( command_result["command_number"] )
+end
+
+def atask(location, task)
+  #cmd = "taktuk2yaml -s"
+  cmd = "ruby taktuk2yaml.rb -s"
+  cmd += $ssh_connector
+  cmd += " -l #{$ssh_user}" if !$ssh_user.nil?
+  cmd += " -t #{$ssh_timeout}" if !$ssh_timeout.nil?
+  cmd += " -m #{location}"
+  cmd += " b e [ #{task} ]"
+  #----to create an asynch cmd we use generic cmd BUT! we don't wait
+  #    till it finishes and continue execution of main process. In case
+  #    of asynch cmd, response will contain only cmd id number
+  command_result = $client.asynchronous_command(cmd)
+  #----means only one atask can be inside this block at a time
+  $atasks_mutex.synchronize {
+    #----register our asynch cmd with provided params
+    $atasks[command_result["command_number"]] = { "location" => location , "task" => task }
+  }
+
 end
 
 def simpletask(location,task)
@@ -61,6 +82,78 @@ def print_taktuk_result( res )
     puts
   }
 end
+
+def ptask(location, targets, task)
+  #cmd = "taktuk2yaml -s"
+  #cmd = "ruby taktuk2yaml.rb --connector /usr/bin/oarsh -s"
+  cmd = "ruby taktuk2yaml.rb -s"
+  cmd += $ssh_connector
+  #----means that 'location' node will start all other nodes. For
+  #----details see 2.2.2 section of Taktuk manual
+  cmd += " -m #{location}"
+  cmd += " -["
+  targets.flatten(:node).each(:node) { |node|
+    cmd += " -m #{node}"
+  }
+  cmd += " downcast exec [ #{task} ]"
+  cmd += " -]"
+  command_result = $client.asynchronous_command(cmd)
+  $client.command_wait(command_result["command_number"],1)
+  #----here we return two values: id of a command and a hash 'res' where
+  #----all the info about the command is stored
+  return make_taktuk_result(command_result["command_number"])
+end
+
+class ParallelSection
+  def initialize(&block)
+    @thread_array = Array::new
+    instance_eval(&block)
+    @thread_array.each { |t|
+      t.join
+    }
+  end
+
+  def sequential_section(&block)
+    t = Thread::new(&block)
+    @thread_array.push(t)
+  end
+
+end
+
+def parallel_section(&block)
+  ParallelSection::new(&block)
+end
+
+
+
+def copy( file, destination, params = {} )
+  if params[:path] then
+    path = params[:path]
+  else
+    path = file
+  end
+  #----scp works as the following
+  #----scp myfile.txt oiegorov@access.lille.grid5000.fr:/home/oiegorov
+  #----       ^                     ^                      ^
+  #----      file              destination                path
+  cmd = "scp "
+  #cmd += $scp_connector # == -o StrictHostKeyChecking=no
+  cmd += " "
+  #here we have params[:location]==localhost for use_case_1_1.rb
+  #cmd += "#{params[:location]}:" if ( params[:location] && ( params[:location] != "localhost" ) )
+  cmd += "#{file} "
+  cmd += "#{destination}:" if ( destination.to_s != "localhost" )
+  cmd += "#{path}"
+  command_result = $client.asynchronous_command(cmd)
+  $client.command_wait(command_result["command_number"],1)
+  result = $client.command_result(command_result["command_number"])
+  puts cmd
+  puts result["stdout"]
+  puts result["stderr"]
+  puts
+end
+
+
 
 def make_taktuk_result( id )
   result = $client.command_result( id )
@@ -103,5 +196,5 @@ def make_taktuk_result( id )
  
   return [id, res]
 end
-
+		
 end
