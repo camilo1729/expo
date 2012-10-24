@@ -1,7 +1,15 @@
+
 require 'rubygems'
 Gem.path<<"#{ENV['HOME']}/.gem/"
 #require 'termios'
 require 'optparse'
+ROOT_DIR= File.expand_path('../..',__FILE__)
+BIN_DIR= File.join(ROOT_DIR,"bin")
+LIB_DIR= File.join(ROOT_DIR,"lib")
+
+
+$LOAD_PATH.unshift LIB_DIR
+ENV['RUBYLIB'] = LIB_DIR
 require 'resourceset'
 require 'taskset'
 require 'thread'
@@ -39,6 +47,10 @@ $client.open_experiment
 puts "Preparing resource container $all"
 
 $all = ResourceSet::new
+#### Adding this temporarly because of the asynchornous tasks ####
+$atasks_mutex = Mutex::new
+$atasks = Hash::new
+
 
 $ssh_connector =""
 

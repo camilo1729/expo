@@ -86,6 +86,7 @@ public
     return response
   end
 
+### Get all the nodes from the experiment hash information ###
   def get_all_nodes( experiment_number )
     experiment = get_experiment( experiment_number )
     nodes = experiment.get_all_nodes

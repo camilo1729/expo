@@ -4,14 +4,24 @@ require 'restfully'
 require 'g5k_parallel'
 require 'thread'
 
-# default options of an experiment.
-# can be modified in g5k_init() in your test file
-#
-# g5k_init (
-#   :site => ["grenoble", "lille"],
-#   :resources => ["nodes=1", "nodes=3"]
-#   )
-@options = {
+class G5kreserv
+  attr_accessor :sites, :nodes, :walltime, :name
+  
+  def run()
+    puts ":site=>#{@sites.inspect},:nodes=>#{@nodes.inspect},:walltime=>#{@walltime},:name=>#{@name}"
+    puts "This are the parameter that are going to be executed"
+    $options[:site]=@sites
+    $options[:resources]=@nodes
+    $options[:walltime]=@walltime
+    $options[:name]=@name
+    pp $options
+    g5k_run
+  end
+end
+
+
+
+$options = {
   :restfully_config => File.expand_path(
     ENV['RESTFULLY_CONFIG'] || "~/.restfully/api.grid5000.fr.yml"
   ),
@@ -34,24 +44,34 @@ require 'thread'
 }
 
 # create a connection to Grid5000 API in Restfully way
-if File.exist?(@options[:restfully_config]) && 
-    File.readable?(@options[:restfully_config]) &&
-    File.file?(@options[:restfully_config])
+if File.exist?($options[:restfully_config]) && 
+    File.readable?($options[:restfully_config]) &&
+    File.file?($options[:restfully_config])
 
   @connection = Restfully::Session.new( 
-    :configuration_file => @options.delete(:restfully_config)
+    :configuration_file => $options.delete(:restfully_config)
   )   
 else
   STDERR.puts "Restfully configuration file cannot be loaded:
-  #{@options[:restfully_config].inspect} does not exist or cannot be
+  #{$options[:restfully_config].inspect} does not exist or cannot be
   read or is not a file" 
   exit(1)
 end
 
-# redefine the options of an experiment
+module Expo
+
+# default options of an experiment.
+# can be modified in g5k_init() in your test file
+#
+# g5k_init (
+#   :site => ["grenoble", "lille"],
+#   :resources => ["nodes=1", "nodes=3"]
+#   )
+
+# sets up the reservation parameters
 def g5k_init(experim_params)
   # make logger easier to access
-  @logger = @options[:logger]
+  @logger = $options[:logger]
   
   # DO WE NEED IT???
   @nodes = []
@@ -63,11 +83,11 @@ def g5k_init(experim_params)
   @mutex = Mutex.new
 
   experim_params.each { |attribute, value|
-    @options[attribute.to_sym] = value
+    $options[attribute.to_sym] = value
   }
 
-  if @options.has_key?(:environment)
-    @options[:types].push("deploy")
+  if $options.has_key?(:environment)
+    $options[:types].push("deploy")
   end
 end
 
@@ -78,41 +98,45 @@ def g5k_run
   # if :sites == "all" reserve on each site
   # if :sites == "any" - on the site w/ the biggest number of free nodes
   # otherwise reserve on the specified site(s)
-  if ["all", "any"].include?(@options[:site].to_s)
+  if ["all", "any"].include?($options[:site].to_s)
     status = how_many?
     @logger.info "Status=#{status.inspect}"
-    case @options[:site].to_s
+    case $options[:site].to_s
     when "all"
       @sites = status.keys
     when "any"
       @sites = [status.sort_by{|k,v| v}.last[0]]
     end
   else
-    @sites = [@options[:site]].flatten
+    @sites = [$options[:site]].flatten
   end
 
   # to keep track how many resource on each site to reserve
-  @res = [@options[:resources]].flatten
+  @res = [$options[:resources]].flatten
+  #In case we define the same number of nodes in each site.
+  @res = @res*@sites.length if @res.length==1 && @sites.length>1 
 
-  @options[:parallel_reserve] = parallel
-
-  # launch parallel reservations on all the @options[:site]
+  $options[:parallel_reserve] = parallel
+  # launch parallel reservations on all the $options[:site]
   for i in 1..@sites.length
-    @options[:parallel_reserve].add(@options.merge(:site => @sites[i-1], :resources => @res[i-1])) do |env|
+    $options[:parallel_reserve].add($options.merge(:site => @sites[i-1], :resources => @res[i-1])) do |env|
       g5k_reserve(env)
     end
   end
 
   # wait till all the reservations complete
-  @options[:parallel_reserve].loop!
+  $options[:parallel_reserve].loop!
 
 
   #
   # construct $all ResourceSet
-  Expo.extract_resources_new(@resources)
+  self.extract_resources_new(@resources)
+  # I think that here is a good point to add the parameters of the reservation to the log
+  #@reservations.push(0)
+
 
   #------------DEPLOYMENT STAGE--------------------------------
-  if @options[:types].include?("deploy")
+  if $options[:types].include?("deploy")
 
     # create the environment hash: {"environment_1" => ["node_1", ..], ...}
     env_hash = {}
@@ -120,14 +144,14 @@ def g5k_run
     all_2 = ResourceSet::new
     i = 0
 
-    @options[:environment].each { |env, nodes_num|
+    $options[:environment].each { |env, nodes_num|
       env_hash[env] = []
       nodes_num.times {
         
         all_check = $all.copy
         # find the node where env should be deployed and delete it
         $all.each { |node|
-          if node.corresponds({:site => @options[:site][i]})
+          if node.corresponds({:site => $options[:site][i]})
             $all.delete(node)
             node.properties[:environment] = env
             all_2.push(node)
@@ -140,7 +164,7 @@ def g5k_run
           # take the next site and find again
           i += 1 
           $all.each { |node|
-            if node.corresponds({:site => @options[:site][i]})
+            if node.corresponds({:site => $options[:site][i]})
               $all.delete(node)
               node.properties[:environment] = env
               all_2.push(node)
@@ -156,25 +180,25 @@ def g5k_run
 
 
     # launch parallel deployments for each environment
-    @options[:parallel_deploy] = parallel
+    $options[:parallel_deploy] = parallel
 
     # As API deploy the same environment on the same site in parallel, 
     # we submit deployments in
     # "environment_1" => [ .. all the nodes of the site ]
     # for each site
 
-    @options[:site].each { |site|
+    $options[:site].each { |site|
       
       env_hash.each { |environment, nodes|
         
-        @options[:environment] = environment
+        $options[:environment] = environment
         # find all the reserved nodes from this site
-        @options[:nodes] = nodes.find_all { |node|
+        $options[:nodes] = nodes.find_all { |node|
           node =~ /\S*.#{site}.\w*/
         }
 
-        if not @options[:nodes].empty?
-          @options[:parallel_deploy].add(@options.merge(:site => site)) { |env|
+        if not $options[:nodes].empty?
+          $options[:parallel_deploy].add($options.merge(:site => site)) { |env|
             g5k_deploy(env)
           }
         end
@@ -182,19 +206,18 @@ def g5k_run
     }
 
     #wait for all the deployments to finish
-    @options[:parallel_deploy].loop!
+    $options[:parallel_deploy].loop!
   end
 
 end
 
-# reserve the remote nodes with parameters specified in @options
+# reserve the remote nodes with parameters specified in $options
 def g5k_reserve(options)
 
   logger = @logger
 
-  # payload is a hash contatining all the params of the job to submit
-  payload = {
-    :command => "sleep #{@options[:walltime]}"
+  # payload is a hash contatining all the params of the job to submitgqqq  payload = {
+    :command => "sleep #{$options[:walltime]}"
   }.merge(options.reject { |k,v| !valid_job_key?(k) }) #sort out valid payload
   
   # convert resources to OAR style
@@ -202,10 +225,17 @@ def g5k_reserve(options)
     options[:resources], "walltime=#{oar_walltime(options)}"
   ].join(",")
 
+
   # job submission (using Restfully gem)
-  job = synchronize {
-    @connection.root.sites[options[:site].to_sym].jobs.submit(payload)
-  }
+  begin
+    job = synchronize {
+      @connection.root.sites[options[:site].to_sym].jobs.submit(payload)
+    }
+    rescue Restfully::HTTP::ClientError
+    logger.error "Error with the API, exiting"
+    cleanup
+    nil
+  end
 
 
   if job.nil?
@@ -219,7 +249,7 @@ def g5k_reserve(options)
     logger.info "[#{options[:site]}] Waiting for state=running for job ##{job['uid']} (expected start time=\"#{Time.at(job['scheduled_at']) rescue "unknown"}\")..."
 
    begin
-      Timeout.timeout(@options[:submission_timeout]) do
+      Timeout.timeout($options[:submission_timeout]) do
         while job.reload['state'] != 'running'
           # while testing jobs can be really quick, like "uname" or "ls"
           # so we have to check if at the moment it is already finished
@@ -228,6 +258,7 @@ def g5k_reserve(options)
           end
           sleep options[:polling_frequency]
         end
+
       end
 	rescue Timeout::Error => e
 		logger.info "Time out was achieved exiting and cleaning"
@@ -267,19 +298,30 @@ def g5k_deploy(env)
     end
     env[:remaining_attempts] -= 1
     # environment deployment (using Restfully gem)
-    deployment = @connection.root.sites[env[:site].to_sym].deployments.submit({
-      :nodes => env[:nodes],
-      :notifications => env[:notifications],
-      :environment => env[:environment],
-      :key => key_for_deployment(env)
-    }.merge(env.reject{ |k,v| !valid_deployment_key?(k) }))
-  else
-    logger.info "[#{env[:site]}] Hit the maximum number of retries. Halting."
-    deployment = nil
+    #### temporal code to catch the error from the API.
+    begin
+    	deployment = @connection.root.sites[env[:site].to_sym].deployments.submit({
+      	:nodes => env[:nodes],
+      	:notifications => env[:notifications],
+      	:environment => env[:environment],
+      	:key => key_for_deployment(env)
+    	}.merge(env.reject{ |k,v| !valid_deployment_key?(k) }))
+	rescue Restfully::HTTP::ServerError 
+		logger.error "Error with the API, exiting and cleaning"
+		cleanup
+	rescue Restfully::HTTP::ClientError
+		
+		logger.error "Error with the API, exiting and cleaning"
+		cleanup
+    end
+  	else
+    	logger.info "[#{env[:site]}] Hit the maximum number of retries. Halting."
+    	deployment = nil
   end
 
   if deployment.nil?
     logger.error "[#{env[:site]}] Cannot submit the deployment."
+    cleanup()
     nil
   else
     deployment.reload
@@ -287,13 +329,17 @@ def g5k_deploy(env)
 
     logger.info "[#{env[:site]}] Got the following deployment: #{deployment.inspect}"
     logger.info "[#{env[:site]}] Waiting for termination of deployment ##{deployment['uid']} in #{deployment.parent['uid']}..."
-
+    begin
       Timeout.timeout(env[:deployment_timeout]) do
         while deployment.reload['status'] == 'processing'
           sleep env[:polling_frequency]
         end
       end
-
+	rescue Timeout::Error => e
+		logger.info "Time out was achieved for deploying exiting and cleaning"
+		cleanup
+	
+    end
     if deployment_ok?(deployment, env)
       logger.info "[#{env[:site]}] Deployment is terminated: #{deployment.inspect}"
       env[:deployment] = deployment
@@ -536,11 +582,11 @@ def cleanup( job = nil, deployment = nil)
 end
 
 
-module Expo
+#module Expo
 
 # put reserved resources into expo's $all ResourceSet
 #
-def self.extract_resources_new(result)
+def extract_resources_new(result)
     result.each { |key,value|
       # { "cluster" => {...} }
       cluster = key

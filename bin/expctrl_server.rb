@@ -3,6 +3,7 @@
 [ '../lib', 'lib' ].each { |d| $:.unshift(d) if File::directory?(d) }
 
 require 'optparse'
+require 'rubygems'
 require 'drb'
 require 'soap/rpc/standaloneServer'
 require 'soap/marshal'

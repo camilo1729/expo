@@ -1,0 +1,13 @@
+#!/usr/bin/ruby -v
+
+ROOT_DIR= File.expand_path('../..',__FILE__)
+BIN_DIR= File.join(ROOT_DIR,"bin")
+
+if `which pry` && $?.success? then
+  PRY_BIN="pry"
+else
+  PRY_BIN="~/.gem/bin/pry"
+end
+exec("#{PRY_BIN} -r #{BIN_DIR}/expo_int.rb")
+
+

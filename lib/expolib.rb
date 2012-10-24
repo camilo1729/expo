@@ -2,8 +2,6 @@ module Expo
 
 
 
-
-
 class ExpoResult < Array
   #def duration
   def mean_duration
@@ -104,6 +102,19 @@ def ptask(location, targets, task)
   return make_taktuk_result(command_result["command_number"])
 end
 
+#def get_results(location, resources, file)
+
+#  cmd = "ruby taktuk2yaml.rb -s"
+#  cmd += $ssh_connector
+	
+#  cmd += " -m #{location}"
+#  cmd += " -["
+#  resources.flatten(:node).each(:node) { |node|
+#	cmd += " -m #{node}"
+#  }
+#  cmd += "downcast exec
+
+
 class ParallelSection
   def initialize(&block)
     @thread_array = Array::new
@@ -125,6 +136,77 @@ def parallel_section(&block)
 end
 
 
+def get_results(targets, file, where="~/")
+    $ssh_user="root" if $ssh_user.nil?
+ 
+    #### this function gets the results from a set of nodes. 
+    ### for the moment is sequentially so it has not good performance
+	
+    targets.flatten(:node).each(:node) { |node|
+		
+    	cmd = "ssh "
+    	cmd += " "
+    	cmd += "#{$ssh_user}@#{node}"
+    	cmd += " ls #{file} " #it looks temporary in the home directory
+    	command_result = $client.asynchronous_command(cmd)
+    	$client.command_wait(command_result["command_number"],1)
+    	result = $client.command_result(command_result["command_number"])
+    	puts cmd
+    	puts result["stdout"]
+    	files_to_trans = result["stdout"].split()
+    	puts "Number of files to trasfer for this node: #{files_to_trans.length}"
+    
+    	files_to_trans.each{ |current_file|
+	
+        	file_base=File.basename("#{current_file}")
+  		cmd = "scp "
+  #cmd += $scp_connector # == -o StrictHostKeyChecking=no
+  		cmd += " "
+  #here we have params[:location]==localhost for use_case_1_1.rb
+  #cmd += "#{params[:location]}:" if ( params[:location] && ( params[:location] != "localhost" ) )
+  		cmd += "#{$ssh_user}@#{node}:"
+  		cmd += "#{current_file}"
+  		cmd += " #{where}/#{file_base}-#{node}"
+ 		command_result = $client.asynchronous_command(cmd)
+  		$client.command_wait(command_result["command_number"],1)
+  		result = $client.command_result(command_result["command_number"])
+ 		puts cmd
+  		puts result["stdout"]
+  		puts result["stderr"]
+    		}
+    }
+    #cmd += "
+    #puts result["stderr"]
+    #puts file.class
+  
+    ### now the file has to be brought with taktuk
+  #----means that 'location' node will start all other nodes. For
+  #----details see 2.2.2 section of Taktuk manual
+
+   #files_to_trans.each{ |current_file|
+    #cmd = "ruby taktuk2yaml.rb -s"
+    #cmd += $ssh_connector
+     #cmd += " -l #{$ssh_user}" if !$ssh_user.nil?
+     #targets.flatten(:node).each(:node) { |node|
+
+     #cmd += " -m #{node}"
+     #}
+     #puts "file to get #{current_file}"
+     #file_base=File.basename("#{current_file}")
+     #cmd += " broadcast get [ '#{current_file}' ] [ '#{where}/#{file_base}-$rank' ]"
+  #cmd += " -]"
+     #puts "command Executed #{cmd}"
+     #command_result = $client.asynchronous_command(cmd)
+     #$client.command_wait(command_result["command_number"],1)
+     #result = $client.command_result(command_result["command_number"])
+      #puts result["stdout"]
+    #}
+  #----here we return two values: id of a command and a hash 'res' where
+  #----all the info about the command is stored
+  #return make_taktuk_result(command_result["command_number"])
+
+end
+
 
 def copy( file, destination, params = {} )
   if params[:path] then
@@ -132,6 +214,7 @@ def copy( file, destination, params = {} )
   else
     path = file
   end
+  $ssh_user="root" if $ssh_user.nil?  ### temporary user manage
   #----scp works as the following
   #----scp myfile.txt oiegorov@access.lille.grid5000.fr:/home/oiegorov
   #----       ^                     ^                      ^
@@ -142,6 +225,7 @@ def copy( file, destination, params = {} )
   #here we have params[:location]==localhost for use_case_1_1.rb
   #cmd += "#{params[:location]}:" if ( params[:location] && ( params[:location] != "localhost" ) )
   cmd += "#{file} "
+  cmd += "#{$ssh_user}@"
   cmd += "#{destination}:" if ( destination.to_s != "localhost" )
   cmd += "#{path}"
   command_result = $client.asynchronous_command(cmd)

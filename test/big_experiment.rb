@@ -1,5 +1,4 @@
 require 'g5k_api'
-#require 'expo_g5k'
 require 'benchmark'
 
 g5k_init(
@@ -11,12 +10,14 @@ g5k_init(
        :name => "Big_experiment"
 )
 
-#oargridsub :res => "grenoble:rdef=\"/nodes=60\",bordeaux:rdef=\"/nodes=80\",sophia:rdef=\"/nodes=80\",lyon:rdef=\"/nodes=50\"", :walltime=> "0:10:00"
  
 g5k_run                     # run the reservation
  
 task_mon=Task::new("hostname",$all,"Monitoring")
+i
 
+
+griffon_hosts=t$all["griffon"]
 res=0
  time=Benchmark.realtime do
         id, res = task_mon.execute
@@ -25,3 +26,6 @@ res=0
  puts "getting response from : #{res.length} nodes"
 
 
+
+#require 'expo_g5k'
+#oargridsub :res => "grenoble:rdef=\"/nodes=60\",bordeaux:rdef=\"/nodes=80\",sophia:rdef=\"/nodes=80\",lyon:rdef=\"/nodes=50\"", :walltime=> "0:10:00"

@@ -29,7 +29,11 @@ end
 #Certains characteritics such as type, name, gateway.
 class Resource
         attr_accessor :type, :properties
-        #Creates a new Resource Object.
+        # Creates a new Resource Object.
+        # @param [type] type of the source
+        # @param [properties] object property
+        # @param [String] String name
+	# @return [resource] Resource Object
 	def initialize( type, properties=nil, name=nil )
                 @type = type
                 @properties = Hash::new
@@ -43,7 +47,8 @@ class Resource
                 end
         end
 
-	#return the name of the resource.
+	# Return the name of the resource.
+	# @return [String] the name of the resource
         def name
                 return @properties[:name]
         end
@@ -323,7 +328,8 @@ class ResourceSet < Resource
                 end
         end
 	
-	#Returns the number of resources in the ResourceSet
+	# Returns the number of resources in the ResourceSet
+	# @return [Integer] the number of resources
 	def length()
                 count=0
                 self.each(:node){ |resource|
@@ -332,9 +338,16 @@ class ResourceSet < Resource
                 return count
         end
 
-	#Extract part of a resourceSet.
-	#It can be used with a range as a parameter.
-	#For example $all[1..6] extract resources from 1 to 6
+	# Returns a subset of the ResourceSet.
+	# @note It can be used with a range as a parameter.
+        # @param [Range] index	Returns a subset specified by the range.
+        # @param [String] index	Returns a subset which is belongs to the same cluster.
+        # @param [Integer] index	Returns just one resource.
+	# @return [ResourceSet] 	a ResourceSet object
+	# @example 
+	#	all[1..6] extract resources from 1 to 6
+	#	all["lyon"] extract the resources form lyon cluster
+	#  	all[0]  return just one resource.
         def []( index )
               count=0
               resource_set = ResourceSet::new
@@ -352,6 +365,14 @@ class ResourceSet < Resource
                         }
                         return resource_set
               end
+	      if index.kind_of?(String) then
+	      it = ResourceSetIterator::new(self,:resource_set)
+			self.each(:resource_set) { |resource_set|
+			      if resource_set.properties[:alias] == index then
+					return resource_set
+			      end
+			}
+ 	     end
               self.each(:node){ |resource|
 		   resource=it.resource
 	           if resource then
@@ -365,7 +386,8 @@ class ResourceSet < Resource
               }
         end
 
-	# Return a resouce or an array of resources.	
+	# Returns a resouce or an array of resources.
+	# @return [Resource] a resource or array of resources
 	def to_resource
 	    	if self.length == 1
 			self.each(:node){ |resource|
@@ -389,7 +411,8 @@ class ResourceSet < Resource
                 super and @resources == set.resources
         end
 
-	# Return a ResourceSet with unique elements.
+	# Returns a ResourceSet with unique elements.
+	# @return [ResourceSet] 	with unique elements
         def uniq
                 set = self.copy
                 return set.uniq!
@@ -417,7 +440,7 @@ class ResourceSet < Resource
                       return self
         end
 
-	#Generates and return the path of the file which contains the list of the tipe of resource
+	# Generates and return the path of the file which contains the list of the tipe of resource
 	#specify by the argument type.
         def resource_file( type=nil, update=false )
                 if ( not @resource_files[type] ) or update then
@@ -440,6 +463,22 @@ class ResourceSet < Resource
 
 	alias nodefile node_file
 
+	def gen_keys(type=nil )
+		puts "Creating public keys for cluster ssh comunication"
+		resource_set = self.uniq.flatten(type)
+		resource_set.each { |resource|
+			cmd = "scp "
+			cmd += "-r ~/.ssh/ "
+			### here we have to deal with the user ## we have to define one way to put the user.
+			cmd += " root@#{resource.properties[:name]}:~"
+			command_result = $client.asynchronous_command(cmd)
+			$client.command_wait(command_result["command_number"],1)
+			result = $client.command_result(command_result["command_number"])
+			puts cmd
+			puts result["stdout"]
+			puts result["stderr"]
+		}
+	end
 	#Generates a directory.xml file for using as a resources 
 	#For Gush.
 	def make_gush_file( update = false)
