@@ -81,6 +81,7 @@ class Task < GenericTask
 		return @resources.make_taktuk_command(self.command)
 	end
 end
+
 #TaskSet defines a set of task which are executed in parallel over the
 #resources specified in the individual tasks.
 class TaskSet < GenericTask
@@ -118,7 +119,8 @@ class TaskSet < GenericTask
 		return cmd
 	end
 end
-# Execute commands in parallel over a set of resources
+
+# Execute task  sequentially  over a set of resources
 class TaskStream < GenericTask
         attr_accessor :tasks
         def initialize( name = nil )
@@ -130,7 +132,7 @@ class TaskStream < GenericTask
                 @tasks.push( task )
 		return self
         end
-	#Execute the commands in parallel.
+	#Execute the task in sequential.
 	#it uses one taktuk command for each command in the set
         def execute
 		results = Array::new

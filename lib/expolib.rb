@@ -3,7 +3,8 @@ module Expo
 
 
 class ExpoResult < Array
-  #def duration
+
+## Calculate the mean elapsed time for the task set.
   def mean_duration
     sum = 0
     time = 0
@@ -11,6 +12,18 @@ class ExpoResult < Array
     time = sum / self.length if self.length > 0
     return time
   end
+
+## Calculate the elapsed time of task set.
+  def duration
+    min=Time::now()
+    max=Time.local(1986, 7, 17)
+    self.each do |t|
+      min=t['start_time'] if t['start_time']<min
+      max=t['end_time'] if t['end_time']>max
+    end
+    return max-min
+  end
+
 end
 
 class TaskResult < Hash
@@ -20,8 +33,9 @@ class TaskResult < Hash
 end
 
 
+### Starting Definitions of functions that belongs to the DSL of expo
+
 def task(location, task)
-  #cmd = "taktuk2yaml -s"
   cmd = "ruby taktuk2yaml.rb -s"
   cmd += $ssh_connector
   cmd += " -l #{$ssh_user}" if !$ssh_user.nil?
@@ -31,9 +45,10 @@ def task(location, task)
   puts "command: #{cmd}"
   command_result = $client.asynchronous_command(cmd)
   $client.command_wait(command_result["command_number"],1)
-  #command_result = $client.command(cmd)
-
-  return make_taktuk_result( command_result["command_number"] )
+  $client.logger.info "Testing loggin task"
+  final_result= make_taktuk_result( command_result["command_number"] )
+  $client.logger.info final_result
+  return final_result
 end
 
 def atask(location, task)
@@ -58,16 +73,16 @@ end
 
 def simpletask(location,task)
   cmd = "ssh -o \"ConnectTimeout 10\""
-  cmd += " lig_expe@#{location}"
+  #cmd += " lig_expe@#{location}"
+  cmd += " #{location}"
   cmd += " #{task} "
   command_result = $client.asynchronous_command(cmd)
   $client.command_wait(command_result["command_number"],1)
   result = $client.command_result(command_result["command_number"])
   puts result['stdout']
   puts result['stderr']
+  return result
 end
-
-
 
 
 def print_taktuk_result( res )
@@ -82,7 +97,6 @@ def print_taktuk_result( res )
 end
 
 def ptask(location, targets, task)
-  #cmd = "taktuk2yaml -s"
   #cmd = "ruby taktuk2yaml.rb --connector /usr/bin/oarsh -s"
   cmd = "ruby taktuk2yaml.rb -s"
   cmd += $ssh_connector
@@ -101,18 +115,6 @@ def ptask(location, targets, task)
   #----all the info about the command is stored
   return make_taktuk_result(command_result["command_number"])
 end
-
-#def get_results(location, resources, file)
-
-#  cmd = "ruby taktuk2yaml.rb -s"
-#  cmd += $ssh_connector
-	
-#  cmd += " -m #{location}"
-#  cmd += " -["
-#  resources.flatten(:node).each(:node) { |node|
-#	cmd += " -m #{node}"
-#  }
-#  cmd += "downcast exec
 
 
 class ParallelSection
@@ -162,8 +164,6 @@ def get_results(targets, file, where="~/")
   		cmd = "scp "
   #cmd += $scp_connector # == -o StrictHostKeyChecking=no
   		cmd += " "
-  #here we have params[:location]==localhost for use_case_1_1.rb
-  #cmd += "#{params[:location]}:" if ( params[:location] && ( params[:location] != "localhost" ) )
   		cmd += "#{$ssh_user}@#{node}:"
   		cmd += "#{current_file}"
   		cmd += " #{where}/#{file_base}-#{node}"
@@ -215,10 +215,7 @@ def copy( file, destination, params = {} )
     path = file
   end
   $ssh_user="root" if $ssh_user.nil?  ### temporary user manage
-  #----scp works as the following
-  #----scp myfile.txt oiegorov@access.lille.grid5000.fr:/home/oiegorov
-  #----       ^                     ^                      ^
-  #----      file              destination                path
+  
   cmd = "scp "
   #cmd += $scp_connector # == -o StrictHostKeyChecking=no
   cmd += " "

@@ -2,6 +2,7 @@ require 'resctrl'
 require 'expctrl/expctrl_expctrlresponse'
 require 'expctrl/expctrl_service'
 require 'thread'
+require 'logger'
 
 module Expo
 
@@ -54,7 +55,7 @@ end
 
 
 class ExpCtrlClient
-
+        attr_accessor :logger
  	def initialize(server=nil)
                 @expctrl_client = nil
 		
@@ -105,6 +106,8 @@ class ExpCtrlClient
                 @reservations = Array::new
                 @nodes_mutex = Mutex::new
                 @nodes = Hash::new
+                #### Fix-me ###
+                @logger = Logger::new(STDERR)
         end
 
 	def method_missing(method_id, *args)
@@ -475,18 +478,19 @@ class ExpCtrlClient
     @experiment_number = nil
     return CloseExperimentResponse::new
   end
- 	def command_wait(command_number, polling_time = 10, delay = 0, &block)
 
- 		raise "Polling_time cannot be 0" if polling_time == 0
-		response = command_info(command_number)
-		info = response.result
-		response = CommandWaitResponse::new
-		if block
- 	        	t = Thread::new {
-            	                info = internal_command_wait(command_number, delay, polling_time, info)
+  def command_wait(command_number, polling_time = 10, delay = 0, &block)
+
+    raise "Polling_time cannot be 0" if polling_time == 0
+    response = command_info(command_number)
+    info = response.result
+    response = CommandWaitResponse::new
+    if block
+       	t = Thread::new {
+	                info = internal_command_wait(command_number, delay, polling_time, info)
     	                        block.call(info)
   	        	}
-          		response.result = info
+        		response.result = info
   		        return response
 		else
   	        	response.result = internal_command_wait(command_number, delay, polling_time, info)
@@ -494,13 +498,13 @@ class ExpCtrlClient
 		end
 	end
 
-        def reservation_wait(reservation_number, polling_time = 10, delay = 0, &block)
-                raise "Polling_time cannot be 0" if polling_time == 0
-                info = reservation_info(reservation_number).result
-                response = ReservationWaitResponse::new
-                if block
-                        t = Thread::new {
-                                info = internal_reservation_wait(reservation_number, delay, polling_time, info)
+  def reservation_wait(reservation_number, polling_time = 10, delay = 0, &block)
+    raise "Polling_time cannot be 0" if polling_time == 0
+    info = reservation_info(reservation_number).result
+    response = ReservationWaitResponse::new
+    if block
+      t = Thread::new {
+                            info = internal_reservation_wait(reservation_number, delay, polling_time, info)
                                 block.call(info)
                         }
                         response.result = info

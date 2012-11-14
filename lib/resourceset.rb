@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 require 'tempfile'
 require 'thread'
 
@@ -107,6 +108,12 @@ class Resource
 	end
 
 	alias gw gateway
+
+        def job
+          return @properties[:id] if @properties[:id]
+          return 0
+        end
+
 
 	#Use to make the list of machines for
 	#the taktuk command
