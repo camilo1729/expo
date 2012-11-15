@@ -32,23 +32,53 @@ class TaskResult < Hash
   end
 end
 
+#### loggin' tasks #############
+
+def log_task(command,result,id)
+  ### looking for the state of the task executed
+  result.each{ |indv|
+    if indv['status'] !="0" then
+      $client.logger.error "Error in Task [ #{command} ] on node [ #{indv['host_name']} ] with ID #{id}"
+      $client.data_logger.error command
+      $client.data_logger.error indv
+    else
+      $client.logger.info "Task Executed [ #{command} ] on node [ #{indv['host_name']} ] with ID #{id}"
+      $client.data_logger.info command
+      $client.data_logger.info indv
+    end
+  }
+  
+end
+
 
 ### Starting Definitions of functions that belongs to the DSL of expo
 
 def task(location, task)
+
+  ### here we split task into two things: PATH and executable with cmdline parameters.
+  ### This is done to avoid path errors.
+  dir_path=File.dirname(task)
+  exec_with_params=File.basename(task)
+  ## if task does not have path it is because is a command in the path
+  exec_with_params="./#{exec_with_params}" unless dir_path=="."
+  ##### would be this option optional ? ####################
+
+
   cmd = "ruby taktuk2yaml.rb -s"
   cmd += $ssh_connector
   cmd += " -l #{$ssh_user}" if !$ssh_user.nil?
   cmd += " -t #{$ssh_timeout}" if !$ssh_timeout.nil?
   cmd += " -m #{location}"
-  cmd += " b e [ #{task} ]"
-  puts "command: #{cmd}"
+  cmd += " b e [ 'cd #{dir_path} ; #{exec_with_params}' ]"
+
   command_result = $client.asynchronous_command(cmd)
   $client.command_wait(command_result["command_number"],1)
-  $client.logger.info "Testing loggin task"
-  final_result= make_taktuk_result( command_result["command_number"] )
-  $client.logger.info final_result
+  final_result = make_taktuk_result( command_result["command_number"] )
+
+  log_task(exec_with_params,final_result[1],final_result[0])
+  # $client.data_logger.info cmd
   return final_result
+
 end
 
 def atask(location, task)
@@ -239,15 +269,6 @@ end
 def make_taktuk_result( id )
   result = $client.command_result( id )
 
-
-  #----the following cut the message about job deletion
-  #    so we won't have an error about unrecognized colomn in YAML::load
-  #    while deploying
-  ind = result['stdout'].index('[OAR_GRIDDEL]')
-  if ind
-    result['stdout'] = result['stdout'][0..ind-1]
-  end
-
   tree = YAML::load(result['stdout'])
 
 #p result.inspect
@@ -258,7 +279,14 @@ def make_taktuk_result( id )
   tree['hosts'].each_value { |h|
     h['commands'].each_value { |x|
       r = TaskResult::new
-      r.merge!( {'host_name' => h['host_name'], 'rank' => h['rank'], 'command_line' => x['command_line'], 'stdout' => x['output'], 'stderr' => x['error'], 'status' => x['status'], 'start_time' => x['start_date'], 'end_time' => x['stop_date'] } )
+      r.merge!( {'host_name' => h['host_name'], 
+                  'rank' => h['rank'], 
+                  'command_line' => x['command_line'], 
+                  'stdout' => x['output'], 
+                  'stderr' => x['error'], 
+                  'status' => x['status'], 
+                  'start_time' => x['start_date'], 
+                  'end_time' => x['stop_date'] } )
       res.push(r)
     }
   }

@@ -55,7 +55,8 @@ end
 
 
 class ExpCtrlClient
-        attr_accessor :logger
+        attr_accessor :logger, :data_logger
+
  	def initialize(server=nil)
                 @expctrl_client = nil
 		
@@ -108,6 +109,7 @@ class ExpCtrlClient
                 @nodes = Hash::new
                 #### Fix-me ###
                 @logger = Logger::new(STDERR)
+                @data_logger= Logger::new(STDERR)
         end
 
 	def method_missing(method_id, *args)

@@ -42,20 +42,27 @@ class MultiIO
     @targets.each(&:close)
   end
 end
+##################################################################
 
+#### Logging system #############################################
+# There are Two logs:
+# - log to keep simple information about actions
+# - log to keep datail information of the structures of data use
 
+log_timestamp=Time::now().to_i
+actlog_fn="/tmp/Expo_log"+"_#{log_timestamp}.log"
+datalog_fn="/tmp/Expo_data_log"+"_#{log_timestamp}.log"
 
-logfile_name="/tmp/Expo_log"+"_#{Time::now().to_i}"
-logfile = File.open(logfile_name, "w+")
+act_logfile = File.open(actlog_fn, "w+")
+data_logfile= File.open(datalog_fn, "w+")
 
-
-$logger = Logger.new MultiIO.new(STDOUT, logfile)
-
+$act_logger = Logger.new MultiIO.new(STDOUT, act_logfile)
+$data_logger = Logger.new data_logfile
 # $logger.level = Logger.const_get(ENV['DEBUG'] || "INFO")
 
-#Coding a look aspect for the logger
-  $logger.formatter = proc do |severity, datetime, progname, msg|
-   output="#{datetime}, #{severity}: \n"+PP.pp(msg,"")  
+#Coding a look aspect for data logger
+  $data_logger.formatter = proc do |severity, datetime, progname, msg|
+   output="[#{datetime}, #{severity}]: \n"+PP.pp(msg,"")  
    output
   end  
 
@@ -85,7 +92,8 @@ $client = ExpCtrlClient::new("localhost:#{port}")
 $client.open_experiment
 
 #### Fix-me ###########
-$client.logger=$logger
+$client.logger=$act_logger
+$client.data_logger=$data_logger
 ######################
 
 puts "Preparing resource container $all"

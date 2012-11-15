@@ -33,7 +33,8 @@ require 'grid5000/campaign/engine'
 
 
 @options = { 
-  :logger => $logger,
+  :logger => $act_logger,
+  :data_logger => $data_logger,
   :restfully_config => File.expand_path("~/.restfully/api.grid5000.fr.yml")
 }
 
@@ -56,7 +57,8 @@ class ExpoEngine < Grid5000::Campaign::Engine
   set :environment, nil # The enviroment is by default nil because if nothing is specifyed there is no deployment.
   # It has to be true for interactive use and false when executed as stand-alone
   set :types , ["allow_classic_ssh"]
-  set :logger, $logger
+  set :logger, $act_logger
+  set :data_logger, $data_logger
    
   ## I'm rewriting this method otherwise I cannot load the Class again because the defaults get frozen.
   def initialize(connection)
