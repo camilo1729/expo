@@ -89,7 +89,6 @@ if File.exist?("#{ENV['HOME']}/.expctrl_server") then
   $POLLING =  config['polling'] if config['polling']
 end
 
-puts "The port is #{port}"
 
 #puts ENV['GEM_HOME']
 #puts ENV['RUBYLIB']
@@ -117,7 +116,7 @@ $atasks = Hash::new
 
 #### As we are in intertative mode, we make the connection to the API automatically.
 puts "Connecting to the Grid5000 API"
-require 'g5k_api_2'
+require 'g5k_api'
 api_connect
 
 

@@ -157,9 +157,10 @@ def ptask(targets, task)
   #----all the info about the command is stored
   final_result = make_taktuk_result(command_result["command_number"])
   log_task(exec,final_result,"Parallel")
-  return final_result
 
+  return final_result
 end
+
 
 def put( file, destination, params = {} )
 
@@ -185,6 +186,7 @@ def put( file, destination, params = {} )
   log_file_mgt(file,final_result,"PUT")
   return final_result
 end
+
 
 def get( file, source, params = {} )
 
@@ -226,6 +228,21 @@ def make_task_result(id)
   return [id,r]
 end
 
+## Fix me #######
+###  task with simple ssh. It is logged as a file operation
+def simpletask(location,task)
+  cmd = "ssh -o \"ConnectTimeout 10\""
+  #cmd += " lig_expe@#{location}"
+  cmd += " #{location}"
+  cmd += " #{task} "
+  command_result = $client.asynchronous_command(cmd)
+  $client.command_wait(command_result["command_number"],1)
+  final_result = make_task_result(command_result["command_number"])
+
+  log_file_mgt(file,final_result,"Simple Task")
+  return final_result
+end
+
 def atask(location, task)
   #cmd = "taktuk2yaml -s"
   cmd = "ruby taktuk2yaml.rb -s"
@@ -246,17 +263,43 @@ def atask(location, task)
 
 end
 
-def simpletask(location,task)
-  cmd = "ssh -o \"ConnectTimeout 10\""
-  #cmd += " lig_expe@#{location}"
-  cmd += " #{location}"
-  cmd += " #{task} "
-  command_result = $client.asynchronous_command(cmd)
-  $client.command_wait(command_result["command_number"],1)
-  result = $client.command_result(command_result["command_number"])
-  puts result['stdout']
-  puts result['stderr']
-  return result
+
+def make_taktuk_result( id )
+  result = $client.command_result( id )
+
+  tree = YAML::load(result['stdout'])
+
+  res = ExpoResult::new
+  tree['hosts'].each_value { |h|
+    h['commands'].each_value { |x|
+      r = TaskResult::new
+      r.merge!( {'host_name' => h['host_name'], 
+                  'rank' => h['rank'], 
+                  'command_line' => x['command_line'], 
+                  'stdout' => x['output'], 
+                  'stderr' => x['error'], 
+                  'status' => x['status'], 
+                  'start_time' => x['start_date'], 
+                  'end_time' => x['stop_date'] } )
+      res.push(r)
+    }
+  }
+
+  #----display an output of command!!!
+  ### Fix me ###
+  ### Error handling not implemented
+  if( res[0].nil?) then
+	puts "Error Contacting the node"
+  else
+  	#puts "Command: " + res[0]['command_line']
+  	#puts "Output: "
+  	if !res[0]['stdout'].nil?
+    		puts res[0]['stdout']
+  	end
+  end
+
+ 
+  return [id, res]
 end
 
 
@@ -363,47 +406,4 @@ def get_results(targets, file, where="~/")
 
 end
 
-
-
-
-def make_taktuk_result( id )
-  result = $client.command_result( id )
-
-  tree = YAML::load(result['stdout'])
-
-#p result.inspect
-#p tree["connectors"]
-#p tree
-
-  res = ExpoResult::new
-  tree['hosts'].each_value { |h|
-    h['commands'].each_value { |x|
-      r = TaskResult::new
-      r.merge!( {'host_name' => h['host_name'], 
-                  'rank' => h['rank'], 
-                  'command_line' => x['command_line'], 
-                  'stdout' => x['output'], 
-                  'stderr' => x['error'], 
-                  'status' => x['status'], 
-                  'start_time' => x['start_date'], 
-                  'end_time' => x['stop_date'] } )
-      res.push(r)
-    }
-  }
-
-  #----display an output of command!!!
-  if( res[0].nil?) then
-	puts "Error Contacting the node"
-  else
-  	puts "Command: " + res[0]['command_line']
-  	puts "Output: "
-  	if !res[0]['stdout'].nil?
-    		puts res[0]['stdout']
-  	end
-  end
-
- 
-  return [id, res]
-end
-		
 end
