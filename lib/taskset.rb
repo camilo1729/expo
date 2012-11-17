@@ -67,14 +67,16 @@ class Task < GenericTask
 	#Execute a command over the resource set defined at the
 	#moment the Task object was created
         def execute
+          path,exec,params = treat_task self.command
                 cmd = "ruby taktuk2yaml.rb -s"
                 cmd += $ssh_connector
 		cmd += " -l #{$ssh_user}" if !$ssh_user.nil?
 		cmd += " -t #{$ssh_timeout}" if !$ssh_timeout.nil?
-                cmd += @resources.make_taktuk_command(self.command)
+          cmd += @resources.make_taktuk_command(" 'cd #{path} ; #{exec} #{params}' ")
                 command_result = $client.asynchronous_command(cmd)
                 $client.command_wait(command_result["command_number"],1)
-                return make_taktuk_result(command_result["command_number"])
+                final_result = make_taktuk_result(command_result["command_number"])
+          log_task(exec,final_result,"(#{ self.name}): Parallel")
         end
 
 	def make_taktuk_command

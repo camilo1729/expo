@@ -50,19 +50,31 @@ end
 # - log to keep datail information of the structures of data use
 
 log_timestamp=Time::now().to_i
-actlog_fn="/tmp/Expo_log"+"_#{log_timestamp}.log"
+
+log_fn="/tmp/Expo_log"+"_#{log_timestamp}.log"
 datalog_fn="/tmp/Expo_data_log"+"_#{log_timestamp}.log"
 
-act_logfile = File.open(actlog_fn, "w+")
+logfile = File.open(log_fn, "w+")
 data_logfile= File.open(datalog_fn, "w+")
 
-$act_logger = Logger.new MultiIO.new(STDOUT, act_logfile)
+# Normal Log
+$logger = Logger.new MultiIO.new(STDOUT, logfile)
+datetime_format = "%Y-%m-%d %H:%M:%S %z"
+
+# Log format
+#<ISO-8601 Datetime (UTC based w/ TZ)> <Logging Level> [ <LogActor> ] [ <LogSubject> ] <LogMessage>
+$logger.formatter =   proc do |severity, datetime, progname, msg|
+  output="#{datetime.strftime(datetime_format)} [#{severity}] #{msg} \n"  
+   output
+end  
+
+
 $data_logger = Logger.new data_logfile
 # $logger.level = Logger.const_get(ENV['DEBUG'] || "INFO")
 
 #Coding a look aspect for data logger
   $data_logger.formatter = proc do |severity, datetime, progname, msg|
-   output="[#{datetime}, #{severity}]: \n"+PP.pp(msg,"")  
+   output="[#{datetime.strftime(datetime_format)}, #{severity}]: \n"+PP.pp(msg,"")  
    output
   end  
 
@@ -92,7 +104,7 @@ $client = ExpCtrlClient::new("localhost:#{port}")
 $client.open_experiment
 
 #### Fix-me ###########
-$client.logger=$act_logger
+$client.logger=$logger
 $client.data_logger=$data_logger
 ######################
 
@@ -103,6 +115,10 @@ $all = ResourceSet::new
 $atasks_mutex = Mutex::new
 $atasks = Hash::new
 
+#### As we are in intertative mode, we make the connection to the API automatically.
+puts "Connecting to the Grid5000 API"
+require 'g5k_api_2'
+api_connect
 
 
 $ssh_connector =""

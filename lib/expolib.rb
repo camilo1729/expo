@@ -1,3 +1,5 @@
+require 'shellwords'
+## Two treat cmdline 
 module Expo
 
 
@@ -32,17 +34,31 @@ class TaskResult < Hash
   end
 end
 
-#### loggin' tasks #############
+########## Logging ###########################
 
-def log_task(command,result,id)
+#### loggin' tasks #############
+# [ <LogActor> ] [ <LogSubject> ] <LogMessage>
+# [ Task:ID ] [ Action ] Message
+def log_task(command,result_with_id,type)
+  
+  id = result_with_id[0]
+  result=result_with_id[1]
   ### looking for the state of the task executed
+  task_log_msg="[ #{type} Task:#{id} ] "
+
   result.each{ |indv|
     if indv['status'] !="0" then
-      $client.logger.error "Error in Task [ #{command} ] on node [ #{indv['host_name']} ] with ID #{id}"
+      $client.logger.error  task_log_msg +" [ Error executing ] #{command} " 
+      $client.logger.error  task_log_msg +" [ On Node ] #{indv['host_name']} "
+      $client.logger.error  task_log_msg +" [ Elapsed Time ] #{indv.duration} secs"
+      $client.data_logger.error task_log_msg 
       $client.data_logger.error command
       $client.data_logger.error indv
     else
-      $client.logger.info "Task Executed [ #{command} ] on node [ #{indv['host_name']} ] with ID #{id}"
+      $client.logger.info  task_log_msg+" [ Executed ]   #{command} " 
+      $client.logger.info  task_log_msg+" [ On Node ]  #{indv['host_name']} "
+      $client.logger.info  task_log_msg+" [ Elapsed Time ] #{indv.duration} secs"
+      $client.data_logger.info task_log_msg
       $client.data_logger.info command
       $client.data_logger.info indv
     end
@@ -50,35 +66,164 @@ def log_task(command,result,id)
   
 end
 
+####### logging File managment ################
+
+def log_file_mgt(file,result_with_id,type)
+  id = result_with_id[0]
+  result=result_with_id[1]
+  file_log_msg = "[ #{type} File:#{id} ] "
+  
+  # Note status for this case if a Int but when the output is parsed from
+  # taktuk wrapper is a String
+  if result['status'] != 0 then
+    $client.logger.error file_log_msg+" [ Error with File ] #{file} "
+    $client.logger.error file_log_msg+" [ On Node ] #{result['host_name']} "
+    $client.logger.error file_log_msg+" [ Elapsed Time ] #{result.duration} secs"
+    $client.data_logger.error file_log_msg
+    $client.data_logger.error file
+    $client.data_logger.error result
+  else
+    $client.logger.info file_log_msg+" [ File Success ] #{file} "
+    $client.logger.info file_log_msg+" [ On Node ] #{result['host_name']} "
+    $client.logger.info file_log_msg+" [ Elapsed Time ] #{result.duration} secs"
+    $client.data_logger.info file_log_msg
+    $client.data_logger.info file
+    $client.data_logger.info result
+
+  end
+end
+
+
+## Treat the task which is a Sring in order to sperate it into path, exec, cmdline params.
+
+def treat_task task
+  ### here we split task into three things: PATH and executable and cmdline parameters.
+  ### This is done to avoid path errors.
+  # Separating path/executable and cmdline parameters
+  # Dont leave any space at the begining
+  temp=task.shellsplit
+  exec_with_path=temp.shift
+  params=temp.join(" ") unless temp.empty? 
+  
+  path=File.dirname(exec_with_path)
+  exec=File.basename(exec_with_path)
+  ## if task does not have path it is because is a command in the path
+  exec ="./#{exec}" unless ( path==".")
+  ##### would be this option optional ? ####################
+
+  return [path, exec, params]
+end
 
 ### Starting Definitions of functions that belongs to the DSL of expo
 
 def task(location, task)
 
-  ### here we split task into two things: PATH and executable with cmdline parameters.
-  ### This is done to avoid path errors.
-  dir_path=File.dirname(task)
-  exec_with_params=File.basename(task)
-  ## if task does not have path it is because is a command in the path
-  exec_with_params="./#{exec_with_params}" unless dir_path=="."
-  ##### would be this option optional ? ####################
-
-
+  path,exec,params = treat_task task
   cmd = "ruby taktuk2yaml.rb -s"
   cmd += $ssh_connector
   cmd += " -l #{$ssh_user}" if !$ssh_user.nil?
   cmd += " -t #{$ssh_timeout}" if !$ssh_timeout.nil?
   cmd += " -m #{location}"
-  cmd += " b e [ 'cd #{dir_path} ; #{exec_with_params}' ]"
+  cmd += " b e [ 'cd #{path} ; #{exec} #{params}' ]"
 
   command_result = $client.asynchronous_command(cmd)
   $client.command_wait(command_result["command_number"],1)
   final_result = make_taktuk_result( command_result["command_number"] )
 
-  log_task(exec_with_params,final_result[1],final_result[0])
+  log_task(exec,final_result,"Sequential")
   # $client.data_logger.info cmd
   return final_result
 
+end
+
+def ptask(targets, task)
+  
+  path,exec,params = treat_task task
+  #cmd = "ruby taktuk2yaml.rb --connector /usr/bin/oarsh -s"
+  cmd = "ruby taktuk2yaml.rb -s"
+  cmd += $ssh_connector
+  #----means that 'location' node will start all other nodes. For
+  #----details see 2.2.2 section of Taktuk manual
+  cmd += " -m #{targets.gateway}"
+  cmd += " -["
+  targets.flatten(:node).each(:node) { |node|
+    cmd += " -m #{node}"
+  }
+  cmd += " downcast exec [ 'cd #{path} ; #{exec} #{params}' ]"
+  cmd += " -]"
+  command_result = $client.asynchronous_command(cmd)
+  $client.command_wait(command_result["command_number"],1)
+  #----here we return two values: id of a command and a hash 'res' where
+  #----all the info about the command is stored
+  final_result = make_taktuk_result(command_result["command_number"])
+  log_task(exec,final_result,"Parallel")
+  return final_result
+
+end
+
+def put( file, destination, params = {} )
+
+  if params[:path] then
+    path = params[:path]
+  else
+    path = file
+  end
+  $ssh_user="root" if $ssh_user.nil?  ### temporary user manage
+  cmd = "scp "
+  #cmd += $scp_connector # == -o StrictHostKeyChecking=no
+  cmd += " "
+  #here we have params[:location]==localhost for use_case_1_1.rb
+  #cmd += "#{params[:location]}:" if ( params[:location] && ( params[:location] != "localhost" ) )
+  cmd += "#{file} "
+  cmd += "#{$ssh_user}@"
+  cmd += "#{destination}:" if ( destination.to_s != "localhost" )
+  cmd += "#{path}"
+  command_result = $client.asynchronous_command(cmd)
+  $client.command_wait(command_result["command_number"],1)
+  final_result = make_task_result(command_result["command_number"])
+
+  log_file_mgt(file,final_result,"PUT")
+  return final_result
+end
+
+def get( file, source, params = {} )
+
+  if params[:path] then
+    path = params[:path]
+  else
+    path = file
+  end
+  $ssh_user="root" if $ssh_user.nil?  ### temporary user manage
+  cmd = "scp "
+  cmd += " "
+  cmd += "#{$ssh_user}@"
+  cmd += "#{source}:" if ( destination.to_s != "localhost" )
+  cmd += "#{file} "
+  cmd += " #{path}"
+  command_result = $client.asynchronous_command(cmd)
+  $client.command_wait(command_result["command_number"],1)
+  final_result = make_task_result(command_result["command_number"])
+
+  log_file_mgt(file,final_result,"GET")
+  return final_result
+end
+
+
+def make_task_result(id)
+  result = $client.command_result( id )
+  result_rctrl = $client.command_info( id )
+  r = TaskResult::new
+ 
+  r.merge!( {#'host_name' => result['host_name'], 
+           #'rank' => result['rank'], 
+           'command_line' => result_rctrl['command_line'], 
+           'stdout' => result['stdout'], 
+           'stderr' => result['stderr'], 
+           'status' => result['exit_status'], 
+           'start_time' => result_rctrl['start_time'], 
+           'end_time' => result_rctrl['end_time'] } 
+          )
+  return [id,r]
 end
 
 def atask(location, task)
@@ -126,25 +271,6 @@ def print_taktuk_result( res )
   }
 end
 
-def ptask(location, targets, task)
-  #cmd = "ruby taktuk2yaml.rb --connector /usr/bin/oarsh -s"
-  cmd = "ruby taktuk2yaml.rb -s"
-  cmd += $ssh_connector
-  #----means that 'location' node will start all other nodes. For
-  #----details see 2.2.2 section of Taktuk manual
-  cmd += " -m #{location}"
-  cmd += " -["
-  targets.flatten(:node).each(:node) { |node|
-    cmd += " -m #{node}"
-  }
-  cmd += " downcast exec [ #{task} ]"
-  cmd += " -]"
-  command_result = $client.asynchronous_command(cmd)
-  $client.command_wait(command_result["command_number"],1)
-  #----here we return two values: id of a command and a hash 'res' where
-  #----all the info about the command is stored
-  return make_taktuk_result(command_result["command_number"])
-end
 
 
 class ParallelSection
@@ -237,32 +363,6 @@ def get_results(targets, file, where="~/")
 
 end
 
-
-def copy( file, destination, params = {} )
-  if params[:path] then
-    path = params[:path]
-  else
-    path = file
-  end
-  $ssh_user="root" if $ssh_user.nil?  ### temporary user manage
-  
-  cmd = "scp "
-  #cmd += $scp_connector # == -o StrictHostKeyChecking=no
-  cmd += " "
-  #here we have params[:location]==localhost for use_case_1_1.rb
-  #cmd += "#{params[:location]}:" if ( params[:location] && ( params[:location] != "localhost" ) )
-  cmd += "#{file} "
-  cmd += "#{$ssh_user}@"
-  cmd += "#{destination}:" if ( destination.to_s != "localhost" )
-  cmd += "#{path}"
-  command_result = $client.asynchronous_command(cmd)
-  $client.command_wait(command_result["command_number"],1)
-  result = $client.command_result(command_result["command_number"])
-  puts cmd
-  puts result["stdout"]
-  puts result["stderr"]
-  puts
-end
 
 
 

@@ -1,39 +1,10 @@
 ### This is the first version of the plugin g5k-campaign for Expo
-require 'grid5000/campaign/engine'
-
-### Class MultiIO to write log into STDOUT as well as into a file.
-# class MultiIO
-#   def initialize(*targets)
-#     @targets = targets
-#   end
-
-#   def write(*args)
-#     @targets.each{ |t| t.write(*args)}
-#   end
-
-#   def close
-#     @targets.each(&:close)
-#   end
-# end
-
-# logfile_name="/tmp/Expo_log"+"_#{Time::now().to_i}"
-# logfile = File.open(logfile_name, "w+")
-
-# $logger = Logger.new MultiIO.new(STDOUT, logfile)
-
-# # $logger.level = Logger.const_get(ENV['DEBUG'] || "INFO")
-
-# #Coding a look aspect for the logger
-#   $logger.formatter = proc do |severity, datetime, progname, msg|
-#    output="#{datetime}, #{severity}: \n"+PP.pp(msg,"")  
-#    output
-#   end  
-
+require 'campaign/engine'
 
 
 
 @options = { 
-  :logger => $act_logger,
+  :logger => $logger,
   :data_logger => $data_logger,
   :restfully_config => File.expand_path("~/.restfully/api.grid5000.fr.yml")
 }
@@ -57,7 +28,7 @@ class ExpoEngine < Grid5000::Campaign::Engine
   set :environment, nil # The enviroment is by default nil because if nothing is specifyed there is no deployment.
   # It has to be true for interactive use and false when executed as stand-alone
   set :types , ["allow_classic_ssh"]
-  set :logger, $act_logger
+  set :logger, $logger
   set :data_logger, $data_logger
    
   ## I'm rewriting this method otherwise I cannot load the Class again because the defaults get frozen.
@@ -76,8 +47,13 @@ class ExpoEngine < Grid5000::Campaign::Engine
 # rewriting the reserve part for several reasons:
 # - to submit request to serveral sites.
 # - to build the resourceSet needed for Expo.
+## Try to follow this format for loggin'
+# [ <LogActor> ] [ <LogSubject> ] <LogMessage>
   on :reserve! do | env, block|
-    logger.info "Starting reservation of Resources"
+
+    reserve_log_msg ="[ Expo Engine Grid5000 API ] "
+    logger.info reserve_log_msg +"Asking for Resources"
+
     @res = [env[:resources]].flatten
     #logger.info "Printing Resources array #{env.inspect}"
     #in case we define the same number of nodes in each site.
@@ -91,7 +67,7 @@ class ExpoEngine < Grid5000::Campaign::Engine
     for i in 1..@site.length
       new_env = env.merge(:site => @site[i-1], :resources => @res[i-1])
       #logger.info new_env.inspect
-      logger.info "Number of nodes to reserve in site: #{@site[i-1]} => #{@res[i-1]}"
+      logger.info reserve_log_msg+"Number of nodes to reserve in site: #{@site[i-1]} => #{@res[i-1]}"
       env[:parallel_reserve].add(new_env) do |env|
         env_2=reserve!(env, &block)
         subhash = self.convert_to_resource(env_2[:job], env[:site])

@@ -43,19 +43,19 @@ class RCtrlCommand
 
   #set the start time and the start flag
   def set_start_time
-    @start_time = DateTime::now
+    @start_time = Time::now
     @started = true
   end
 
   #set the end time and the finished flag
   def set_end_time
-    @end_time = DateTime::now
+    @end_time = Time::now
     @finished = true
   end
 
   #adds an input line to the inputs array and dates it
   def add_input(input)
-    @inputs.push({"date" => DateTime::now, "input" => input })
+    @inputs.push({"date" => Time::now, "input" => input })
     return nil
   end
 
