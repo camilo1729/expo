@@ -77,6 +77,7 @@ class Task < GenericTask
                 $client.command_wait(command_result["command_number"],1)
                 final_result = make_taktuk_result(command_result["command_number"])
           log_task(exec,final_result,"(#{ self.name}): Parallel")
+          return final_result
         end
 
 	def make_taktuk_command

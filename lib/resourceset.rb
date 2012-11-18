@@ -297,9 +297,14 @@ class ResourceSet < Resource
                         #----each_slice_power2 then yes
                         if slice_step.kind_of?(Proc) then
                                 number = slice_step.call(i)
-                        else
+
+                        elsif slice_step.kind_of?(Array) then
+                          number = slice_step.shift.to_i
+                          else
+                          
                                 number += slice_step
                         end
+                  
                         return nil if number == 0
                         for j in 1..number do
                                 resource = it.resource
@@ -323,6 +328,10 @@ class ResourceSet < Resource
 	def each_slice_double( type = nil, &block )
 		self.each_slice( type, lambda { |i| 2**i }, &block )
 	end
+        ## Fix Me  is the type really important , or were are going to deal always with nodes
+        def each_slice_array( slices=1, &block)
+          self.each_slice( nil,slices, &block)
+        end
 
 	#Calls block once for each element in self, depending on the type of resource.
 	#if the type is :resource_set, it is going to iterate over the several resoruce sets defined.
