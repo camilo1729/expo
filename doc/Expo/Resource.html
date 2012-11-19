@@ -1,885 +1,1163 @@
-<!DOCTYPE html>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>
+  Class: Expo::Resource
+  
+    &mdash; Documentation by YARD 0.8.2.1
+  
+</title>
 
-<html>
-<head>
-<meta content="text/html; charset=UTF-8" http-equiv="Content-Type">
+  <link rel="stylesheet" href="../css/style.css" type="text/css" media="screen" charset="utf-8" />
 
-<title>class Expo::Resource - RDoc Documentation</title>
+  <link rel="stylesheet" href="../css/common.css" type="text/css" media="screen" charset="utf-8" />
 
-<link type="text/css" media="screen" href="../rdoc.css" rel="stylesheet">
-
-<script type="text/javascript">
-  var rdoc_rel_prefix = "../";
+<script type="text/javascript" charset="utf-8">
+  hasFrames = window.top.frames.main ? true : false;
+  relpath = '../';
+  framesUrl = "../frames.html#!" + escape(window.location.href);
 </script>
 
-<script type="text/javascript" charset="utf-8" src="../js/jquery.js"></script>
-<script type="text/javascript" charset="utf-8" src="../js/navigation.js"></script>
-<script type="text/javascript" charset="utf-8" src="../js/search_index.js"></script>
-<script type="text/javascript" charset="utf-8" src="../js/search.js"></script>
-<script type="text/javascript" charset="utf-8" src="../js/searcher.js"></script>
-<script type="text/javascript" charset="utf-8" src="../js/darkfish.js"></script>
+
+  <script type="text/javascript" charset="utf-8" src="../js/jquery.js"></script>
+
+  <script type="text/javascript" charset="utf-8" src="../js/app.js"></script>
 
 
-<body id="top" class="class">
-<nav id="metadata">
-  <nav id="home-section" class="section">
-  <h3 class="section-header">
-    <a href="../index.html">Home</a>
-    <a href="../table_of_contents.html#classes">Classes</a>
-    <a href="../table_of_contents.html#methods">Methods</a>
-  </h3>
-</nav>
+  </head>
+  <body>
+    <div id="header">
+      <div id="menu">
+  
+    <a href="../_index.html">Index (R)</a> &raquo;
+    <span class='title'><span class='object_link'><a href="../Expo.html" title="Expo (module)">Expo</a></span></span>
+     &raquo; 
+    <span class="title">Resource</span>
+  
+
+  <div class="noframes"><span class="title">(</span><a href="." target="_top">no frames</a><span class="title">)</span></div>
+</div>
+
+      <div id="search">
+  
+    <a class="full_list_link" id="class_list_link"
+        href="../class_list.html">
+      Class List
+    </a>
+  
+    <a class="full_list_link" id="method_list_link"
+        href="../method_list.html">
+      Method List
+    </a>
+  
+    <a class="full_list_link" id="file_list_link"
+        href="../file_list.html">
+      File List
+    </a>
+  
+    <a class="full_list_link" id="tag_list_link"
+        href="../tag_list.html">
+      Tag List
+    </a>
+  
+</div>
+      <div class="clear"></div>
+    </div>
+
+    <iframe id="search_frame"></iframe>
+
+    <div id="content"><h1>Class: Expo::Resource
+  
+  
+  
+</h1>
+
+<dl class="box">
+  
+    <dt class="r1">Inherits:</dt>
+    <dd class="r1">
+      <span class="inheritName">Object</span>
+      
+        <ul class="fullTree">
+          <li>Object</li>
+          
+            <li class="next">Expo::Resource</li>
+          
+        </ul>
+        <a href="#" class="inheritanceTree">show all</a>
+      
+      </dd>
+    
+  
+  
+    
+  
+    
+  
+  
+  
+    <dt class="r2 last">Defined in:</dt>
+    <dd class="r2 last">lib/resourceset.rb</dd>
+  
+</dl>
+<div class="clear"></div>
+
+<h2>Overview</h2><div class="docstring">
+  <div class="discussion">
+    
+<p>A Resource maps a computational resource to an object which keeps  Certains
+characteritics such as type, name, gateway.</p>
 
 
-  <nav id="search-section" class="section project-section" class="initially-hidden">
-  <form action="#" method="get" accept-charset="utf-8">
-    <h3 class="section-header">
-      <input type="text" name="search" placeholder="Search" id="search-field"
-             title="Type to search, Up and Down to navigate, Enter to load">
-    </h3>
-  </form>
+  </div>
+</div>
+<div class="tags">
+  
 
-  <ul id="search-results" class="initially-hidden"></ul>
-</nav>
+</div><div id="subclasses">
+  <h2>Direct Known Subclasses</h2>
+  <p class="children"><span class='object_link'><a href="ResourceSet.html" title="Expo::ResourceSet (class)">ResourceSet</a></span></p>
+</div>
 
 
-  <div id="file-metadata">
-    <nav id="file-list-section" class="section">
-  <h3 class="section-header">Defined In</h3>
-  <ul>
-    <li>lib/resourceset.rb
+
+
+  <h2>Instance Attribute Summary <small>(<a href="#" class="summary_toggle">collapse</a>)</small></h2>
+  <ul class="summary">
+    
+      <li class="public ">
+  <span class="summary_signature">
+    
+      <a href="#properties-instance_method" title="#properties (instance method)">- (Object) <strong>properties</strong> </a>
+    
+
+    
+  </span>
+  
+  
+  
+    
+    
+  
+  
+  
+  
+  
+
+  
+    <span class="summary_desc"><div class='inline'>
+<p>Returns the value of attribute properties.</p>
+</div></span>
+  
+</li>
+
+    
+      <li class="public ">
+  <span class="summary_signature">
+    
+      <a href="#type-instance_method" title="#type (instance method)">- (Object) <strong>type</strong> </a>
+    
+
+    
+  </span>
+  
+  
+  
+    
+    
+  
+  
+  
+  
+  
+
+  
+    <span class="summary_desc"><div class='inline'>
+<p>Returns the value of attribute type.</p>
+</div></span>
+  
+</li>
+
+    
   </ul>
-</nav>
 
+
+
+
+  
+    <h2>
+      Instance Method Summary
+      <small>(<a href="#" class="summary_toggle">collapse</a>)</small>
+    </h2>
+
+    <ul class="summary">
+      
+        <li class="public ">
+  <span class="summary_signature">
+    
+      <a href="#%3D%3D-instance_method" title="#== (instance method)">- (Object) <strong>==</strong>(res) </a>
+    
+
+    
+  </span>
+  
+  
+  
+  
+  
+  
+  
+
+  
+    <span class="summary_desc"><div class='inline'>
+<p>Equality, Two Resource objects are equal if they have the  same type and
+the same properties as well.</p>
+</div></span>
+  
+</li>
+
+      
+        <li class="public ">
+  <span class="summary_signature">
+    
+      <a href="#copy-instance_method" title="#copy (instance method)">- (Object) <strong>copy</strong> </a>
+    
+
+    
+  </span>
+  
+  
+  
+  
+  
+  
+  
+
+  
+    <span class="summary_desc"><div class='inline'>
+<p>Creates a copy of the resource object.</p>
+</div></span>
+  
+</li>
+
+      
+        <li class="public ">
+  <span class="summary_signature">
+    
+      <a href="#corresponds-instance_method" title="#corresponds (instance method)">- (Object) <strong>corresponds</strong>(props) </a>
+    
+
+    
+  </span>
+  
+  
+  
+  
+  
+  
+  
+
+  
+    <span class="summary_desc"><div class='inline'></div></span>
+  
+</li>
+
+      
+        <li class="public ">
+  <span class="summary_signature">
+    
+      <a href="#eql%3F-instance_method" title="#eql? (instance method)">- (Boolean) <strong>eql?</strong>(res) </a>
+    
+
+    
+  </span>
+  
+  
+  
+  
+  
+  
+  
+
+  
+    <span class="summary_desc"><div class='inline'>
+<p>Returns true if self and other are the same object.</p>
+</div></span>
+  
+</li>
+
+      
+        <li class="public ">
+  <span class="summary_signature">
+    
+      <a href="#gateway-instance_method" title="#gateway (instance method)">- (Object) <strong>gateway</strong> </a>
+    
+
+    
+      (also: #gw)
+    
+  </span>
+  
+  
+  
+  
+  
+  
+  
+
+  
+    <span class="summary_desc"><div class='inline'>
+<p>Returns the name of the gateway.</p>
+</div></span>
+  
+</li>
+
+      
+        <li class="public ">
+  <span class="summary_signature">
+    
+      <a href="#initialize-instance_method" title="#initialize (instance method)">- (resource) <strong>initialize</strong>(type, properties = nil, name = nil) </a>
+    
+
+    
+  </span>
+  
+  
+    <span class="note title constructor">constructor</span>
+  
+  
+  
+  
+  
+  
+
+  
+    <span class="summary_desc"><div class='inline'>
+<p>Creates a new Resource Object.</p>
+</div></span>
+  
+</li>
+
+      
+        <li class="public ">
+  <span class="summary_signature">
+    
+      <a href="#job-instance_method" title="#job (instance method)">- (Object) <strong>job</strong> </a>
+    
+
+    
+  </span>
+  
+  
+  
+  
+  
+  
+  
+
+  
+    <span class="summary_desc"><div class='inline'></div></span>
+  
+</li>
+
+      
+        <li class="public ">
+  <span class="summary_signature">
+    
+      <a href="#make_taktuk_command-instance_method" title="#make_taktuk_command (instance method)">- (Object) <strong>make_taktuk_command</strong>(cmd) </a>
+    
+
+    
+  </span>
+  
+  
+  
+  
+  
+  
+  
+
+  
+    <span class="summary_desc"><div class='inline'>
+<p>Use to make the list of machines for the taktuk command.</p>
+</div></span>
+  
+</li>
+
+      
+        <li class="public ">
+  <span class="summary_signature">
+    
+      <a href="#name-instance_method" title="#name (instance method)">- (String) <strong>name</strong> </a>
+    
+
+    
+  </span>
+  
+  
+  
+  
+  
+  
+  
+
+  
+    <span class="summary_desc"><div class='inline'>
+<p>Return the name of the resource.</p>
+</div></span>
+  
+</li>
+
+      
+        <li class="public ">
+  <span class="summary_signature">
+    
+      <a href="#name%3D-instance_method" title="#name= (instance method)">- (Object) <strong>name=</strong>(name) </a>
+    
+
+    
+  </span>
+  
+  
+  
+  
+  
+  
+  
+
+  
+    <span class="summary_desc"><div class='inline'>
+<p>Sets the name of the resource.</p>
+</div></span>
+  
+</li>
+
+      
+        <li class="public ">
+  <span class="summary_signature">
+    
+      <a href="#to_s-instance_method" title="#to_s (instance method)">- (Object) <strong>to_s</strong> </a>
+    
+
+    
+  </span>
+  
+  
+  
+  
+  
+  
+  
+
+  
+    <span class="summary_desc"><div class='inline'>
+<p>Returns the name of the resource.</p>
+</div></span>
+  
+</li>
+
+      
+    </ul>
+  
+
+<div id="constructor_details" class="method_details_list">
+  <h2>Constructor Details</h2>
+  
+    <div class="method_details first">
+  <h3 class="signature first" id="initialize-instance_method">
+  
+    - (<tt>resource</tt>) <strong>initialize</strong>(type, properties = nil, name = nil) 
+  
+
+  
+
+  
+</h3><div class="docstring">
+  <div class="discussion">
+    
+<p>Creates a new Resource Object.</p>
+
+
+  </div>
+</div>
+<div class="tags">
+  <p class="tag_title">Parameters:</p>
+<ul class="param">
+  
+    <li>
+      
+        <span class='name'>type</span>
+      
+      
+        <span class='type'>(<tt>type</tt>)</span>
+      
+      
+      
+        &mdash;
+        <div class='inline'>
+<p>of the source</p>
+</div>
+      
+    </li>
+  
+    <li>
+      
+        <span class='name'>object</span>
+      
+      
+        <span class='type'>(<tt>properties</tt>)</span>
+      
+      
+      
+        &mdash;
+        <div class='inline'>
+<p>property</p>
+</div>
+      
+    </li>
+  
+    <li>
+      
+        <span class='name'>String</span>
+      
+      
+        <span class='type'>(<tt>String</tt>)</span>
+      
+      
+      
+        &mdash;
+        <div class='inline'>
+<p>name</p>
+</div>
+      
+    </li>
+  
+</ul>
+
+
+</div><table class="source_code">
+  <tr>
+    <td>
+      <pre class="lines">
+
+
+38
+39
+40
+41
+42
+43
+44
+45
+46
+47
+48
+49</pre>
+    </td>
+    <td>
+      <pre class="code"><span class="info file"># File 'lib/resourceset.rb', line 38</span>
+
+<span class='rubyid_def def kw'>def</span> <span class='rubyid_initialize identifier id'>initialize</span><span class='lparen token'>(</span> <span class='rubyid_type identifier id'>type</span><span class='comma token'>,</span> <span class='rubyid_properties identifier id'>properties</span><span class='assign token'>=</span><span class='rubyid_nil nil kw'>nil</span><span class='comma token'>,</span> <span class='rubyid_name identifier id'>name</span><span class='assign token'>=</span><span class='rubyid_nil nil kw'>nil</span> <span class='rparen token'>)</span>
+        <span class='rubyid_@type ivar id'>@type</span> <span class='assign token'>=</span> <span class='rubyid_type identifier id'>type</span>
+        <span class='rubyid_@properties ivar id'>@properties</span> <span class='assign token'>=</span> <span class='rubyid_Hash constant id'>Hash</span><span class='colon2 op'>::</span><span class='rubyid_new identifier id'>new</span>
+        <span class='rubyid_if if kw'>if</span> <span class='rubyid_properties identifier id'>properties</span> <span class='rubyid_then then kw'>then</span>
+          <span class='comment val'>#----replaces the contents of @properties hash with</span>
+          <span class='comment val'>#----contents of 'properties' hash</span>
+          <span class='rubyid_@properties ivar id'>@properties</span><span class='dot token'>.</span><span class='rubyid_replace identifier id'>replace</span><span class='lparen token'>(</span><span class='rubyid_properties identifier id'>properties</span><span class='rparen token'>)</span>
+        <span class='rubyid_end end kw'>end</span>
+        <span class='rubyid_if if kw'>if</span> <span class='rubyid_name identifier id'>name</span> <span class='rubyid_then then kw'>then</span>
+                <span class='rubyid_@properties ivar id'>@properties</span><span class='lbrack token'>[</span><span class='symbol val'>:name</span><span class='rbrack token'>]</span> <span class='assign token'>=</span> <span class='rubyid_name identifier id'>name</span>
+        <span class='rubyid_end end kw'>end</span>
+<span class='rubyid_end end kw'>end</span>
+</pre>
+    </td>
+  </tr>
+</table>
+</div>
+  
+</div>
+
+  <div id="instance_attr_details" class="attr_details">
+    <h2>Instance Attribute Details</h2>
+    
+      
+      <span id="properties=-instance_method"></span>
+      <div class="method_details first">
+  <h3 class="signature first" id="properties-instance_method">
+  
+    - (<tt>Object</tt>) <strong>properties</strong> 
+  
+
+  
+
+  
+</h3><div class="docstring">
+  <div class="discussion">
+    
+<p>Returns the value of attribute properties</p>
+
+
+  </div>
+</div>
+<div class="tags">
+  
+
+</div><table class="source_code">
+  <tr>
+    <td>
+      <pre class="lines">
+
+
+32
+33
+34</pre>
+    </td>
+    <td>
+      <pre class="code"><span class="info file"># File 'lib/resourceset.rb', line 32</span>
+
+<span class='rubyid_def def kw'>def</span> <span class='rubyid_properties identifier id'>properties</span>
+  <span class='rubyid_@properties ivar id'>@properties</span>
+<span class='rubyid_end end kw'>end</span>
+</pre>
+    </td>
+  </tr>
+</table>
+</div>
+    
+      
+      <span id="type=-instance_method"></span>
+      <div class="method_details ">
+  <h3 class="signature " id="type-instance_method">
+  
+    - (<tt>Object</tt>) <strong>type</strong> 
+  
+
+  
+
+  
+</h3><div class="docstring">
+  <div class="discussion">
+    
+<p>Returns the value of attribute type</p>
+
+
+  </div>
+</div>
+<div class="tags">
+  
+
+</div><table class="source_code">
+  <tr>
+    <td>
+      <pre class="lines">
+
+
+32
+33
+34</pre>
+    </td>
+    <td>
+      <pre class="code"><span class="info file"># File 'lib/resourceset.rb', line 32</span>
+
+<span class='rubyid_def def kw'>def</span> <span class='rubyid_type identifier id'>type</span>
+  <span class='rubyid_@type ivar id'>@type</span>
+<span class='rubyid_end end kw'>end</span>
+</pre>
+    </td>
+  </tr>
+</table>
+</div>
     
   </div>
 
-  <div id="class-metadata">
-    
-    <nav id="parent-class-section" class="section">
-  <h3 class="section-header">Parent</h3>
-  
-  <p class="link"><a href="../Object.html">Object</a>
-  
-</nav>
+
+  <div id="instance_method_details" class="method_details_list">
+    <h2>Instance Method Details</h2>
 
     
-    <!-- Method Quickref -->
-<nav id="method-list-section" class="section">
-  <h3 class="section-header">Methods</h3>
+      <div class="method_details first">
+  <h3 class="signature first" id="==-instance_method">
+  
+    - (<tt>Object</tt>) <strong>==</strong>(res) 
+  
 
-  <ul class="link-list">
+  
+
+  
+</h3><div class="docstring">
+  <div class="discussion">
     
-    <li><a href="#method-c-new">::new</a>
-    
-    <li><a href="#method-i-3D-3D">#==</a>
-    
-    <li><a href="#method-i-copy">#copy</a>
-    
-    <li><a href="#method-i-corresponds">#corresponds</a>
-    
-    <li><a href="#method-i-eql-3F">#eql?</a>
-    
-    <li><a href="#method-i-gateway">#gateway</a>
-    
-    <li><a href="#method-i-gw">#gw</a>
-    
-    <li><a href="#method-i-make_taktuk_command">#make_taktuk_command</a>
-    
-    <li><a href="#method-i-name">#name</a>
-    
-    <li><a href="#method-i-name-3D">#name=</a>
-    
-    <li><a href="#method-i-to_s">#to_s</a>
-    
-  </ul>
-</nav>
+<p>Equality, Two Resource objects are equal if they have the  same type and
+the same properties as well.</p>
+
 
   </div>
+</div>
+<div class="tags">
+  
 
-  <div id="project-metadata">
-    <nav id="fileindex-section" class="section project-section">
-  <h3 class="section-header">Pages</h3>
+</div><table class="source_code">
+  <tr>
+    <td>
+      <pre class="lines">
 
-  <ul>
-  
-    <li class="file"><a href="../COPYING.html">COPYING</a>
-  
-    <li class="file"><a href="../ChangeLog.html">ChangeLog</a>
-  
-    <li class="file"><a href="../LICENSE.html">LICENSE</a>
-  
-    <li class="file"><a href="../README.html">README</a>
-  
-    <li class="file"><a href="../Rakefile.html">Rakefile</a>
-  
-    <li class="file"><a href="../debian-pkg/debian/changelog.html">changelog</a>
-  
-    <li class="file"><a href="../debian-pkg/debian/compat.html">compat</a>
-  
-    <li class="file"><a href="../debian-pkg/debian/control.html">control</a>
-  
-    <li class="file"><a href="../debian-pkg/debian/copyright.html">copyright</a>
-  
-    <li class="file"><a href="../debian-pkg/debian/rules.html">rules</a>
-  
-    <li class="file"><a href="../demo/karo/README.html">README</a>
-  
-    <li class="file"><a href="../demo/karo/TODO.html">TODO</a>
-  
-    <li class="file"><a href="../htdocs/README.html">README</a>
-  
-    <li class="file"><a href="../htdocs/Rakefile.html">Rakefile</a>
-  
-    <li class="file"><a href="../old/trunk/gui/wx/README.html">README</a>
-  
-  </ul>
-</nav>
 
-    <nav id="classindex-section" class="section project-section">
-  <h3 class="section-header">Class and Module Index</h3>
+88
+89
+90</pre>
+    </td>
+    <td>
+      <pre class="code"><span class="info file"># File 'lib/resourceset.rb', line 88</span>
 
-  <ul class="link-list">
-  
-    <li><a href="../Expo.html">Expo</a>
-  
-    <li><a href="../Expo/AddCommandResponse.html">Expo::AddCommandResponse</a>
-  
-    <li><a href="../Expo/AddCommandsResponse.html">Expo::AddCommandsResponse</a>
-  
-    <li><a href="../Expo/AddNodesResponse.html">Expo::AddNodesResponse</a>
-  
-    <li><a href="../Expo/AddReservationResponse.html">Expo::AddReservationResponse</a>
-  
-    <li><a href="../Expo/AsynchronousCommandResponse.html">Expo::AsynchronousCommandResponse</a>
-  
-    <li><a href="../Expo/BulkCommandInfosResponse.html">Expo::BulkCommandInfosResponse</a>
-  
-    <li><a href="../Expo/BulkCommandResultsResponse.html">Expo::BulkCommandResultsResponse</a>
-  
-    <li><a href="../Expo/BulkCommandsResponse.html">Expo::BulkCommandsResponse</a>
-  
-    <li><a href="../Expo/BulkRCtrlResponse.html">Expo::BulkRCtrlResponse</a>
-  
-    <li><a href="../Expo/CloseExperimentResponse.html">Expo::CloseExperimentResponse</a>
-  
-    <li><a href="../Expo/CommandArchiveResponse.html">Expo::CommandArchiveResponse</a>
-  
-    <li><a href="../Expo/CommandDeleteResponse.html">Expo::CommandDeleteResponse</a>
-  
-    <li><a href="../Expo/CommandInfoResponse.html">Expo::CommandInfoResponse</a>
-  
-    <li><a href="../Expo/CommandInputResponse.html">Expo::CommandInputResponse</a>
-  
-    <li><a href="../Expo/CommandResponse.html">Expo::CommandResponse</a>
-  
-    <li><a href="../Expo/CommandResultResponse.html">Expo::CommandResultResponse</a>
-  
-    <li><a href="../Expo/CommandRewindResponse.html">Expo::CommandRewindResponse</a>
-  
-    <li><a href="../Expo/CommandWaitResponse.html">Expo::CommandWaitResponse</a>
-  
-    <li><a href="../Expo/CreateExperimentResponse.html">Expo::CreateExperimentResponse</a>
-  
-    <li><a href="../Expo/DelayedCommandResponse.html">Expo::DelayedCommandResponse</a>
-  
-    <li><a href="../Expo/DelayedCommandScheduler.html">Expo::DelayedCommandScheduler</a>
-  
-    <li><a href="../Expo/DeleteCommandResponse.html">Expo::DeleteCommandResponse</a>
-  
-    <li><a href="../Expo/DeleteReservationResponse.html">Expo::DeleteReservationResponse</a>
-  
-    <li><a href="../Expo/DumpExperimentResponse.html">Expo::DumpExperimentResponse</a>
-  
-    <li><a href="../Expo/ExpCtrlClient.html">Expo::ExpCtrlClient</a>
-  
-    <li><a href="../Expo/ExpCtrlClientDrbDriver.html">Expo::ExpCtrlClientDrbDriver</a>
-  
-    <li><a href="../Expo/ExpCtrlClientNoneDriver.html">Expo::ExpCtrlClientNoneDriver</a>
-  
-    <li><a href="../Expo/ExpCtrlClientXMLRPCDriver.html">Expo::ExpCtrlClientXMLRPCDriver</a>
-  
-    <li><a href="../Expo/ExpCtrlExperiment.html">Expo::ExpCtrlExperiment</a>
-  
-    <li><a href="../Expo/ExpCtrlResponse.html">Expo::ExpCtrlResponse</a>
-  
-    <li><a href="../Expo/ExpCtrlService.html">Expo::ExpCtrlService</a>
-  
-    <li><a href="../Expo/ExperimentInfoResponse.html">Expo::ExperimentInfoResponse</a>
-  
-    <li><a href="../Expo/ExperimentNumberResponse.html">Expo::ExperimentNumberResponse</a>
-  
-    <li><a href="../Expo/ExpoResult.html">Expo::ExpoResult</a>
-  
-    <li><a href="../Expo/GenericCommandResponse.html">Expo::GenericCommandResponse</a>
-  
-    <li><a href="../Expo/GenericTask.html">Expo::GenericTask</a>
-  
-    <li><a href="../Expo/GetAllCommandsResponse.html">Expo::GetAllCommandsResponse</a>
-  
-    <li><a href="../Expo/GetAllNodesResponse.html">Expo::GetAllNodesResponse</a>
-  
-    <li><a href="../Expo/GetAllReservationsResponse.html">Expo::GetAllReservationsResponse</a>
-  
-    <li><a href="../Expo/GetAllResponse.html">Expo::GetAllResponse</a>
-  
-    <li><a href="../Expo/GetCommandInputsResponse.html">Expo::GetCommandInputsResponse</a>
-  
-    <li><a href="../Expo/GetNodesResponse.html">Expo::GetNodesResponse</a>
-  
-    <li><a href="../Expo/Heap.html">Expo::Heap</a>
-  
-    <li><a href="../Expo/InteractiveCommandResponse.html">Expo::InteractiveCommandResponse</a>
-  
-    <li><a href="../Expo/NameSet.html">Expo::NameSet</a>
-  
-    <li><a href="../Expo/NewReservationResponse.html">Expo::NewReservationResponse</a>
-  
-    <li><a href="../Expo/Oargrid2Reservation.html">Expo::Oargrid2Reservation</a>
-  
-    <li><a href="../Expo/OargridReservation.html">Expo::OargridReservation</a>
-  
-    <li><a href="../Expo/OpenExperimentResponse.html">Expo::OpenExperimentResponse</a>
-  
-    <li><a href="../Expo/OpenReservationResponse.html">Expo::OpenReservationResponse</a>
-  
-    <li><a href="../Expo/RCtrlClient.html">Expo::RCtrlClient</a>
-  
-    <li><a href="../Expo/RCtrlClientDrbDriver.html">Expo::RCtrlClientDrbDriver</a>
-  
-    <li><a href="../Expo/RCtrlClientNoneDriver.html">Expo::RCtrlClientNoneDriver</a>
-  
-    <li><a href="../Expo/RCtrlClientXMLRPCDriver.html">Expo::RCtrlClientXMLRPCDriver</a>
-  
-    <li><a href="../Expo/RCtrlCommand.html">Expo::RCtrlCommand</a>
-  
-    <li><a href="../Expo/RCtrlResponse.html">Expo::RCtrlResponse</a>
-  
-    <li><a href="../Expo/RCtrlService.html">Expo::RCtrlService</a>
-  
-    <li><a href="../Expo/RecursiveCommandResponse.html">Expo::RecursiveCommandResponse</a>
-  
-    <li><a href="../Expo/ResCtrlClient.html">Expo::ResCtrlClient</a>
-  
-    <li><a href="../Expo/ResCtrlReservation.html">Expo::ResCtrlReservation</a>
-  
-    <li><a href="../Expo/ResCtrlResponse.html">Expo::ResCtrlResponse</a>
-  
-    <li><a href="../Expo/ResCtrlService.html">Expo::ResCtrlService</a>
-  
-    <li><a href="../Expo/ReservationInfoResponse.html">Expo::ReservationInfoResponse</a>
-  
-    <li><a href="../Expo/ReservationJobResponse.html">Expo::ReservationJobResponse</a>
-  
-    <li><a href="../Expo/ReservationJobsResponse.html">Expo::ReservationJobsResponse</a>
-  
-    <li><a href="../Expo/ReservationResourcesResponse.html">Expo::ReservationResourcesResponse</a>
-  
-    <li><a href="../Expo/ReservationStatsResponse.html">Expo::ReservationStatsResponse</a>
-  
-    <li><a href="../Expo/ReservationWaitResponse.html">Expo::ReservationWaitResponse</a>
-  
-    <li><a href="../Expo/Resource.html">Expo::Resource</a>
-  
-    <li><a href="../Expo/ResourceSet.html">Expo::ResourceSet</a>
-  
-    <li><a href="../Expo/ResourceSetIterator.html">Expo::ResourceSetIterator</a>
-  
-    <li><a href="../Expo/RubyAsynchronousCommandResponse.html">Expo::RubyAsynchronousCommandResponse</a>
-  
-    <li><a href="../Expo/RubyCommandResponse.html">Expo::RubyCommandResponse</a>
-  
-    <li><a href="../Expo/RubyDelayedCommandResponse.html">Expo::RubyDelayedCommandResponse</a>
-  
-    <li><a href="../Expo/Task.html">Expo::Task</a>
-  
-    <li><a href="../Expo/TaskResult.html">Expo::TaskResult</a>
-  
-    <li><a href="../Expo/TaskSet.html">Expo::TaskSet</a>
-  
-    <li><a href="../Expo/TaskStream.html">Expo::TaskStream</a>
-  
-    <li><a href="../CmdCtrl.html">CmdCtrl</a>
-  
-    <li><a href="../CmdCtrl/Commands.html">CmdCtrl::Commands</a>
-  
-    <li><a href="../CmdCtrl/Commands/Command.html">CmdCtrl::Commands::Command</a>
-  
-    <li><a href="../CmdCtrl/Commands/CommandBufferer.html">CmdCtrl::Commands::CommandBufferer</a>
-  
-    <li><a href="../CmdCtrl/Commands/InteractiveCommand.html">CmdCtrl::Commands::InteractiveCommand</a>
-  
-    <li><a href="../CmdCtrl/ParallelRunner.html">CmdCtrl::ParallelRunner</a>
-  
-    <li><a href="../CmdCtrl/ParallelRunnerResultGroup.html">CmdCtrl::ParallelRunnerResultGroup</a>
-  
-    <li><a href="../ActionList.html">ActionList</a>
-  
-    <li><a href="../BoolItem.html">BoolItem</a>
-  
-    <li><a href="../ComposedStep.html">ComposedStep</a>
-  
-    <li><a href="../ConfigItem.html">ConfigItem</a>
-  
-    <li><a href="../ConfigTable_class.html">ConfigTable_class</a>
-  
-    <li><a href="../Enumerable.html">Enumerable</a>
-  
-    <li><a href="../ExpCtrlServer.html">ExpCtrlServer</a>
-  
-    <li><a href="../ExpCtrlServerDrbDriver.html">ExpCtrlServerDrbDriver</a>
-  
-    <li><a href="../ExpCtrlServerSoapDriver.html">ExpCtrlServerSoapDriver</a>
-  
-    <li><a href="../ExpCtrlServerXMLRPCDriver.html">ExpCtrlServerXMLRPCDriver</a>
-  
-    <li><a href="../ExpCtrlTest.html">ExpCtrlTest</a>
-  
-    <li><a href="../ExpeCtrlView.html">ExpeCtrlView</a>
-  
-    <li><a href="../ExpeView.html">ExpeView</a>
-  
-    <li><a href="../ExpoClient.html">ExpoClient</a>
-  
-    <li><a href="../ExpoGui.html">ExpoGui</a>
-  
-    <li><a href="../ExpoResult.html">ExpoResult</a>
-  
-    <li><a href="../ExpoUiApp.html">ExpoUiApp</a>
-  
-    <li><a href="../FifoExpoClient.html">FifoExpoClient</a>
-  
-    <li><a href="../FifoExpoServer.html">FifoExpoServer</a>
-  
-    <li><a href="../File.html">File</a>
-  
-    <li><a href="../FileOperations.html">FileOperations</a>
-  
-    <li><a href="../HeapTest.html">HeapTest</a>
-  
-    <li><a href="../History.html">History</a>
-  
-    <li><a href="../HookScriptAPI.html">HookScriptAPI</a>
-  
-    <li><a href="../HookUtils.html">HookUtils</a>
-  
-    <li><a href="../Installer.html">Installer</a>
-  
-    <li><a href="../Karo.html">Karo</a>
-  
-    <li><a href="../Logger.html">Logger</a>
-  
-    <li><a href="../MetaConfigAPI.html">MetaConfigAPI</a>
-  
-    <li><a href="../Object.html">Object</a>
-  
-    <li><a href="../PackageSelectionItem.html">PackageSelectionItem</a>
-  
-    <li><a href="../Parallel.html">Parallel</a>
-  
-    <li><a href="../ParallelSection.html">ParallelSection</a>
-  
-    <li><a href="../PathItem.html">PathItem</a>
-  
-    <li><a href="../ProgramItem.html">ProgramItem</a>
-  
-    <li><a href="../RCtrlServer.html">RCtrlServer</a>
-  
-    <li><a href="../RCtrlServerDrbDriver.html">RCtrlServerDrbDriver</a>
-  
-    <li><a href="../RCtrlServerSoapDriver.html">RCtrlServerSoapDriver</a>
-  
-    <li><a href="../RCtrlServerXMLRPCDriver.html">RCtrlServerXMLRPCDriver</a>
-  
-    <li><a href="../RCtrlTest.html">RCtrlTest</a>
-  
-    <li><a href="../ResCtrlServer.html">ResCtrlServer</a>
-  
-    <li><a href="../ResCtrlServerDrbDriver.html">ResCtrlServerDrbDriver</a>
-  
-    <li><a href="../ResCtrlServerSoapDriver.html">ResCtrlServerSoapDriver</a>
-  
-    <li><a href="../ResCtrlServerXMLRPCDriver.html">ResCtrlServerXMLRPCDriver</a>
-  
-    <li><a href="../ResCtrlTest.html">ResCtrlTest</a>
-  
-    <li><a href="../ResourceSetTest.html">ResourceSetTest</a>
-  
-    <li><a href="../Result.html">Result</a>
-  
-    <li><a href="../SelectItem.html">SelectItem</a>
-  
-    <li><a href="../SetupError.html">SetupError</a>
-  
-    <li><a href="../Step.html">Step</a>
-  
-    <li><a href="../Steps.html">Steps</a>
-  
-    <li><a href="../TaktukWrapper.html">TaktukWrapper</a>
-  
-    <li><a href="../TaskResult.html">TaskResult</a>
-  
-    <li><a href="../TestReservation.html">TestReservation</a>
-  
-    <li><a href="../ThreadsCounter.html">ThreadsCounter</a>
-  
-    <li><a href="../ToplevelInstaller.html">ToplevelInstaller</a>
-  
-    <li><a href="../ToplevelInstallerMulti.html">ToplevelInstallerMulti</a>
-  
-    <li><a href="../Utils.html">Utils</a>
-  
-    <li><a href="../WxExpeProgram.html">WxExpeProgram</a>
-  
-    <li><a href="../WxTaskList.html">WxTaskList</a>
-  
-    <li><a href="../YAMLTreeView.html">YAMLTreeView</a>
-  
-    <li><a href="../YAMLTreeViewWindow.html">YAMLTreeViewWindow</a>
-  
-  </ul>
-</nav>
+<span class='rubyid_def def kw'>def</span> <span class='eq op'>==</span><span class='lparen token'>(</span> <span class='rubyid_res identifier id'>res</span> <span class='rparen token'>)</span>
+        <span class='rubyid_@type ivar id'>@type</span> <span class='eq op'>==</span> <span class='rubyid_res identifier id'>res</span><span class='dot token'>.</span><span class='rubyid_type identifier id'>type</span> <span class='rubyid_and and kw'>and</span> <span class='rubyid_@properties ivar id'>@properties</span> <span class='eq op'>==</span> <span class='rubyid_res identifier id'>res</span><span class='dot token'>.</span><span class='rubyid_properties identifier id'>properties</span>
+<span class='rubyid_end end kw'>end</span>
+</pre>
+    </td>
+  </tr>
+</table>
+</div>
+    
+      <div class="method_details ">
+  <h3 class="signature " id="copy-instance_method">
+  
+    - (<tt>Object</tt>) <strong>copy</strong> 
+  
+
+  
+
+  
+</h3><div class="docstring">
+  <div class="discussion">
+    
+<p>Creates a copy of the resource object.</p>
+
 
   </div>
-</nav>
+</div>
+<div class="tags">
+  
 
-<div id="documentation">
-  <h1 class="class">class Expo::Resource</h1>
+</div><table class="source_code">
+  <tr>
+    <td>
+      <pre class="lines">
 
-  <div id="description" class="description">
+
+80
+81
+82
+83
+84</pre>
+    </td>
+    <td>
+      <pre class="code"><span class="info file"># File 'lib/resourceset.rb', line 80</span>
+
+<span class='rubyid_def def kw'>def</span> <span class='rubyid_copy identifier id'>copy</span>
+        <span class='rubyid_result identifier id'>result</span> <span class='assign token'>=</span> <span class='rubyid_Resource constant id'>Resource</span><span class='colon2 op'>::</span><span class='rubyid_new identifier id'>new</span><span class='lparen token'>(</span><span class='rubyid_@type ivar id'>@type</span><span class='rparen token'>)</span>
+        <span class='rubyid_result identifier id'>result</span><span class='dot token'>.</span><span class='rubyid_properties identifier id'>properties</span><span class='dot token'>.</span><span class='rubyid_replace identifier id'>replace</span><span class='lparen token'>(</span> <span class='rubyid_@properties ivar id'>@properties</span> <span class='rparen token'>)</span>
+        <span class='rubyid_return return kw'>return</span> <span class='rubyid_result identifier id'>result</span>
+<span class='rubyid_end end kw'>end</span>
+</pre>
+    </td>
+  </tr>
+</table>
+</div>
     
-<p>A <a href="Resource.html">Resource</a> maps a computational resource to an
-object which keeps  Certains characteritics such as type, name, gateway.</p>
-
-  </div><!-- description -->
+      <div class="method_details ">
+  <h3 class="signature " id="corresponds-instance_method">
+  
+    - (<tt>Object</tt>) <strong>corresponds</strong>(props) 
+  
 
   
+
   
+</h3><table class="source_code">
+  <tr>
+    <td>
+      <pre class="lines">
+
+
+68
+69
+70
+71
+72
+73
+74
+75
+76
+77</pre>
+    </td>
+    <td>
+      <pre class="code"><span class="info file"># File 'lib/resourceset.rb', line 68</span>
+
+<span class='rubyid_def def kw'>def</span> <span class='rubyid_corresponds identifier id'>corresponds</span><span class='lparen token'>(</span> <span class='rubyid_props identifier id'>props</span> <span class='rparen token'>)</span>
+        <span class='rubyid_props identifier id'>props</span><span class='dot token'>.</span><span class='rubyid_each_pair identifier id'>each_pair</span> <span class='lbrace token'>{</span> <span class='bitor op'>|</span><span class='rubyid_key identifier id'>key</span><span class='comma token'>,</span><span class='rubyid_value identifier id'>value</span><span class='bitor op'>|</span>
+                <span class='rubyid_if if kw'>if</span> <span class='rubyid_value identifier id'>value</span><span class='dot token'>.</span><span class='rubyid_kind_of? fid id'>kind_of?</span><span class='lparen token'>(</span><span class='rubyid_Proc constant id'>Proc</span><span class='rparen token'>)</span> <span class='rubyid_then then kw'>then</span>
+                        <span class='rubyid_return return kw'>return</span> <span class='rubyid_false false kw'>false</span> <span class='rubyid_if if_mod kw'>if</span> <span class='rubyid_not not kw'>not</span> <span class='rubyid_value identifier id'>value</span><span class='dot token'>.</span><span class='rubyid_call identifier id'>call</span><span class='lparen token'>(</span><span class='rubyid_@properties ivar id'>@properties</span><span class='lbrack token'>[</span><span class='rubyid_key identifier id'>key</span><span class='rbrack token'>]</span><span class='rparen token'>)</span>
+                <span class='rubyid_else else kw'>else</span>
+                        <span class='rubyid_return return kw'>return</span> <span class='rubyid_false false kw'>false</span> <span class='rubyid_if if_mod kw'>if</span> <span class='lparen token'>(</span> <span class='rubyid_@properties ivar id'>@properties</span><span class='lbrack token'>[</span><span class='rubyid_key identifier id'>key</span><span class='rbrack token'>]</span> <span class='neq op'>!=</span> <span class='rubyid_value identifier id'>value</span> <span class='rparen token'>)</span>
+                <span class='rubyid_end end kw'>end</span>
+        <span class='rbrace token'>}</span>
+        <span class='rubyid_return return kw'>return</span> <span class='rubyid_true true kw'>true</span>
+<span class='rubyid_end end kw'>end</span>
+</pre>
+    </td>
+  </tr>
+</table>
+</div>
+    
+      <div class="method_details ">
+  <h3 class="signature " id="eql?-instance_method">
   
-  <section id="5Buntitled-5D" class="documentation-section">
-    
+    - (<tt>Boolean</tt>) <strong>eql?</strong>(res) 
+  
 
-    
+  
 
+  
+</h3><div class="docstring">
+  <div class="discussion">
     
+<p>Returns true if self and other are the same object.</p>
 
-    
-    <!-- Attributes -->
-    <section id="attribute-method-details" class="method-section section">
-      <h3 class="section-header">Attributes</h3>
 
+  </div>
+</div>
+<div class="tags">
+  
+<p class="tag_title">Returns:</p>
+<ul class="return">
+  
+    <li>
       
-      <div id="attribute-i-properties" class="method-detail">
-        <div class="method-heading attribute-method-heading">
-          <span class="method-name">properties</span><span
-            class="attribute-access-type">[RW]</span>
-        </div>
-
-        <div class="method-description">
-        
-        
-        
-        </div>
-      </div>
       
-      <div id="attribute-i-type" class="method-detail">
-        <div class="method-heading attribute-method-heading">
-          <span class="method-name">type</span><span
-            class="attribute-access-type">[RW]</span>
-        </div>
-
-        <div class="method-description">
-        
-        
-        
-        </div>
-      </div>
+        <span class='type'>(<tt>Boolean</tt>)</span>
       
-    </section><!-- attribute-method-details -->
-    
-
-    <!-- Methods -->
-    
-     <section id="public-class-5Buntitled-5D-method-details" class="method-section section">
-      <h3 class="section-header">Public Class Methods</h3>
-
-    
-      <div id="method-c-new" class="method-detail ">
-        
-        <div class="method-heading">
-          <span class="method-name">new</span><span
-            class="method-args">( type, properties=nil, name=nil )</span>
-          <span class="method-click-advice">click to toggle source</span>
-        </div>
-        
-
-        <div class="method-description">
-          
-          <p>Creates a new <a href="Resource.html">Resource</a> <a
-href="../Object.html">Object</a>.</p>
-          
-
-          
-          <div class="method-source-code" id="new-source">
-            <pre><span class="ruby-comment"># File lib/resourceset.rb, line 33</span>
-<span class="ruby-keyword">def</span> <span class="ruby-identifier">initialize</span>( <span class="ruby-identifier">type</span>, <span class="ruby-identifier">properties</span>=<span class="ruby-keyword">nil</span>, <span class="ruby-identifier">name</span>=<span class="ruby-keyword">nil</span> )
-        <span class="ruby-ivar">@type</span> = <span class="ruby-identifier">type</span>
-        <span class="ruby-ivar">@properties</span> = <span class="ruby-constant">Hash</span><span class="ruby-operator">::</span><span class="ruby-identifier">new</span>
-        <span class="ruby-keyword">if</span> <span class="ruby-identifier">properties</span> <span class="ruby-keyword">then</span>
-          <span class="ruby-comment">#----replaces the contents of @properties hash with</span>
-          <span class="ruby-comment">#----contents of 'properties' hash</span>
-          <span class="ruby-ivar">@properties</span>.<span class="ruby-identifier">replace</span>(<span class="ruby-identifier">properties</span>)
-        <span class="ruby-keyword">end</span>
-        <span class="ruby-keyword">if</span> <span class="ruby-identifier">name</span> <span class="ruby-keyword">then</span>
-                <span class="ruby-ivar">@properties</span>[<span class="ruby-value">:name</span>] = <span class="ruby-identifier">name</span>
-        <span class="ruby-keyword">end</span>
-<span class="ruby-keyword">end</span></pre>
-          </div><!-- new-source -->
-          
-        </div>
-
-        
-
-        
-      </div><!-- new-method -->
-
-    
-    </section><!-- public-class-method-details -->
+      
+      
+    </li>
   
-     <section id="public-instance-5Buntitled-5D-method-details" class="method-section section">
-      <h3 class="section-header">Public Instance Methods</h3>
+</ul>
 
+</div><table class="source_code">
+  <tr>
+    <td>
+      <pre class="lines">
+
+
+93
+94
+95
+96
+97
+98
+99
+100
+101
+102</pre>
+    </td>
+    <td>
+      <pre class="code"><span class="info file"># File 'lib/resourceset.rb', line 93</span>
+
+<span class='rubyid_def def kw'>def</span> <span class='rubyid_eql? fid id'>eql?</span><span class='lparen token'>(</span> <span class='rubyid_res identifier id'>res</span> <span class='rparen token'>)</span>
+        <span class='rubyid_if if kw'>if</span> <span class='rubyid_self self kw'>self</span><span class='dot token'>.</span><span class='rubyid_class identifier id'>class</span> <span class='eq op'>==</span> <span class='rubyid_res identifier id'>res</span><span class='dot token'>.</span><span class='rubyid_class identifier id'>class</span> <span class='rubyid_and and kw'>and</span> <span class='rubyid_@type ivar id'>@type</span> <span class='eq op'>==</span> <span class='rubyid_res identifier id'>res</span><span class='dot token'>.</span><span class='rubyid_type identifier id'>type</span> <span class='rubyid_then then kw'>then</span>
+      <span class='rubyid_@properties ivar id'>@properties</span><span class='dot token'>.</span><span class='rubyid_each_pair identifier id'>each_pair</span> <span class='lbrace token'>{</span> <span class='bitor op'>|</span><span class='rubyid_key identifier id'>key</span><span class='comma token'>,</span><span class='rubyid_value identifier id'>value</span><span class='bitor op'>|</span>
+<span class='rubyid_return return kw'>return</span> <span class='rubyid_false false kw'>false</span> <span class='rubyid_if if_mod kw'>if</span> <span class='rubyid_res identifier id'>res</span><span class='dot token'>.</span><span class='rubyid_properties identifier id'>properties</span><span class='lbrack token'>[</span><span class='rubyid_key identifier id'>key</span><span class='rbrack token'>]</span> <span class='neq op'>!=</span> <span class='rubyid_value identifier id'>value</span>
+      <span class='rbrace token'>}</span>
+      <span class='rubyid_return return kw'>return</span> <span class='rubyid_true true kw'>true</span>
+    <span class='rubyid_else else kw'>else</span>
+      <span class='rubyid_return return kw'>return</span> <span class='rubyid_false false kw'>false</span>
+    <span class='rubyid_end end kw'>end</span>
+<span class='rubyid_end end kw'>end</span>
+</pre>
+    </td>
+  </tr>
+</table>
+</div>
     
-      <div id="method-i-3D-3D" class="method-detail ">
-        
-        <div class="method-heading">
-          <span class="method-name">==</span><span
-            class="method-args">( res )</span>
-          <span class="method-click-advice">click to toggle source</span>
-        </div>
-        
-
-        <div class="method-description">
-          
-          <p>Equality, Two <a href="Resource.html">Resource</a> objects are equal if
-they have the  same type and the same properties as well.</p>
-          
-
-          
-          <div class="method-source-code" id="3D-3D-source">
-            <pre><span class="ruby-comment"># File lib/resourceset.rb, line 82</span>
-<span class="ruby-keyword">def</span> <span class="ruby-operator">==</span>( <span class="ruby-identifier">res</span> )
-        <span class="ruby-ivar">@type</span> <span class="ruby-operator">==</span> <span class="ruby-identifier">res</span>.<span class="ruby-identifier">type</span> <span class="ruby-keyword">and</span> <span class="ruby-ivar">@properties</span> <span class="ruby-operator">==</span> <span class="ruby-identifier">res</span>.<span class="ruby-identifier">properties</span>
-<span class="ruby-keyword">end</span></pre>
-          </div><!-- 3D-3D-source -->
-          
-        </div>
-
-        
-
-        
-      </div><!-- 3D-3D-method -->
-
-    
-      <div id="method-i-copy" class="method-detail ">
-        
-        <div class="method-heading">
-          <span class="method-name">copy</span><span
-            class="method-args">()</span>
-          <span class="method-click-advice">click to toggle source</span>
-        </div>
-        
-
-        <div class="method-description">
-          
-          <p>Creates a copy of the resource object.</p>
-          
-
-          
-          <div class="method-source-code" id="copy-source">
-            <pre><span class="ruby-comment"># File lib/resourceset.rb, line 74</span>
-<span class="ruby-keyword">def</span> <span class="ruby-identifier">copy</span>
-        <span class="ruby-identifier">result</span> = <span class="ruby-constant">Resource</span><span class="ruby-operator">::</span><span class="ruby-identifier">new</span>(<span class="ruby-ivar">@type</span>)
-        <span class="ruby-identifier">result</span>.<span class="ruby-identifier">properties</span>.<span class="ruby-identifier">replace</span>( <span class="ruby-ivar">@properties</span> )
-        <span class="ruby-keyword">return</span> <span class="ruby-identifier">result</span>
-<span class="ruby-keyword">end</span></pre>
-          </div><!-- copy-source -->
-          
-        </div>
-
-        
-
-        
-      </div><!-- copy-method -->
-
-    
-      <div id="method-i-corresponds" class="method-detail ">
-        
-        <div class="method-heading">
-          <span class="method-name">corresponds</span><span
-            class="method-args">( props )</span>
-          <span class="method-click-advice">click to toggle source</span>
-        </div>
-        
-
-        <div class="method-description">
-          
-          
-          
-
-          
-          <div class="method-source-code" id="corresponds-source">
-            <pre><span class="ruby-comment"># File lib/resourceset.rb, line 62</span>
-<span class="ruby-keyword">def</span> <span class="ruby-identifier">corresponds</span>( <span class="ruby-identifier">props</span> )
-        <span class="ruby-identifier">props</span>.<span class="ruby-identifier">each_pair</span> { <span class="ruby-operator">|</span><span class="ruby-identifier">key</span>,<span class="ruby-identifier">value</span><span class="ruby-operator">|</span>
-                <span class="ruby-keyword">if</span> <span class="ruby-identifier">value</span>.<span class="ruby-identifier">kind_of?</span>(<span class="ruby-constant">Proc</span>) <span class="ruby-keyword">then</span>
-                        <span class="ruby-keyword">return</span> <span class="ruby-keyword">false</span> <span class="ruby-keyword">if</span> <span class="ruby-keyword">not</span> <span class="ruby-identifier">value</span>.<span class="ruby-identifier">call</span>(<span class="ruby-ivar">@properties</span>[<span class="ruby-identifier">key</span>])
-                <span class="ruby-keyword">else</span>
-                        <span class="ruby-keyword">return</span> <span class="ruby-keyword">false</span> <span class="ruby-keyword">if</span> ( <span class="ruby-ivar">@properties</span>[<span class="ruby-identifier">key</span>] <span class="ruby-operator">!=</span> <span class="ruby-identifier">value</span> )
-                <span class="ruby-keyword">end</span>
-        }
-        <span class="ruby-keyword">return</span> <span class="ruby-keyword">true</span>
-<span class="ruby-keyword">end</span></pre>
-          </div><!-- corresponds-source -->
-          
-        </div>
-
-        
-
-        
-      </div><!-- corresponds-method -->
-
-    
-      <div id="method-i-eql-3F" class="method-detail ">
-        
-        <div class="method-heading">
-          <span class="method-name">eql?</span><span
-            class="method-args">( res )</span>
-          <span class="method-click-advice">click to toggle source</span>
-        </div>
-        
-
-        <div class="method-description">
-          
-          <p>Returns true if self and other are the same object.</p>
-          
-
-          
-          <div class="method-source-code" id="eql-3F-source">
-            <pre><span class="ruby-comment"># File lib/resourceset.rb, line 87</span>
-<span class="ruby-keyword">def</span> <span class="ruby-identifier">eql?</span>( <span class="ruby-identifier">res</span> )
-        <span class="ruby-keyword">if</span> <span class="ruby-keyword">self</span>.<span class="ruby-identifier">class</span> <span class="ruby-operator">==</span> <span class="ruby-identifier">res</span>.<span class="ruby-identifier">class</span> <span class="ruby-keyword">and</span> <span class="ruby-ivar">@type</span> <span class="ruby-operator">==</span> <span class="ruby-identifier">res</span>.<span class="ruby-identifier">type</span> <span class="ruby-keyword">then</span>
-                <span class="ruby-ivar">@properties</span>.<span class="ruby-identifier">each_pair</span> { <span class="ruby-operator">|</span><span class="ruby-identifier">key</span>,<span class="ruby-identifier">value</span><span class="ruby-operator">|</span>
-                        <span class="ruby-keyword">return</span> <span class="ruby-keyword">false</span> <span class="ruby-keyword">if</span> <span class="ruby-identifier">res</span>.<span class="ruby-identifier">properties</span>[<span class="ruby-identifier">key</span>] <span class="ruby-operator">!=</span> <span class="ruby-identifier">value</span>
-                }
-                <span class="ruby-keyword">return</span> <span class="ruby-keyword">true</span>
-        <span class="ruby-keyword">else</span>
-                <span class="ruby-keyword">return</span> <span class="ruby-keyword">false</span>
-        <span class="ruby-keyword">end</span>
-<span class="ruby-keyword">end</span></pre>
-          </div><!-- eql-3F-source -->
-          
-        </div>
-
-        
-
-        
-      </div><!-- eql-3F-method -->
-
-    
-      <div id="method-i-gateway" class="method-detail ">
-        
-        <div class="method-heading">
-          <span class="method-name">gateway</span><span
-            class="method-args">()</span>
-          <span class="method-click-advice">click to toggle source</span>
-        </div>
-        
-
-        <div class="method-description">
-          
-          <p>Returns the name of the gateway</p>
-          
-
-          
-          <div class="method-source-code" id="gateway-source">
-            <pre><span class="ruby-comment"># File lib/resourceset.rb, line 99</span>
-<span class="ruby-keyword">def</span> <span class="ruby-identifier">gateway</span>
-        <span class="ruby-keyword">return</span> <span class="ruby-ivar">@properties</span>[<span class="ruby-value">:gateway</span>] <span class="ruby-keyword">if</span> <span class="ruby-ivar">@properties</span>[<span class="ruby-value">:gateway</span>]
-        <span class="ruby-keyword">return</span> <span class="ruby-string">&quot;localhost&quot;</span>
-<span class="ruby-keyword">end</span></pre>
-          </div><!-- gateway-source -->
-          
-        </div>
-
-        
-        <div class="aliases">
-          Also aliased as: <a href="Resource.html#method-i-gw">gw</a>
-        </div>
-        
-
-        
-      </div><!-- gateway-method -->
-
-    
-      <div id="method-i-gw" class="method-detail method-alias">
-        
-        <div class="method-heading">
-          <span class="method-name">gw</span><span
-            class="method-args">()</span>
-          <span class="method-click-advice">click to toggle source</span>
-        </div>
-        
-
-        <div class="method-description">
-          
-          
-          
-
-          
-        </div>
-
-        
-
-        
-        <div class="aliases">
-          Alias for: <a href="Resource.html#method-i-gateway">gateway</a>
-        </div>
-        
-      </div><!-- gw-method -->
-
-    
-      <div id="method-i-make_taktuk_command" class="method-detail ">
-        
-        <div class="method-heading">
-          <span class="method-name">make_taktuk_command</span><span
-            class="method-args">(cmd)</span>
-          <span class="method-click-advice">click to toggle source</span>
-        </div>
-        
-
-        <div class="method-description">
-          
-          <p>Use to make the list of machines for the taktuk command</p>
-          
-
-          
-          <div class="method-source-code" id="make_taktuk_command-source">
-            <pre><span class="ruby-comment"># File lib/resourceset.rb, line 108</span>
-<span class="ruby-keyword">def</span> <span class="ruby-identifier">make_taktuk_command</span>(<span class="ruby-identifier">cmd</span>)
-        <span class="ruby-keyword">return</span> <span class="ruby-node">&quot; -m #{self.name}&quot;</span>
-<span class="ruby-keyword">end</span></pre>
-          </div><!-- make_taktuk_command-source -->
-          
-        </div>
-
-        
-
-        
-      </div><!-- make_taktuk_command-method -->
-
-    
-      <div id="method-i-name" class="method-detail ">
-        
-        <div class="method-heading">
-          <span class="method-name">name</span><span
-            class="method-args">()</span>
-          <span class="method-click-advice">click to toggle source</span>
-        </div>
-        
-
-        <div class="method-description">
-          
-          <p>return the name of the resource.</p>
-          
-
-          
-          <div class="method-source-code" id="name-source">
-            <pre><span class="ruby-comment"># File lib/resourceset.rb, line 47</span>
-<span class="ruby-keyword">def</span> <span class="ruby-identifier">name</span>
-        <span class="ruby-keyword">return</span> <span class="ruby-ivar">@properties</span>[<span class="ruby-value">:name</span>]
-<span class="ruby-keyword">end</span></pre>
-          </div><!-- name-source -->
-          
-        </div>
-
-        
-
-        
-      </div><!-- name-method -->
-
-    
-      <div id="method-i-name-3D" class="method-detail ">
-        
-        <div class="method-heading">
-          <span class="method-name">name=</span><span
-            class="method-args">(name)</span>
-          <span class="method-click-advice">click to toggle source</span>
-        </div>
-        
-
-        <div class="method-description">
-          
-          <p>Sets the name of the resource.</p>
-          
-
-          
-          <div class="method-source-code" id="name-3D-source">
-            <pre><span class="ruby-comment"># File lib/resourceset.rb, line 52</span>
-<span class="ruby-keyword">def</span> <span class="ruby-identifier">name=</span>(<span class="ruby-identifier">name</span>)
-        <span class="ruby-ivar">@properties</span>[<span class="ruby-value">:name</span>] = <span class="ruby-identifier">name</span>
-        <span class="ruby-keyword">return</span> <span class="ruby-keyword">self</span>
-<span class="ruby-keyword">end</span></pre>
-          </div><!-- name-3D-source -->
-          
-        </div>
-
-        
-
-        
-      </div><!-- name-3D-method -->
-
-    
-      <div id="method-i-to_s" class="method-detail ">
-        
-        <div class="method-heading">
-          <span class="method-name">to_s</span><span
-            class="method-args">()</span>
-          <span class="method-click-advice">click to toggle source</span>
-        </div>
-        
-
-        <div class="method-description">
-          
-          <p>Returns the name of the resource.</p>
-          
-
-          
-          <div class="method-source-code" id="to_s-source">
-            <pre><span class="ruby-comment"># File lib/resourceset.rb, line 58</span>
-<span class="ruby-keyword">def</span> <span class="ruby-identifier">to_s</span>
-        <span class="ruby-keyword">return</span> <span class="ruby-ivar">@properties</span>[<span class="ruby-value">:name</span>]
-<span class="ruby-keyword">end</span></pre>
-          </div><!-- to_s-source -->
-          
-        </div>
-
-        
-
-        
-      </div><!-- to_s-method -->
-
-    
-    </section><!-- public-instance-method-details -->
+      <div class="method_details ">
+  <h3 class="signature " id="gateway-instance_method">
   
-  </section><!-- 5Buntitled-5D -->
+    - (<tt>Object</tt>) <strong>gateway</strong> 
+  
 
-</div><!-- documentation -->
+  
+    <span class="aliases">Also known as:
+    <span class="names"><span id='gw-instance_method'>gw</span></span>
+    </span>
+  
+
+  
+</h3><div class="docstring">
+  <div class="discussion">
+    
+<p>Returns the name of the gateway</p>
 
 
-<footer id="validator-badges">
-  <p><a href="http://validator.w3.org/check/referer">[Validate]</a>
-  <p>Generated by <a href="https://github.com/rdoc/rdoc">RDoc</a> 3.12.
-  <p>Generated with the <a href="http://deveiate.org/projects/Darkfish-Rdoc/">Darkfish Rdoc Generator</a> 3.
-</footer>
+  </div>
+</div>
+<div class="tags">
+  
 
+</div><table class="source_code">
+  <tr>
+    <td>
+      <pre class="lines">
+
+
+105
+106
+107
+108</pre>
+    </td>
+    <td>
+      <pre class="code"><span class="info file"># File 'lib/resourceset.rb', line 105</span>
+
+<span class='rubyid_def def kw'>def</span> <span class='rubyid_gateway identifier id'>gateway</span>
+  <span class='rubyid_return return kw'>return</span> <span class='rubyid_@properties ivar id'>@properties</span><span class='lbrack token'>[</span><span class='symbol val'>:gateway</span><span class='rbrack token'>]</span> <span class='rubyid_if if_mod kw'>if</span> <span class='rubyid_@properties ivar id'>@properties</span><span class='lbrack token'>[</span><span class='symbol val'>:gateway</span><span class='rbrack token'>]</span>
+  <span class='rubyid_return return kw'>return</span> <span class='string val'>&quot;localhost&quot;</span>
+<span class='rubyid_end end kw'>end</span>
+</pre>
+    </td>
+  </tr>
+</table>
+</div>
+    
+      <div class="method_details ">
+  <h3 class="signature " id="job-instance_method">
+  
+    - (<tt>Object</tt>) <strong>job</strong> 
+  
+
+  
+
+  
+</h3><table class="source_code">
+  <tr>
+    <td>
+      <pre class="lines">
+
+
+112
+113
+114
+115</pre>
+    </td>
+    <td>
+      <pre class="code"><span class="info file"># File 'lib/resourceset.rb', line 112</span>
+
+<span class='rubyid_def def kw'>def</span> <span class='rubyid_job identifier id'>job</span>
+  <span class='rubyid_return return kw'>return</span> <span class='rubyid_@properties ivar id'>@properties</span><span class='lbrack token'>[</span><span class='symbol val'>:id</span><span class='rbrack token'>]</span> <span class='rubyid_if if_mod kw'>if</span> <span class='rubyid_@properties ivar id'>@properties</span><span class='lbrack token'>[</span><span class='symbol val'>:id</span><span class='rbrack token'>]</span>
+  <span class='rubyid_return return kw'>return</span> <span class='integer val'>0</span>
+<span class='rubyid_end end kw'>end</span>
+</pre>
+    </td>
+  </tr>
+</table>
+</div>
+    
+      <div class="method_details ">
+  <h3 class="signature " id="make_taktuk_command-instance_method">
+  
+    - (<tt>Object</tt>) <strong>make_taktuk_command</strong>(cmd) 
+  
+
+  
+
+  
+</h3><div class="docstring">
+  <div class="discussion">
+    
+<p>Use to make the list of machines for the taktuk command</p>
+
+
+  </div>
+</div>
+<div class="tags">
+  
+
+</div><table class="source_code">
+  <tr>
+    <td>
+      <pre class="lines">
+
+
+120
+121
+122</pre>
+    </td>
+    <td>
+      <pre class="code"><span class="info file"># File 'lib/resourceset.rb', line 120</span>
+
+<span class='rubyid_def def kw'>def</span> <span class='rubyid_make_taktuk_command identifier id'>make_taktuk_command</span><span class='lparen token'>(</span><span class='rubyid_cmd identifier id'>cmd</span><span class='rparen token'>)</span>
+        <span class='rubyid_return return kw'>return</span> <span class='dstring node'>&quot; -m #{self.name}&quot;</span>
+<span class='rubyid_end end kw'>end</span>
+</pre>
+    </td>
+  </tr>
+</table>
+</div>
+    
+      <div class="method_details ">
+  <h3 class="signature " id="name-instance_method">
+  
+    - (<tt>String</tt>) <strong>name</strong> 
+  
+
+  
+
+  
+</h3><div class="docstring">
+  <div class="discussion">
+    
+<p>Return the name of the resource.</p>
+
+
+  </div>
+</div>
+<div class="tags">
+  
+<p class="tag_title">Returns:</p>
+<ul class="return">
+  
+    <li>
+      
+      
+        <span class='type'>(<tt>String</tt>)</span>
+      
+      
+      
+        &mdash;
+        <div class='inline'>
+<p>the name of the resource</p>
+</div>
+      
+    </li>
+  
+</ul>
+
+</div><table class="source_code">
+  <tr>
+    <td>
+      <pre class="lines">
+
+
+53
+54
+55</pre>
+    </td>
+    <td>
+      <pre class="code"><span class="info file"># File 'lib/resourceset.rb', line 53</span>
+
+<span class='rubyid_def def kw'>def</span> <span class='rubyid_name identifier id'>name</span>
+        <span class='rubyid_return return kw'>return</span> <span class='rubyid_@properties ivar id'>@properties</span><span class='lbrack token'>[</span><span class='symbol val'>:name</span><span class='rbrack token'>]</span>
+<span class='rubyid_end end kw'>end</span>
+</pre>
+    </td>
+  </tr>
+</table>
+</div>
+    
+      <div class="method_details ">
+  <h3 class="signature " id="name=-instance_method">
+  
+    - (<tt>Object</tt>) <strong>name=</strong>(name) 
+  
+
+  
+
+  
+</h3><div class="docstring">
+  <div class="discussion">
+    
+<p>Sets the name of the resource.</p>
+
+
+  </div>
+</div>
+<div class="tags">
+  
+
+</div><table class="source_code">
+  <tr>
+    <td>
+      <pre class="lines">
+
+
+58
+59
+60
+61</pre>
+    </td>
+    <td>
+      <pre class="code"><span class="info file"># File 'lib/resourceset.rb', line 58</span>
+
+<span class='rubyid_def def kw'>def</span> <span class='rubyid_name= identifier id'>name=</span><span class='lparen token'>(</span><span class='rubyid_name identifier id'>name</span><span class='rparen token'>)</span>
+        <span class='rubyid_@properties ivar id'>@properties</span><span class='lbrack token'>[</span><span class='symbol val'>:name</span><span class='rbrack token'>]</span> <span class='assign token'>=</span> <span class='rubyid_name identifier id'>name</span>
+        <span class='rubyid_return return kw'>return</span> <span class='rubyid_self self kw'>self</span>
+<span class='rubyid_end end kw'>end</span>
+</pre>
+    </td>
+  </tr>
+</table>
+</div>
+    
+      <div class="method_details ">
+  <h3 class="signature " id="to_s-instance_method">
+  
+    - (<tt>Object</tt>) <strong>to_s</strong> 
+  
+
+  
+
+  
+</h3><div class="docstring">
+  <div class="discussion">
+    
+<p>Returns the name of the resource.</p>
+
+
+  </div>
+</div>
+<div class="tags">
+  
+
+</div><table class="source_code">
+  <tr>
+    <td>
+      <pre class="lines">
+
+
+64
+65
+66</pre>
+    </td>
+    <td>
+      <pre class="code"><span class="info file"># File 'lib/resourceset.rb', line 64</span>
+
+<span class='rubyid_def def kw'>def</span> <span class='rubyid_to_s identifier id'>to_s</span>
+        <span class='rubyid_return return kw'>return</span> <span class='rubyid_@properties ivar id'>@properties</span><span class='lbrack token'>[</span><span class='symbol val'>:name</span><span class='rbrack token'>]</span>
+<span class='rubyid_end end kw'>end</span>
+</pre>
+    </td>
+  </tr>
+</table>
+</div>
+    
+  </div>
+
+</div>
+
+    <div id="footer">
+  Generated on Mon Nov 19 13:00:41 2012 by
+  <a href="http://yardoc.org" title="Yay! A Ruby Documentation Tool" target="_parent">yard</a>
+  0.8.2.1 (ruby-1.8.7).
+</div>
+
+  </body>
+</html>

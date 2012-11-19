@@ -1,0 +1,1791 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>
+  Top Level Namespace
+  
+    &mdash; Documentation by YARD 0.8.2.1
+  
+</title>
+
+  <link rel="stylesheet" href="css/style.css" type="text/css" media="screen" charset="utf-8" />
+
+  <link rel="stylesheet" href="css/common.css" type="text/css" media="screen" charset="utf-8" />
+
+<script type="text/javascript" charset="utf-8">
+  hasFrames = window.top.frames.main ? true : false;
+  relpath = '';
+  framesUrl = "frames.html#!" + escape(window.location.href);
+</script>
+
+
+  <script type="text/javascript" charset="utf-8" src="js/jquery.js"></script>
+
+  <script type="text/javascript" charset="utf-8" src="js/app.js"></script>
+
+
+  </head>
+  <body>
+    <div id="header">
+      <div id="menu">
+  
+    <a href="_index.html">Index</a> &raquo;
+    
+    
+    <span class="title">Top Level Namespace</span>
+  
+
+  <div class="noframes"><span class="title">(</span><a href="." target="_top">no frames</a><span class="title">)</span></div>
+</div>
+
+      <div id="search">
+  
+    <a class="full_list_link" id="class_list_link"
+        href="class_list.html">
+      Class List
+    </a>
+  
+    <a class="full_list_link" id="method_list_link"
+        href="method_list.html">
+      Method List
+    </a>
+  
+    <a class="full_list_link" id="file_list_link"
+        href="file_list.html">
+      File List
+    </a>
+  
+    <a class="full_list_link" id="tag_list_link"
+        href="tag_list.html">
+      Tag List
+    </a>
+  
+</div>
+      <div class="clear"></div>
+    </div>
+
+    <iframe id="search_frame"></iframe>
+
+    <div id="content"><h1>Top Level Namespace
+  
+  
+  
+</h1>
+
+<dl class="box">
+  
+  
+    
+  
+    
+  
+  
+  
+</dl>
+<div class="clear"></div>
+
+<h2>Defined Under Namespace</h2>
+<p class="children">
+  
+    
+      <strong class="modules">Modules:</strong> <span class='object_link'><a href="Expo.html" title="Expo (module)">Expo</a></span>
+    
+  
+    
+      <strong class="classes">Classes:</strong> <span class='object_link'><a href="ExpoEngine.html" title="ExpoEngine (class)">ExpoEngine</a></span>, <span class='object_link'><a href="G5kreserv.html" title="G5kreserv (class)">G5kreserv</a></span>, <span class='object_link'><a href="Parallel.html" title="Parallel (class)">Parallel</a></span>, <span class='object_link'><a href="TaktukWrapper.html" title="TaktukWrapper (class)">TaktukWrapper</a></span>
+    
+  
+</p>
+
+
+
+
+
+
+
+  
+    <h2>
+      Instance Method Summary
+      <small>(<a href="#" class="summary_toggle">collapse</a>)</small>
+    </h2>
+
+    <ul class="summary">
+      
+        <li class="public ">
+  <span class="summary_signature">
+    
+      <a href="#api_connect-instance_method" title="#api_connect (instance method)">- (Object) <strong>api_connect</strong> </a>
+    
+
+    
+  </span>
+  
+  
+  
+  
+  
+  
+  
+
+  
+    <span class="summary_desc"><div class='inline'></div></span>
+  
+</li>
+
+      
+        <li class="public ">
+  <span class="summary_signature">
+    
+      <a href="#cleanup-instance_method" title="#cleanup (instance method)">- (Object) <strong>cleanup</strong>(job = nil, deployment = nil) </a>
+    
+
+    
+  </span>
+  
+  
+  
+  
+  
+  
+  
+
+  
+    <span class="summary_desc"><div class='inline'></div></span>
+  
+</li>
+
+      
+        <li class="public ">
+  <span class="summary_signature">
+    
+      <a href="#convert_to_resource-instance_method" title="#convert_to_resource (instance method)">- (Object) <strong>convert_to_resource</strong>(job, site) </a>
+    
+
+    
+  </span>
+  
+  
+  
+  
+  
+  
+  
+
+  
+    <span class="summary_desc"><div class='inline'>
+<p>Creating ‘resources’ from the assigned nodes to put them after into
+$all ResourceSet.</p>
+</div></span>
+  
+</li>
+
+      
+        <li class="public ">
+  <span class="summary_signature">
+    
+      <a href="#deployment_ok%3F-instance_method" title="#deployment_ok? (instance method)">- (Boolean) <strong>deployment_ok?</strong>(deployment, env = {}) </a>
+    
+
+    
+  </span>
+  
+  
+  
+  
+  
+  
+  
+
+  
+    <span class="summary_desc"><div class='inline'>
+<p>Returns true if the deployment is not in an error state AND the number of
+correctly deployed nodes is greater or equal than
+<code>env[:deployment_min_threshold]</code> variable.</p>
+</div></span>
+  
+</li>
+
+      
+        <li class="public ">
+  <span class="summary_signature">
+    
+      <a href="#extract_resources_new-instance_method" title="#extract_resources_new (instance method)">- (Object) <strong>extract_resources_new</strong>(result) </a>
+    
+
+    
+  </span>
+  
+  
+  
+  
+  
+  
+  
+
+  
+    <span class="summary_desc"><div class='inline'>
+<p>put reserved resources into expo’s $all ResourceSet.</p>
+</div></span>
+  
+</li>
+
+      
+        <li class="public ">
+  <span class="summary_signature">
+    
+      <a href="#g5k_deploy-instance_method" title="#g5k_deploy (instance method)">- (Object) <strong>g5k_deploy</strong>(env) </a>
+    
+
+    
+  </span>
+  
+  
+  
+  
+  
+  
+  
+
+  
+    <span class="summary_desc"><div class='inline'></div></span>
+  
+</li>
+
+      
+        <li class="public ">
+  <span class="summary_signature">
+    
+      <a href="#get_resources-instance_method" title="#get_resources (instance method)">- (Object) <strong>get_resources</strong> </a>
+    
+
+    
+  </span>
+  
+  
+  
+  
+  
+  
+  
+
+  
+    <span class="summary_desc"><div class='inline'></div></span>
+  
+</li>
+
+      
+        <li class="public ">
+  <span class="summary_signature">
+    
+      <a href="#how_many%3F-instance_method" title="#how_many? (instance method)">- (Boolean) <strong>how_many?</strong>(options = {}) </a>
+    
+
+    
+  </span>
+  
+  
+  
+  
+  
+  
+  
+
+  
+    <span class="summary_desc"><div class='inline'>
+<p>Returns the number of nodes that correspond to the specified state
+criteria, for each site requested.</p>
+</div></span>
+  
+</li>
+
+      
+        <li class="public ">
+  <span class="summary_signature">
+    
+      <a href="#key_for_deployment-instance_method" title="#key_for_deployment (instance method)">- (Object) <strong>key_for_deployment</strong>(env) </a>
+    
+
+    
+  </span>
+  
+  
+  
+  
+  
+  
+  
+
+  
+    <span class="summary_desc"><div class='inline'>
+<p>Returns a valid key for the deployment If the public_key points to a file,
+read it If the public_key is a URI, fetch it.</p>
+</div></span>
+  
+</li>
+
+      
+        <li class="public ">
+  <span class="summary_signature">
+    
+      <a href="#keychain-instance_method" title="#keychain (instance method)">- (Array&lt;String,String&gt;, String) <strong>keychain</strong>(key_type = nil) </a>
+    
+
+    
+  </span>
+  
+  
+  
+  
+  
+  
+  
+
+  
+    <span class="summary_desc"><div class='inline'>
+<p>Finds the first SSH key that has both public and private parts in the
+<code>~/.ssh</code> directory.</p>
+</div></span>
+  
+</li>
+
+      
+        <li class="public ">
+  <span class="summary_signature">
+    
+      <a href="#oar_walltime-instance_method" title="#oar_walltime (instance method)">- (Object) <strong>oar_walltime</strong>(env) </a>
+    
+
+    
+  </span>
+  
+  
+  
+  
+  
+  
+  
+
+  
+    <span class="summary_desc"><div class='inline'>
+<p>convert the walltime in seconds into oar-style walltime.</p>
+</div></span>
+  
+</li>
+
+      
+        <li class="public ">
+  <span class="summary_signature">
+    
+      <a href="#parallel-instance_method" title="#parallel (instance method)">- (Object) <strong>parallel</strong>(options = {}) {|p| ... }</a>
+    
+
+    
+  </span>
+  
+  
+  
+  
+  
+  
+  
+
+  
+    <span class="summary_desc"><div class='inline'>
+<p>Primite that returns a new Parallel object.</p>
+</div></span>
+  
+</li>
+
+      
+        <li class="public ">
+  <span class="summary_signature">
+    
+      <a href="#synchronize-instance_method" title="#synchronize (instance method)">- (Object) <strong>synchronize</strong>(&amp;block) </a>
+    
+
+    
+  </span>
+  
+  
+  
+  
+  
+  
+  
+
+  
+    <span class="summary_desc"><div class='inline'>
+<p>Synchronization method.</p>
+</div></span>
+  
+</li>
+
+      
+        <li class="public ">
+  <span class="summary_signature">
+    
+      <a href="#valid_deployment_key%3F-instance_method" title="#valid_deployment_key? (instance method)">- (Boolean) <strong>valid_deployment_key?</strong>(k) </a>
+    
+
+    
+  </span>
+  
+  
+  
+  
+  
+  
+  
+
+  
+    <span class="summary_desc"><div class='inline'>
+<p>Used to filter out keys from environment hash when submitting a deployment.</p>
+</div></span>
+  
+</li>
+
+      
+        <li class="public ">
+  <span class="summary_signature">
+    
+      <a href="#valid_job_key%3F-instance_method" title="#valid_job_key? (instance method)">- (Boolean) <strong>valid_job_key?</strong>(k) </a>
+    
+
+    
+  </span>
+  
+  
+  
+  
+  
+  
+  
+
+  
+    <span class="summary_desc"><div class='inline'>
+<p>Used to filter out keys from environment hash when submitting a job.</p>
+</div></span>
+  
+</li>
+
+      
+    </ul>
+  
+
+
+
+  <div id="instance_method_details" class="method_details_list">
+    <h2>Instance Method Details</h2>
+
+    
+      <div class="method_details first">
+  <h3 class="signature first" id="api_connect-instance_method">
+  
+    - (<tt>Object</tt>) <strong>api_connect</strong> 
+  
+
+  
+
+  
+</h3><table class="source_code">
+  <tr>
+    <td>
+      <pre class="lines">
+
+
+13
+14
+15
+16
+17
+18</pre>
+    </td>
+    <td>
+      <pre class="code"><span class="info file"># File 'lib/g5k_api.rb', line 13</span>
+
+<span class='rubyid_def def kw'>def</span> <span class='rubyid_api_connect identifier id'>api_connect</span>
+<span class='rubyid_@connection ivar id'>@connection</span> <span class='assign token'>=</span> <span class='rubyid_Restfully constant id'>Restfully</span><span class='colon2 op'>::</span><span class='rubyid_Session constant id'>Session</span><span class='dot token'>.</span><span class='rubyid_new identifier id'>new</span><span class='lparen token'>(</span>
+      <span class='symbol val'>:configuration_file=</span><span class='gt op'>&gt;</span> <span class='rubyid_@options ivar id'>@options</span><span class='dot token'>.</span><span class='rubyid_delete identifier id'>delete</span><span class='lparen token'>(</span><span class='symbol val'>:restfully_config</span><span class='rparen token'>)</span><span class='comma token'>,</span>
+      <span class='symbol val'>:logger</span> <span class='assign token'>=</span><span class='gt op'>&gt;</span> <span class='rubyid_@options ivar id'>@options</span><span class='lbrack token'>[</span><span class='symbol val'>:verbose</span><span class='rbrack token'>]</span> <span class='question op'>?</span> <span class='rubyid_@options ivar id'>@options</span><span class='lbrack token'>[</span><span class='symbol val'>:logger</span><span class='rbrack token'>]</span> <span class='colon op'>:</span> <span class='rubyid_nil nil kw'>nil</span>
+    <span class='rparen token'>)</span>
+<span class='rubyid_end end kw'>end</span>
+</pre>
+    </td>
+  </tr>
+</table>
+</div>
+    
+      <div class="method_details ">
+  <h3 class="signature " id="cleanup-instance_method">
+  
+    - (<tt>Object</tt>) <strong>cleanup</strong>(job = nil, deployment = nil) 
+  
+
+  
+
+  
+</h3><table class="source_code">
+  <tr>
+    <td>
+      <pre class="lines">
+
+
+563
+564
+565
+566
+567
+568
+569
+570
+571
+572
+573
+574
+575
+576
+577
+578
+579
+580
+581
+582</pre>
+    </td>
+    <td>
+      <pre class="code"><span class="info file"># File 'lib/g5k_api_old.rb', line 563</span>
+
+<span class='rubyid_def def kw'>def</span> <span class='rubyid_cleanup identifier id'>cleanup</span><span class='lparen token'>(</span> <span class='rubyid_job identifier id'>job</span> <span class='assign token'>=</span> <span class='rubyid_nil nil kw'>nil</span><span class='comma token'>,</span> <span class='rubyid_deployment identifier id'>deployment</span> <span class='assign token'>=</span> <span class='rubyid_nil nil kw'>nil</span><span class='rparen token'>)</span>
+  <span class='rubyid_synchronize identifier id'>synchronize</span> <span class='lbrace token'>{</span>
+    <span class='rubyid_logger identifier id'>logger</span> <span class='assign token'>=</span> <span class='rubyid_@logger ivar id'>@logger</span>
+
+    <span class='rubyid_if if kw'>if</span> <span class='rubyid_job identifier id'>job</span><span class='dot token'>.</span><span class='rubyid_nil? fid id'>nil?</span> <span class='andop op'>&amp;&amp;</span> <span class='rubyid_deployment identifier id'>deployment</span><span class='dot token'>.</span><span class='rubyid_nil? fid id'>nil?</span>
+      <span class='rubyid_logger identifier id'>logger</span><span class='dot token'>.</span><span class='rubyid_info identifier id'>info</span> <span class='string val'>&quot;Cleaning up all jobs and deployments...&quot;</span>
+      <span class='rubyid_@deployments ivar id'>@deployments</span><span class='dot token'>.</span><span class='rubyid_each identifier id'>each</span><span class='lbrace token'>{</span> <span class='bitor op'>|</span><span class='rubyid_d identifier id'>d</span><span class='bitor op'>|</span> <span class='rubyid_d identifier id'>d</span><span class='dot token'>.</span><span class='rubyid_delete identifier id'>delete</span> <span class='rbrace token'>}</span><span class='dot token'>.</span><span class='rubyid_clear identifier id'>clear</span>
+      <span class='rubyid_@jobs ivar id'>@jobs</span><span class='dot token'>.</span><span class='rubyid_each identifier id'>each</span><span class='lbrace token'>{</span> <span class='bitor op'>|</span><span class='rubyid_j identifier id'>j</span><span class='bitor op'>|</span> <span class='rubyid_j identifier id'>j</span><span class='dot token'>.</span><span class='rubyid_delete identifier id'>delete</span> <span class='rbrace token'>}</span><span class='dot token'>.</span><span class='rubyid_clear identifier id'>clear</span>
+    <span class='rubyid_else else kw'>else</span>
+      <span class='rubyid_unless unless kw'>unless</span> <span class='rubyid_deployment identifier id'>deployment</span><span class='dot token'>.</span><span class='rubyid_nil? fid id'>nil?</span>
+        <span class='rubyid_logger identifier id'>logger</span><span class='dot token'>.</span><span class='rubyid_info identifier id'>info</span> <span class='dstring node'>&quot;Cleaning up deployment##{deployment['uid']}...&quot;</span>
+        <span class='rubyid_@deployments ivar id'>@deployments</span><span class='dot token'>.</span><span class='rubyid_delete identifier id'>delete</span><span class='lparen token'>(</span><span class='rubyid_deployment identifier id'>deployment</span><span class='rparen token'>)</span> <span class='andop op'>&amp;&amp;</span> <span class='rubyid_deployment identifier id'>deployment</span><span class='dot token'>.</span><span class='rubyid_delete identifier id'>delete</span>
+      <span class='rubyid_end end kw'>end</span>
+      <span class='rubyid_unless unless kw'>unless</span> <span class='rubyid_job identifier id'>job</span><span class='dot token'>.</span><span class='rubyid_nil? fid id'>nil?</span>
+        <span class='rubyid_logger identifier id'>logger</span><span class='dot token'>.</span><span class='rubyid_info identifier id'>info</span> <span class='dstring node'>&quot;Cleaning up job##{job['uid']}...&quot;</span>
+        <span class='rubyid_@jobs ivar id'>@jobs</span><span class='dot token'>.</span><span class='rubyid_delete identifier id'>delete</span><span class='lparen token'>(</span><span class='rubyid_job identifier id'>job</span><span class='rparen token'>)</span> <span class='andop op'>&amp;&amp;</span> <span class='rubyid_job identifier id'>job</span><span class='dot token'>.</span><span class='rubyid_delete identifier id'>delete</span>
+      <span class='rubyid_end end kw'>end</span>
+    <span class='rubyid_end end kw'>end</span>
+  <span class='rbrace token'>}</span>
+<span class='rubyid_end end kw'>end</span>
+</pre>
+    </td>
+  </tr>
+</table>
+</div>
+    
+      <div class="method_details ">
+  <h3 class="signature " id="convert_to_resource-instance_method">
+  
+    - (<tt>Object</tt>) <strong>convert_to_resource</strong>(job, site) 
+  
+
+  
+
+  
+</h3><div class="docstring">
+  <div class="discussion">
+    
+<p>Creating ‘resources’ from the assigned nodes to put them after into
+$all ResourceSet</p>
+
+
+  </div>
+</div>
+<div class="tags">
+  
+
+</div><table class="source_code">
+  <tr>
+    <td>
+      <pre class="lines">
+
+
+361
+362
+363
+364
+365
+366
+367
+368
+369
+370
+371
+372
+373
+374
+375
+376
+377
+378
+379
+380
+381
+382
+383
+384
+385
+386
+387
+388
+389
+390
+391
+392
+393
+394
+395
+396
+397
+398
+399
+400
+401
+402
+403
+404
+405
+406
+407
+408
+409
+410
+411
+412
+413
+414
+415
+416
+417
+418
+419
+420
+421
+422
+423
+424
+425</pre>
+    </td>
+    <td>
+      <pre class="code"><span class="info file"># File 'lib/g5k_api_old.rb', line 361</span>
+
+<span class='rubyid_def def kw'>def</span> <span class='rubyid_convert_to_resource identifier id'>convert_to_resource</span><span class='lparen token'>(</span><span class='rubyid_job identifier id'>job</span><span class='comma token'>,</span> <span class='rubyid_site identifier id'>site</span><span class='rparen token'>)</span>
+
+  <span class='rubyid_job_name identifier id'>job_name</span> <span class='assign token'>=</span> <span class='rubyid_job identifier id'>job</span><span class='lbrack token'>[</span><span class='string val'>'name'</span><span class='rbrack token'>]</span>
+  <span class='rubyid_job_nodes identifier id'>job_nodes</span> <span class='assign token'>=</span> <span class='rubyid_job identifier id'>job</span><span class='lbrack token'>[</span><span class='string val'>'assigned_nodes'</span><span class='rbrack token'>]</span>
+  <span class='comment val'># job_id will be the same for all the clusters of one site</span>
+  <span class='rubyid_job_id identifier id'>job_id</span> <span class='assign token'>=</span> <span class='rubyid_job identifier id'>job</span><span class='lbrack token'>[</span><span class='string val'>'uid'</span><span class='rbrack token'>]</span>
+
+  <span class='rubyid_clusters identifier id'>clusters</span> <span class='assign token'>=</span> <span class='lbrack token'>[</span><span class='rbrack token'>]</span>
+
+  <span class='rubyid_regexp identifier id'>regexp</span> <span class='assign token'>=</span> <span class='regexp val'>/(\w*)-\w*/</span>
+  <span class='rubyid_job_nodes identifier id'>job_nodes</span><span class='dot token'>.</span><span class='rubyid_each identifier id'>each</span> <span class='lbrace token'>{</span> <span class='bitor op'>|</span><span class='rubyid_node identifier id'>node</span><span class='bitor op'>|</span>
+    <span class='rubyid_cl identifier id'>cl</span> <span class='assign token'>=</span> <span class='rubyid_regexp identifier id'>regexp</span><span class='dot token'>.</span><span class='rubyid_match identifier id'>match</span><span class='lparen token'>(</span><span class='rubyid_node identifier id'>node</span><span class='rparen token'>)</span>
+    <span class='rubyid_clusters identifier id'>clusters</span><span class='dot token'>.</span><span class='rubyid_push identifier id'>push</span><span class='lparen token'>(</span><span class='rubyid_cl identifier id'>cl</span><span class='lbrack token'>[</span><span class='integer val'>1</span><span class='rbrack token'>]</span><span class='rparen token'>)</span>
+  <span class='rbrace token'>}</span>
+
+  <span class='rubyid_clusters identifier id'>clusters</span><span class='dot token'>.</span><span class='rubyid_uniq! fid id'>uniq!</span>
+
+  <span class='comment val'># will contain hash like</span>
+  <span class='comment val'># {</span>
+  <span class='comment val'>#   &quot;paradent&quot; =&gt; {</span>
+  <span class='comment val'>#     345212 =&gt; {</span>
+  <span class='comment val'>#       &quot;name&quot; =&gt; &quot;job_name&quot;,</span>
+  <span class='comment val'>#       &quot;nodes&quot; =&gt; [ &quot;paradent-1&quot;, &quot;paradent-12&quot;</span>
+  <span class='comment val'>#     }</span>
+  <span class='comment val'>#   }</span>
+  <span class='comment val'>#   &quot;parapluie&quot; =&gt; {</span>
+  <span class='comment val'>#     345212 =&gt; ...</span>
+  <span class='rubyid_clusters_hash identifier id'>clusters_hash</span> <span class='assign token'>=</span> <span class='lbrace token'>{</span><span class='rbrace token'>}</span> 
+
+  <span class='rubyid_clusters identifier id'>clusters</span><span class='dot token'>.</span><span class='rubyid_each identifier id'>each</span> <span class='lbrace token'>{</span> <span class='bitor op'>|</span><span class='rubyid_cluster identifier id'>cluster</span><span class='bitor op'>|</span>
+    <span class='comment val'>#first sub-hash </span>
+    <span class='rubyid_uid_hash identifier id'>uid_hash</span> <span class='assign token'>=</span> <span class='lbrace token'>{</span><span class='rbrace token'>}</span>
+    <span class='comment val'>#second sub-hash</span>
+    <span class='rubyid_nodes_hash identifier id'>nodes_hash</span> <span class='assign token'>=</span> <span class='lbrace token'>{</span><span class='rbrace token'>}</span>
+
+    <span class='rubyid_nodes_hash identifier id'>nodes_hash</span><span class='lbrack token'>[</span><span class='string val'>&quot;name&quot;</span><span class='rbrack token'>]</span> <span class='assign token'>=</span> <span class='rubyid_job_name identifier id'>job_name</span> 
+
+    <span class='rubyid_job_nodes identifier id'>job_nodes</span><span class='dot token'>.</span><span class='rubyid_each identifier id'>each</span> <span class='lbrace token'>{</span> <span class='bitor op'>|</span><span class='rubyid_node identifier id'>node</span><span class='bitor op'>|</span>
+
+      <span class='comment val'>#find out the cluster to which this node belongs</span>
+      <span class='rubyid_if if kw'>if</span> <span class='rubyid_node identifier id'>node</span> <span class='match op'>=~</span> <span class='dregexp node'>/#{cluster}\w*/</span>
+
+        <span class='comment val'>#if there are already nodes in this cluster - add in array</span>
+        <span class='rubyid_if if kw'>if</span> <span class='rubyid_nodes_hash identifier id'>nodes_hash</span><span class='dot token'>.</span><span class='rubyid_has_key? fid id'>has_key?</span><span class='lparen token'>(</span><span class='string val'>&quot;nodes&quot;</span><span class='rparen token'>)</span>
+          <span class='rubyid_nodes_hash identifier id'>nodes_hash</span><span class='lbrack token'>[</span><span class='string val'>&quot;nodes&quot;</span><span class='rbrack token'>]</span><span class='dot token'>.</span><span class='rubyid_push identifier id'>push</span><span class='lparen token'>(</span><span class='rubyid_node identifier id'>node</span><span class='rparen token'>)</span>
+
+        <span class='comment val'>#if this node is the first in this cluster - create an array</span>
+        <span class='comment val'>#of nodes with this node and add the array to hash</span>
+        <span class='rubyid_else else kw'>else</span>
+          <span class='rubyid_nodes_array identifier id'>nodes_array</span> <span class='assign token'>=</span> <span class='lbrack token'>[</span><span class='rbrack token'>]</span>
+          <span class='rubyid_nodes_array identifier id'>nodes_array</span><span class='dot token'>.</span><span class='rubyid_push identifier id'>push</span><span class='lparen token'>(</span><span class='rubyid_node identifier id'>node</span><span class='rparen token'>)</span>
+          <span class='rubyid_nodes_hash identifier id'>nodes_hash</span><span class='lbrack token'>[</span><span class='string val'>&quot;nodes&quot;</span><span class='rbrack token'>]</span> <span class='assign token'>=</span> <span class='rubyid_nodes_array identifier id'>nodes_array</span>
+        <span class='rubyid_end end kw'>end</span> 
+      <span class='rubyid_end end kw'>end</span> 
+    <span class='rbrace token'>}</span>
+
+    <span class='rubyid_uid_hash identifier id'>uid_hash</span><span class='lbrack token'>[</span><span class='rubyid_job_id identifier id'>job_id</span><span class='rbrack token'>]</span> <span class='assign token'>=</span> <span class='rubyid_nodes_hash identifier id'>nodes_hash</span>
+    <span class='rubyid_if if kw'>if</span> <span class='notop op'>!</span><span class='lparen token'>(</span><span class='rubyid_clusters_hash identifier id'>clusters_hash</span><span class='dot token'>.</span><span class='rubyid_has_key? fid id'>has_key?</span><span class='lparen token'>(</span><span class='rubyid_cluster identifier id'>cluster</span><span class='rparen token'>)</span><span class='rparen token'>)</span>
+      <span class='rubyid_clusters_hash identifier id'>clusters_hash</span><span class='lbrack token'>[</span><span class='rubyid_cluster identifier id'>cluster</span><span class='rbrack token'>]</span> <span class='assign token'>=</span> <span class='rubyid_uid_hash identifier id'>uid_hash</span>
+    <span class='rubyid_end end kw'>end</span> 
+
+  <span class='rbrace token'>}</span>
+   
+  <span class='rubyid_clusters_hash identifier id'>clusters_hash</span>
+<span class='rubyid_end end kw'>end</span>
+</pre>
+    </td>
+  </tr>
+</table>
+</div>
+    
+      <div class="method_details ">
+  <h3 class="signature " id="deployment_ok?-instance_method">
+  
+    - (<tt>Boolean</tt>) <strong>deployment_ok?</strong>(deployment, env = {}) 
+  
+
+  
+
+  
+</h3><div class="docstring">
+  <div class="discussion">
+    
+<p>Returns true if the deployment is not in an error state AND the number of
+correctly deployed nodes is greater or equal than
+<code>env[:deployment_min_threshold]</code> variable</p>
+
+
+  </div>
+</div>
+<div class="tags">
+  
+<p class="tag_title">Returns:</p>
+<ul class="return">
+  
+    <li>
+      
+      
+        <span class='type'>(<tt>Boolean</tt>)</span>
+      
+      
+      
+    </li>
+  
+</ul>
+
+</div><table class="source_code">
+  <tr>
+    <td>
+      <pre class="lines">
+
+
+456
+457
+458
+459
+460
+461
+462
+463</pre>
+    </td>
+    <td>
+      <pre class="code"><span class="info file"># File 'lib/g5k_api_old.rb', line 456</span>
+
+<span class='rubyid_def def kw'>def</span> <span class='rubyid_deployment_ok? fid id'>deployment_ok?</span><span class='lparen token'>(</span><span class='rubyid_deployment identifier id'>deployment</span><span class='comma token'>,</span> <span class='rubyid_env identifier id'>env</span> <span class='assign token'>=</span> <span class='lbrace token'>{</span><span class='rbrace token'>}</span><span class='rparen token'>)</span>
+  <span class='rubyid_return return kw'>return</span> <span class='rubyid_false false kw'>false</span> <span class='rubyid_if if_mod kw'>if</span> <span class='rubyid_deployment identifier id'>deployment</span><span class='dot token'>.</span><span class='rubyid_nil? fid id'>nil?</span>
+  <span class='rubyid_return return kw'>return</span> <span class='rubyid_false false kw'>false</span> <span class='rubyid_if if_mod kw'>if</span> <span class='lbrack token'>[</span><span class='string val'>&quot;canceled&quot;</span><span class='comma token'>,</span> <span class='string val'>&quot;error&quot;</span><span class='rbrack token'>]</span><span class='dot token'>.</span><span class='rubyid_include? fid id'>include?</span> <span class='rubyid_deployment identifier id'>deployment</span><span class='lbrack token'>[</span><span class='string val'>'status'</span><span class='rbrack token'>]</span>
+  <span class='rubyid_nodes_ok identifier id'>nodes_ok</span> <span class='assign token'>=</span> <span class='rubyid_deployment identifier id'>deployment</span><span class='lbrack token'>[</span><span class='string val'>'result'</span><span class='rbrack token'>]</span><span class='dot token'>.</span><span class='rubyid_values identifier id'>values</span><span class='dot token'>.</span><span class='rubyid_count identifier id'>count</span><span class='lbrace token'>{</span><span class='bitor op'>|</span><span class='rubyid_v identifier id'>v</span><span class='bitor op'>|</span>
+    <span class='rubyid_v identifier id'>v</span><span class='lbrack token'>[</span><span class='string val'>'state'</span><span class='rbrack token'>]</span> <span class='eq op'>==</span> <span class='string val'>'OK'</span>
+  <span class='rbrace token'>}</span> <span class='rubyid_rescue rescue kw'>rescue</span> <span class='integer val'>0</span>
+  <span class='rubyid_nodes_ok identifier id'>nodes_ok</span><span class='dot token'>.</span><span class='rubyid_to_f identifier id'>to_f</span><span class='div op'>/</span><span class='rubyid_deployment identifier id'>deployment</span><span class='lbrack token'>[</span><span class='string val'>'nodes'</span><span class='rbrack token'>]</span><span class='dot token'>.</span><span class='rubyid_length identifier id'>length</span> <span class='geq op'>&gt;=</span> <span class='rubyid_env identifier id'>env</span><span class='lbrack token'>[</span><span class='symbol val'>:deployment_min_threshold</span><span class='rbrack token'>]</span>
+<span class='rubyid_end end kw'>end</span>
+</pre>
+    </td>
+  </tr>
+</table>
+</div>
+    
+      <div class="method_details ">
+  <h3 class="signature " id="extract_resources_new-instance_method">
+  
+    - (<tt>Object</tt>) <strong>extract_resources_new</strong>(result) 
+  
+
+  
+
+  
+</h3><div class="docstring">
+  <div class="discussion">
+    
+<p>put reserved resources into expo’s $all ResourceSet</p>
+
+
+  </div>
+</div>
+<div class="tags">
+  
+
+</div><table class="source_code">
+  <tr>
+    <td>
+      <pre class="lines">
+
+
+589
+590
+591
+592
+593
+594
+595
+596
+597
+598
+599
+600
+601
+602
+603
+604
+605
+606
+607
+608
+609
+610
+611
+612
+613
+614
+615
+616
+617
+618
+619
+620
+621
+622
+623
+624
+625</pre>
+    </td>
+    <td>
+      <pre class="code"><span class="info file"># File 'lib/g5k_api_old.rb', line 589</span>
+
+<span class='rubyid_def def kw'>def</span> <span class='rubyid_extract_resources_new identifier id'>extract_resources_new</span><span class='lparen token'>(</span><span class='rubyid_result identifier id'>result</span><span class='rparen token'>)</span>
+    <span class='rubyid_result identifier id'>result</span><span class='dot token'>.</span><span class='rubyid_each identifier id'>each</span> <span class='lbrace token'>{</span> <span class='bitor op'>|</span><span class='rubyid_key identifier id'>key</span><span class='comma token'>,</span><span class='rubyid_value identifier id'>value</span><span class='bitor op'>|</span>
+      <span class='comment val'># { &quot;cluster&quot; =&gt; {...} }</span>
+      <span class='rubyid_cluster identifier id'>cluster</span> <span class='assign token'>=</span> <span class='rubyid_key identifier id'>key</span>
+      <span class='rubyid_value identifier id'>value</span><span class='dot token'>.</span><span class='rubyid_each identifier id'>each</span> <span class='lbrace token'>{</span> <span class='bitor op'>|</span><span class='rubyid_key identifier id'>key</span><span class='comma token'>,</span><span class='rubyid_value identifier id'>value</span><span class='bitor op'>|</span>
+        <span class='comment val'># { &quot;job_id&quot; =&gt; {...} }</span>
+        <span class='rubyid_jobid identifier id'>jobid</span> <span class='assign token'>=</span> <span class='rubyid_key identifier id'>key</span>
+        <span class='rubyid_resource_set identifier id'>resource_set</span> <span class='assign token'>=</span> <span class='rubyid_ResourceSet constant id'>ResourceSet</span><span class='colon2 op'>::</span><span class='rubyid_new identifier id'>new</span>
+        <span class='rubyid_resource_set identifier id'>resource_set</span><span class='dot token'>.</span><span class='rubyid_properties identifier id'>properties</span><span class='lbrack token'>[</span><span class='symbol val'>:id</span><span class='rbrack token'>]</span> <span class='assign token'>=</span> <span class='rubyid_jobid identifier id'>jobid</span>
+        <span class='rubyid_resource_set identifier id'>resource_set</span><span class='dot token'>.</span><span class='rubyid_properties identifier id'>properties</span><span class='lbrack token'>[</span><span class='symbol val'>:alias</span><span class='rbrack token'>]</span> <span class='assign token'>=</span> <span class='rubyid_cluster identifier id'>cluster</span>
+
+        <span class='rubyid_value identifier id'>value</span><span class='dot token'>.</span><span class='rubyid_each identifier id'>each</span> <span class='lbrace token'>{</span> <span class='bitor op'>|</span><span class='rubyid_key identifier id'>key</span><span class='comma token'>,</span><span class='rubyid_value identifier id'>value</span><span class='bitor op'>|</span>
+          <span class='comment val'># { &quot;name&quot; =&gt; &quot;...&quot;, &quot;gateway&quot; =&gt; &quot;...&quot;, &quot;nodes&quot; =&gt; &quot;...&quot;, </span>
+          <span class='rubyid_case case kw'>case</span> <span class='rubyid_key identifier id'>key</span>
+          <span class='rubyid_when when kw'>when</span> <span class='string val'>&quot;name&quot;</span>
+            <span class='rubyid_resource_set identifier id'>resource_set</span><span class='dot token'>.</span><span class='rubyid_name identifier id'>name</span> <span class='assign token'>=</span> <span class='rubyid_value identifier id'>value</span>
+          <span class='comment val'>#when &quot;gateway&quot;</span>
+          <span class='comment val'>#  resource_set.properties[:gateway] = value</span>
+          <span class='rubyid_when when kw'>when</span> <span class='string val'>&quot;nodes&quot;</span>
+            <span class='rubyid_value identifier id'>value</span><span class='dot token'>.</span><span class='rubyid_each identifier id'>each</span> <span class='lbrace token'>{</span> <span class='bitor op'>|</span><span class='rubyid_node identifier id'>node</span><span class='bitor op'>|</span>
+              <span class='rubyid_resource identifier id'>resource</span> <span class='assign token'>=</span> <span class='rubyid_Resource constant id'>Resource</span><span class='colon2 op'>::</span><span class='rubyid_new identifier id'>new</span><span class='lparen token'>(</span><span class='symbol val'>:node</span><span class='comma token'>,</span> <span class='rubyid_nil nil kw'>nil</span><span class='comma token'>,</span> <span class='rubyid_node identifier id'>node</span><span class='rparen token'>)</span>
+              <span class='comment val'># here we must construct gateway's name in place</span>
+              <span class='rubyid_gw identifier id'>gw</span> <span class='assign token'>=</span> <span class='regexp val'>/\w*\.(\w+)\.\w*/</span><span class='dot token'>.</span><span class='rubyid_match identifier id'>match</span><span class='lparen token'>(</span><span class='rubyid_node identifier id'>node</span><span class='rparen token'>)</span> 
+              <span class='rubyid_gateway identifier id'>gateway</span> <span class='assign token'>=</span> <span class='string val'>&quot;frontend.&quot;</span><span class='plus op'>+</span><span class='rubyid_gw identifier id'>gw</span><span class='lbrack token'>[</span><span class='integer val'>1</span><span class='rbrack token'>]</span><span class='plus op'>+</span><span class='string val'>&quot;.grid5000.fr&quot;</span>
+              <span class='rubyid_resource identifier id'>resource</span><span class='dot token'>.</span><span class='rubyid_properties identifier id'>properties</span><span class='lbrack token'>[</span><span class='symbol val'>:site</span><span class='rbrack token'>]</span> <span class='assign token'>=</span> <span class='rubyid_gw identifier id'>gw</span><span class='lbrack token'>[</span><span class='integer val'>1</span><span class='rbrack token'>]</span>
+              <span class='rubyid_resource_set identifier id'>resource_set</span><span class='dot token'>.</span><span class='rubyid_properties identifier id'>properties</span><span class='lbrack token'>[</span><span class='symbol val'>:site</span><span class='rbrack token'>]</span> <span class='assign token'>=</span> <span class='rubyid_gw identifier id'>gw</span><span class='lbrack token'>[</span><span class='integer val'>1</span><span class='rbrack token'>]</span>
+              <span class='rubyid_resource identifier id'>resource</span><span class='dot token'>.</span><span class='rubyid_properties identifier id'>properties</span><span class='lbrack token'>[</span><span class='symbol val'>:gateway</span><span class='rbrack token'>]</span> <span class='assign token'>=</span> <span class='rubyid_gateway identifier id'>gateway</span>
+              <span class='rubyid_resource_set identifier id'>resource_set</span><span class='dot token'>.</span><span class='rubyid_properties identifier id'>properties</span><span class='lbrack token'>[</span><span class='symbol val'>:gateway</span><span class='rbrack token'>]</span> <span class='assign token'>=</span> <span class='rubyid_gateway identifier id'>gateway</span>
+              <span class='rubyid_resource_set identifier id'>resource_set</span><span class='dot token'>.</span><span class='rubyid_push identifier id'>push</span><span class='lparen token'>(</span><span class='rubyid_resource identifier id'>resource</span><span class='rparen token'>)</span>
+            <span class='rbrace token'>}</span>
+          <span class='rubyid_end end kw'>end</span>
+        <span class='rbrace token'>}</span>
+
+        <span class='rubyid_$all gvar id'>$all</span><span class='dot token'>.</span><span class='rubyid_push identifier id'>push</span><span class='lparen token'>(</span><span class='rubyid_resource_set identifier id'>resource_set</span><span class='rparen token'>)</span>
+      <span class='rbrace token'>}</span>
+    <span class='rbrace token'>}</span>
+<span class='rubyid_end end kw'>end</span>
+</pre>
+    </td>
+  </tr>
+</table>
+</div>
+    
+      <div class="method_details ">
+  <h3 class="signature " id="g5k_deploy-instance_method">
+  
+    - (<tt>Object</tt>) <strong>g5k_deploy</strong>(env) 
+  
+
+  
+
+  
+</h3><table class="source_code">
+  <tr>
+    <td>
+      <pre class="lines">
+
+
+286
+287
+288
+289
+290
+291
+292
+293
+294
+295
+296
+297
+298
+299
+300
+301
+302
+303
+304
+305
+306
+307
+308
+309
+310
+311
+312
+313
+314
+315
+316
+317
+318
+319
+320
+321
+322
+323
+324
+325
+326
+327
+328
+329
+330
+331
+332
+333
+334
+335
+336
+337
+338
+339
+340
+341
+342
+343
+344
+345
+346
+347
+348
+349
+350
+351
+352
+353
+354</pre>
+    </td>
+    <td>
+      <pre class="code"><span class="info file"># File 'lib/g5k_api_old.rb', line 286</span>
+
+<span class='rubyid_def def kw'>def</span> <span class='rubyid_g5k_deploy identifier id'>g5k_deploy</span><span class='lparen token'>(</span><span class='rubyid_env identifier id'>env</span><span class='rparen token'>)</span>
+
+  <span class='rubyid_logger identifier id'>logger</span> <span class='assign token'>=</span> <span class='rubyid_@logger ivar id'>@logger</span>
+
+  <span class='rubyid_env identifier id'>env</span><span class='lbrack token'>[</span><span class='symbol val'>:remaining_attempts</span><span class='rbrack token'>]</span> <span class='opasgn op'>||=</span> <span class='rubyid_env identifier id'>env</span><span class='lbrack token'>[</span><span class='symbol val'>:deployment_max_attempts</span><span class='rbrack token'>]</span>
+  <span class='rubyid_env identifier id'>env</span><span class='lbrack token'>[</span><span class='symbol val'>:nodes</span><span class='rbrack token'>]</span> <span class='assign token'>=</span> <span class='lbrack token'>[</span><span class='rubyid_env identifier id'>env</span><span class='lbrack token'>[</span><span class='symbol val'>:nodes</span><span class='rbrack token'>]</span><span class='rbrack token'>]</span><span class='dot token'>.</span><span class='rubyid_flatten identifier id'>flatten</span><span class='dot token'>.</span><span class='rubyid_sort identifier id'>sort</span>
+  <span class='rubyid_logger identifier id'>logger</span><span class='dot token'>.</span><span class='rubyid_info identifier id'>info</span> <span class='dstring node'>&quot;[#{env[:site]}] Launching deployment [no-deploy=#{env[:no_deploy].inspect}]...&quot;</span>
+
+
+  <span class='rubyid_if if kw'>if</span> <span class='rubyid_env identifier id'>env</span><span class='lbrack token'>[</span><span class='symbol val'>:remaining_attempts</span><span class='rbrack token'>]</span> <span class='gt op'>&gt;</span> <span class='integer val'>0</span>
+    <span class='rubyid_if if kw'>if</span> <span class='rubyid_env identifier id'>env</span><span class='lbrack token'>[</span><span class='symbol val'>:remaining_attempts</span><span class='rbrack token'>]</span> <span class='lt op'>&lt;</span> <span class='rubyid_env identifier id'>env</span><span class='lbrack token'>[</span><span class='symbol val'>:deployment_max_attempts</span><span class='rbrack token'>]</span>
+      <span class='rubyid_logger identifier id'>logger</span><span class='dot token'>.</span><span class='rubyid_info identifier id'>info</span> <span class='string val'>&quot;Retrying deployment...&quot;</span>
+    <span class='rubyid_end end kw'>end</span>
+    <span class='rubyid_env identifier id'>env</span><span class='lbrack token'>[</span><span class='symbol val'>:remaining_attempts</span><span class='rbrack token'>]</span> <span class='opasgn op'>-=</span> <span class='integer val'>1</span>
+    <span class='comment val'># environment deployment (using Restfully gem)</span>
+    <span class='comment val'>#### temporal code to catch the error from the API.</span>
+    <span class='rubyid_begin begin kw'>begin</span>
+      <span class='rubyid_deployment identifier id'>deployment</span> <span class='assign token'>=</span> <span class='rubyid_@connection ivar id'>@connection</span><span class='dot token'>.</span><span class='rubyid_root identifier id'>root</span><span class='dot token'>.</span><span class='rubyid_sites identifier id'>sites</span><span class='lbrack token'>[</span><span class='rubyid_env identifier id'>env</span><span class='lbrack token'>[</span><span class='symbol val'>:site</span><span class='rbrack token'>]</span><span class='dot token'>.</span><span class='rubyid_to_sym identifier id'>to_sym</span><span class='rbrack token'>]</span><span class='dot token'>.</span><span class='rubyid_deployments identifier id'>deployments</span><span class='dot token'>.</span><span class='rubyid_submit identifier id'>submit</span><span class='lparen token'>(</span><span class='lbrace token'>{</span>
+        <span class='symbol val'>:nodes</span> <span class='assign token'>=</span><span class='gt op'>&gt;</span> <span class='rubyid_env identifier id'>env</span><span class='lbrack token'>[</span><span class='symbol val'>:nodes</span><span class='rbrack token'>]</span><span class='comma token'>,</span>
+        <span class='symbol val'>:notifications</span> <span class='assign token'>=</span><span class='gt op'>&gt;</span> <span class='rubyid_env identifier id'>env</span><span class='lbrack token'>[</span><span class='symbol val'>:notifications</span><span class='rbrack token'>]</span><span class='comma token'>,</span>
+        <span class='symbol val'>:environment</span> <span class='assign token'>=</span><span class='gt op'>&gt;</span> <span class='rubyid_env identifier id'>env</span><span class='lbrack token'>[</span><span class='symbol val'>:environment</span><span class='rbrack token'>]</span><span class='comma token'>,</span>
+        <span class='symbol val'>:key</span> <span class='assign token'>=</span><span class='gt op'>&gt;</span> <span class='rubyid_key_for_deployment identifier id'>key_for_deployment</span><span class='lparen token'>(</span><span class='rubyid_env identifier id'>env</span><span class='rparen token'>)</span>
+      <span class='rbrace token'>}</span><span class='dot token'>.</span><span class='rubyid_merge identifier id'>merge</span><span class='lparen token'>(</span><span class='rubyid_env identifier id'>env</span><span class='dot token'>.</span><span class='rubyid_reject identifier id'>reject</span><span class='lbrace token'>{</span> <span class='bitor op'>|</span><span class='rubyid_k identifier id'>k</span><span class='comma token'>,</span><span class='rubyid_v identifier id'>v</span><span class='bitor op'>|</span> <span class='notop op'>!</span><span class='rubyid_valid_deployment_key? fid id'>valid_deployment_key?</span><span class='lparen token'>(</span><span class='rubyid_k identifier id'>k</span><span class='rparen token'>)</span> <span class='rbrace token'>}</span><span class='rparen token'>)</span><span class='rparen token'>)</span>
+  <span class='rubyid_rescue rescue kw'>rescue</span> <span class='rubyid_Restfully constant id'>Restfully</span><span class='colon2 op'>::</span><span class='rubyid_HTTP constant id'>HTTP</span><span class='colon2 op'>::</span><span class='rubyid_ServerError constant id'>ServerError</span> 
+    <span class='rubyid_logger identifier id'>logger</span><span class='dot token'>.</span><span class='rubyid_error identifier id'>error</span> <span class='string val'>&quot;Error with the API, exiting and cleaning&quot;</span>
+    <span class='rubyid_cleanup identifier id'>cleanup</span>
+  <span class='rubyid_rescue rescue kw'>rescue</span> <span class='rubyid_Restfully constant id'>Restfully</span><span class='colon2 op'>::</span><span class='rubyid_HTTP constant id'>HTTP</span><span class='colon2 op'>::</span><span class='rubyid_ClientError constant id'>ClientError</span>
+    
+    <span class='rubyid_logger identifier id'>logger</span><span class='dot token'>.</span><span class='rubyid_error identifier id'>error</span> <span class='string val'>&quot;Error with the API, exiting and cleaning&quot;</span>
+    <span class='rubyid_cleanup identifier id'>cleanup</span>
+    <span class='rubyid_end end kw'>end</span>
+    <span class='rubyid_else else kw'>else</span>
+      <span class='rubyid_logger identifier id'>logger</span><span class='dot token'>.</span><span class='rubyid_info identifier id'>info</span> <span class='dstring node'>&quot;[#{env[:site]}] Hit the maximum number of retries. Halting.&quot;</span>
+      <span class='rubyid_deployment identifier id'>deployment</span> <span class='assign token'>=</span> <span class='rubyid_nil nil kw'>nil</span>
+  <span class='rubyid_end end kw'>end</span>
+
+  <span class='rubyid_if if kw'>if</span> <span class='rubyid_deployment identifier id'>deployment</span><span class='dot token'>.</span><span class='rubyid_nil? fid id'>nil?</span>
+    <span class='rubyid_logger identifier id'>logger</span><span class='dot token'>.</span><span class='rubyid_error identifier id'>error</span> <span class='dstring node'>&quot;[#{env[:site]}] Cannot submit the deployment.&quot;</span>
+    <span class='rubyid_cleanup identifier id'>cleanup</span><span class='lparen token'>(</span><span class='rparen token'>)</span>
+    <span class='rubyid_nil nil kw'>nil</span>
+  <span class='rubyid_else else kw'>else</span>
+    <span class='rubyid_deployment identifier id'>deployment</span><span class='dot token'>.</span><span class='rubyid_reload identifier id'>reload</span>
+    <span class='rubyid_synchronize identifier id'>synchronize</span> <span class='lbrace token'>{</span> <span class='rubyid_@deployments ivar id'>@deployments</span><span class='dot token'>.</span><span class='rubyid_push identifier id'>push</span><span class='lparen token'>(</span><span class='rubyid_deployment identifier id'>deployment</span><span class='rparen token'>)</span> <span class='rbrace token'>}</span>
+
+    <span class='rubyid_logger identifier id'>logger</span><span class='dot token'>.</span><span class='rubyid_info identifier id'>info</span> <span class='dstring node'>&quot;[#{env[:site]}] Got the following deployment: #{deployment.inspect}&quot;</span>
+    <span class='rubyid_logger identifier id'>logger</span><span class='dot token'>.</span><span class='rubyid_info identifier id'>info</span> <span class='dstring node'>&quot;[#{env[:site]}] Waiting for termination of deployment ##{deployment['uid']} in #{deployment.parent['uid']}...&quot;</span>
+    <span class='rubyid_begin begin kw'>begin</span>
+      <span class='rubyid_Timeout constant id'>Timeout</span><span class='dot token'>.</span><span class='rubyid_timeout identifier id'>timeout</span><span class='lparen token'>(</span><span class='rubyid_env identifier id'>env</span><span class='lbrack token'>[</span><span class='symbol val'>:deployment_timeout</span><span class='rbrack token'>]</span><span class='rparen token'>)</span> <span class='rubyid_do do kw'>do</span>
+        <span class='rubyid_while while kw'>while</span> <span class='rubyid_deployment identifier id'>deployment</span><span class='dot token'>.</span><span class='rubyid_reload identifier id'>reload</span><span class='lbrack token'>[</span><span class='string val'>'status'</span><span class='rbrack token'>]</span> <span class='eq op'>==</span> <span class='string val'>'processing'</span>
+          <span class='rubyid_sleep identifier id'>sleep</span> <span class='rubyid_env identifier id'>env</span><span class='lbrack token'>[</span><span class='symbol val'>:polling_frequency</span><span class='rbrack token'>]</span>
+        <span class='rubyid_end end kw'>end</span>
+      <span class='rubyid_end end kw'>end</span>
+  <span class='rubyid_rescue rescue kw'>rescue</span> <span class='rubyid_Timeout constant id'>Timeout</span><span class='colon2 op'>::</span><span class='rubyid_Error constant id'>Error</span> <span class='assign token'>=</span><span class='gt op'>&gt;</span> <span class='rubyid_e identifier id'>e</span>
+    <span class='rubyid_logger identifier id'>logger</span><span class='dot token'>.</span><span class='rubyid_info identifier id'>info</span> <span class='string val'>&quot;Time out was achieved for deploying exiting and cleaning&quot;</span>
+    <span class='rubyid_cleanup identifier id'>cleanup</span>
+  
+    <span class='rubyid_end end kw'>end</span>
+    <span class='rubyid_if if kw'>if</span> <span class='rubyid_deployment_ok? fid id'>deployment_ok?</span><span class='lparen token'>(</span><span class='rubyid_deployment identifier id'>deployment</span><span class='comma token'>,</span> <span class='rubyid_env identifier id'>env</span><span class='rparen token'>)</span>
+      <span class='rubyid_logger identifier id'>logger</span><span class='dot token'>.</span><span class='rubyid_info identifier id'>info</span> <span class='dstring node'>&quot;[#{env[:site]}] Deployment is terminated: #{deployment.inspect}&quot;</span>
+      <span class='rubyid_env identifier id'>env</span><span class='lbrack token'>[</span><span class='symbol val'>:deployment</span><span class='rbrack token'>]</span> <span class='assign token'>=</span> <span class='rubyid_deployment identifier id'>deployment</span>
+      <span class='rubyid_yield yield kw'>yield</span> <span class='rubyid_env identifier id'>env</span> <span class='rubyid_if if_mod kw'>if</span> <span class='rubyid_block_given? fid id'>block_given?</span>
+      <span class='rubyid_env identifier id'>env</span>
+    <span class='rubyid_else else kw'>else</span>
+      <span class='rubyid_synchronize identifier id'>synchronize</span> <span class='lbrace token'>{</span> <span class='rubyid_@deployments ivar id'>@deployments</span><span class='dot token'>.</span><span class='rubyid_delete identifier id'>delete</span><span class='lparen token'>(</span><span class='rubyid_deployment identifier id'>deployment</span><span class='rparen token'>)</span> <span class='rbrace token'>}</span>
+      <span class='rubyid_logger identifier id'>logger</span><span class='dot token'>.</span><span class='rubyid_error identifier id'>error</span> <span class='dstring node'>&quot;[#{env[:site]}] Deployment failed: #{deployment.inspect}&quot;</span>
+      <span class='rubyid_g5k_deploy identifier id'>g5k_deploy</span><span class='lparen token'>(</span><span class='rubyid_env identifier id'>env</span><span class='rparen token'>)</span>
+    <span class='rubyid_end end kw'>end</span>
+  <span class='rubyid_end end kw'>end</span>
+<span class='rubyid_end end kw'>end</span>
+</pre>
+    </td>
+  </tr>
+</table>
+</div>
+    
+      <div class="method_details ">
+  <h3 class="signature " id="get_resources-instance_method">
+  
+    - (<tt>Object</tt>) <strong>get_resources</strong> 
+  
+
+  
+
+  
+</h3><table class="source_code">
+  <tr>
+    <td>
+      <pre class="lines">
+
+
+11
+12
+13</pre>
+    </td>
+    <td>
+      <pre class="code"><span class="info file"># File 'lib/expo_planetlab.rb', line 11</span>
+
+<span class='rubyid_def def kw'>def</span> <span class='rubyid_get_resources identifier id'>get_resources</span>
+    <span class='rubyid_Expo constant id'>Expo</span><span class='dot token'>.</span><span class='rubyid_get_machines identifier id'>get_machines</span><span class='lparen token'>(</span><span class='rparen token'>)</span>
+<span class='rubyid_end end kw'>end</span>
+</pre>
+    </td>
+  </tr>
+</table>
+</div>
+    
+      <div class="method_details ">
+  <h3 class="signature " id="how_many?-instance_method">
+  
+    - (<tt>Boolean</tt>) <strong>how_many?</strong>(options = {}) 
+  
+
+  
+
+  
+</h3><div class="docstring">
+  <div class="discussion">
+    
+<p>Returns the number of nodes that correspond to the specified state
+criteria, for each site requested.</p>
+
+
+  </div>
+</div>
+<div class="tags">
+  
+  <div class="examples">
+    <p class="tag_title">Examples:</p>
+    
+      
+        <p class="example_title"><div class='inline'>
+<p>How many nodes are alive &amp;&amp; (free || besteffort) in rennes and
+nancy?</p>
+</div></p>
+      
+      <pre class="example code"><span class='rubyid_how_many? fid id'>how_many?</span><span class='lparen token'>(</span><span class='symbol val'>:hard</span> <span class='assign token'>=</span><span class='gt op'>&gt;</span> <span class='symbol val'>:alive</span><span class='comma token'>,</span> <span class='symbol val'>:soft</span> <span class='assign token'>=</span><span class='gt op'>&gt;</span> <span class='lbrack token'>[</span><span class='symbol val'>:free</span><span class='comma token'>,</span> <span class='symbol val'>:besteffort</span><span class='rbrack token'>]</span><span class='comma token'>,</span> <span class='symbol val'>:in</span> <span class='assign token'>=</span><span class='gt op'>&gt;</span> <span class='lbrack token'>[</span><span class='symbol val'>:rennes</span><span class='comma token'>,</span> <span class='symbol val'>:nancy</span><span class='rbrack token'>]</span><span class='rparen token'>)</span> <span class='comment val'># =&gt; {:rennes =&gt; 40, :nancy =&gt; 23}</span>
+</pre>
+    
+  </div>
+<p class="tag_title">Parameters:</p>
+<ul class="param">
+  
+    <li>
+      
+        <span class='name'>options</span>
+      
+      
+        <span class='type'>(<tt>Hash</tt>)</span>
+      
+      
+        <em class="default">(defaults to: <tt>{}</tt>)</em>
+      
+      
+        &mdash;
+        <div class='inline'>
+<p>the options to filter the result with.</p>
+</div>
+      
+    </li>
+  
+</ul>
+
+  
+    
+    
+    <p class="tag_title">Options Hash (<tt>options</tt>):</p>
+    <ul class="option">
+      
+        <li>
+          <span class="name">:hard</span>
+          <span class="type">(<tt>String</tt>, <tt>Array</tt>)</span>
+          <span class="default">
+            
+              &mdash; default:
+              <tt>:alive</tt>
+            
+          </span>
+          
+            &mdash; <div class='inline'>
+<p>a symbol or array of symbols specifying the hardware status(es) that must
+be matched by the nodes to be counted.</p>
+</div>
+          
+        </li>
+      
+        <li>
+          <span class="name">:soft</span>
+          <span class="type">(<tt>String</tt>, <tt>Array</tt>)</span>
+          <span class="default">
+            
+              &mdash; default:
+              <tt>[:free</tt>, <tt>:besteffort]</tt>
+            
+          </span>
+          
+            &mdash; <div class='inline'>
+<p>a symbol or array of symbols specifying the system status(es) that must be
+matched by the nodes to be counted.</p>
+</div>
+          
+        </li>
+      
+        <li>
+          <span class="name">:in</span>
+          <span class="type">(<tt>String</tt>, <tt>Array</tt>)</span>
+          <span class="default">
+            
+              &mdash; default:
+              <tt>all</tt>
+            
+          </span>
+          
+            &mdash; <div class='inline'>
+<p>a symbol or array of symbols specifying the sites of interest.</p>
+</div>
+          
+        </li>
+      
+    </ul>
+  
+
+<p class="tag_title">Returns:</p>
+<ul class="return">
+  
+    <li>
+      
+      
+        <span class='type'>(<tt>Boolean</tt>)</span>
+      
+      
+      
+    </li>
+  
+</ul>
+
+</div><table class="source_code">
+  <tr>
+    <td>
+      <pre class="lines">
+
+
+544
+545
+546
+547
+548
+549
+550
+551
+552
+553
+554
+555
+556
+557
+558
+559
+560
+561</pre>
+    </td>
+    <td>
+      <pre class="code"><span class="info file"># File 'lib/g5k_api_old.rb', line 544</span>
+
+<span class='rubyid_def def kw'>def</span> <span class='rubyid_how_many? fid id'>how_many?</span><span class='lparen token'>(</span><span class='rubyid_options identifier id'>options</span> <span class='assign token'>=</span> <span class='lbrace token'>{</span><span class='rbrace token'>}</span><span class='rparen token'>)</span>
+  <span class='rubyid_options identifier id'>options</span> <span class='assign token'>=</span> <span class='lbrace token'>{</span><span class='symbol val'>:hard</span> <span class='assign token'>=</span><span class='gt op'>&gt;</span> <span class='symbol val'>:alive</span><span class='comma token'>,</span> <span class='symbol val'>:soft</span> <span class='assign token'>=</span><span class='gt op'>&gt;</span> <span class='lbrack token'>[</span><span class='symbol val'>:free</span><span class='comma token'>,</span> <span class='symbol val'>:besteffort</span><span class='rbrack token'>]</span><span class='rbrace token'>}</span><span class='dot token'>.</span><span class='rubyid_merge identifier id'>merge</span><span class='lparen token'>(</span><span class='rubyid_options identifier id'>options</span><span class='rparen token'>)</span>
+  <span class='rubyid_count identifier id'>count</span> <span class='assign token'>=</span> <span class='lbrace token'>{</span><span class='rbrace token'>}</span>
+
+  <span class='rubyid_sites identifier id'>sites</span> <span class='assign token'>=</span> <span class='lbrack token'>[</span><span class='rubyid_options identifier id'>options</span><span class='lbrack token'>[</span><span class='symbol val'>:in</span><span class='rbrack token'>]</span><span class='rbrack token'>]</span><span class='dot token'>.</span><span class='rubyid_flatten identifier id'>flatten</span><span class='dot token'>.</span><span class='rubyid_compact identifier id'>compact</span><span class='dot token'>.</span><span class='rubyid_map identifier id'>map</span><span class='lparen token'>(</span><span class='bitand op'>&amp;</span><span class='symbol val'>:to_s</span><span class='rparen token'>)</span>
+  <span class='rubyid_hard_state identifier id'>hard_state</span> <span class='assign token'>=</span> <span class='lbrack token'>[</span><span class='rubyid_options identifier id'>options</span><span class='lbrack token'>[</span><span class='symbol val'>:hard</span><span class='rbrack token'>]</span><span class='rbrack token'>]</span><span class='dot token'>.</span><span class='rubyid_flatten identifier id'>flatten</span><span class='dot token'>.</span><span class='rubyid_compact identifier id'>compact</span><span class='dot token'>.</span><span class='rubyid_map identifier id'>map</span><span class='lparen token'>(</span><span class='bitand op'>&amp;</span><span class='symbol val'>:to_s</span><span class='rparen token'>)</span>
+  <span class='rubyid_soft_state identifier id'>soft_state</span> <span class='assign token'>=</span> <span class='lbrack token'>[</span><span class='rubyid_options identifier id'>options</span><span class='lbrack token'>[</span><span class='symbol val'>:soft</span><span class='rbrack token'>]</span><span class='rbrack token'>]</span><span class='dot token'>.</span><span class='rubyid_flatten identifier id'>flatten</span><span class='dot token'>.</span><span class='rubyid_compact identifier id'>compact</span><span class='dot token'>.</span><span class='rubyid_map identifier id'>map</span><span class='lparen token'>(</span><span class='bitand op'>&amp;</span><span class='symbol val'>:to_s</span><span class='rparen token'>)</span>
+
+  <span class='rubyid_@connection ivar id'>@connection</span><span class='dot token'>.</span><span class='rubyid_root identifier id'>root</span><span class='dot token'>.</span><span class='rubyid_sites identifier id'>sites</span><span class='dot token'>.</span><span class='rubyid_each identifier id'>each</span> <span class='rubyid_do do kw'>do</span> <span class='bitor op'>|</span><span class='rubyid_site identifier id'>site</span><span class='bitor op'>|</span>
+    <span class='rubyid_next next kw'>next</span> <span class='rubyid_if if_mod kw'>if</span> <span class='notop op'>!</span><span class='rubyid_sites identifier id'>sites</span><span class='dot token'>.</span><span class='rubyid_empty? fid id'>empty?</span> <span class='andop op'>&amp;&amp;</span> <span class='notop op'>!</span><span class='rubyid_sites identifier id'>sites</span><span class='dot token'>.</span><span class='rubyid_include? fid id'>include?</span><span class='lparen token'>(</span><span class='rubyid_site identifier id'>site</span><span class='lbrack token'>[</span><span class='string val'>'uid'</span><span class='rbrack token'>]</span><span class='rparen token'>)</span>
+    <span class='rubyid_count identifier id'>count</span><span class='lbrack token'>[</span><span class='rubyid_site identifier id'>site</span><span class='lbrack token'>[</span><span class='string val'>'uid'</span><span class='rbrack token'>]</span><span class='dot token'>.</span><span class='rubyid_to_sym identifier id'>to_sym</span><span class='rbrack token'>]</span> <span class='assign token'>=</span> <span class='rubyid_site identifier id'>site</span><span class='dot token'>.</span><span class='rubyid_status identifier id'>status</span><span class='dot token'>.</span><span class='rubyid_count identifier id'>count</span> <span class='rubyid_do do kw'>do</span> <span class='bitor op'>|</span><span class='rubyid_ns identifier id'>ns</span><span class='bitor op'>|</span>
+      <span class='rubyid_hard_state identifier id'>hard_state</span><span class='dot token'>.</span><span class='rubyid_include? fid id'>include?</span><span class='lparen token'>(</span><span class='rubyid_ns identifier id'>ns</span><span class='lbrack token'>[</span><span class='string val'>'hardware_state'</span><span class='rbrack token'>]</span><span class='rparen token'>)</span> <span class='andop op'>&amp;&amp;</span>
+      <span class='rubyid_soft_state identifier id'>soft_state</span><span class='dot token'>.</span><span class='rubyid_include? fid id'>include?</span><span class='lparen token'>(</span><span class='rubyid_ns identifier id'>ns</span><span class='lbrack token'>[</span><span class='string val'>'system_state'</span><span class='rbrack token'>]</span><span class='rparen token'>)</span>
+    <span class='rubyid_end end kw'>end</span>
+  <span class='rubyid_end end kw'>end</span>
+
+  <span class='rubyid_count identifier id'>count</span>
+<span class='rubyid_end end kw'>end</span>
+</pre>
+    </td>
+  </tr>
+</table>
+</div>
+    
+      <div class="method_details ">
+  <h3 class="signature " id="key_for_deployment-instance_method">
+  
+    - (<tt>Object</tt>) <strong>key_for_deployment</strong>(env) 
+  
+
+  
+
+  
+</h3><div class="docstring">
+  <div class="discussion">
+    
+<p>Returns a valid key for the deployment If the public_key points to a file,
+read it If the public_key is a URI, fetch it</p>
+
+
+  </div>
+</div>
+<div class="tags">
+  
+
+</div><table class="source_code">
+  <tr>
+    <td>
+      <pre class="lines">
+
+
+469
+470
+471
+472
+473
+474
+475
+476
+477
+478</pre>
+    </td>
+    <td>
+      <pre class="code"><span class="info file"># File 'lib/g5k_api_old.rb', line 469</span>
+
+<span class='rubyid_def def kw'>def</span> <span class='rubyid_key_for_deployment identifier id'>key_for_deployment</span><span class='lparen token'>(</span><span class='rubyid_env identifier id'>env</span><span class='rparen token'>)</span>
+  <span class='rubyid_env identifier id'>env</span><span class='lbrack token'>[</span><span class='symbol val'>:public_key</span><span class='rbrack token'>]</span> <span class='assign token'>=</span> <span class='rubyid_keychain identifier id'>keychain</span><span class='lparen token'>(</span><span class='symbol val'>:public</span><span class='rparen token'>)</span>
+  <span class='rubyid_uri identifier id'>uri</span> <span class='assign token'>=</span> <span class='rubyid_URI constant id'>URI</span><span class='dot token'>.</span><span class='rubyid_parse identifier id'>parse</span><span class='lparen token'>(</span><span class='rubyid_env identifier id'>env</span><span class='lbrack token'>[</span><span class='symbol val'>:public_key</span><span class='rbrack token'>]</span><span class='rparen token'>)</span>
+  <span class='rubyid_case case kw'>case</span> <span class='rubyid_uri identifier id'>uri</span>
+  <span class='rubyid_when when kw'>when</span> <span class='rubyid_URI constant id'>URI</span><span class='colon2 op'>::</span><span class='rubyid_HTTP constant id'>HTTP</span><span class='comma token'>,</span> <span class='rubyid_URI constant id'>URI</span><span class='colon2 op'>::</span><span class='rubyid_HTTPS constant id'>HTTPS</span>
+    <span class='rubyid_connection identifier id'>connection</span><span class='dot token'>.</span><span class='rubyid_get identifier id'>get</span><span class='lparen token'>(</span><span class='rubyid_uri identifier id'>uri</span><span class='dot token'>.</span><span class='rubyid_to_s identifier id'>to_s</span><span class='rparen token'>)</span><span class='dot token'>.</span><span class='rubyid_body identifier id'>body</span>
+  <span class='rubyid_else else kw'>else</span>
+    <span class='rubyid_File constant id'>File</span><span class='dot token'>.</span><span class='rubyid_read identifier id'>read</span><span class='lparen token'>(</span><span class='rubyid_env identifier id'>env</span><span class='lbrack token'>[</span><span class='symbol val'>:public_key</span><span class='rbrack token'>]</span><span class='rparen token'>)</span>
+  <span class='rubyid_end end kw'>end</span>
+<span class='rubyid_end end kw'>end</span>
+</pre>
+    </td>
+  </tr>
+</table>
+</div>
+    
+      <div class="method_details ">
+  <h3 class="signature " id="keychain-instance_method">
+  
+    - (<tt>Array&lt;String,String&gt;</tt>, <tt>String</tt>) <strong>keychain</strong>(key_type = nil) 
+  
+
+  
+
+  
+</h3><div class="docstring">
+  <div class="discussion">
+    
+<p>Finds the first SSH key that has both public and private parts in the
+<code>~/.ssh</code> directory.</p>
+
+
+  </div>
+</div>
+<div class="tags">
+  
+<p class="tag_title">Returns:</p>
+<ul class="return">
+  
+    <li>
+      
+      
+        <span class='type'>(<tt>Array&lt;String,String&gt;</tt>)</span>
+      
+      
+      
+        &mdash;
+        <div class='inline'>
+<p>the public_key_path and private_key_path if <code>key_type</code> is
+<code>nil</code>.</p>
+</div>
+      
+    </li>
+  
+    <li>
+      
+      
+        <span class='type'>(<tt>String</tt>)</span>
+      
+      
+      
+        &mdash;
+        <div class='inline'>
+<p>the public key if <code>key_type=:public</code>, or the private key if
+<code>key_type=:private</code>.</p>
+</div>
+      
+    </li>
+  
+</ul>
+
+</div><table class="source_code">
+  <tr>
+    <td>
+      <pre class="lines">
+
+
+484
+485
+486
+487
+488
+489
+490
+491
+492
+493
+494
+495
+496
+497
+498
+499
+500
+501
+502
+503
+504
+505
+506
+507</pre>
+    </td>
+    <td>
+      <pre class="code"><span class="info file"># File 'lib/g5k_api_old.rb', line 484</span>
+
+<span class='rubyid_def def kw'>def</span> <span class='rubyid_keychain identifier id'>keychain</span><span class='lparen token'>(</span><span class='rubyid_key_type identifier id'>key_type</span> <span class='assign token'>=</span> <span class='rubyid_nil nil kw'>nil</span><span class='rparen token'>)</span>
+  <span class='rubyid_public_key identifier id'>public_key</span> <span class='assign token'>=</span> <span class='rubyid_nil nil kw'>nil</span>
+  <span class='rubyid_private_key identifier id'>private_key</span> <span class='assign token'>=</span> <span class='rubyid_nil nil kw'>nil</span>
+  <span class='rubyid_Dir constant id'>Dir</span><span class='lbrack token'>[</span><span class='rubyid_File constant id'>File</span><span class='dot token'>.</span><span class='rubyid_expand_path identifier id'>expand_path</span><span class='lparen token'>(</span><span class='string val'>&quot;~/.ssh/*.pub&quot;</span><span class='rparen token'>)</span><span class='rbrack token'>]</span><span class='dot token'>.</span><span class='rubyid_each identifier id'>each</span> <span class='rubyid_do do kw'>do</span> <span class='bitor op'>|</span><span class='rubyid_file identifier id'>file</span><span class='bitor op'>|</span>
+    <span class='rubyid_public_key identifier id'>public_key</span> <span class='assign token'>=</span> <span class='rubyid_file identifier id'>file</span>
+    <span class='rubyid_private_key identifier id'>private_key</span> <span class='assign token'>=</span> <span class='rubyid_File constant id'>File</span><span class='dot token'>.</span><span class='rubyid_join identifier id'>join</span><span class='lparen token'>(</span>
+      <span class='rubyid_File constant id'>File</span><span class='dot token'>.</span><span class='rubyid_dirname identifier id'>dirname</span><span class='lparen token'>(</span><span class='rubyid_public_key identifier id'>public_key</span><span class='rparen token'>)</span><span class='comma token'>,</span>
+      <span class='rubyid_File constant id'>File</span><span class='dot token'>.</span><span class='rubyid_basename identifier id'>basename</span><span class='lparen token'>(</span><span class='rubyid_public_key identifier id'>public_key</span><span class='comma token'>,</span> <span class='string val'>&quot;.pub&quot;</span><span class='rparen token'>)</span>
+    <span class='rparen token'>)</span>
+    <span class='rubyid_if if kw'>if</span> <span class='rubyid_File constant id'>File</span><span class='dot token'>.</span><span class='rubyid_exist? fid id'>exist?</span><span class='lparen token'>(</span><span class='rubyid_private_key identifier id'>private_key</span><span class='rparen token'>)</span> <span class='andop op'>&amp;&amp;</span> <span class='rubyid_File constant id'>File</span><span class='dot token'>.</span><span class='rubyid_readable? fid id'>readable?</span><span class='lparen token'>(</span><span class='rubyid_private_key identifier id'>private_key</span><span class='rparen token'>)</span>
+      <span class='rubyid_break break kw'>break</span>
+    <span class='rubyid_else else kw'>else</span>
+      <span class='rubyid_private_key identifier id'>private_key</span> <span class='assign token'>=</span> <span class='rubyid_nil nil kw'>nil</span>
+    <span class='rubyid_end end kw'>end</span>
+  <span class='rubyid_end end kw'>end</span>
+  <span class='rubyid_case case kw'>case</span> <span class='rubyid_key_type identifier id'>key_type</span>
+  <span class='rubyid_when when kw'>when</span> <span class='symbol val'>:public</span>
+    <span class='rubyid_public_key identifier id'>public_key</span>
+  <span class='rubyid_when when kw'>when</span> <span class='symbol val'>:private</span>
+    <span class='rubyid_private_key identifier id'>private_key</span>
+  <span class='rubyid_else else kw'>else</span>
+    <span class='lbrack token'>[</span><span class='rubyid_public_key identifier id'>public_key</span><span class='comma token'>,</span> <span class='rubyid_private_key identifier id'>private_key</span><span class='rbrack token'>]</span>
+  <span class='rubyid_end end kw'>end</span>
+<span class='rubyid_end end kw'>end</span>
+</pre>
+    </td>
+  </tr>
+</table>
+</div>
+    
+      <div class="method_details ">
+  <h3 class="signature " id="oar_walltime-instance_method">
+  
+    - (<tt>Object</tt>) <strong>oar_walltime</strong>(env) 
+  
+
+  
+
+  
+</h3><div class="docstring">
+  <div class="discussion">
+    
+<p>convert the walltime in seconds into oar-style walltime</p>
+
+
+  </div>
+</div>
+<div class="tags">
+  
+
+</div><table class="source_code">
+  <tr>
+    <td>
+      <pre class="lines">
+
+
+429
+430
+431
+432
+433
+434
+435</pre>
+    </td>
+    <td>
+      <pre class="code"><span class="info file"># File 'lib/g5k_api_old.rb', line 429</span>
+
+<span class='rubyid_def def kw'>def</span> <span class='rubyid_oar_walltime identifier id'>oar_walltime</span><span class='lparen token'>(</span><span class='rubyid_env identifier id'>env</span><span class='rparen token'>)</span>
+  <span class='rubyid_walltime identifier id'>walltime</span> <span class='assign token'>=</span> <span class='rubyid_env identifier id'>env</span><span class='lbrack token'>[</span><span class='symbol val'>:walltime</span><span class='rbrack token'>]</span>
+  <span class='rubyid_hours identifier id'>hours</span> <span class='assign token'>=</span> <span class='lparen token'>(</span><span class='rubyid_walltime identifier id'>walltime</span><span class='div op'>/</span><span class='integer val'>3600</span><span class='rparen token'>)</span><span class='dot token'>.</span><span class='rubyid_floor identifier id'>floor</span>
+  <span class='rubyid_minutes identifier id'>minutes</span> <span class='assign token'>=</span> <span class='lparen token'>(</span><span class='lparen token'>(</span><span class='rubyid_walltime identifier id'>walltime</span><span class='minus op'>-</span><span class='lparen token'>(</span><span class='rubyid_hours identifier id'>hours</span><span class='mult op'>*</span><span class='integer val'>3600</span><span class='rparen token'>)</span><span class='rparen token'>)</span><span class='div op'>/</span><span class='integer val'>60</span><span class='rparen token'>)</span><span class='dot token'>.</span><span class='rubyid_floor identifier id'>floor</span>
+  <span class='rubyid_seconds identifier id'>seconds</span> <span class='assign token'>=</span> <span class='rubyid_walltime identifier id'>walltime</span><span class='minus op'>-</span><span class='rubyid_hours identifier id'>hours</span><span class='mult op'>*</span><span class='integer val'>3600</span><span class='minus op'>-</span><span class='rubyid_minutes identifier id'>minutes</span><span class='mult op'>*</span><span class='integer val'>60</span>
+  <span class='string val'>&quot;%02d:%02d:%02d&quot;</span> <span class='mod op'>%</span> <span class='lbrack token'>[</span><span class='rubyid_hours identifier id'>hours</span><span class='comma token'>,</span> <span class='rubyid_minutes identifier id'>minutes</span><span class='comma token'>,</span> <span class='rubyid_seconds identifier id'>seconds</span><span class='rbrack token'>]</span>
+<span class='rubyid_end end kw'>end</span>
+</pre>
+    </td>
+  </tr>
+</table>
+</div>
+    
+      <div class="method_details ">
+  <h3 class="signature " id="parallel-instance_method">
+  
+    - (<tt>Object</tt>) <strong>parallel</strong>(options = {}) {|p| ... }
+  
+
+  
+
+  
+</h3><div class="docstring">
+  <div class="discussion">
+    
+<p>Primite that returns a new Parallel object.  <code>Parallel#loop!</code>
+must be explicitly called to wait for the threads within the
+<code>Parallel</code> object.</p>
+
+<p>If option <code>:ignore_thread_exceptions</code> is given and true, then
+standard exceptions (including timeouts) that occur in one of the threads
+will be ignored (only an error log will be displayed). This is useful if
+you are doing multi-site campaigns.</p>
+
+
+  </div>
+</div>
+<div class="tags">
+  <p class="tag_title">Parameters:</p>
+<ul class="param">
+  
+    <li>
+      
+        <span class='name'>options</span>
+      
+      
+        <span class='type'>(<tt>Hash</tt>)</span>
+      
+      
+        <em class="default">(defaults to: <tt>{}</tt>)</em>
+      
+      
+        &mdash;
+        <div class='inline'>
+<p>a hash of additional options to pass.</p>
+</div>
+      
+    </li>
+  
+</ul>
+
+<p class="tag_title">Yields:</p>
+<ul class="yield">
+  
+    <li>
+      
+      
+        <span class='type'>(<tt>p</tt>)</span>
+      
+      
+      
+    </li>
+  
+</ul>
+
+</div><table class="source_code">
+  <tr>
+    <td>
+      <pre class="lines">
+
+
+523
+524
+525
+526
+527</pre>
+    </td>
+    <td>
+      <pre class="code"><span class="info file"># File 'lib/g5k_api_old.rb', line 523</span>
+
+<span class='rubyid_def def kw'>def</span> <span class='rubyid_parallel identifier id'>parallel</span><span class='lparen token'>(</span><span class='rubyid_options identifier id'>options</span> <span class='assign token'>=</span> <span class='lbrace token'>{</span><span class='rbrace token'>}</span><span class='comma token'>,</span> <span class='bitand op'>&amp;</span><span class='rubyid_block identifier id'>block</span><span class='rparen token'>)</span>
+  <span class='rubyid_p identifier id'>p</span> <span class='assign token'>=</span> <span class='rubyid_Parallel constant id'>Parallel</span><span class='dot token'>.</span><span class='rubyid_new identifier id'>new</span><span class='lparen token'>(</span><span class='lbrace token'>{</span><span class='symbol val'>:logger</span> <span class='assign token'>=</span><span class='gt op'>&gt;</span> <span class='rubyid_@logger ivar id'>@logger</span><span class='rbrace token'>}</span><span class='dot token'>.</span><span class='rubyid_merge identifier id'>merge</span><span class='lparen token'>(</span><span class='rubyid_options identifier id'>options</span><span class='rparen token'>)</span><span class='rparen token'>)</span>
+  <span class='rubyid_yield yield kw'>yield</span> <span class='rubyid_p identifier id'>p</span> <span class='rubyid_if if_mod kw'>if</span> <span class='rubyid_block_given? fid id'>block_given?</span>
+  <span class='rubyid_p identifier id'>p</span>
+<span class='rubyid_end end kw'>end</span>
+</pre>
+    </td>
+  </tr>
+</table>
+</div>
+    
+      <div class="method_details ">
+  <h3 class="signature " id="synchronize-instance_method">
+  
+    - (<tt>Object</tt>) <strong>synchronize</strong>(&amp;block) 
+  
+
+  
+
+  
+</h3><div class="docstring">
+  <div class="discussion">
+    
+<p>Synchronization method</p>
+
+
+  </div>
+</div>
+<div class="tags">
+  
+
+</div><table class="source_code">
+  <tr>
+    <td>
+      <pre class="lines">
+
+
+531
+532
+533</pre>
+    </td>
+    <td>
+      <pre class="code"><span class="info file"># File 'lib/g5k_api_old.rb', line 531</span>
+
+<span class='rubyid_def def kw'>def</span> <span class='rubyid_synchronize identifier id'>synchronize</span><span class='lparen token'>(</span><span class='bitand op'>&amp;</span><span class='rubyid_block identifier id'>block</span><span class='rparen token'>)</span>
+  <span class='rubyid_@mutex ivar id'>@mutex</span><span class='dot token'>.</span><span class='rubyid_synchronize identifier id'>synchronize</span><span class='lparen token'>(</span><span class='bitand op'>&amp;</span><span class='rubyid_block identifier id'>block</span><span class='rparen token'>)</span>
+<span class='rubyid_end end kw'>end</span>
+</pre>
+    </td>
+  </tr>
+</table>
+</div>
+    
+      <div class="method_details ">
+  <h3 class="signature " id="valid_deployment_key?-instance_method">
+  
+    - (<tt>Boolean</tt>) <strong>valid_deployment_key?</strong>(k) 
+  
+
+  
+
+  
+</h3><div class="docstring">
+  <div class="discussion">
+    
+<p>Used to filter out keys from environment hash when submitting a deployment.</p>
+
+
+  </div>
+</div>
+<div class="tags">
+  
+<p class="tag_title">Returns:</p>
+<ul class="return">
+  
+    <li>
+      
+      
+        <span class='type'>(<tt>Boolean</tt>)</span>
+      
+      
+      
+        &mdash;
+        <div class='inline'>
+<p>true if <code>k</code> is a valid deployment attribute. Otherwise false.</p>
+</div>
+      
+    </li>
+  
+</ul>
+
+</div><table class="source_code">
+  <tr>
+    <td>
+      <pre class="lines">
+
+
+448
+449
+450</pre>
+    </td>
+    <td>
+      <pre class="code"><span class="info file"># File 'lib/g5k_api_old.rb', line 448</span>
+
+<span class='rubyid_def def kw'>def</span> <span class='rubyid_valid_deployment_key? fid id'>valid_deployment_key?</span><span class='lparen token'>(</span><span class='rubyid_k identifier id'>k</span><span class='rparen token'>)</span>
+  <span class='lbrack token'>[</span><span class='symbol val'>:key</span><span class='comma token'>,</span> <span class='symbol val'>:environment</span><span class='comma token'>,</span> <span class='symbol val'>:notifications</span><span class='comma token'>,</span> <span class='symbol val'>:nodes</span><span class='comma token'>,</span> <span class='symbol val'>:version</span><span class='comma token'>,</span> <span class='symbol val'>:block_device</span><span class='comma token'>,</span> <span class='symbol val'>:partition_number</span><span class='comma token'>,</span> <span class='symbol val'>:vlan</span><span class='comma token'>,</span> <span class='symbol val'>:reformat_tmp</span><span class='comma token'>,</span> <span class='symbol val'>:disable_disk_partitioning</span><span class='comma token'>,</span> <span class='symbol val'>:disable_bootloader_install</span><span class='comma token'>,</span> <span class='symbol val'>:ignore_nodes_deploying</span><span class='rbrack token'>]</span><span class='dot token'>.</span><span class='rubyid_include? fid id'>include?</span><span class='lparen token'>(</span><span class='rubyid_k identifier id'>k</span><span class='rparen token'>)</span>
+<span class='rubyid_end end kw'>end</span>
+</pre>
+    </td>
+  </tr>
+</table>
+</div>
+    
+      <div class="method_details ">
+  <h3 class="signature " id="valid_job_key?-instance_method">
+  
+    - (<tt>Boolean</tt>) <strong>valid_job_key?</strong>(k) 
+  
+
+  
+
+  
+</h3><div class="docstring">
+  <div class="discussion">
+    
+<p>Used to filter out keys from environment hash when submitting a job.</p>
+
+
+  </div>
+</div>
+<div class="tags">
+  
+<p class="tag_title">Returns:</p>
+<ul class="return">
+  
+    <li>
+      
+      
+        <span class='type'>(<tt>Boolean</tt>)</span>
+      
+      
+      
+        &mdash;
+        <div class='inline'>
+<p>true if <code>k</code> is a valid deployment attribute.</p>
+</div>
+      
+    </li>
+  
+</ul>
+
+</div><table class="source_code">
+  <tr>
+    <td>
+      <pre class="lines">
+
+
+441
+442
+443</pre>
+    </td>
+    <td>
+      <pre class="code"><span class="info file"># File 'lib/g5k_api_old.rb', line 441</span>
+
+<span class='rubyid_def def kw'>def</span> <span class='rubyid_valid_job_key? fid id'>valid_job_key?</span><span class='lparen token'>(</span><span class='rubyid_k identifier id'>k</span><span class='rparen token'>)</span>                                                                                                                 
+  <span class='lbrack token'>[</span><span class='symbol val'>:resources</span><span class='comma token'>,</span> <span class='symbol val'>:reservation</span><span class='comma token'>,</span> <span class='symbol val'>:command</span><span class='comma token'>,</span> <span class='symbol val'>:directory</span><span class='comma token'>,</span> <span class='symbol val'>:properties</span><span class='comma token'>,</span> <span class='symbol val'>:types</span><span class='comma token'>,</span> <span class='symbol val'>:queue</span><span class='comma token'>,</span> <span class='symbol val'>:name</span><span class='comma token'>,</span> <span class='symbol val'>:project</span><span class='comma token'>,</span> <span class='symbol val'>:notifications</span><span class='rbrack token'>]</span><span class='dot token'>.</span><span class='rubyid_include? fid id'>include?</span><span class='lparen token'>(</span><span class='rubyid_k identifier id'>k</span><span class='rparen token'>)</span>
+<span class='rubyid_end end kw'>end</span>
+</pre>
+    </td>
+  </tr>
+</table>
+</div>
+    
+  </div>
+
+</div>
+
+    <div id="footer">
+  Generated on Mon Nov 19 13:00:39 2012 by
+  <a href="http://yardoc.org" title="Yay! A Ruby Documentation Tool" target="_parent">yard</a>
+  0.8.2.1 (ruby-1.8.7).
+</div>
+
+  </body>
+</html>

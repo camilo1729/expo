@@ -4,7 +4,7 @@
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 <title>
-  Class: Expo::ResourceSetIterator
+  Class: Expo::TaskResult
   
     &mdash; Documentation by YARD 0.8.2.1
   
@@ -31,10 +31,10 @@
     <div id="header">
       <div id="menu">
   
-    <a href="../_index.html">Index (R)</a> &raquo;
+    <a href="../_index.html">Index (T)</a> &raquo;
     <span class='title'><span class='object_link'><a href="../Expo.html" title="Expo (module)">Expo</a></span></span>
      &raquo; 
-    <span class="title">ResourceSetIterator</span>
+    <span class="title">TaskResult</span>
   
 
   <div class="noframes"><span class="title">(</span><a href="." target="_top">no frames</a><span class="title">)</span></div>
@@ -68,7 +68,7 @@
 
     <iframe id="search_frame"></iframe>
 
-    <div id="content"><h1>Class: Expo::ResourceSetIterator
+    <div id="content"><h1>Class: Expo::TaskResult
   
   
   
@@ -78,12 +78,14 @@
   
     <dt class="r1">Inherits:</dt>
     <dd class="r1">
-      <span class="inheritName">Object</span>
+      <span class="inheritName">Hash</span>
       
         <ul class="fullTree">
           <li>Object</li>
           
-            <li class="next">Expo::ResourceSetIterator</li>
+            <li class="next">Hash</li>
+          
+            <li class="next">Expo::TaskResult</li>
           
         </ul>
         <a href="#" class="inheritanceTree">show all</a>
@@ -99,7 +101,7 @@
   
   
     <dt class="r2 last">Defined in:</dt>
-    <dd class="r2 last">lib/resourceset.rb</dd>
+    <dd class="r2 last">lib/expolib.rb</dd>
   
 </dl>
 <div class="clear"></div>
@@ -111,12 +113,83 @@
 
 
 
+  
+    <h2>
+      Instance Method Summary
+      <small>(<a href="#" class="summary_toggle">collapse</a>)</small>
+    </h2>
 
+    <ul class="summary">
+      
+        <li class="public ">
+  <span class="summary_signature">
+    
+      <a href="#duration-instance_method" title="#duration (instance method)">- (Object) <strong>duration</strong> </a>
+    
+
+    
+  </span>
+  
+  
+  
+  
+  
+  
+  
+
+  
+    <span class="summary_desc"><div class='inline'></div></span>
+  
+</li>
+
+      
+    </ul>
+  
+
+
+  
+
+  <div id="instance_method_details" class="method_details_list">
+    <h2>Instance Method Details</h2>
+
+    
+      <div class="method_details first">
+  <h3 class="signature first" id="duration-instance_method">
+  
+    - (<tt>Object</tt>) <strong>duration</strong> 
+  
+
+  
+
+  
+</h3><table class="source_code">
+  <tr>
+    <td>
+      <pre class="lines">
+
+
+32
+33
+34</pre>
+    </td>
+    <td>
+      <pre class="code"><span class="info file"># File 'lib/expolib.rb', line 32</span>
+
+<span class='rubyid_def def kw'>def</span> <span class='rubyid_duration identifier id'>duration</span>
+  <span class='rubyid_return return kw'>return</span> <span class='rubyid_self self kw'>self</span><span class='lbrack token'>[</span><span class='string val'>'end_time'</span><span class='rbrack token'>]</span> <span class='minus op'>-</span> <span class='rubyid_self self kw'>self</span><span class='lbrack token'>[</span><span class='string val'>'start_time'</span><span class='rbrack token'>]</span>
+<span class='rubyid_end end kw'>end</span>
+</pre>
+    </td>
+  </tr>
+</table>
+</div>
+    
+  </div>
 
 </div>
 
     <div id="footer">
-  Generated on Mon Nov 19 13:00:41 2012 by
+  Generated on Mon Nov 19 13:00:40 2012 by
   <a href="http://yardoc.org" title="Yay! A Ruby Documentation Tool" target="_parent">yard</a>
   0.8.2.1 (ruby-1.8.7).
 </div>

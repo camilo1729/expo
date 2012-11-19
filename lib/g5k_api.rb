@@ -157,6 +157,10 @@ class ExpoEngine < Grid5000::Campaign::Engine
     ## cleaning up the variable $all
     $all=ResourceSet::new()
   end
+
+  def defaults  
+    self.class.defaults.select { |k,v| [:site,:walltime,:environment,:resources,:types].include? k}    
+  end  
   
 end
 

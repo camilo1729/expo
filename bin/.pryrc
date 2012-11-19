@@ -35,3 +35,13 @@
     Pry::Helpers::BaseHelpers.stagger_output("=> #{colorized.gsub(/%<(.*?)#{nonce}/, '#<\1')}", output)
     end
  end
+
+
+######## pry editor
+
+Pry.config.editor = "emacs"
+
+#### Prompt #############
+
+Pry.config.prompt = [ proc { "Expo Console > " }, proc { "MORE INPUT REQUIRED!*" }]
+

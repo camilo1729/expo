@@ -1,0 +1,8 @@
+--protected
+--no-private
+--embed-mixin ClassMethods
+--load ./docs/templates/plugin.rb
+-
+docs/bib/Metro07.html
+docs/bib/CFSE6.html
+
