@@ -32,6 +32,14 @@ class TaskResult < Hash
   def duration
     return self['end_time'] - self['start_time']
   end
+  
+end
+
+class String
+  ## This fuction open a file an dumps the content of a variable in it.
+  def to_file ( file_name )
+    File.open(file_name, 'w') do |file| file.puts self end
+  end
 end
 
 ########## Logging ###########################
@@ -116,25 +124,94 @@ end
 
 ### Starting Definitions of functions that belongs to the DSL of expo
 
-def task(location, task)
-
+## Fix me #######
+###  task with simple ssh. It is logged as a file operation
+def simpletask(location,task)
   path,exec,params = treat_task task
-  cmd = "ruby taktuk2yaml.rb -s"
-  cmd += $ssh_connector
-  cmd += " -l #{$ssh_user}" if !$ssh_user.nil?
-  cmd += " -t #{$ssh_timeout}" if !$ssh_timeout.nil?
-  cmd += " -m #{location}"
-  cmd += " b e [ 'cd #{path} ; #{exec} #{params}' ]"
+  cmd = "ssh -o \"ConnectTimeout 10\""
+  #cmd += " lig_expe@#{location}"
+  cmd += " #{location}"
+  cmd += "'cd #{path} ; #{exec} #{params}'"
+  command_result = $client.asynchronous_command(cmd)
+  $client.command_wait(command_result["command_number"],1)
+  final_result = make_task_result(command_result["command_number"])
+
+  log_file_mgt(exec,final_result,"Simple Task")
+  return final_result
+end
+
+
+def task(*task_params)
+## task_params has to have the location in the fist position and the task in the second
+  if task_params.length == 1 then
+    location="localhost"
+    task=task_params[0]
+  else
+    location=task_params[0]
+    task=task_params[1]
+  end
+  
+  path,exec,params = treat_task task
+  ### we have to separate the local and remote-parallel executions.
+  if location == "localhost"
+    cmd= "cd #{path} ; #{exec} #{params}"
+  else
+    cmd = "ruby taktuk2yaml.rb -s"
+    cmd += $ssh_connector
+    cmd += " -l #{$ssh_user}" if !$ssh_user.nil?
+    cmd += " -t #{$ssh_timeout}" if !$ssh_timeout.nil?
+    cmd += " -m #{location}"
+    cmd += " b e [ 'cd #{path} ; #{exec} #{params}' ]"
+  end
 
   command_result = $client.asynchronous_command(cmd)
   $client.command_wait(command_result["command_number"],1)
-  final_result = make_taktuk_result( command_result["command_number"] )
 
-  log_task(exec,final_result,"Sequential")
+  final_result = make_taktuk_result( command_result["command_number"] ) if location != "localhost"
+  final_result = make_task_result(command_result["command_number"]) if location == "localhost"
+
+  log_task(exec,final_result,"Sequential") if location != "localhost"
+  log_file_mgt(exec,final_result,"Sequential") if location == "localhost"
   # $client.data_logger.info cmd
   return final_result
 
 end
+
+def atask(*task_params)
+#### task_params has to have the location in the first
+  if task_params.length == 1 then
+    location="localhost"
+    task=task_params[0]
+  else
+    location=task_params[0]
+    task=task_params[1]
+  end
+  
+  path,exec,params = treat_task task
+
+  if location == "localhost"
+    cmd= "cd #{path} ; #{exec} #{params}"
+  else
+  #cmd = "taktuk2yaml -s"
+    cmd = "ruby taktuk2yaml.rb -s"
+    cmd += $ssh_connector
+    cmd += " -l #{$ssh_user}" if !$ssh_user.nil?
+    cmd += " -t #{$ssh_timeout}" if !$ssh_timeout.nil?
+    cmd += " -m #{location}"
+    cmd += " b e [ 'cd #{path} ; #{exec} #{params}' ]"
+  end
+  #----to create an asynch cmd we use generic cmd BUT! we don't wait
+  #    till it finishes and continue execution of main process. In case
+  #    of asynch cmd, response will contain only cmd id number
+  command_result = $client.asynchronous_command(cmd)
+  #----means only one atask can be inside this block at a time
+  $atasks_mutex.synchronize {
+    #----register our asynch cmd with provided params
+    $atasks[command_result["command_number"]] = { "location" => location , "task" => task }
+  }
+
+end
+
 
 def ptask(targets, task)
   
@@ -149,7 +226,7 @@ def ptask(targets, task)
   targets.flatten(:node).each(:node) { |node|
     cmd += " -m #{node}"
   }
-  cmd += " downcast exec [ 'cd #{path} ; #{exec} #{params}' ]"
+  cmd += " downcast exec [ 'cd #{path} ; #e{exec} #{params}' ]"
   cmd += " -]"
   command_result = $client.asynchronous_command(cmd)
   $client.command_wait(command_result["command_number"],1)
@@ -199,7 +276,7 @@ def get( file, source, params = {} )
   cmd = "scp "
   cmd += " "
   cmd += "#{$ssh_user}@"
-  cmd += "#{source}:" if ( destination.to_s != "localhost" )
+  cmd += "#{source}:" if ( source.to_s != "localhost" )
   cmd += "#{file} "
   cmd += " #{path}"
   command_result = $client.asynchronous_command(cmd)
@@ -228,40 +305,7 @@ def make_task_result(id)
   return [id,r]
 end
 
-## Fix me #######
-###  task with simple ssh. It is logged as a file operation
-def simpletask(location,task)
-  cmd = "ssh -o \"ConnectTimeout 10\""
-  #cmd += " lig_expe@#{location}"
-  cmd += " #{location}"
-  cmd += " #{task} "
-  command_result = $client.asynchronous_command(cmd)
-  $client.command_wait(command_result["command_number"],1)
-  final_result = make_task_result(command_result["command_number"])
 
-  log_file_mgt(file,final_result,"Simple Task")
-  return final_result
-end
-
-def atask(location, task)
-  #cmd = "taktuk2yaml -s"
-  cmd = "ruby taktuk2yaml.rb -s"
-  cmd += $ssh_connector
-  cmd += " -l #{$ssh_user}" if !$ssh_user.nil?
-  cmd += " -t #{$ssh_timeout}" if !$ssh_timeout.nil?
-  cmd += " -m #{location}"
-  cmd += " b e [ #{task} ]"
-  #----to create an asynch cmd we use generic cmd BUT! we don't wait
-  #    till it finishes and continue execution of main process. In case
-  #    of asynch cmd, response will contain only cmd id number
-  command_result = $client.asynchronous_command(cmd)
-  #----means only one atask can be inside this block at a time
-  $atasks_mutex.synchronize {
-    #----register our asynch cmd with provided params
-    $atasks[command_result["command_number"]] = { "location" => location , "task" => task }
-  }
-
-end
 
 
 def make_taktuk_result( id )

@@ -121,14 +121,25 @@ class ExpoEngine < Grid5000::Campaign::Engine
 
     change_dir do
 # I separate the deployment part from the submission part.
- 
+
+### Timing the reservation part
+      start_reserve=Time::now()
+
       env = execute_with_hooks(:reserve!,env) do |env|
         env[:nodes] = env[:job]['assigned_nodes']
         synchronize{
           nodes.push(env[:ndoes]).flatten!
         }
       end # reserve!
+      
+      end_reserve=Time::now()
+      reserve_log_msg ="[ Expo Engine Grid5000 API ] "
+      logger.info reserve_log_msg +"Time Spent waiting for resources #{end_reserve-start_reserve} secs"
+###############################
 
+### Timing deployment part
+      start_deploy=Time::now()
+      
       unless env[:environment].nil?
           env = execute_with_hooks(:deploy!, env) do |env|
             env[:nodes]= env[:deployment]['result'].reject{ |k,v|
@@ -136,6 +147,10 @@ class ExpoEngine < Grid5000::Campaign::Engine
             }.keys.sort
           end # :deploy!
       end
+      
+      end_deploy=Time::now()
+      logger.info reserve_log_msg +"Time Spent deploying #{end_deploy-start_deploy}"      
+##########################
       
       if defined? env[:job]['resources_by_type']['vlans'][0]
          # I have to redifined the resource Set.

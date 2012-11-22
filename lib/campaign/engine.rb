@@ -452,7 +452,7 @@ module Grid5000
           #logger.info "[#{env[:site]}] Got the following job: #{job.inspect}"
           logger.info "[#{env[:site]}] Got the following job: #{job['uid']}"
           data_logger.info job
-          #logger.info "[#{env[:site]}] Waiting for state=running for job ##{job['uid']} (expected start time=\"#{Time.at(job['scheduled_at']) rescue "unknown"}\")..."
+          logger.info "[#{env[:site]}] Waiting for state=running for job ##{job['uid']} (expected start time=\"#{Time.at(job['scheduled_at']) rescue "unknown"}\")..."
 
           Timeout.timeout(env[:submission_timeout]) do
             while job.reload['state'] != 'running'
@@ -490,7 +490,10 @@ module Grid5000
       #
       def deploy!(env = {})
         env[:remaining_attempts] ||= env[:deployment_max_attempts]
-        logger.info "nodes: #{env[:nodes].inspect}"
+
+        data_logger.info "nodes: "
+        data_logger.info env[:nodes]
+
         env[:nodes] = [env[:nodes]].flatten.sort
         logger.info "[#{env[:site]}] Launching deployment [no-deploy=#{env[:no_deploy].inspect}]..."
         if env[:no_deploy]
@@ -538,7 +541,8 @@ module Grid5000
           deployment.reload
           synchronize { @deployments.push(deployment) }
 
-          logger.info "[#{env[:site]}] Got the following deployment: #{deployment.inspect}"
+          logger.info "[#{env[:site]}] Got the following deployment: #{deployment['uid']}"
+          data_logger.info deployment
           logger.info "[#{env[:site]}] Waiting for termination of deployment ##{deployment['uid']} in #{deployment.parent['uid']}..."
 
           Timeout.timeout(env[:deployment_timeout]) do
@@ -548,14 +552,17 @@ module Grid5000
           end
 
           if deployment_ok?(deployment, env)
-            logger.info "[#{env[:site]}] Deployment is terminated: #{deployment.inspect}"
+            logger.info "[#{env[:site]}] Deployment is terminated:"
+            data_logger.info deployment
             env[:deployment] = deployment
             yield env if block_given?
             env
           else
             # Retry
             synchronize { @deployments.delete(deployment) }
-            logger.error "[#{env[:site]}] Deployment failed: #{deployment.inspect}"
+            logger.error "[#{env[:site]}] Deployment failed:"
+            data_logger.info "Deployment failed"
+            data_logger.info deployment
             deploy!(env) unless env[:no_deploy]
           end
         end
