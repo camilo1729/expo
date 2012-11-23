@@ -104,7 +104,7 @@ The password is: anonsvn.
 
 or its GitHub counterpart.
        
-       git clone https://github.com/camilo1729/expo.git
+    git clone https://github.com/camilo1729/expo.git
 
 <a name="Console"></a>
 
@@ -470,7 +470,7 @@ The default values are:
 
 ## Contact
 
-cristian.ruiz@imag.fr or report a bug in {https://gforge.inria.fr/mail/?group_id=286 Expo Mailing List}
+cristian.ruiz@imag.fr or report a bug in {https://lists.gforge.inria.fr/mailman/listinfo/expo-users Expo Mailing List}
 
 <a name="publications"></a>
 
@@ -484,11 +484,15 @@ Toward an experiment engine for lightweight grids. In MetroGrid workshop : Metro
 Brice Videau and Olivier Richard. Expo : un moteur de conduite d'expériences pour plates-formes dédiées. In Conférence Française en Systèmes d'Exploitation (CFSE), Fribourg, Switzerland, February 2008. 
 {file:docs/bib/CFSE6.html bibtex}
 
+## Grid5000 tutorial
+{file:docs/Grid5000_tutorial.md Expo and Kameleon}
+
 ## Changelog
 
 - **Nov.19.12**: Released 0.4a experimental version for testing. The goal here is to get people testing Expo and know if it really makes easy the experimentation process.
 
 - **Mar.8.10**: Added Ruby commands.	  
+
 
 
 

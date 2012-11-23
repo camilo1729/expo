@@ -72,7 +72,9 @@ class ExpoEngine < Grid5000::Campaign::Engine
         env_2=reserve!(env, &block)
         subhash = self.convert_to_resource(env_2[:job], env[:site])
         synchronize { @resources_expo.merge!(subhash) }
-        envs.push(new_env)
+        #envs.push(new_env)
+        #env_2[:nodes].push(env_2[:job]['assigned_nodes']).flatten! 
+        #synchronize{ envs.push(env_2) }
       end
     end
   
@@ -84,15 +86,28 @@ class ExpoEngine < Grid5000::Campaign::Engine
     env
   end
 
-  # on :deploy! do | env, block|
-  #   logger.info "Starting deploying "
-  #   logger.info "This is gonna show something before the deployment"
-  #   logger.info "For example the resource Set"
-  #   logger.info "#{$all.inspect}"
-  #   logger.info "Done"
-  #   deploy!(env, &block)
+  on :deploy! do | env, block|
+
+    deploy_log_msg ="[ Expo Engine Grid5000 API ] "
+    logger.info deploy_log_msg +"Deploying Environments"
+    env_par=env.first
+    env_par[:parallel_deploy] = parallel(:ignore_thread_exceptions => true)
+
+    env.each{ |site_env|
     
-  #end
+      logger.info "Nodes: #{site_env[:nodes].inspect}"
+      ### Here we measure the time spent in deployment
+      start_time=Time.now()
+      logger.info deploy_log_msg+"Deploying #{site_env[:nodes].length} machines in site: #{site_env[:site]}"
+      env_par[:parallel_deploy].add(site_env) do |env|
+        env_2=deploy!(env, &block)               
+      end
+      end_time = Time.now()
+      logger.info deploy_log_msg+" [#{site_env[:site]}] Deployment Time: #{end_time-start_time}"    
+    }
+    env_par[:parallel_deploy].loop!
+    
+  end
 
 # rewriting the run code because the default behavior deploys an evironment 
 # and Expo does not like that, and also to finally construct the resource set.
@@ -106,6 +121,8 @@ class ExpoEngine < Grid5000::Campaign::Engine
     env[:site]=@site
     env[:walltime]=@walltime
     env[:resources]=@resources
+    envs=[]
+    #env[:nodes]=[]
     nodes = []
     ## I will comment this lines because I'm working in interactive mode I dont want that my session
     ## will be canceld because of Ctrl+C.
@@ -124,12 +141,16 @@ class ExpoEngine < Grid5000::Campaign::Engine
 
 ### Timing the reservation part
       start_reserve=Time::now()
-
-      env = execute_with_hooks(:reserve!,env) do |env|
+      
+      env = execute_with_hooks(:reserve!,env) do |env|        
+        #synchronize{ env[:nodes].push(env[:job]['assigned_nodes']).flatten! }
         env[:nodes] = env[:job]['assigned_nodes']
+        
         synchronize{
-          nodes.push(env[:ndoes]).flatten!
+          nodes.push(env[:nodes]).flatten!
+          envs.push(env)
         }
+        #env[:nodes]=nodes
       end # reserve!
       
       end_reserve=Time::now()
@@ -143,7 +164,8 @@ class ExpoEngine < Grid5000::Campaign::Engine
       unless env[:environment].nil?
           ### Default user management root
           $ssh_user="root"
-          env = execute_with_hooks(:deploy!, env) do |env|
+          ### we pass as a parameter an array of environments
+          env = execute_with_hooks(:deploy!, envs) do |env|
             env[:nodes]= env[:deployment]['result'].reject{ |k,v|
               v['state'] != 'OK'
             }.keys.sort

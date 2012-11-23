@@ -153,25 +153,25 @@ def task(*task_params)
   
   path,exec,params = treat_task task
   ### we have to separate the local and remote-parallel executions.
-  if location == "localhost"
-    cmd= "cd #{path} ; #{exec} #{params}"
-  else
+  if location.kind_of?(Resource)
     cmd = "ruby taktuk2yaml.rb -s"
     cmd += $ssh_connector
     cmd += " -l #{$ssh_user}" if !$ssh_user.nil?
     cmd += " -t #{$ssh_timeout}" if !$ssh_timeout.nil?
     cmd += " -m #{location}"
     cmd += " b e [ 'cd #{path} ; #{exec} #{params}' ]"
+  else
+      cmd= "cd #{path} ; #{exec} #{params}"
   end
 
   command_result = $client.asynchronous_command(cmd)
-  $client.command_wait(command_result["command_number"],1)
+  command_number = command_result["command_number"]
+  $client.command_wait(command_number,1)
 
-  final_result = make_taktuk_result( command_result["command_number"] ) if location != "localhost"
-  final_result = make_task_result(command_result["command_number"]) if location == "localhost"
+  final_result = (location.kind_of?(Resource) ? make_taktuk_result (command_number) : make_task_result(command_number))
 
-  log_task(exec,final_result,"Sequential") if location != "localhost"
-  log_file_mgt(exec,final_result,"Sequential") if location == "localhost"
+  location.kind_of?(Resource) ? log_task(exec,final_result,"Sequential") : log_file_mgt(exec,final_result,"Sequential")
+
   # $client.data_logger.info cmd
   return final_result
 
@@ -222,11 +222,11 @@ def ptask(targets, task)
   #----means that 'location' node will start all other nodes. For
   #----details see 2.2.2 section of Taktuk manual
   cmd += " -m #{targets.gateway}"
-  cmd += " -["
+  cmd += " -[ -l $ssh_user "
   targets.flatten(:node).each(:node) { |node|
     cmd += " -m #{node}"
   }
-  cmd += " downcast exec [ 'cd #{path} ; #e{exec} #{params}' ]"
+  cmd += " downcast exec [ 'cd #{path} ; #{exec} #{params}' ]"
   cmd += " -]"
   command_result = $client.asynchronous_command(cmd)
   $client.command_wait(command_result["command_number"],1)

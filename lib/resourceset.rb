@@ -538,7 +538,7 @@ class ResourceSet < Resource
                                         nodes_cmd += x.make_taktuk_command(cmd)
                                 end
                         }
-                  str_cmd += " -m #{self.gw} -[ -l #{$ssh_usr} " + nodes_cmd + " downcast exec [ #{cmd} ] -]" if nodes
+                  str_cmd += " -m #{self.gw} -[ -l #{$ssh_user} " + nodes_cmd + " downcast exec [ #{cmd} ] -]" if nodes
                 else
                         nodes = false
                         nodes_cmd = ""
