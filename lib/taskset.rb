@@ -58,21 +58,31 @@ class GenericTask
 end
 
 class Task < GenericTask
-        attr_accessor :command, :resources
+        attr_accessor :command, :resources, :env_var
         def initialize( command = nil, resources = nil, name = nil )
                 super( :task, nil, name)
                 @command = command
                 @resources = resources
+                @env_var = nil
+             
         end
+        
 	#Execute a command over the resource set defined at the
 	#moment the Task object was created
         def execute
           path,exec,params = treat_task self.command
                 cmd = "ruby taktuk2yaml.rb -s"
                 cmd += $ssh_connector
-		cmd += " -l #{$ssh_user}" if !$ssh_user.nil?
+          #cmd += " -l #{$ssh_user}" if !$ssh_user.nil?
 		cmd += " -t #{$ssh_timeout}" if !$ssh_timeout.nil?
-          cmd += @resources.make_taktuk_command(" 'cd #{path} ; #{exec} #{params}' ")
+                # Allowing the definition of environmental variables
+                if @env_var.nil? then
+                  cmd += @resources.make_taktuk_command(" 'cd #{path} ; #{exec} #{params}' ")
+                else
+                  cmd += @resources.make_taktuk_command(" 'cd #{path} ; export #{@env_var} ; #{exec} #{params}' ")
+                end
+
+
                 command_result = $client.asynchronous_command(cmd)
                 $client.command_wait(command_result["command_number"],1)
                 final_result = make_taktuk_result(command_result["command_number"])
