@@ -222,7 +222,7 @@ def ptask(targets, task)
   #----means that 'location' node will start all other nodes. For
   #----details see 2.2.2 section of Taktuk manual
   cmd += " -m #{targets.gateway}"
-  cmd += " -[ -l $ssh_user "
+  cmd += " -[ -l #{$ssh_user} "
   targets.flatten(:node).each(:node) { |node|
     cmd += " -m #{node}"
   }

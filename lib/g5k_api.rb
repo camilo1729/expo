@@ -97,16 +97,16 @@ class ExpoEngine < Grid5000::Campaign::Engine
     
       logger.info "Nodes: #{site_env[:nodes].inspect}"
       ### Here we measure the time spent in deployment
-      start_time=Time.now()
+      #start_time=Time.now()
       logger.info deploy_log_msg+"Deploying #{site_env[:nodes].length} machines in site: #{site_env[:site]}"
       env_par[:parallel_deploy].add(site_env) do |env|
         env_2=deploy!(env, &block)               
       end
-      end_time = Time.now()
-      logger.info deploy_log_msg+" [#{site_env[:site]}] Deployment Time: #{end_time-start_time}"    
+      #end_time = Time.now()
+     
     }
     env_par[:parallel_deploy].loop!
-    
+    #logger.info deploy_log_msg+" [#{site_env[:site]}] Deployment Time: #{end_time-start_time}"    
   end
 
 # rewriting the run code because the default behavior deploys an evironment 
@@ -167,8 +167,15 @@ class ExpoEngine < Grid5000::Campaign::Engine
           ### we pass as a parameter an array of environments
           env = execute_with_hooks(:deploy!, envs) do |env|
             env[:nodes]= env[:deployment]['result'].reject{ |k,v|
-              v['state'] != 'OK'
-            }.keys.sort
+                         v['state'] != 'OK'
+                         }.keys.sort
+          ### Deletes the resources from the Resource Set that had problems in the deployment fase ####
+          ### Fixme need to fix this seems not to work
+            #$all.delete_if { |resource| unless env[:nodes].include? resource.name }
+       
+
+            logger.info "putting the result of the environment"
+            logger.info env  
           end # :deploy!
       end
       
