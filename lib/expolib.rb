@@ -1,5 +1,18 @@
 require 'shellwords'
 ## Two treat cmdline 
+
+### This modification of the class String 
+## Has to be outsite the module Expo, otherwise 
+## it conflits with the method kind_of? and its derivates
+class String
+  #This fuction open a file an dumps the content of a variable in it.
+  def to_file ( file_name )
+   File.open(file_name, 'w') do |file| file.puts self end
+  end
+end
+
+
+
 module Expo
 
 
@@ -35,12 +48,6 @@ class TaskResult < Hash
   
 end
 
-class String
-  ## This fuction open a file an dumps the content of a variable in it.
-  def to_file ( file_name )
-    File.open(file_name, 'w') do |file| file.puts self end
-  end
-end
 
 ########## Logging ###########################
 
