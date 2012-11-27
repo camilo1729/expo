@@ -293,7 +293,7 @@ module Grid5000
         end
 
         # Do not allow direct modification of defaults after initialization.
-        # Users should only change the <tt>env</tt> hash that is passed to every hook, if needed.
+        # Users should only change the<tt>env</tt> hash that is passed to every hook, if needed.
         self.class.defaults.freeze
 
         @connection = connection

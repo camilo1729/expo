@@ -41,6 +41,7 @@ class ExpoEngine < Grid5000::Campaign::Engine
     @mutex = Mutex.new
     @resources_expo = {}
     @res
+    @nodes_deployed = []
   end
   
 
@@ -95,7 +96,7 @@ class ExpoEngine < Grid5000::Campaign::Engine
 
     env.each{ |site_env|
     
-      logger.info "Nodes: #{site_env[:nodes].inspect}"
+      #logger.info "Nodes: #{site_env[:nodes].inspect}"
       ### Here we measure the time spent in deployment
       #start_time=Time.now()
       logger.info deploy_log_msg+"Deploying #{site_env[:nodes].length} machines in site: #{site_env[:site]}"
@@ -106,6 +107,7 @@ class ExpoEngine < Grid5000::Campaign::Engine
      
     }
     env_par[:parallel_deploy].loop!
+    logger.info "After the loop"
     #logger.info deploy_log_msg+" [#{site_env[:site]}] Deployment Time: #{end_time-start_time}"    
   end
 
@@ -133,11 +135,37 @@ class ExpoEngine < Grid5000::Campaign::Engine
     #      end
     #end
     
-    #logger.debug self.inspect
-    #logger.info self
-
     change_dir do
 # I separate the deployment part from the submission part.
+# First if the deployment is defined we do as g5k-campaign
+    unless env[:environment].nil?
+          ### Default user management root
+          $ssh_user="root"
+          env = execute_with_hooks(:reserve!, env) do |env|
+            env[:nodes] = env[:job]['assigned_nodes']
+
+            env = execute_with_hooks(:deploy!, env) do |env|
+              env[:nodes] = env[:deployment]['result'].reject{ |k,v|
+                v['state'] != 'OK'
+              }.keys.sort
+
+              synchronize {
+                nodes.push(env[:nodes]).flatten!
+              }
+            
+          if defined? env[:job]['resources_by_type']['vlans'][0]
+         # I have to redifined the resource Set.
+            $all.each do |node|
+            node.name = 
+              "#{node.name.split('.')[0]}-kavlan-#{env[:job]['resources_by_type']['vlans'][0]}.#{node.properties[:site]}.grid5000.fr"
+            end
+          end
+          end#deploy!
+         end#reserv!
+      end# unless environment
+      
+            
+
 
 ### Timing the reservation part
       start_reserve=Time::now()
@@ -160,25 +188,45 @@ class ExpoEngine < Grid5000::Campaign::Engine
 
 ### Timing deployment part
       start_deploy=Time::now()
-      
       unless env[:environment].nil?
           ### Default user management root
           $ssh_user="root"
           ### we pass as a parameter an array of environments
+          ### we have to iterate here for a better control of each deployment#
           env = execute_with_hooks(:deploy!, envs) do |env|
+
+          synchronize{
             env[:nodes]= env[:deployment]['result'].reject{ |k,v|
                          v['state'] != 'OK'
                          }.keys.sort
-          ### Deletes the resources from the Resource Set that had problems in the deployment fase ####
+          }
+            data_logger.info "Result of deployment nodes"
+            logger.info "Result of deployment nodes"
+            data_logger.info  env
+            logger.info env
+      
           ### Fixme need to fix this seems not to work
-            #$all.delete_if { |resource| unless env[:nodes].include? resource.name }
-       
+          synchronize{
+            @nodes_deployed.push(env[:nodes]).flatten!
+            # $all.delete_if { |resource| unless env[:nodes].include? resource.name }
+          }
 
-            logger.info "putting the result of the environment"
-            logger.info env  
+            #logger.info "putting the result of the environment"
+            #logger.info env
+            logger.info "First end deployment"
           end # :deploy!
       end
-      
+      logger.info  "Second end deployment"
+      synchronize{
+      data_logger.info "Nodes succesfully deployed"
+      logger.info "Nodes succesfully deployed"  
+      data_logger.info nodes_deployed
+        logger.info nodes_deployed
+      }
+      ### Deletes the resources from the Resource Set that had problems in the deployment fase ####
+      # $all.delete_if { |resource| 
+       # not nodes_deployed.include?(resource.name)  
+      #}
       end_deploy=Time::now()
       logger.info reserve_log_msg +"Total Time Spent deploying #{end_deploy-start_deploy}"      
 ##########################
