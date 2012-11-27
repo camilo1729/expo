@@ -137,107 +137,64 @@ class ExpoEngine < Grid5000::Campaign::Engine
     
     change_dir do
 # I separate the deployment part from the submission part.
-# First if the deployment is defined we do as g5k-campaign
-    unless env[:environment].nil?
+## if the environment is not defined we do just the reservation part
+
+      if env[:environment].nil?
+### Timing the reservation part
+        start_reserve=Time::now()
+      
+        env = execute_with_hooks(:reserve!,env) do |env|        
+        
+             env[:nodes] = env[:job]['assigned_nodes']
+        
+             synchronize{
+              nodes.push(env[:nodes]).flatten!
+              #envs.push(env)
+              }
+          #env[:nodes]=nodes
+        end # reserve!
+      
+        end_reserve=Time::now()
+        reserve_log_msg ="[ Expo Engine Grid5000 API ] "
+        logger.info reserve_log_msg +"Total Time Spent waiting for resources #{end_reserve-start_reserve} secs"
+###############################
+      else#if the deployment is defined we do as g5k-campaign
+          ### Timing deployment part
+          start_deploy=Time::now()  
           ### Default user management root
           $ssh_user="root"
           env = execute_with_hooks(:reserve!, env) do |env|
-            env[:nodes] = env[:job]['assigned_nodes']
+          
+                env[:nodes] = env[:job]['assigned_nodes']
 
-            env = execute_with_hooks(:deploy!, env) do |env|
-              env[:nodes] = env[:deployment]['result'].reject{ |k,v|
-                v['state'] != 'OK'
-              }.keys.sort
+                env = execute_with_hooks(:deploy!, env) do |env|
+                      env[:nodes] = env[:deployment]['result'].reject{ |k,v|
+                                    v['state'] != 'OK'
+                                    }.keys.sort
 
-              synchronize {
-                nodes.push(env[:nodes]).flatten!
-              }
+                      synchronize { nodes.push(env[:nodes]).flatten! }
             
-          if defined? env[:job]['resources_by_type']['vlans'][0]
-         # I have to redifined the resource Set.
-            $all.each do |node|
-            node.name = 
-              "#{node.name.split('.')[0]}-kavlan-#{env[:job]['resources_by_type']['vlans'][0]}.#{node.properties[:site]}.grid5000.fr"
-            end
-          end
-          end#deploy!
-         end#reserv!
-      end# unless environment
+                      if defined? env[:job]['resources_by_type']['vlans'][0]
+                      # I have to redifined the resource Set.
+                          $all.each do |node|
+                          node.name = 
+                                "#{node.name.split('.')[0]}-kavlan-#{env[:job]['resources_by_type']['vlans'][0]}.#{node.properties[:site]}.grid5000.fr"
+                          end
+                      end
+                end#deploy!
+          end#reserv!
+        end_deploy=Time::now()
+        logger.info reserve_log_msg +"Total Time Spent deploying #{end_deploy-start_deploy}" 
+        data_logger.info "Nodes succesfully deployed"
+        data_logger.info nodes
+      end# if  environment
       
-            
-
-
-### Timing the reservation part
-      start_reserve=Time::now()
-      
-      env = execute_with_hooks(:reserve!,env) do |env|        
-        #synchronize{ env[:nodes].push(env[:job]['assigned_nodes']).flatten! }
-        env[:nodes] = env[:job]['assigned_nodes']
-        
-        synchronize{
-          nodes.push(env[:nodes]).flatten!
-          envs.push(env)
-        }
-        #env[:nodes]=nodes
-      end # reserve!
-      
-      end_reserve=Time::now()
-      reserve_log_msg ="[ Expo Engine Grid5000 API ] "
-      logger.info reserve_log_msg +"Total Time Spent waiting for resources #{end_reserve-start_reserve} secs"
-###############################
-
-### Timing deployment part
-      start_deploy=Time::now()
-      unless env[:environment].nil?
-          ### Default user management root
-          $ssh_user="root"
-          ### we pass as a parameter an array of environments
-          ### we have to iterate here for a better control of each deployment#
-          env = execute_with_hooks(:deploy!, envs) do |env|
-
-          synchronize{
-            env[:nodes]= env[:deployment]['result'].reject{ |k,v|
-                         v['state'] != 'OK'
-                         }.keys.sort
-          }
-            data_logger.info "Result of deployment nodes"
-            logger.info "Result of deployment nodes"
-            data_logger.info  env
-            logger.info env
-      
-          ### Fixme need to fix this seems not to work
-          synchronize{
-            @nodes_deployed.push(env[:nodes]).flatten!
-            # $all.delete_if { |resource| unless env[:nodes].include? resource.name }
-          }
-
-            #logger.info "putting the result of the environment"
-            #logger.info env
-            logger.info "First end deployment"
-          end # :deploy!
-      end
-      logger.info  "Second end deployment"
-      synchronize{
-      data_logger.info "Nodes succesfully deployed"
-      logger.info "Nodes succesfully deployed"  
-      data_logger.info nodes_deployed
-        logger.info nodes_deployed
-      }
       ### Deletes the resources from the Resource Set that had problems in the deployment fase ####
       # $all.delete_if { |resource| 
        # not nodes_deployed.include?(resource.name)  
       #}
-      end_deploy=Time::now()
-      logger.info reserve_log_msg +"Total Time Spent deploying #{end_deploy-start_deploy}"      
-##########################
       
-      if defined? env[:job]['resources_by_type']['vlans'][0]
-         # I have to redifined the resource Set.
-          $all.each do |node|
-          node.name = 
-          "#{node.name.split('.')[0]}-kavlan-#{env[:job]['resources_by_type']['vlans'][0]}.#{node.properties[:site]}.grid5000.fr"
-        end
-      end
+##########################
                   
     end #change_dir
     #nodes
