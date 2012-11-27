@@ -31,7 +31,7 @@ class ExpoEngine < Grid5000::Campaign::Engine
   set :logger, $logger
   set :data_logger, $data_logger
    
-  ## I'm rewriting this method otherwise I cannot load the Class again because the defaults get frozen.
+## I'm rewriting this method otherwise I cannot load the Class again because the defaults get frozen.
   def initialize(connection)
     @site=["grenoble"]
     @resources=["nodes=1"]
@@ -82,36 +82,11 @@ class ExpoEngine < Grid5000::Campaign::Engine
     env[:parallel_reserve].loop!
     # construct $all ResourceSet        
     self.extract_resources_new(@resources_expo)
-    #logger.info "Printing $all"
-    #logger.info $all
+
     env
   end
 
-  on :deploy! do | env, block|
-
-    deploy_log_msg ="[ Expo Engine Grid5000 API ] "
-    logger.info deploy_log_msg +"Deploying Environments"
-    env_par=env.first
-    env_par[:parallel_deploy] = parallel(:ignore_thread_exceptions => true)
-
-    env.each{ |site_env|
-    
-      #logger.info "Nodes: #{site_env[:nodes].inspect}"
-      ### Here we measure the time spent in deployment
-      #start_time=Time.now()
-      logger.info deploy_log_msg+"Deploying #{site_env[:nodes].length} machines in site: #{site_env[:site]}"
-      env_par[:parallel_deploy].add(site_env) do |env|
-        env_2=deploy!(env, &block)               
-      end
-      #end_time = Time.now()
-     
-    }
-    env_par[:parallel_deploy].loop!
-    logger.info "After the loop"
-    #logger.info deploy_log_msg+" [#{site_env[:site]}] Deployment Time: #{end_time-start_time}"    
-  end
-
-# rewriting the run code because the default behavior deploys an evironment 
+  # rewriting the run code because the default behavior deploys an evironment 
 # and Expo does not like that, and also to finally construct the resource set.
 
   def run!
@@ -124,7 +99,7 @@ class ExpoEngine < Grid5000::Campaign::Engine
     env[:walltime]=@walltime
     env[:resources]=@resources
     envs=[]
-    #env[:nodes]=[]
+    
     nodes = []
     ## I will comment this lines because I'm working in interactive mode I dont want that my session
     ## will be canceld because of Ctrl+C.
@@ -138,7 +113,7 @@ class ExpoEngine < Grid5000::Campaign::Engine
     change_dir do
 # I separate the deployment part from the submission part.
 ## if the environment is not defined we do just the reservation part
-
+      reserve_log_msg ="[ Expo Engine Grid5000 API ] "
       if env[:environment].nil?
 ### Timing the reservation part
         start_reserve=Time::now()
@@ -155,9 +130,8 @@ class ExpoEngine < Grid5000::Campaign::Engine
         end # reserve!
       
         end_reserve=Time::now()
-        reserve_log_msg ="[ Expo Engine Grid5000 API ] "
         logger.info reserve_log_msg +"Total Time Spent waiting for resources #{end_reserve-start_reserve} secs"
-###############################
+        ###############################
       else#if the deployment is defined we do as g5k-campaign
           ### Timing deployment part
           start_deploy=Time::now()  
@@ -279,8 +253,6 @@ def convert_to_resource(job, site)
   }
   clusters_hash
 end
-
-
 
 def extract_resources_new(result)
   result.each { |key,value|
