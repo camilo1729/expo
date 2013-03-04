@@ -1,6 +1,9 @@
 ### experimental DSL
 require './expectrl'
 require './cmdctrl'
+require './taktuk'
+
+@variables={}
 
 def run(command)
 
@@ -12,6 +15,17 @@ def run(command)
 
 end
 
+def run_remote(command)
+  raise "user is not defined" if @variables[:user].nil?
+  raise "hosts is not defined" if @variables[:hosts].nil?
+
+  options = {:connector => 'ssh',:login => @variables[:user]}
+  hosts=@variables[:hosts]
+  cmd_taktuk=TakTuk::TakTuk.new(hosts,options)
+  cmd_taktuk.broadcast_exec[command]
+  cmd_taktuk.run!
+end
+
 
 def task(name, options={}, &block)
 
@@ -19,3 +33,9 @@ def task(name, options={}, &block)
   block.call
 
 end
+
+
+def set(name, value)
+  @variables[name.to_sym]=value
+end
+

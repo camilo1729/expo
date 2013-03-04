@@ -12,7 +12,7 @@ class Command
   end
 
   def run
-    @stdin,@stdout,@stderr,@thread_p= Open3.popen3(@cmd)
+    @stdin,@stdout,@stderr,@thread_p = Open3.popen3(@cmd)
     @pid = @thread_p[:pid] 
     #puts "@pid: #{@pid} | thread: #{thread_p[:pid]}"
   end
