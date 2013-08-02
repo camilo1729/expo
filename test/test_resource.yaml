@@ -1,0 +1,63 @@
+--- !ruby/object:ResourceSet 
+properties: {}
+
+resource_files: {}
+
+resources: 
+- !ruby/object:ResourceSet 
+  properties: 
+    :site: grenoble
+    :gateway: frontend.grenoble.grid5000.fr
+    :gw_ssh_user: "cruizsanabria"
+    :ssh_user: "cruizsanabria"
+    :alias: edel
+    :name: ExpoEngine
+    :id: 1438599
+  resource_files: {}
+
+  resources: 
+  - !ruby/object:Resource 
+    properties: 
+      :site: grenoble
+      :gateway: frontend.grenoble.grid5000.fr
+      :name: edel-50.grenoble.grid5000.fr
+      :ssh_user: "cruizsanabria"
+      :gw_ssh_user: "cruizsanabria"
+    type: :node
+  - !ruby/object:Resource 
+    properties: 
+      :site: grenoble
+      :gateway: frontend.grenoble.grid5000.fr
+      :name: edel-51.grenoble.grid5000.fr
+      :ssh_user: "cruizsanabria"
+      :gw_ssh_user: "cruizsanabria"
+    type: :node
+  type: :resource_set
+- !ruby/object:ResourceSet 
+  properties: 
+    :site: lyon
+    :gateway: frontend.lyon.grid5000.fr
+    :gw_ssh_user: "cruizsanabria"
+    :ssh_user: "cruizsanabria"
+    :alias: taurus
+    :name: ExpoEngine
+    :id: 1438599
+  resource_files: {}
+
+  resources: 
+  - !ruby/object:Resource 
+    properties: 
+      :site: lyon
+      :gateway: frontend.lyon.grid5000.fr
+      :name: taurus-50.lyon.grid5000.fr
+      :ssh_user: "cruizsanabria"
+    type: :node
+  - !ruby/object:Resource 
+    properties: 
+      :site: grenoble
+      :gateway: frontend.lyon.grid5000.fr
+      :name: taurus-51.lyon.grid5000.fr
+      :ssh_user: "cruizsanabria"
+    type: :node
+  type: :resource_set
+type: :resource_set
