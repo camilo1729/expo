@@ -1,4 +1,5 @@
-require './execute'
+require 'execute'
+require 'resourceset'
 
 module TakTuk
   class Aggregator
@@ -317,6 +318,11 @@ module TakTuk
       elsif @hostlist.is_a?(String)
         ret << '-f'
         ret << @hostlist
+      elsif @hostlist.is_a?(ResourceSet)
+        #ret << ''
+        #ret << '-['
+        ret += @hostlist.make_taktuk_command.split(" ")
+        #ret << ']'
       end
       ret
     end
@@ -418,6 +424,7 @@ module TakTuk
 
       @exec = Execute[@binary,*@args].run!
       @status, @stdout, @stderr = @exec.wait
+      puts @stderr
 
       unless @status.success?
         @curthread = nil
@@ -434,8 +441,13 @@ module TakTuk
       end
 
       @curthread = nil
-
-      results
+      ## putting results plus time of execution
+      main_result={:cmd=> @exec.command,
+                   :start_time=> @exec.start_time,
+                   :end_time=> @exec.end_time,
+                   :run_time=> @exec.run_time,
+        :results => results}
+      main_result
     end
 
     def kill!()
@@ -461,6 +473,7 @@ module TakTuk
       self
     end
 
+    
     def method_missing(meth,*args)
       @commands << (meth.to_s.gsub(/_/,' ').strip.downcase)
       args.each do |arg|

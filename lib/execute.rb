@@ -1,6 +1,8 @@
 # To be used as you're using Open3.popen3 in ruby 1.9.2
 class Execute
   attr_reader :command, :exec_pid, :stdout, :stderr, :status
+  ### To measure time of execution
+  attr_reader :start_time, :end_time
 
   def initialize(*cmd)
     @command = *cmd
@@ -39,6 +41,7 @@ class Execute
       end
       exec(*@command)
     }
+    @start_time = Time.now
 
     @child_io.each { |io| io.close unless io.closed? }
     result = [@exec_pid, *@parent_io]
@@ -86,6 +89,7 @@ class Execute
         @parent_io = nil
         @exec_pid = nil
       end
+      @end_time = Time.now
       [ @status, @stdout, @stderr ]
     end
   end
@@ -130,5 +134,9 @@ class Execute
       end
     end
     result
+  end
+  
+  def run_time
+    return @end_time - @start_time
   end
 end

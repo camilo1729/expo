@@ -3,7 +3,7 @@
 require 'open3'
 class Command
 
-  attr_reader :stdout,:stdin,:stderr
+  attr_reader :stdout,:stdin,:stderr,:cmd
 
   def initialize(cmd=nil,&block)
     @cmd = cmd
