@@ -21,9 +21,9 @@ end
 
 class ExpoEngine < Grid5000::Campaign::Engine
   #include Expo
-  attr_accessor :environment, :site, :resources, :walltime, :name 
+  attr_accessor :environment, :site, :resources, :resources_exp,:walltime, :name 
   ##to ease the definition of the experiment
-  @resources_expo = {}   
+  @resources_exp = []   
   
   set :no_cleanup, true # setting this as the normal used is for interacting
   set :environment, nil # The enviroment is by default nil because if nothing is specifyed there is no deployment.
@@ -40,7 +40,7 @@ class ExpoEngine < Grid5000::Campaign::Engine
     @name = "Expo_Experiment"
     @connection = api_connect
     @mutex = Mutex.new
-    @resources_expo = {}
+    @resources_exp = []
     @res
     @nodes_deployed = []
     @gateway = gateway
@@ -75,9 +75,10 @@ class ExpoEngine < Grid5000::Campaign::Engine
       env[:parallel_reserve].add(new_env) do |env|
         #sleep 1
         env_2=reserve!(env, &block)
-        subhash = self.convert_to_resource(env_2[:job])
+        #subhash = self.convert_to_resource(env_2[:job])
         reserv.push(env_2)
-        synchronize { @resources_expo.merge!(subhash) }
+        #synchronize { @resources_expo.merge!(subhash) }
+        synchronize { self.convert_to_resource(env_2[:job],env[:site])}
         #envs.push(new_env)
         #env_2[:nodes].push(env_2[:job]['assigned_nodes']).flatten! 
         #synchronize{ envs.push(env_2) }
@@ -89,7 +90,7 @@ class ExpoEngine < Grid5000::Campaign::Engine
     puts "Creating resourceSet"
     #@resources_expo
     #puts @resources_expo.inspect
-    extract_resources_new(@resources_expo)
+    extract_resources_new(@resources_exp)
 
     reserv
   end
@@ -237,77 +238,168 @@ class ExpoEngine < Grid5000::Campaign::Engine
   end
 
   def extract_resources_new(resources)
-    puts "Extracting resources "
-    temp_resourceset=ResourceSet::new
-    temp_resourceset.properties[:gateway]=@gateway
+    exp_resource_set = ResourceSet::new
+    exp_resource_set.properties[:gateway ] = @gateway
     resources.each { |site|
+      puts "putting site: #{site[:name]} into resource Set"
       site_set = ResourceSet::new
-      site_set.properties[:id] = 
-    result.each { |key,value|
-      # { "cluster" => {...} }                                                                                    
-      cluster = key
-      value.each { |key,value|
-        # { "job_id" => {...} }                                                                
-        jobid = key
-        resource_set = ResourceSet::new
-        resource_set.properties[:id] = jobid
-        resource_set.properties[:alias] = cluster
-        ### need to manage the definiion of the users to access the machine
-        if @environment.nil? then
-          resource_set.properties[:ssh_user] = "cruizsanabria"
-        else
-          resource_set.properties[:ssh_user] = "root"
-        end
-
-        resource_set.properties[:gw_ssh_user] =  "cruizsanabria"
-        value.each { |key,value|
-          # { "name" => "...", "gateway" => "...", "nodes" => "...",
-          case key
-          when "name"
-            resource_set.name = value
-            #when "gateway"
-            #  resource_set.properties[:gateway] = value
-          when "nodes"
-            value.each { |node|
-              resource = Resource::new(:node, nil, node)
-              # here we must construct gateway's name in place   
-              gw = /\w*\.(\w+)\.\w*/.match(node)
-              gateway = "frontend."+gw[1]+".grid5000.fr"
-              resource.properties[:site] = gw[1]
-              resource_set.properties[:site] = gw[1]
-              resource.properties[:gateway] = gateway
-              resource_set.properties[:gateway] = gateway
-              resource_set.push(resource)
-            }
-          end
+      site_set.properties[:id] = site[:jobs].first ## Fix-me
+      site_set.properties[:name] = site[:name]
+      gateway = "frontend.#{site[:name]}.grid5000.fr"
+      site_set.properties[:gateway] = gateway
+      site_set.properties[:ssh_user] = "cruizsanabria"
+      site[:clusters].each{ |cluster|
+        cluster_set = ResourceSet::new
+        cluster_set.properties[:name] = cluster[:name]
+        cluster_set.properties[:gateway] = gateway
+        cluster_set.properties[:ssh_user] ="cruizsanabria"
+        cluster_set.properties[:gw_ssh_user] ="cruizsanabria"
+        cluster[:nodes].each{ |node|
+          resource = Resource::new(:node, nil, node[:name])
+          resource.properties[:gateway] = gateway
+          #resource
+          cluster_set.push(resource)
         }
-        # puts resource_set.inspect
-        
-        temp_resourceset.push(resource_set)
+        site_set.push(cluster_set)
       }
+      exp_resource_set.push(site_set)
     }
-    ## putting all the resources in to the class experiment
-    Experiment.instance.add_resources(temp_resourceset)
+    Experiment.instance.add_resources(exp_resource_set)
   end
+          
+  #             gw = /\w*\.(\w+)\.\w*/.match(node)
+  #             gateway = "frontend."+gw[1]+".grid5000.fr"
+  #             resource.properties[:site] = gw[1]
+  #             resource_set.properties[:site] = gw[1]
+  #             resource.properties[:gateway] = gateway
+  #             resource_set.properties[:gateway] = gateway
+  #             resource_set.push(resource)
+  #       
+  # def extract_resources_new(resources)
+  #   puts "Extracting resources "
+  #   temp_resourceset=ResourceSet::new
+  #   temp_resourceset.properties[:gateway]=@gateway
+  #   resources.each { |site|
+  #     site_set = ResourceSet::new
+  #     site_set.properties[:id] = 
+  #   result.each { |key,value|
+  #     # { "cluster" => {...} }                                                                                    
+  #     cluster = key
+  #     value.each { |key,value|
+  #       # { "job_id" => {...} }                                                                
+  #       jobid = key
+  #       resource_set = ResourceSet::new
+  #       resource_set.properties[:id] = jobid
+  #       resource_set.properties[:alias] = cluster
+  #       ### need to manage the definiion of the users to access the machine
+  #       if @environment.nil? then
+  #         resource_set.properties[:ssh_user] = "cruizsanabria"
+  #       else
+  #         resource_set.properties[:ssh_user] = "root"
+  #       end
 
-def convert_to_resource(job,site)
+  #       resource_set.properties[:gw_ssh_user] =  "cruizsanabria"
+  #       value.each { |key,value|
+  #         # { "name" => "...", "gateway" => "...", "nodes" => "...",
+  #         case key
+  #         when "name"
+  #           resource_set.name = value
+  #           #when "gateway"
+  #           #  resource_set.properties[:gateway] = value
+  #         when "nodes"
+  #           value.each { |node|
+  #             resource = Resource::new(:node, nil, node)
+  #             # here we must construct gateway's name in place   
+  #             gw = /\w*\.(\w+)\.\w*/.match(node)
+  #             gateway = "frontend."+gw[1]+".grid5000.fr"
+  #             resource.properties[:site] = gw[1]
+  #             resource_set.properties[:site] = gw[1]
+  #             resource.properties[:gateway] = gateway
+  #             resource_set.properties[:gateway] = gateway
+  #             resource_set.push(resource)
+  #           }
+  #         end
+  #       }
+  #       # puts resource_set.inspect
+        
+  #       temp_resourceset.push(resource_set)
+  #     }
+  #   }
+  #   ## putting all the resources in to the class experiment
+  #     
+  #   end
 
-  job_name = job['name']
-  job_nodes = job['assigned_nodes']
-  # job_id will be the same for all the clusters of one site                                                                            
+  def convert_to_resource(job,site_name)
+
+    # site hash
+    # site_hash = { :name => site,
+    #   :jobs => [] intergers
+    #   :clusters => []}
   
-  job_id = job['uid']
+    # first I have to verify if the site already exist in the array resources
+    # @resources_exp = []
+    job_name = job['name']
+    job_nodes = job['assigned_nodes']
+    puts "#{job_nodes.inspect}"
+    # job_id will be the same for all the clusters of one site                                                                            
+  
+    job_id = job['uid']
 
-  clusters = []
+    clusters = []
 
-  regexp = /(\w*)-\w*/
-  job_nodes.each { |node|
-    cl = regexp.match(node)
-    clusters.push(cl[1])
-  }
+    regexp = /(\w*)-\w*/
+    job_nodes.each { |node|
+      cl = regexp.match(node)
+      clusters.push(cl[1])
+    }
 
-  clusters.uniq!
+    clusters.uniq!
 
+    clusters_struct = []
+    clusters.each{ |cluster|
+      cluster_hash = {}
+      cluster_hash[:name] = cluster
+      cluster_hash[:nodes] = []
+      job_nodes.each { |node|
+        node_hash = {}
+        if node =~ /#{cluster}\w*/ then
+          ## the finest granularity is the node, a node belongs to a particular job
+          ## in a cluster we could have different jobs
+          node_hash[:name] = node
+          node_hash[:job] = job['uid']
+          cluster_hash[:nodes].push(node_hash)
+        end
+      }
+
+      clusters_struct.push(cluster_hash)
+    }
+
+    index_site = @resources_exp.index{ |site| site[:name] == site_name }
+    
+    if index_site.nil? then ## new site in the resources
+      site_hash = {:jobs =>[]}
+      site_hash[:name] = site_name
+      site_hash[:jobs].push(job['uid'])
+      site_hash[:clusters] = clusters_struct
+      @resources_exp.push(site_hash)
+    else
+      ## we have to get the site form the resource_exp
+      ## res is the site that already is on the resources_exp
+      @resources_exp[index_site][:jobs].push(job['uid'])
+        
+      clusters_struct.each{ |cluster_hash|
+        index_cluster = @resources_exp[index_site][:clusters].index { |cluster| cluster[:name] == cluster_hash[:name] }
+        if index_cluster.nil? then ## there is no such a cluster we have to add it
+          @resources_exp[index_site][:clusters].push(cluster_hash)
+        else
+          @resources_exp[index_site][:clusters][index_cluster][:nodes]+= cluster_hash[:nodes]
+        end
+      }
+
+          
+    end
+  end                        
+end
   # will contain hash like         
   # {                                               
   #   "paradent" => {                                                                                                                    
@@ -318,39 +410,39 @@ def convert_to_resource(job,site)
   #   }                                                                                                                                   
   #   "parapluie" => {                                                                                                                    
   #     345212 => ...                                                                                                                     
-  site_resources = {}
-  site_resources[:clusters] = []
-  clusters.each { |cluster|
-    #first sub-hash                                                                                                                       
-    uid_hash = {}
-    #second sub-hash                                                                                                                      
-    nodes_hash = {}
-    nodes_hash["name"] = job_name
-    job_nodes.each { |node|
-      #find out the cluster to which this node belongs                                                                                    
-      if node =~ /#{cluster}\w*/
-        #if there are already nodes in this cluster - add in array                                                                        
-        if nodes_hash.has_key?("nodes")
-          nodes_hash["nodes"].push(node)
-        #if this node is the first in this cluster - create an array                                                                      
-        #of nodes with this node and add the array to hash                                                                                
-        else
-          nodes_array = []
-          nodes_array.push(node)
-          nodes_hash["nodes"] = nodes_array
-        end
-      end
-    }
-    uid_hash[job_id] = nodes_hash
-    if !(clusters_hash.has_key?(cluster))
-      clusters_hash[cluster] = uid_hash
-    end
-  }
-  site_resources={:site => site,:clusters=>clusters_hash}
-end
+  # site_resources = {}
+  # site_resources[:clusters] = []
+  # clusters.each { |cluster|
+  #   #first sub-hash                                                                                                                       
+  #   uid_hash = {}
+  #   #second sub-hash                                                                                                                      
+  #   nodes_hash = {}
+  #   nodes_hash["name"] = job_name
+  #   job_nodes.each { |node|
+  #     #find out the cluster to which this node belongs                                                                                    
+  #     if node =~ /#{cluster}\w*/
+  #       #if there are already nodes in this cluster - add in array                                                                        
+  #       if nodes_hash.has_key?("nodes")
+  #         nodes_hash["nodes"].push(node)
+  #       #if this node is the first in this cluster - create an array                                                                      
+  #       #of nodes with this node and add the array to hash                                                                                
+  #       else
+  #         nodes_array = []
+  #         nodes_array.push(node)
+  #         nodes_hash["nodes"] = nodes_array
+  #       end
+  #     end
+  #   }
+  #   uid_hash[job_id] = nodes_hash
+  #   if !(clusters_hash.has_key?(cluster))
+  #     clusters_hash[cluster] = uid_hash
+  #   end
+  # }
+  # site_resources={:site => site,:clusters=>clusters_hash}
+  #   end
 
   
-end
+  #end
 
 #---------------Helper routines defined in the Expo module -----------
 
