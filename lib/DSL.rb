@@ -30,13 +30,13 @@ def run(command)
   if hosts.is_a?(ResourceSet) then
     ## this doesn't work when using with root
     cmd_taktuk=TakTuk::TakTuk.new(hosts,options)
-    cmd_taktuk.broadcast_exec[command]
+    cmd_taktuk.broadcast_exec[command]   ## the normal behaviour if we add commands here, they will be executed in parallel.
     #puts "#{cmd_taktuk.to_cmd}"
     @variables[:results] = cmd_taktuk.run!
   elsif hosts.is_a?(String) and @variables[:gateway]
-      Experiment.instance.add_command(command)
-      cmd = CmdCtrlSSH.new("",hosts,@variables[:user],@variables[:gateway])
-      cmd.run(command)
+    Experiment.instance.add_command(command)
+    cmd = CmdCtrlSSH.new("",hosts,@variables[:user],@variables[:gateway])
+    @variables[:results] = cmd.run(command)
   end
   
   ## This function run has to return the number of commands run succesfully
@@ -77,7 +77,7 @@ def put(data, path, options={})
       Experiment.instance.add_command(command)
       cmd = CmdCtrlSSH.new("",@variables[:gateway],@variables[:user],nil)
       cmd.run(command)
-    else ( hosts.is_a?(String) and @variables[:gateway].nil?)
+    else ( hosts.is_a?(String) and @variables[:gateway].nil?) ## Fix this, there is no a clean manage of the gateway
       ## This is one just one host is passed as a parameter
       command = "scp -r #{data} #{@variables[:user]}@#{hosts}:/#{path}"
       Experiment.instance.add_command(command)
