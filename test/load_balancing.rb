@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 ## This is the file used for experimenting with load balancing
 
 # This is the information to get
@@ -279,16 +280,6 @@ processors.each { |site|
   reserv.resources.push(final_str)
 }
 
-# sites.map!{|a| a.downcase}
-#sites[20] = "sophia"
-# reserv.resources = []
-
-# ## In theory sites and cluster are written in the same order.
-# cluster.each{ |c|
-#   ## putting the cluster names in the reservation
-#   #reserv.resources = ["{cluster='suno' or cluster='sol'}/cluster=2/nodes=1"]
-#   reserv.resources.push("{cluster='#{c}'}/nodes=1")
-# }
 
 
 # ## putting the sites names in the reservation.
@@ -297,7 +288,7 @@ processors.each { |site|
 reserv.run!
 ## Transfering tlm archive from the local machine ot the gateway machine
 
-task :transfering_gw, :target => resources.gw do
+task :transfering_gw, :target => resources.gw do ## There is a bug hwne the variable gateway is already defined
   put("/home/cristian/Dev/C++/TLM_2013/tlm_clean_version.tar","/tmp/tlm_test.tar",:method => "scp")
 end
 
@@ -347,14 +338,23 @@ end
 
 ## as There is a NFS per site we need to compile the code for just one node on the site.
 
-sites.uniq.each{ |site|
-  node = resources.select_resource(:site => site).first
-  next if node.name=="ExpoEngine" 
-  puts node.name
-  task :compile_code, :target => node.name, :gateway => "grenoble.g5k" do
-    run("make -C ~/tmp_tlm/TLMME_Cristian/tlm/")  ## I need mpiiiii 
+## second alternative after changing the way resourceset is constructed
+resources.each(:resource_set) { |site|
+  task :clean_code, :target => site.first.name, :gateway => "grenoble.g5k" do
+  run("make -C ~/tmp_tlm/TLMME_Cristian/tlm/")  ## I need mpiiiii 
   end
-}
+}   
+
+
+## This is the old way to do it , now it has changed.
+# sites.uniq.each{ |site|
+#   node = resources.select_resource(:site => site).first
+#   next if node.name=="ExpoEngine" 
+#   puts node.name
+#   task :compile_code, :target => node.name, :gateway => "grenoble.g5k" do
+#     run("make -C ~/tmp_tlm/TLMME_Cristian/tlm/")  ## I need mpiiiii 
+#   end
+# }
 
 
 task :check_bin, :target => resources do 
@@ -364,6 +364,7 @@ end
 
 
 ### Fifth day some results
+
 
 task :execute_code, :target => resources do
   run("cd ~/tmp_tlm/TLMME_Cristian/tlm/;./run 1 1000 52 240 70 matched")    
@@ -395,6 +396,157 @@ task :execute_code, :target => resources do
   run("cd ~/tmp_tlm/TLMME_Cristian/tlm/;./run 1 10000 52 240 70 matched")  
 end  
 
+## To read the time it took
+## I have to create some structures for the results
+
+## time_results
+
+## {:name => [] ## results}
+
+results_sim = {}
+resources.each{ |node|
+  results_sim[node.name.to_sym] = []
+}
+
+res = results
+res[:results][:status].compact!.each{ |k|
+  puts "#{k[:host]} time #{k[:stop_date].to_f-k[:start_date].to_f}"  
+  results_sim[k[:host].to_sym].push(k[:stop_date].to_f -k [:start_date].to_f)
+}
+
+## Test with less time
+
+
+
 task :execute_code, :target => resources do
-  run("cd ~/TLMME_Cristian/tlm/;./run 1 10000 25 86 43 matched")  
+  run("cd ~/tmp_tlm/TLMME_Cristian/tlm/;./run 1 100 52 240 70 matched")  
 end  
+
+task :execute_code, :target => resources do
+  run("cd ~/tmp_tlm/TLMME_Cristian/tlm/;./run 1 100 31 305 160 matched ")  
+end  
+
+
+
+
+## sith day 
+
+## difine the different parameters to run 
+
+# 1 10000 52 240 70 matched
+# 1 2800 47 305 160 matched
+# 1 10000 31 305 160 matched
+# 1 4000 150 100 50 matched
+# 1 10000 38 345 173 matched
+# 1 10000 76 86 43 matched
+# 1 10000 76 172 86 matched
+
+## I will run those simulations with a time of 100 because given the case I could last 7 hours minimun
+
+# modèle réalisé avec des simulations dont la taille mémoire 2*nx*ny*18*8 dépasse la taille de la mémoire cache, 6MB
+
+# 1 10000 73 400 200 matched
+# 1 2800 121 305 160 matched
+# 1 9000 2000 80 43 matched
+# 1 870 137 317 169 matched
+# 1 2817 137 317 169 matched
+# 1 6018 500 240 70 matched
+
+
+## seventh day
+
+## execution of all combinations
+## size smaller than cache size
+params_c1 = [ "200 52 240 70",
+           "480 47 305 160",
+           "200 31 305 160",
+           "800 150 100 50",
+           "200 38 345 173",
+           "200 76 86 43 ",
+           "2000 76 172 86"]
+
+temp = params_c1.map{ |k| k.split(" ")[1..k.length]}
+size_c1 = temp.map{ |p| p.map!{ |y| y.to_i}.inject(:*) }
+
+
+
+results_calibration = {}
+resources.each{ |node|
+  results_calibration[node.name.to_sym] = []
+}
+
+
+## I have to add something to measure the time for each task
+task :calibration, :target => resources do
+  params_c1.each{ |par|
+    run("cd ~/tmp_tlm/TLMME_Cristian/tlm/;./run 1 #{par} matched")
+    puts "Finish parameters #{par}"
+    res = results
+    res[:results][:status].compact!.each{ |k|
+      results_calibration[k[:host].to_sym].push(k[:stop_date].to_f - k[:start_date].to_f)
+    }
+    puts "#{results_calibration.inspect}"
+  }
+end
+  
+
+## This task took 18 minutes with 
+params_c2 = [
+             "1000 73 400 200",
+             "280 121 305 160",
+             "900 2000 80 43",
+             "870 137 317 169",
+             "281 137 317 169",
+             "601 500 240 70"
+            ]
+
+sizes_c2 = 
+task :calibration, :target => resources do
+  params_c2.each{ |par|
+    run("cd ~/tmp_tlm/TLMME_Cristian/tlm/;./run 1 #{par} matched")
+    puts "Finish parameters #{par}"
+    res = results
+    res[:results][:status].compact!.each{ |k|
+      results_calibration[k[:host].to_sym].push(k[:stop_date].to_f - k[:start_date].to_f)
+    }
+    puts "#{results_calibration.inspect}"
+  }
+end
+
+
+File.open("results_calibration_v4.txt",'w+') do |f|
+  f.puts("host param time size")
+  results_calibration.each{ |key,value|
+    value.each_with_index{ |time,index|
+      f.puts("#{key} #{params_c1[index].split(" ").join("-")} #{time} #{size_c1[index]}")
+    }
+  }
+end
+
+
+## 8th day have to test doubling the parameters
+
+params_c1 = [ "400 52 240 70",
+           "1000 47 305 160",
+           "400 31 305 160",
+           "1600 150 100 50",
+           "400 38 345 173",
+           "400 76 86 43 ",
+           "4000 76 172 86"]
+
+## The task started at 11:44 and ended at 12:27 => 41 minutes  
+
+
+## I have to test as well what happens if I put the same time to alll the sets of parameters
+
+
+params_c1 = [ "1000 52 240 70",
+           "1000 47 305 160",
+           "1000 31 305 160",
+           "1000 150 100 50",
+           "1000 38 345 173",
+           "1000 76 86 43 ",
+           "1000 76 172 86"]
+
+
+## In theory this took 33 minutes
