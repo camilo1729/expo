@@ -5,6 +5,7 @@ require 'cmdctrl_ssh' ## for ssh commands
 require 'taktuk'
 
 @variables = {}
+@variables[:results] = []
 # @roles = {}
 
 def run_local(command)
@@ -21,24 +22,31 @@ def run(command)
   ## It uses taktuk as default  
   ## If a reservation is already done we assign those machines as default for hosts
   # run locally is the host is not defined
-  if @variables[:hosts].nil? then 
+  #if @variables[:hosts].nil? then      ---- Testing with thread variables
+  if Thread.current['hosts'].nil? then
     return run_local(command)
   end
-
+  # @variables[:results] = []
   options = {:connector => 'ssh',:login => @variables[:user]}
-  hosts=@variables[:hosts]
+  # hosts=@variables[:hosts]   --- Testing with thread variables
+  hosts = Thread.current['hosts']
   if hosts.is_a?(ResourceSet) then
     ## this doesn't work when using with root
     cmd_taktuk=TakTuk::TakTuk.new(hosts,options)
     cmd_taktuk.broadcast_exec[command]   ## the normal behaviour if we add commands here, they will be executed in parallel.
     #puts "#{cmd_taktuk.to_cmd}"
     @variables[:results] = cmd_taktuk.run!
-  elsif hosts.is_a?(String) and @variables[:gateway]
+  elsif hosts.is_a?(String) #and @variables[:gateway]
     Experiment.instance.add_command(command)
     cmd = CmdCtrlSSH.new("",hosts,@variables[:user],@variables[:gateway])
-    @variables[:results] = cmd.run(command)
+    # @variables[:results] = cmd.run(command)
+    output = cmd.run(command)
+    Thread.current['results'] = output
+    
+    #Thread.current['results'] = cmd.run(command)
   end
   
+  Thread.current['result'] = "OK"
   ## This function run has to return the number of commands run succesfully
   # result_counter = 0
   # ## result_taktuk[:results][:status] is a Taktuk result object
@@ -148,8 +156,36 @@ def task(name, options={}, &block)
     #raise "There is not such a role #{options[:role]}" if in_roles?(:role)
    # @variables[:hosts]=@roles[options[:role].to_sym] 
   # end
+
+
+  ## Now a syncronous management will be introduce
+  ## if aysnchronous is passed as a parameter, the host can be the same
+  ## reinitializing 
+  @variables[:results]
+  mutex = Mutex.new
+  if options[:mode] == "asynchronous" then
+    ## I have to create a thread for each node in the resources
+    task_threads = []
+    @variables[:hosts].each do |node|
+      puts "Creating thread for host: #{node.name}"
+      th_in = Thread.new{
+        Thread.current['hosts'] = node.name
+        block.call
+        mutex.synchronize { @variables[:results] += Thread.current['results']}
+        puts "Finishing task in node #{Thread.current['hosts']}"
+        puts "Results : #{Thread.current['results'].class}"
+      }
+      task_threads.push(th_in)
+    end
   
-  block.call
+    return task_threads
+  else
+    task_th = Thread.new{
+      Thread.current['hosts'] = @variables[:hosts]
+      block.call
+    }
+    return task_th
+  end
 
 end
 

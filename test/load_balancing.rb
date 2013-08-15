@@ -452,6 +452,13 @@ end
 # 1 2817 137 317 169 matched
 # 1 6018 500 240 70 matched
 
+params_c1 = [ "100 52 240 70",
+           "280 47 305 160",
+           "100 31 305 160",
+           "400 150 100 50",
+           "100 38 345 173",
+           "100 76 86 43 ",
+           "1000 76 172 86"]
 
 ## seventh day
 
@@ -514,7 +521,8 @@ task :calibration, :target => resources do
 end
 
 
-File.open("results_calibration_v4.txt",'w+') do |f|
+## !! very important all the files have to have the time normalize
+File.open("results_calibration_same_time.txt",'w+') do |f|
   f.puts("host param time size")
   results_calibration.each{ |key,value|
     value.each_with_index{ |time,index|
@@ -550,3 +558,67 @@ params_c1 = [ "1000 52 240 70",
 
 
 ## In theory this took 33 minutes
+
+## If I use different times I have to divide by the time
+
+
+results_temp = []
+results_fixed = {}
+values.collect{ |p| p.split(" ")[0]}.uniq.each { |u| results_fixed[u.to_sym] = [] }
+
+
+values.each{ |line|
+  temp_host = line.split(" ")[0]
+  param = line.split(" ")[1]
+  results_fixed[temp_host.to_sym].push(line.split(" ")[2].to_f/(param.split("-").shift.to_f)  )
+}  
+
+
+params_c1 = [ "200 52 240 70",
+           "480 47 305 160",
+           "200 31 305 160",
+           "800 150 100 50",
+           "200 38 345 173",
+           "200 76 86 43 ",
+           "2000 76 172 86"]
+
+
+temp = params_c1.map{ |k| k.split(" ")[1..k.length]}
+size_c1 = temp.map{ |p| p.map!{ |y| y.to_i}.inject(:*) }
+
+file_to_write = "results_calibration_v2_fixed.txt"
+File.open(file_to_write,'w+') do |f|
+  f.puts("host param time size")
+  results_calibration.each{ |key,value|
+    value.each_with_index{ |time,index|
+      f.puts("#{key} #{params_c2[index].split(" ").join("-")} #{time.to_f/params_c2[index].split(" ")[0].to_f} #{size_c1[index]}")
+    }
+  }
+end
+
+
+### The previous was to fixed the files generated, we had to divide the time got by the time passed as paramater
+
+## Now I have to try again equal paramaters
+## we will assign the lowest time given by mihai which is 2800
+params_c1 = [ "2800 52 240 70",
+           "2800 47 305 160",
+           "2800 31 305 160",
+           "2800 150 100 50",
+           "2800 38 345 173",
+           "2800 76 86 43 ",
+           "2800 76 172 86"]
+
+
+
+## Now executing the C2 calibration
+
+
+params_c2 = [
+             "200 73 400 200",
+             "200 121 305 160",
+             "200 2000 80 43",
+             "200 137 317 169",
+             "200 137 317 169",
+             "200 500 240 70"
+            ]
