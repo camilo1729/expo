@@ -21,7 +21,7 @@ end
 
 class ExpoEngine < Grid5000::Campaign::Engine
   #include Expo
-  attr_accessor :environment, :site, :resources, :resources_exp,:walltime, :name 
+  attr_accessor :environment, :site, :resources, :resources_exp,:walltime, :name, :jobs 
   ##to ease the definition of the experiment
   @resources_exp = []   
   
@@ -44,6 +44,7 @@ class ExpoEngine < Grid5000::Campaign::Engine
     @res
     @nodes_deployed = []
     @gateway = gateway
+    @jobs = []
   end
   
 
@@ -79,6 +80,7 @@ class ExpoEngine < Grid5000::Campaign::Engine
         reserv.push(env_2)
         #synchronize { @resources_expo.merge!(subhash) }
         synchronize { self.convert_to_resource(env_2[:job],env[:site])}
+        @jobs.push(env_2[:job].uniq)
         #envs.push(new_env)
         #env_2[:nodes].push(env_2[:job]['assigned_nodes']).flatten! 
         #synchronize{ envs.push(env_2) }
@@ -186,8 +188,15 @@ class ExpoEngine < Grid5000::Campaign::Engine
 
 # Redefining cleanup
 
-  def stop!
-    self.cleanup!("finishing")
+  def stop!(job=nil)
+    if job.nil? then
+      self.cleanup!("Finishing")
+      return true
+    end
+    job_hash = @jobs.select { |j| j['uid'] == job}.first
+    puts "Deleting job: #{job_hash['uid']}"
+    #job_hash.delete
+    self.cleanup!("Finish",job_hash)
     ## cleaning up the variable $all
     # $all=ResourceSet::new()
   end
