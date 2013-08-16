@@ -253,7 +253,7 @@ require 'g5k_api'
 require 'DSL'
 
 set :user, "cruizsanabria"
-#set :gateway, "grenoble.g5k"
+set :gateway, "grenoble.g5k"
 
 reserv = ExpoEngine::new("grenoble.g5k")
 
@@ -276,9 +276,15 @@ processors.each { |site|
     temp_str += "cluster='#{cluster_name}' "
     temp_str += "or " unless index == site[:clusters].length - 1
   }
-  final_str = "{#{temp_str}}/cluster=#{site[:clusters].length}/nodes=1"
+  final_str = "{#{temp_str}}/cluster=#{site[:clusters].length}/nodes=3"
   reserv.resources.push(final_str)
 }
+
+## The problem with this reservation is that 
+# there is a big heterogenity between clusters of the same site 
+# Therefore is better to submit jobs per cluster, 
+# in order to free resources.
+
 
 
 
@@ -622,3 +628,43 @@ params_c2 = [
              "200 137 317 169",
              "200 500 240 70"
             ]
+
+
+## 9th, test with asyncronous tasks
+
+
+task :test, :target =>resources, :gateway => "grenoble.g5k",:mode => "asynchronous" do
+  run("hostname")
+end
+
+
+## Now I will used this parameters to execute the simullations
+
+params_c1 = [ "1000 52 240 70",
+           "1000 47 305 160",
+           "1000 31 305 160",
+           "1000 150 100 50",
+           "1000 38 345 173",
+           "1000 76 86 43 ",
+           "1000 76 172 86"]
+
+
+
+## I have to add something to measure the time for each task
+
+set :gateway, "grenoble.g5k"
+
+
+task :test, :target =>resources, :gateway => "grenoble.g5k",:mode => "asynchronous", :type => :cluster do
+  params_c1.each{ |par|
+    run("cd ~/tmp_tlm/TLMME_Cristian/tlm/;./run 1 #{par} matched")
+    puts "Finish parameters #{par}"
+  }
+end
+  
+
+
+res.each{ |key, value|
+
+  
+}

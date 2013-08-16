@@ -254,13 +254,16 @@ class ExpoEngine < Grid5000::Campaign::Engine
       site_set = ResourceSet::new
       site_set.properties[:id] = site[:jobs].first ## Fix-me
       site_set.properties[:name] = site[:name]
+      site_set.properties[:type] = :site
       gateway = "frontend.#{site[:name]}.grid5000.fr"
-      site_set.properties[:gateway] = gateway
+      site_set.properties[:gateway] = gateway ## Fix-me gatway definition will depend on the context
+      
       site_set.properties[:ssh_user] = "cruizsanabria"
       site[:clusters].each{ |cluster|
         cluster_set = ResourceSet::new
         cluster_set.properties[:name] = cluster[:name]
         cluster_set.properties[:gateway] = gateway
+        cluster_set.properties[:type] = :cluster
         cluster_set.properties[:ssh_user] ="cruizsanabria"
         cluster_set.properties[:gw_ssh_user] ="cruizsanabria"
         cluster[:nodes].each{ |node|

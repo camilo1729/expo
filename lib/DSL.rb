@@ -22,24 +22,35 @@ def run(command)
   ## It uses taktuk as default  
   ## If a reservation is already done we assign those machines as default for hosts
   # run locally is the host is not defined
-  #if @variables[:hosts].nil? then      ---- Testing with thread variables
   if Thread.current['hosts'].nil? then
     return run_local(command)
   end
   # @variables[:results] = []
   options = {:connector => 'ssh',:login => @variables[:user]}
-  # hosts=@variables[:hosts]   --- Testing with thread variables
+
   hosts = Thread.current['hosts']
   if hosts.is_a?(ResourceSet) then
+    ## Here, as the Expo server is on the user's machine, each resource set has to have the gateway used to enter Grid5000
+    ## checking if the resource set has the gateway defined ---- Fix-me we are not checking
+    hosts.properties[:gateway] = @variables[:gateway]
     ## this doesn't work when using with root
     cmd_taktuk=TakTuk::TakTuk.new(hosts,options)
     cmd_taktuk.broadcast_exec[command]   ## the normal behaviour if we add commands here, they will be executed in parallel.
-    #puts "#{cmd_taktuk.to_cmd}"
-    @variables[:results] = cmd_taktuk.run!
-  elsif hosts.is_a?(String) #and @variables[:gateway]
+    Thread.current['results'].push(cmd_taktuk.run!)
+
+  elsif hosts.is_a?(String) or hosts.is_a?(Resource)#and @variables[:gateway]
+
     Experiment.instance.add_command(command)
-    cmd = CmdCtrlSSH.new("",hosts,@variables[:user],@variables[:gateway])
-    # @variables[:results] = cmd.run(command)
+    
+    hosts.is_a?(Resource) ? hosts_end = hosts.name : hosts_end = hosts
+    cmd = CmdCtrlSSH.new("",hosts_end,@variables[:user],@variables[:gateway])
+
+    # if hosts.is_a?(Resource) then
+    #   cmd = CmdCtrlSSH.new("",hosts.name,@variables[:user],@variables[:gateway])
+    # else
+    #   cmd = CmdCtrlSSH.new("",hosts,@variables[:user],@variables[:gateway])
+    # end
+    @variables[:results] = cmd.run(command)
     cmd.run(command)
 
     Thread.current['results'].push({
@@ -148,7 +159,7 @@ def task(name, options={}, &block)
     # puts @roles.first[0] deactivating temporally roles
     # @variables[:hosts]=@roles.first[1]
   
-  @variables[:hosts] = options[:target] if options.has_key?(:target)
+  @variables[:hosts] = options[:target].copy if options.has_key?(:target)
 
   @variables[:gateway] = options[:gateway] if options.has_key?(:gateway)
 
@@ -163,26 +174,29 @@ def task(name, options={}, &block)
   # end
 
 
+  ## I have to define an option to the granularity of asynchronous
+  options[:type] = :node if not options.has_key?(:type)
+
   ## Now a syncronous management will be introduce
   ## if aysnchronous is passed as a parameter, the host can be the same
   ## reinitializing 
-  @variables[:results] = {}
+
   temp_var = {}
-  mutex = Mutex.new
+  task_a_mutex = Mutex.new ## to merge the results of asynchronous tasks
   if options[:mode] == "asynchronous" then
-    ## I have to create a thread for each node in the resources
+    @variables[:results] = {}
+    ## I have to create a thread for each resource in the resources
     task_threads = []
-    @variables[:hosts].each do |node|
-      puts "Creating thread for host 3: #{node.name}"
+    @variables[:hosts].each(options[:type]) do |resource|
+      puts "Creating thread for resource : #{resource.name}"
       th_in = Thread.new{
-        Thread.current['hosts'] = node.name
+        Thread.current['hosts'] = resource
         Thread.current['results'] = []
         block.call
-        mutex.synchronize {
-          @variables[:results].merge!({node.name.to_sym => Thread.current['results']})
+        task_a_mutex.synchronize {
+          @variables[:results].merge!({resource.name.to_sym => Thread.current['results']})
         }
-        puts "Finishing task in node #{Thread.current['hosts']}"
-        #puts "Results : #{Thread.current['results']}"
+        puts "Finishing task in resource #{Thread.current['hosts']}"
       }
       task_threads.push(th_in)
     end
@@ -190,11 +204,13 @@ def task(name, options={}, &block)
     return task_threads
   else
     task_th = Thread.new{
+      Thread.current['results'] = []
       Thread.current['hosts'] = @variables[:hosts]
       block.call
+      @variables[:results] = Thread.current['results']
     }
     return task_th
-  end
+  end # mode asynchronous
 
 end
 
