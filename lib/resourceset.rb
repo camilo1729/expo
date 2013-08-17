@@ -137,15 +137,16 @@ end
 
 class ResourceSet < Resource
   attr_accessor :resources
-  def initialize( name = nil )
-    super( :resource_set, nil, name )
+  def initialize( type = :resource_set, name = nil )
+    super( type, nil, name )
     @resources = Array::new
     @resource_files = Hash::new
   end
 
   #Creates a copy of the ResourceSet Object
+  ## I have to modify this, in order to take into account the type
   def copy
-    result = ResourceSet::new
+    result = ResourceSet::new(self.type)
     result.properties.replace( @properties )
     @resources.each { |resource|
       result.resources.push( resource.copy )

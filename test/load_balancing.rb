@@ -284,6 +284,15 @@ processors.each { |site|
 # there is a big heterogenity between clusters of the same site 
 # Therefore is better to submit jobs per cluster, 
 # in order to free resources.
+processors.each { |site|
+  temp_str = ""
+  site[:clusters].each_with_index{ |cluster,index|
+    reserv.site.push(site[:site])
+    cluster_name = cluster["cluster"]
+    submit_line = "{cluster='#{cluster_name}'}/nodes=3"
+    reserv.resources.push(submit_line)
+  }
+}
 
 
 
@@ -647,7 +656,8 @@ params_c1 = [ "1000 52 240 70",
            "1000 38 345 173",
            "1000 76 86 43 ",
            "1000 76 172 86"]
-
+temp = params_c1.map{ |k| k.split(" ")[1..k.length]}
+size_c1 = temp.map{ |p| p.map!{ |y| y.to_i}.inject(:*) }
 
 
 ## I have to add something to measure the time for each task
@@ -655,16 +665,29 @@ params_c1 = [ "1000 52 240 70",
 set :gateway, "grenoble.g5k"
 
 
-task :test, :target =>resources, :gateway => "grenoble.g5k",:mode => "asynchronous", :type => :cluster do
+task :test, :target =>resources,:mode => "asynchronous", :type => :cluster do
   params_c1.each{ |par|
     run("cd ~/tmp_tlm/TLMME_Cristian/tlm/;./run 1 #{par} matched")
     puts "Finish parameters #{par}"
   }
 end
-  
 
 
-res.each{ |key, value|
+results_calibration = "results_cal_v5.txt"
+File.open(results_calibration,'w+') do |f|
+  f.puts "cluster params norm_run_time size_struct"
+  res.each{ |key, values|
 
-  
-}
+    cluster = key
+    values.each_with_index{ |round,index|
+      round[:results][:status].compact!.each { |k|
+        run_time = k[:stop_date].to_f - k[:start_date].to_f
+        param_round = params_c1[index].split(" ").join("-")
+        sim_time = params_c1[index].split(" ")[0].to_f
+        norm_run_time = run_time/sim_time
+        size_struct = size_c1[index]
+        f.puts "#{cluster} #{param_round} #{norm_run_time} #{size_struct}"
+      }
+    }
+  }
+end

@@ -196,7 +196,7 @@ def task(name, options={}, &block)
         task_a_mutex.synchronize {
           @variables[:results].merge!({resource.name.to_sym => Thread.current['results']})
         }
-        puts "Finishing task in resource #{Thread.current['hosts']}"
+        puts "Finishing task in resource #{Thread.current['hosts'].name}"
       }
       task_threads.push(th_in)
     end
