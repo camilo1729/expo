@@ -11,6 +11,8 @@ class Experiment
     @commands = []
     @resources = ResourceSet::new
     @logger = Logger.new("/tmp/Expo_log_#{Time.now.to_i}.log")
+    @jobs = {}
+    # :number => 'state'
   end
   
   def add_command(command)
