@@ -180,37 +180,86 @@ class ResourceSet < Resource
       if resource.corresponds( props ) then
         return resource
       end 
-    }   
+    }
+    return false## temporal modification, other whise it return the same resourceSet object
   end 
 
+  ## This function select resource
+  ## look through all the hierarchy of the resourceSet 
+  ## Even though there are several nested resourceSets
 
-  def select( type=nil, props=nil , &block)
-    set = ResourceSet::new
+  ## Now this function accepts optionally a block as a parameter
+  def select_resource_h( props = nil, &block )
     if not block then
-      set.properties.replace( @properties )
       @resources.each { |resource|
-        if not type or resource.type == type then
-          if resource.corresponds( props ) then
-            set.resources.push( resource.copy )
-          end
-        elsif type != :resource_set and resource.kind_of?(ResourceSet) then
-          set.resources.push( resource.select( type, props ) )
+        if resource.is_a?(ResourceSet) then
+
+          resource.corresponds( props ) ? (return resource) : result = resource.select_resource_h( props )
+          
+          return result if result
+        ## we have to examine if it is a Resouce because,
+        ## There could be several with the same id
+        elsif resource.corresponds( props) then
+          return resource
         end
       }
+      return false
     else
-      set.properties.replace( @properties )
-      @resources.each { |resource|
-        if not type or resource.type == type then
-          if block.call( resource ) then
-            set.resources.push( resource.copy )
-          end
-        elsif type != :resource_set and resource.kind_of?(ResourceSet) then
-          set.resources.push( resource.select( type, props , &block) )
+      @resources.each{ |resource|
+        if resource.is_a?(ResourceSet) then
+          block.call( resource ) ? (return resource) : result = resource.select_resource_h( props, &block )
+          return result if result
+        elsif block.call( resource )
+          return resource
         end
       }
     end
+  end
+    
+
+#  def select( type=nil, props=nil , &block)
+  def select(props = nil, &block)  
+    set = ResourceSet::new
+    if not block then
+      set.properties.replace( @properties )
+      set.type = self.type
+      @resources.each { |resource|
+        #if not type or resource.type == type then
+        
+          if resource.corresponds( props ) then
+            set.resources.push( resource.copy )
+            # end  
+          # elsif type != :resource_set and resource.kind_of?(ResourceSet) then
+          elsif resource.kind_of?(ResourceSet) then
+            #result = resource.select( type, props )
+            result = resource.select(props)
+            #puts "Entering with type: #{type} "
+            set.resources.push( result ) if result
+#          set.resources.push( resource.select( type, props ) )
+          end
+        
+      }
+      return false if set.resources.length == 0
+    else
+      set.properties.replace( @properties )
+      @resources.each { |resource|
+        puts "Entering #{block.class}"
+        # if not type or resource.type == type then
+        if block.call( resource ) then
+          set.resources.push( resource.copy )
+        # end
+        #elsif type != :resource_set and resource.kind_of?(ResourceSet) then
+        elsif resource.kind_of?(ResourceSet) then
+          result = resource.select(props, &block)
+          set.resources.push( result) if result 
+        end
+      }
+      return false if set.resources.length == 0
+    end
     return set
   end
+
+
 
   def delete_first(resource)
     @resources.each_index { |i|

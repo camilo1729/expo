@@ -3,7 +3,7 @@ require 'campaign/engine'
 require 'resourceset'
 require 'expectrl'
 require 'observer'
-require 'test_notiffier'
+require 'job_notiffier'
 
 @options = { 
   :logger => $logger,
@@ -24,7 +24,8 @@ end
 class ExpoEngine < Grid5000::Campaign::Engine
   #include Expo
   include Observable ## to test the observable software pattern
-  attr_accessor :environment, :site, :resources, :resources_exp, :walltime, :name, :jobs 
+  MyExperiment = Experiment.instance
+  attr_accessor :environment, :resources, :resources_exp, :walltime, :name, :jobs, :submission_timeout 
   ##to ease the definition of the experiment
   @resources_exp = []   
   
@@ -32,13 +33,16 @@ class ExpoEngine < Grid5000::Campaign::Engine
   set :environment, nil # The enviroment is by default nil because if nothing is specifyed there is no deployment.
   # It has to be true for interactive use and false when executed as stand-alone
   set :types , ["allow_classic_ssh"]
-  set :logger, Experiment.instance.logger
+  set :logger, MyExperiment.logger
   #set :data_logger, $data_logger
    
-## I'm rewriting this method otherwise I cannot load the Class again because the defaults get frozen.
+  ## I'm rewriting this method otherwise I cannot load the Class again because the defaults get frozen.
+
+  ## @resources will be a hash with the following structure
+  ## {:grenoble => ["nodes=1","nodes=1"]   --> This will submit two jobs
+  ##  :lille => ["{cluster = 'cluster_1'}/nodes=1"]
   def initialize(gateway=nil)
-    @site=["grenoble"]
-    @resources=["nodes=1"]
+    @resources = { :grenoble => ["nodes=1"] }
     @walltime=3600
     @name = "Expo_Experiment"
     @connection = api_connect
@@ -51,9 +55,10 @@ class ExpoEngine < Grid5000::Campaign::Engine
     add_observer(Notifier.new)
 
     ### Small part to initialize the resourceSet of the experiment
-    exp_resource_set = ResourceSet::new
+    exp_resource_set = ResourceSet::new(:resource_set,"Exp_resources")
+    ## It seems that a name has to be declared in order to be assigned to a Hash
     exp_resource_set.properties[:gateway ] = @gateway
-    Experiment.instance.add_resources(exp_resource_set)
+    MyExperiment.add_resources(exp_resource_set)
     #### I need to check whether I put it here or elsewhere.
   end
   
@@ -68,51 +73,40 @@ class ExpoEngine < Grid5000::Campaign::Engine
     reserve_log_msg ="[ Expo Engine Grid5000 API ] "
     logger.info reserve_log_msg +"Asking for Resources"
 
-    @res = [env[:resources]].flatten
-    #logger.info "Printing Resources array #{env.inspect}"
-    #in case we define the same number of nodes in each site.
-    @res = @res*@site.length if @res.length==1 && @site.length>1
-
     envs = []
     
     env[:parallel_reserve] = parallel(:ignore_thread_exceptions => true)
     # launch parallel reservation on all the sites specifyed
     # the :ignore_thread_exepctions is because sometimes the api throw some exceptions.
     reserv = []
-    for i in 1..@site.length
-      new_env = env.merge(:site => @site[i-1], :resources => @res[i-1])
-      #logger.info new_env.inspect
-      logger.info reserve_log_msg+"Number of nodes to reserve in site: #{@site[i-1]} => #{@res[i-1]}"
-      env[:parallel_reserve].add(new_env) do |env|
-        #sleep 1
-        env_2=reserve!(env, &block)
-        #subhash = self.convert_to_resource(env_2[:job])
-        reserv.push(env_2)
-        #synchronize { @resources_expo.merge!(subhash) }
-        #synchronize { self.convert_to_resource(env_2[:job],env[:site])}
-        synchronize { self.create_resource_set(env_2[:job],env[:site])}
-        @jobs.push(env_2[:job])
-        changed
-        notify_observers(env_2[:job],logger)
-        #envs.push(new_env)
-        #env_2[:nodes].push(env_2[:job]['assigned_nodes']).flatten! 
-        #synchronize{ envs.push(env_2) }
-        # Here I can put the notifier that send the event to execute the task
-      end
-    end
-  
-    env[:parallel_reserve].loop!
-    # construct $all ResourceSet
-    puts "Creating resourceSet"
-    #@resources_expo
-    #puts @resources_expo.inspect
-    #extract_resources_new(@resources_exp)
 
-    reserv
+    env[:resources].each{ |site, resources|
+      
+      resources.each{ |res|
+        new_env = env.merge(:site => site.to_s, :resources => res)
+    
+        logger.info reserve_log_msg+"Number of nodes to reserve in site: #{site.to_s} => #{res}"
+        ## The number resources definitions in each site determined the number of jobs submitted
+        MyExperiment.num_jobs_required+=1  ## counting the number of jobs required for the experiment to start 
+                                           ## in the case it would be synchronous
+        env[:parallel_reserve].add(new_env) do |env|
+          
+          env_2=reserve!(env, &block)
+          reserv.push(env_2)
+          synchronize { self.create_resource_set(env_2[:job],env[:site])}
+          @jobs.push(env_2[:job])
+          changed
+          notify_observers(env_2[:job],logger)
+          ## Notifying that the task can start
+          # Here I can put the notifier that send the event to execute the task
+        end
+      }  
+    }
+      
   end
 
   # rewriting the run code because the default behavior deploys an evironment 
-# and Expo does not like that, and also to finally construct the resource set.
+  # and Expo does not like that, and also to finally construct the resource set.
 
   def run!
     reset!
@@ -120,7 +114,7 @@ class ExpoEngine < Grid5000::Campaign::Engine
     env = self.class.defaults.dup
     ### copying some variables defined by the user
     env[:environment]=@environment    
-    env[:site]=@site
+    # env[:site]=@site
     env[:walltime]=@walltime
     env[:resources]=@resources
     envs=[]
@@ -136,22 +130,22 @@ class ExpoEngine < Grid5000::Campaign::Engine
     #end
     
     change_dir do
-# I separate the deployment part from the submission part.
-## if the environment is not defined we do just the reservation part
+      # I separate the deployment part from the submission part.
+      ## if the environment is not defined we do just the reservation part
       reserve_log_msg ="[ Expo Engine Grid5000 API ] "
       if env[:environment].nil?
-### Timing the reservation part
+        ### Timing the reservation part
         start_reserve=Time::now()
-      
+        
         env = execute_with_hooks(:reserve!,env) do |env|        
         
-             env[:nodes] = env[:job]['assigned_nodes']
+          env[:nodes] = env[:job]['assigned_nodes']
         
-             synchronize{
-              nodes.push(env[:nodes]).flatten!
-              #envs.push(env)
-              }
-          #env[:nodes]=nodes
+          synchronize{
+            nodes.push(env[:nodes]).flatten!
+            
+          }
+          
         end # reserve!
       
         end_reserve=Time::now()
@@ -175,7 +169,7 @@ class ExpoEngine < Grid5000::Campaign::Engine
             
             if defined? env[:job]['resources_by_type']['vlans'][0]
               # I have to redifined the resource Set.
-              $all.each do |node|
+              MyExperiment.each do |node|  ### Need to check this part is using the all resource Set
                 node.name = 
                   "#{node.name.split('.')[0]}-kavlan-#{env[:job]['resources_by_type']['vlans'][0]}.#{node.properties[:site]}.grid5000.fr"
               end
@@ -193,8 +187,8 @@ class ExpoEngine < Grid5000::Campaign::Engine
        # not nodes_deployed.include?(resource.name)  
       #}
       
-##########################
-                  
+      ##########################
+      
     end #change_dir
     #nodes
     return env
@@ -231,10 +225,8 @@ class ExpoEngine < Grid5000::Campaign::Engine
       site_info = {:site => site["name"].downcase, :clusters => [] }
       site.clusters.each{ |cluster|
         temp  = cluster.nodes.first["processor"].merge(cluster.nodes.first["architecture"])
-        #temp["site"] = site["name"]
         temp["cluster"] = cluster["uid"]
         site_info[:clusters].push(temp)
-        #processors.push(temp)
       }
       processors.push(site_info)
     }
@@ -288,7 +280,7 @@ class ExpoEngine < Grid5000::Campaign::Engine
       }
       exp_resource_set.push(site_set)
     }
-    Experiment.instance.add_resources(exp_resource_set)
+    MyExperiment.add_resources(exp_resource_set)
   end
           
   def convert_to_resource(job,site_name)
@@ -364,10 +356,10 @@ class ExpoEngine < Grid5000::Campaign::Engine
                         
   
 
-  ## First of all there should be an initialization of the Experiment.instance.resources
+  ## First of all there should be an initialization of the MyExperiment.resources
   ### exp_resource_set = ResourceSet::new
   ### exp_resource_set.properties[:gateway ] = @gateway
-  ### Experiment.instance.add_resources(exp_resource_set)
+  ### MyExperiment.add_resources(exp_resource_set)
 
   def create_resource_set(job,site_name)
     job_name = job['name']
@@ -379,19 +371,23 @@ class ExpoEngine < Grid5000::Campaign::Engine
     job_id = job['uid']
     clusters = []
 
-    resource_site = Experiment.instance.resources.select_resource(:name => site_name)
+    ## It needs to find out where to put the id of the job
+    ## It could be in the site, if there is just one job per site
+    ## It could be int he cluster, if there is multiple jobs per site
+
+    resource_site = MyExperiment.resources.select_resource(:name => site_name)
     ## if the site already exits in the resource set this will return a resourceSet 
     ## Otherwise I will return an array
     gateway = ""
-    if resource_site.is_a?(Array) then ## puff it exists
+    if not resource_site then ## puff it exists
       puts "The site doesnt exits adding it"
       site_set = ResourceSet::new(:site)
-      site_set.properties[:id] = job['uid'] ## Fix-me
+      site_set.properties[:id] = job['uid'] if @resources[site_name.to_sym].length < 2 ## there is just one job per site
       site_set.properties[:name] = site_name
       gateway = "frontend.#{site_name}.grid5000.fr"
       site_set.properties[:gateway] = gateway ## Fix-me gatway definition will depend on the context
       site_set.properties[:ssh_user] = "cruizsanabria"
-      Experiment.instance.resources.push(site_set)
+      MyExperiment.resources.push(site_set)
     elsif resource_site.is_a?(ResourceSet) then
       site_set = resource_site
     end
@@ -408,6 +404,7 @@ class ExpoEngine < Grid5000::Campaign::Engine
     clusters_struct = []
     clusters.each{ |cluster|
       cluster_set = ResourceSet::new(:cluster)
+      cluster_set.properties[:id] = job['uid'] if @resources[site_name.to_sym].length > 1 ## there are several jobs per site
       cluster_set.properties[:name] = cluster
       cluster_set.properties[:gateway] = gateway
       cluster_set.properties[:ssh_user] ="cruizsanabria"
@@ -432,8 +429,9 @@ class ExpoEngine < Grid5000::Campaign::Engine
 
     
     clusters_struct.each{ |cluster_set|
-      resource_cluster = Experiment.instance.resources.select_resource(:name => cluster_set.name)
-      if resource_cluster.is_a?(Array) then ## it doesn't exist we add cluster_set to the site_set
+      ## here the method select_resource return a reference of the self object
+      resource_cluster = MyExperiment.resources.select_resource(:name => cluster_set.name)
+      if not resource_cluster then ## it doesn't exist we add cluster_set to the site_set
         site_set.push(cluster_set)
       elsif resource_cluster.is_a?(ResourceSet) then 
         cluster_set.each { |node|

@@ -297,6 +297,7 @@ processors.each { |site|
 
 
 
+
 # ## putting the sites names in the reservation.
 # reserv.site = sites
 
@@ -673,10 +674,11 @@ task :test, :target =>resources,:mode => "asynchronous", :type => :cluster do
 end
 
 
-results_calibration = "results_cal_v5.txt"
-File.open(results_calibration,'w+') do |f|
+results_calibration_file = "results_cal_v6.txt"
+
+File.open(results_calibration_file,'w+') do |f|
   f.puts "cluster params norm_run_time size_struct"
-  res.each{ |key, values|
+  results_calibration.each{ |key, values|
 
     cluster = key
     values.each_with_index{ |round,index|
@@ -691,3 +693,107 @@ File.open(results_calibration,'w+') do |f|
     }
   }
 end
+
+
+
+### day 11
+
+## Test with event job driven 
+
+require 'DSL'
+require 'g5k_api'
+
+set :user, "cruizsanabria"
+set :gateway, "grenoble.g5k"
+reserv = ExpoEngine.new("grenoble.g5k")
+
+res = {
+  :grenoble => ["nodes=1"],
+  :luxembourg => ["nodes=6"]}
+reserv.resources = res
+
+Experiment.instance.base_task = :asynchronous
+resources = Experiment.instance.resources
+
+task :init, :target => resources do
+  run("hostname")
+end
+
+
+reserv.run!
+
+
+## Synchronous test are OK
+## Asynchronous task OK
+
+## Now testing without the loop ! in G5k module
+
+## It work perfectly , task where executed used job events
+# and one was executed 2 minutes after the other :D.
+
+
+## This is the first try for the callibration
+
+
+## I have to add something to measure the time for each task
+
+## First Version of the job driven experiment.
+require 'DSL'
+require 'g5k_api'
+
+set :user, "cruizsanabria"
+set :gateway, "grenoble.g5k"
+reserv = ExpoEngine.new("grenoble.g5k")
+
+set :gateway, "grenoble.g5k"
+
+### With the new version of resources
+res = {}
+processors.each { |site|
+  temp_str = ""
+  res[site[:site].to_sym] = []
+  site[:clusters].each_with_index{ |cluster,index|
+   
+    cluster_name = cluster["cluster"]
+    submit_line = "{cluster='#{cluster_name}'}/nodes=3"
+    res[site[:site].to_sym].push(submit_line)
+  }
+}
+reserv.resources = res
+
+params_c1 = [ "1000 52 240 70",
+           "1000 47 305 160",
+           "1000 31 305 160",
+           "1000 150 100 50",
+           "1000 38 345 173",
+           "1000 76 86 43 ",
+           "1000 76 172 86"]
+temp = params_c1.map{ |k| k.split(" ")[1..k.length]}
+size_c1 = temp.map{ |p| p.map!{ |y| y.to_i}.inject(:*) }
+
+
+
+task :init, :target =>resources do
+  params_c1.each{ |par|
+    run("cd ~/tmp_tlm/TLMME_Cristian/tlm/;./run 1 #{par} matched")
+    puts "Finish parameters #{par}"
+  }
+end
+
+reserv.run!
+
+## As the results were putted into arrays , we dont have a hash per cluster
+## Then, we are going to create them 
+
+results_calibration = {}
+
+Experiment.instance.results.each{ |cluster|
+  node_temp = cluster.first[:results][:status].keys.first[0]
+  regexp = /(\w*)-\w*/
+  cl = regexp.match(node_temp)
+  cluster_name = cl[1]
+  results_calibration[cluster_name.to_sym] = []
+  cluster.each{ |inv_res|
+    results_calibration[cluster_name.to_sym].push(inv_res)
+  }
+}
