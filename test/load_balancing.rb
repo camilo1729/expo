@@ -744,10 +744,13 @@ require 'g5k_api'
 set :user, "cruizsanabria"
 set :gateway, "grenoble.g5k"
 reserv = ExpoEngine.new("grenoble.g5k")
+# This  above initialized the variable resources
+resources = Experiment.resources
 
-set :gateway, "grenoble.g5k"
+processors = reserv.get_processors
 
 ### With the new version of resources
+### This reservation is cluster based, a job is sent for each cluster found
 res = {}
 processors.each { |site|
   temp_str = ""
@@ -768,6 +771,8 @@ params_c1 = [ "1000 52 240 70",
            "1000 38 345 173",
            "1000 76 86 43 ",
            "1000 76 172 86"]
+
+
 temp = params_c1.map{ |k| k.split(" ")[1..k.length]}
 size_c1 = temp.map{ |p| p.map!{ |y| y.to_i}.inject(:*) }
 

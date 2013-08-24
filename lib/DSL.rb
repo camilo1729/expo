@@ -5,7 +5,7 @@ require 'cmdctrl_ssh' ## for ssh commands
 require 'taktuk'
 require 'tasks'
 
-
+## This code should include ResourceSetx
 # @roles = {}
 
 ### In order to avoid using Experiment.instance.method
@@ -34,53 +34,55 @@ class DSL
   end
 
   def run(command)
+
+    puts "it worked" 
     ## It uses taktuk as default  
     ## If a reservation is already done we assign those machines as default for hosts
     # run locally is the host is not defined
-    if Thread.current['hosts'].nil? then
-      return run_local(command)
-    end
-    # @variables[:results] = []
-    options = {:connector => 'ssh',:login => @variables[:user]}
+    # if Thread.current['hosts'].nil? then
+    #   return run_local(command)
+    # end
+    # # @variables[:results] = []
+    # options = {:connector => 'ssh',:login => @variables[:user]}
 
-    hosts = Thread.current['hosts']
-    if hosts.is_a?(ResourceSet) then
-      ## Here, as the Expo server is on the user's machine, each resource set has to have the gateway used to enter Grid5000
-      ## checking if the resource set has the gateway defined ---- Fix-me we are not checking
-      hosts.properties[:gateway] = @variables[:gateway]
-      ## this doesn't work when using with root
-      cmd_taktuk=TakTuk::TakTuk.new(hosts,options)
-      cmd_taktuk.broadcast_exec[command]   ## the normal behaviour if we add commands here, they will be executed in parallel.
+    # hosts = Thread.current['hosts']
+    # if hosts.is_a?(ResourceSet) then
+    #   ## Here, as the Expo server is on the user's machine, each resource set has to have the gateway used to enter Grid5000
+    #   ## checking if the resource set has the gateway defined ---- Fix-me we are not checking
+    #   hosts.properties[:gateway] = @variables[:gateway]
+    #   ## this doesn't work when using with root
+    #   cmd_taktuk=TakTuk::TakTuk.new(hosts,options)
+    #   cmd_taktuk.broadcast_exec[command]   ## the normal behaviour if we add commands here, they will be executed in parallel.
 
-      Thread.current['results'].push(cmd_taktuk.run!)
+    #   Thread.current['results'].push(cmd_taktuk.run!)
 
-    elsif hosts.is_a?(String) or hosts.is_a?(Resource)#and @variables[:gateway]
+    # elsif hosts.is_a?(String) or hosts.is_a?(Resource)#and @variables[:gateway]
       
-      MyExperiment.add_command(command)
+    #   MyExperiment.add_command(command)
     
-      hosts.is_a?(Resource) ? hosts_end = hosts.name : hosts_end = hosts
-      cmd = CmdCtrlSSH.new("",hosts_end,@variables[:user],@variables[:gateway])
+    #   hosts.is_a?(Resource) ? hosts_end = hosts.name : hosts_end = hosts
+    #   cmd = CmdCtrlSSH.new("",hosts_end,@variables[:user],@variables[:gateway])
 
-      # if hosts.is_a?(Resource) then
-      #   cmd = CmdCtrlSSH.new("",hosts.name,@variables[:user],@variables[:gateway])
-      # else
-      #   cmd = CmdCtrlSSH.new("",hosts,@variables[:user],@variables[:gateway])
-      # end
-      @variables[:results] = cmd.run(command)
-      cmd.run(command)
+    #   # if hosts.is_a?(Resource) then
+    #   #   cmd = CmdCtrlSSH.new("",hosts.name,@variables[:user],@variables[:gateway])
+    #   # else
+    #   #   cmd = CmdCtrlSSH.new("",hosts,@variables[:user],@variables[:gateway])
+    #   # end
+    #   @variables[:results] = cmd.run(command)
+    #   cmd.run(command)
 
-      Thread.current['results'].push({
-                                       :stdout => cmd.stdout,
-                                       :stderr => cmd.stderr, 
-                                       :start_time => cmd.start_time, 
-                                       :end_time => cmd.end_time
-                                     })
-      ## I need to add the command executed to the result
-      #Thread.current['results'] = cmd.run(command)
-    end
+    #   Thread.current['results'].push({
+    #                                    :stdout => cmd.stdout,
+    #                                    :stderr => cmd.stderr, 
+    #                                    :start_time => cmd.start_time, 
+    #                                    :end_time => cmd.end_time
+    #                                  })
+    #   ## I need to add the command executed to the result
+    #   #Thread.current['results'] = cmd.run(command)
+    # end
     
-    ## This function run has to return the number of commands run succesfully
-    # result_counter = 0
+    # ## This function run has to return the number of commands run succesfully
+    # # result_counter = 0
     # ## result_taktuk[:results][:status] is a Taktuk result object
     # result_taktuk[:results][:status].compact!.each{ |ind|
     #   ## checking for the status return
@@ -180,6 +182,8 @@ class DSL
     @variables[:gateway] = options[:gateway] if options.has_key?(:gateway)
     
     raise "User is not defined" if @variables[:user].nil?
+    
+
     # if options.has_key?(:target)
     #   "target is not defined"
     #  @variables[:hosts]=options[:target]

@@ -52,7 +52,7 @@ class ExpoEngine < Grid5000::Campaign::Engine
     @nodes_deployed = []
     @gateway = gateway
     @jobs = []
-    add_observer(Notifier.new)
+    add_observer(JobNotifier.new)
 
     ### Small part to initialize the resourceSet of the experiment
     exp_resource_set = ResourceSet::new(:resource_set,"Exp_resources")
