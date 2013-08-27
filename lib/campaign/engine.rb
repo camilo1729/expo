@@ -87,6 +87,7 @@ module Grid5000
         :deployment_timeout,
         :ssh_max_attempts,
         :chdir,
+                         :jobs, ## Testing Expo
         :polling_frequency
       ]
 

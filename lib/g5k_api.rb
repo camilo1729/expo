@@ -51,7 +51,7 @@ class ExpoEngine < Grid5000::Campaign::Engine
     @res
     @nodes_deployed = []
     @gateway = gateway
-    @jobs = []
+#    @jobs = []
     add_observer(JobNotifier.new)
 
     ### Small part to initialize the resourceSet of the experiment
@@ -94,7 +94,9 @@ class ExpoEngine < Grid5000::Campaign::Engine
           env_2=reserve!(env, &block)
           reserv.push(env_2)
           synchronize { self.create_resource_set(env_2[:job],env[:site])}
-          @jobs.push(env_2[:job])
+#          @jobs.push(env_2[:job])
+          ## putting jobs number into experiment structure
+          @jobs.each{ |job| MyExperiment.jobs_2.push(job['uid']) }
           changed
           notify_observers(env_2[:job],logger)
           ## Notifying that the task can start
