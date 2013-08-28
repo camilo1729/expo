@@ -84,8 +84,8 @@ class Task
       task_j.split_from = self.name
       task_j.target = criteria ## as a number, execute will know that it is a job so it has to select resources by Id
       task_j.sync = true ## we make it runnable
-      self.split = true ## in order to now split it again
-      self.sync = false  ## This taks can not be executed anymore
+      self.split = true ## in order to not split it again
+      self.sync = false  ## This task can not be executed anymore
       @children.push(task_j.name)
       return task_j
     elsif criteria.is_a?(Hash) then ## we received a resourceset

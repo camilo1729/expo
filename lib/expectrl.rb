@@ -5,7 +5,7 @@ require 'resourceset'
 require 'logger'
 class Experiment
   include Singleton
-  attr_accessor :resources, :logger, :tasks, :base_task, :num_jobs_required, :results, :jobs_2
+  attr_accessor :resources, :logger, :tasks, :base_task, :num_jobs_required, :results, :jobs_2, :tasks_names
   def initialize
     @id = 1
     @commands = []
@@ -36,10 +36,14 @@ class Experiment
     @commands.each{|cmd| puts cmd}
   end
 
-  ## This methods returns a task in order  
-  def get_task
-    task_to_return = @tasks[@tasks_names[@last_task]] 
-    @last_task += 1 if not task_to_return.nil? 
+  ## This methods returns all the avaiable task registered so far
+  ## in the experiment.
+  def get_available_tasks
+    tasks_to_return = []
+    @tasks_names.each{ |t_name|
+      tasks_to_return.push(@tasks[t_name])
+    } 
+    return tasks_to_return
   end
 
 end

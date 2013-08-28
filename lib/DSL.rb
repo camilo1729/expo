@@ -4,6 +4,7 @@ require 'cmdctrl'
 require 'cmdctrl_ssh' ## for ssh commands
 require 'taktuk'
 require 'tasks'
+require 'task_manager'
 
 ## This code should include ResourceSetx
 # @roles = {}
@@ -15,12 +16,14 @@ class DSL
  
   include Singleton
   MyExperiment = Experiment.instance
+
   attr_reader :variables
 
   def initialize
     @variables = {}
     @variables[:results] = []
     @variables[:user] = nil
+    @task_m = TaskManager.new
   end
 
   def run_local(command)
@@ -34,52 +37,49 @@ class DSL
   end
 
   def run(command)
-
-    puts "it worked" 
     ## It uses taktuk as default  
     ## If a reservation is already done we assign those machines as default for hosts
     # run locally is the host is not defined
-    # if Thread.current['hosts'].nil? then
-    #   return run_local(command)
-    # end
+    if Thread.current['hosts'].nil? then
+      return run_local(command)
+    end
     # # @variables[:results] = []
-    # options = {:connector => 'ssh',:login => @variables[:user]}
+    options = {:connector => 'ssh',:login => @variables[:user]}
 
-    # hosts = Thread.current['hosts']
-    # if hosts.is_a?(ResourceSet) then
-    #   ## Here, as the Expo server is on the user's machine, each resource set has to have the gateway used to enter Grid5000
-    #   ## checking if the resource set has the gateway defined ---- Fix-me we are not checking
-    #   hosts.properties[:gateway] = @variables[:gateway]
-    #   ## this doesn't work when using with root
-    #   cmd_taktuk=TakTuk::TakTuk.new(hosts,options)
-    #   cmd_taktuk.broadcast_exec[command]   ## the normal behaviour if we add commands here, they will be executed in parallel.
-
-    #   Thread.current['results'].push(cmd_taktuk.run!)
-
-    # elsif hosts.is_a?(String) or hosts.is_a?(Resource)#and @variables[:gateway]
+    hosts = Thread.current['hosts']
+    if hosts.is_a?(ResourceSet) then
+      ## Here, as the Expo server is on the user's machine, each resource set has to have the gateway used to enter Grid5000
+      ## checking if the resource set has the gateway defined ---- Fix-me we are not checking
+      #hosts.properties[:gateway] = @variables[:gateway]
+      ## this doesn't work when using with root
+      cmd_taktuk=TakTuk::TakTuk.new(hosts,options)
+      cmd_taktuk.broadcast_exec[command]   ## the normal behaviour if we add commands here, they will be executed in parallel.
+      Thread.current['results'].push(cmd_taktuk.run!)
       
-    #   MyExperiment.add_command(command)
+    elsif hosts.is_a?(String) or hosts.is_a?(Resource)#and @variables[:gateway]
+      
+      MyExperiment.add_command(command)
     
-    #   hosts.is_a?(Resource) ? hosts_end = hosts.name : hosts_end = hosts
-    #   cmd = CmdCtrlSSH.new("",hosts_end,@variables[:user],@variables[:gateway])
+      hosts.is_a?(Resource) ? hosts_end = hosts.name : hosts_end = hosts
+      cmd = CmdCtrlSSH.new("",hosts_end,@variables[:user],@variables[:gateway])
 
-    #   # if hosts.is_a?(Resource) then
-    #   #   cmd = CmdCtrlSSH.new("",hosts.name,@variables[:user],@variables[:gateway])
-    #   # else
-    #   #   cmd = CmdCtrlSSH.new("",hosts,@variables[:user],@variables[:gateway])
-    #   # end
-    #   @variables[:results] = cmd.run(command)
-    #   cmd.run(command)
+      # if hosts.is_a?(Resource) then
+      #   cmd = CmdCtrlSSH.new("",hosts.name,@variables[:user],@variables[:gateway])
+      # else
+      #   cmd = CmdCtrlSSH.new("",hosts,@variables[:user],@variables[:gateway])
+      # end
+      @variables[:results] = cmd.run(command)
+      cmd.run(command)
 
-    #   Thread.current['results'].push({
-    #                                    :stdout => cmd.stdout,
-    #                                    :stderr => cmd.stderr, 
-    #                                    :start_time => cmd.start_time, 
-    #                                    :end_time => cmd.end_time
-    #                                  })
-    #   ## I need to add the command executed to the result
-    #   #Thread.current['results'] = cmd.run(command)
-    # end
+      Thread.current['results'].push({
+                                       :stdout => cmd.stdout,
+                                       :stderr => cmd.stderr, 
+                                       :start_time => cmd.start_time, 
+                                       :end_time => cmd.end_time
+                                     })
+      ## I need to add the command executed to the result
+      #Thread.current['results'] = cmd.run(command)
+    end
     
     # ## This function run has to return the number of commands run succesfully
     # # result_counter = 0
@@ -200,7 +200,7 @@ class DSL
     ## A task object is created and registered in the experiment
     puts "Registering task: #{name}"
     
-    task = Tasks.new(name,options,&block)
+    task = Task.new(name,options,&block)
     register_task(task)
 
     ## I have to define an option to the granularity of asynchronous
@@ -245,6 +245,7 @@ class DSL
 
   def register_task(task)
     MyExperiment.tasks[task.name.to_sym] = task
+    MyExperiment.tasks_names.push(task.name.to_sym)
   end
 
   ## This method execute an already defined task
@@ -307,6 +308,11 @@ class DSL
     end # mode asynchronous
     
   end
+
+  def run_task_manager
+    @task_m.schedule_new_task
+  end
+  
 
   def set(name, value)
     @variables[name.to_sym]=value

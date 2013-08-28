@@ -1,18 +1,17 @@
 ## This is the first version of task Scheduler
-## Thiis task scheduler uses the actor model provided by Celluloid
-#require 'expectrl'
+
+require 'expectrl'
 require 'rubygems'
 require 'observer'
 
 
 class TaskManager
 
-  #MyExperiment = Experiment.instance
-  # include Observable
+  MyExperiment = Experiment.instance
   ## This class will be notified from the DSL execute 
   def initialize( tasks = nil )  #tasks )
     @tasks = tasks.nil? ? [] : tasks
-    @registry = {}
+    @registry = {} # keeps the registry of tasks
     ## optional to start with a set of tasks
     if tasks.nil? then
       @task_from_experiment = true
@@ -42,9 +41,24 @@ class TaskManager
 
   def execute_task( task)
     puts "Executing task #{task.name}"
+    options = task.options
+    if task.target.is_a?(Fixnum) and not options[:target].nil? then
+      ## it is a job so we select the resources accordondly
+      job_id = task.target
+      job_nodes = options[:target].select(:id => job_id )
+      target_nodes = job_nodes
+    elsif not options[:target].nil?
+      target_nodes = options[:target]
+    end
+    puts "target nodes: #{target_nodes.name}"
+   
     sleep 0.5
     Thread.new {
+      Thread.abort_on_exception=true 
+      Thread.current['results'] = []
+      Thread.current['hosts'] = target_nodes unless target_nodes.nil?
       task.run
+      puts "Results of the task: #{Thread.current['results']}"
     }
    @registry[task.name] ="Running"   
   end
@@ -58,10 +72,13 @@ class TaskManager
       ## we loop into the dependencies
       if check_dependency_change?(task) then
         task.dependency.each{ |t_name|
-            #puts "getting task #{t_name}"
-            task_depen = get_task(t_name)
-            # puts "task #{task_depen.name} children: #{task_depen.children.inspect}"
-            task_depen.children.each{ |c_t|
+          #puts "getting task #{t_name}"
+          task_depen = get_task(t_name)
+          # puts "task #{task_depen.name} children: #{task_depen.children.inspect}"
+          task_depen.children.each{ |c_t|
+            # # puts "Trying to get task :#{c_t}"
+            # child = get_task(c_t)
+            # puts "criteria : #{child.target}"
             suffix = c_t.to_s
             suffix.slice! (task_depen.name.to_s+"_")
             if not task.children.include?((task.name.to_s+"_"+suffix).to_sym) then
@@ -71,7 +88,7 @@ class TaskManager
               n_t.dependency.push ( c_t )
               new_tasks_dep.push(n_t)
             end
-            }
+          }
         }
       end
       }
@@ -79,13 +96,17 @@ class TaskManager
   end
 
   def schedule_new_task(job=nil)
-    ## while first task in the task array can be executed
-    execute_task = true
-    ## first thing to do we get the task from the experiment
-    task_temp =   MyExperiment.get_task if @task_from_experiment ## Get a new task from the experiment if that is the case
-    self.push( task_temp ) if not task_temp.nil? ## we put it into the internal array
 
-    ## This function will possibly be call by several threads so it has to be thread safe :D
+    execute_task = true
+    ## First thing to do we get the task from the experiment
+    if @task_from_experiment
+      puts "Getting tasks from Experiment"
+      tasks_expe = MyExperiment.get_available_tasks
+      add_tasks(tasks_expe) unless tasks_expe.nil? #if @task_from_experiment 
+      ## Get a new task from the experiment if that is the case
+    end
+
+    ## This function will possibly be called by several threads so it has to be thread safe :D
     ## I think we have to assure this in the g5k api code
     new_tasks = []
     ## First we have to analyze the tasks
@@ -104,7 +125,8 @@ class TaskManager
           new_tasks.push(root_task)
           tasks_changed = true
       
-        elsif not task.split? ## if the task haven been split
+        elsif not task.split? 
+          ## if the task haven been split
           ## We split according to the resources established in the resource of the task
           split_hash = { task.resource => [] }
           MyExperiment.resources.each(task.resource){ | res |
@@ -127,20 +149,19 @@ class TaskManager
         end
       end
     }
+
     ## we add the new tasks to the @task variable
     add_tasks(new_tasks)
-    new_tasks = [] # we clear it in order to add more task in the following step
-    ## We can proceed to execute the tasks 
 
-   
+    ## update the dependencies if it is necessary
     updating_dependencies if tasks_changed
    
     task_scheduled = false
   
+    ## We can proceed to execute the tasks 
     @tasks.each{ |task|
       #puts "Trying to schedule task: #{task.name}"      
       if task.sync and  not @registry.has_key?(task.name) then ## the task is executable and has not been executed 
-
         puts "Task #{task.name} is executable"
         if task.dependency.nil? then
           puts "Scheduling new task"
@@ -151,8 +172,6 @@ class TaskManager
         end
         task_scheduled = true
       end
-      
-      
       
     }
     add_tasks(new_tasks)
@@ -184,7 +203,8 @@ class TaskManager
 
 
   def get_task( task_name)
-    @tasks.select{ |t| t.name == task_name }.first
+    @tasks.detect{ |t| t.name == task_name }
+    ## return just one object, the first one
   end
 
   def check_dependency_change?( task )
