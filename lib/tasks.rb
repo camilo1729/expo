@@ -10,8 +10,8 @@ require 'thread'
 class Task
   
   include Observable
-  attr_accessor :name, :options, :dependency, :target, :split, :sync
-  attr_reader :exec_part, :sync
+  attr_accessor :name, :options, :dependency, :target, :split, :sync, :split_from
+  attr_reader :exec_part, :sync, :children
   
   
   def initialize(name, options ={}, &block)
@@ -32,6 +32,8 @@ class Task
     @sync = (options[:sync].nil? and options[:job_async].nil?) ? true: false
     @split = false
     @update_mutex = Mutex.new
+    @split_from = nil
+    @children = []
   end
 
   def run()
@@ -79,9 +81,12 @@ class Task
     if criteria.is_a?(Fixnum) then ## we received a job number
       task_j = self.clone
       task_j.name = (self.name.to_s+"_"+criteria.to_s).to_sym
+      task_j.split_from = self.name
       task_j.target = criteria ## as a number, execute will know that it is a job so it has to select resources by Id
       task_j.sync = true ## we make it runnable
       self.split = true ## in order to now split it again
+      self.sync = false  ## This taks can not be executed anymore
+      @children.push(task_j.name)
       return task_j
     elsif criteria.is_a?(Hash) then ## we received a resourceset
       ##  { :type => [array_ids] }
