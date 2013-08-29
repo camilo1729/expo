@@ -253,8 +253,12 @@ class DSL
     
   end
 
-  def run_task_manager
-    @task_m.schedule_new_task
+  def run_task_manager(job=nil)
+    if job.nil?
+      @task_m.schedule_new_task
+    else
+      @task_m.schedule_new_task(job)
+    end
   end
   
 

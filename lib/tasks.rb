@@ -67,7 +67,13 @@ class Task
 
   def clone()
     ## We have to do a deep copy for the options array
-    Task.new(self.name, deep_copy(self.options), &self.exec_part)
+    # copy_options = deep_copy(self.options)
+    copy_options = deep_copy(self.options)
+    puts "Resource set id before cloning : #{self.options[:target].object_id}"
+    #copy_options[:depends] = self.options[:depends].copy
+    copy_options[:target] = self.options[:target]
+    Task.new(self.name, copy_options, &self.exec_part)
+    
   end
 
   ## Deep copy implementation

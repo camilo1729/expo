@@ -5,6 +5,15 @@ require 'rubygems'
 require 'observer'
 
 
+## To know if a string is a valid number
+## to job detection
+class String
+  def is_integer?
+    self.to_i.to_s == self
+  end
+end
+
+
 class TaskManager
 
   MyExperiment = Experiment.instance
@@ -46,14 +55,23 @@ class TaskManager
   def execute_task( task)
     puts "Executing task #{task.name}"
     options = task.options
-    if task.target.is_a?(Fixnum) and not options[:target].nil? then
-      ## it is a job so we select the resources accordondly
-      job_id = task.target
-      target_nodes = options[:target].select(:id => job_id )
-    elsif task.target.is_a?(String) and not options[:target].nil? then
+    puts "Resurces id when executing: #{options[:target].object_id}"
+    #if task.target.is_a?(Fixnum) and not options[:target].nil? then
+    if task.target.is_a?(String) and not options[:target].nil? then
       ## it is a node, cluster, or site we select the resources accordondly
-      resource_name = task.target
-      target_nodes = options[:target].select( :name => resource_name )
+      puts "Testing if is an integer :#{task.target.is_integer?}"
+      if task.target.is_integer? then
+        ## it is a job so we select the resources accordondly
+        puts "Executing task for a job"
+        job_id = task.target
+        target_nodes = options[:target].select(:id => job_id.to_i )
+        res_name = options[:target].select_resource_h{ |res|  res.properties.has_key? :id }
+        puts "Executing over the resources that belongs to the job: #{res_name}"
+      else
+        resource_name = task.target
+        target_nodes = options[:target].select( :name => resource_name )
+      end
+
     elsif not options[:target].nil?
       target_nodes = options[:target]
     end
