@@ -11,7 +11,7 @@ class Task
   
   include Observable
   attr_accessor :name, :options, :dependency, :target, :split, :sync, :split_from
-  attr_reader :exec_part, :sync, :children
+  attr_reader :exec_part, :sync, :children, :resource
   
   
   def initialize(name, options ={}, &block)
@@ -24,14 +24,14 @@ class Task
     @job_async = options[:job_async].nil? ? false : true  
     ## Type of resource associateted, it could be a node, cluster, site or job
     ## It will use this information to divide task and take the appropiate resources
-    @resource = nil
+    @resource = options[:type]
     ## This target will be used by execute in order to know where to execute
     @target = nil
     ### task that have this property setted to true will be executed otherwhise
     ### They have to be split 
-    @sync = (options[:sync].nil? and options[:job_async].nil?) ? true: false
+    @sync = (options[:async].nil? and options[:job_async].nil?) ? true: false
     @split = false
-    @update_mutex = Mutex.new
+    @update_mutex = nil #Mutex.new
     @split_from = nil
     @children = []
   end
@@ -53,6 +53,8 @@ class Task
   def set_taskmanager( task_manager )
     @task_manager = task_manager
     add_observer(task_manager)
+    ## we set the mutex as well
+    @update_mutex = task_manager.notification_mutex
   end
 
   def job_async?
@@ -78,7 +80,7 @@ class Task
     ## site array
     ## cluster array
     ## node array
-    if criteria.is_a?(Fixnum) then ## we received a job number
+    if criteria.is_a?(String) then ## we received a job number
       task_j = self.clone
       task_j.name = (self.name.to_s+"_"+criteria.to_s).to_sym
       task_j.split_from = self.name
@@ -91,6 +93,22 @@ class Task
     elsif criteria.is_a?(Hash) then ## we received a resourceset
       ##  { :type => [array_ids] }
       ##  { :cluster => [adonis, genepi] }
+
+      task_set = []
+      criteria.each{ |key, values|
+        values.each{ |id|
+          task_r = self.clone
+          task_r.name = (self.name.to_s+"_"+id.to_s).to_sym
+          task_r.split_from = self.name
+          task_r.target = id
+          task_r.sync = true
+          @children.push(task_r.name)
+          task_set.push(task_r)
+        }
+      }
+      self.split = true
+      self.sync = false
+      return task_set
     end
     
   end

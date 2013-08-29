@@ -166,16 +166,6 @@ class DSL
   def task(name, options={}, &block)
 
     puts "Executing task: #{name}"
-    ## I will deactivate the notion of roles temporally
-    #raise "At least one role has to be defined" if @roles.nil?
-    ## Fix-me
-    ## Using the variable @variables[:hosts] to pass the information
-    ## to the run to where execute on.
-    ## Need to fix these if it is parallel, It wont work
-    # if options.empty? then
-    # puts "options empty"
-    # puts @roles.first[0] deactivating temporally roles
-    # @variables[:hosts]=@roles.first[1]
   
     @variables[:hosts] = options[:target] if options.has_key?(:target)
     ## for the definition we dont need a copy
@@ -183,63 +173,17 @@ class DSL
     
     raise "User is not defined" if @variables[:user].nil?
     
-
-    # if options.has_key?(:target)
-    #   "target is not defined"
-    #  @variables[:hosts]=options[:target]
-    # else
-    #raise "Neither roles nor hosts are defined" if options.has_key?(:role)
-    #raise "There is not such a role #{options[:role]}" if in_roles?(:role)
-    # @variables[:hosts]=@roles[options[:role].to_sym] 
-    # end
-
-
     ## Checking if the name exists
     raise "Task name already registered" if MyExperiment.tasks.has_key?(name)
+
+    ## I have to define an option to the granularity of asynchronous
+    options[:type] = :node if not options.has_key?(:type)
     
     ## A task object is created and registered in the experiment
     puts "Registering task: #{name}"
     
     task = Task.new(name,options,&block)
     register_task(task)
-
-    ## I have to define an option to the granularity of asynchronous
-    options[:type] = :node if not options.has_key?(:type)
-
-    ## Now a syncronous management will be introduce
-    ## if aysnchronous is passed as a parameter, the host can be the same
-    ## reinitializing 
-
-    # temp_var = {}
-    # task_a_mutex = Mutex.new ## to merge the results of asynchronous tasks
-    # if options[:mode] == "asynchronous" then
-    #   @variables[:results] = {}
-    #   ## I have to create a thread for each resource in the resources
-    #   task_threads = []
-    #   @variables[:hosts].each(options[:type]) do |resource|
-    #     puts "Creating thread for resource : #{resource.name}"
-    #     th_in = Thread.new{
-    #       Thread.current['hosts'] = resource
-    #       Thread.current['results'] = []
-    #       block.call
-    #       task_a_mutex.synchronize {
-    #         @variables[:results].merge!({resource.name.to_sym => Thread.current['results']})
-    #       }
-    #       puts "Finishing task in resource #{Thread.current['hosts'].name}"
-    #     }
-    #     task_threads.push(th_in)
-    #   end
-  
-    #   return task_threads
-    # else
-    #   task_th = Thread.new{
-    #     Thread.current['results'] = []
-    #     Thread.current['hosts'] = @variables[:hosts]
-    #     block.call
-    #     @variables[:results] = Thread.current['results']
-    #   }
-    #   return task_th
-    # end # mode asynchronous
 
   end
 

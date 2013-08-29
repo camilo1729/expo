@@ -9,9 +9,12 @@ class TaskManager
 
   MyExperiment = Experiment.instance
   ## This class will be notified from the DSL execute 
+  attr_accessor :notification_mutex
+
   def initialize( tasks = nil )  #tasks )
     @tasks = tasks.nil? ? [] : tasks
     @registry = {} # keeps the registry of tasks
+    @tasks_mutex = Mutex.new
     ## optional to start with a set of tasks
     if tasks.nil? then
       @task_from_experiment = true
@@ -20,6 +23,7 @@ class TaskManager
         t.set_taskmanager(self)
       }
     end
+    @notification_mutex = Mutex.new
   end
 
 
@@ -45,20 +49,28 @@ class TaskManager
     if task.target.is_a?(Fixnum) and not options[:target].nil? then
       ## it is a job so we select the resources accordondly
       job_id = task.target
-      job_nodes = options[:target].select(:id => job_id )
-      target_nodes = job_nodes
+      target_nodes = options[:target].select(:id => job_id )
+    elsif task.target.is_a?(String) and not options[:target].nil? then
+      ## it is a node, cluster, or site we select the resources accordondly
+      resource_name = task.target
+      target_nodes = options[:target].select( :name => resource_name )
     elsif not options[:target].nil?
       target_nodes = options[:target]
     end
-    puts "target nodes: #{target_nodes.name}"
+    puts "Target nodes: #{target_nodes.name}"
    
-    sleep 0.5
     Thread.new {
       Thread.abort_on_exception=true 
       Thread.current['results'] = []
       Thread.current['hosts'] = target_nodes unless target_nodes.nil?
       task.run
-      puts "Results of the task: #{Thread.current['results']}"
+      ## This part has to be commented out in order to test with the script test_taskmanager
+      results = {target_nodes.name.to_sym => Thread.current['results']}
+      
+      @tasks_mutex.synchronize {
+        MyExperiment.results.push(results)
+      }
+      
     }
    @registry[task.name] ="Running"   
   end
@@ -77,12 +89,11 @@ class TaskManager
           # puts "task #{task_depen.name} children: #{task_depen.children.inspect}"
           task_depen.children.each{ |c_t|
             # # puts "Trying to get task :#{c_t}"
-            # child = get_task(c_t)
             # puts "criteria : #{child.target}"
             suffix = c_t.to_s
             suffix.slice! (task_depen.name.to_s+"_")
             if not task.children.include?((task.name.to_s+"_"+suffix).to_sym) then
-              n_t = task.split(suffix.to_i)
+              n_t = task.split(suffix)
               puts "Task #{n_t.name} created for dependency"
               n_t.dependency.delete( t_name )
               n_t.dependency.push ( c_t )
@@ -115,12 +126,12 @@ class TaskManager
       ## is the task ready to run?
       if not task.sync then ## task has to be treated before run it
         # puts "Task has to be thread before run it"
-        ## Two cases, asynchronously task or job asynchronously
+        # Two cases, asynchronously task or job asynchronously
      
         if task.job_async? and not job.nil? then   ## This tasks can be splitted several times
           puts "creating a new task for the job"
           ## we have to create a new task for that particular job
-          root_task = task.split(job)
+          root_task = task.split(job.to_s)
           puts "task : #{root_task.name} created"
           new_tasks.push(root_task)
           tasks_changed = true
@@ -129,23 +140,13 @@ class TaskManager
           ## if the task haven been split
           ## We split according to the resources established in the resource of the task
           split_hash = { task.resource => [] }
-          MyExperiment.resources.each(task.resource){ | res |
+          task_resources = task.options[:target]
+          task_resources.each(task.resource){ | res |
             split_hash[task.resource].push(res.name)
           }
-          root_tasks = task.split(split_hash) ## This return an array
-          new_tasks += root_tasks
-
-          d_tasks = uppper_depends( task.name )
+          new_tasks = task.split(split_hash) ## This return an array
           
-          d_tasks.each{ |d_t|
-            ## we delete the dependency
-            n_t = d_t.split(split_hash) ## This return an array
-            n_t.each_with_index{ | t, i|
-              t.dependency.delete( tasks.name )
-              t.dependency.push( root_task[i].name )
-            }
-            new_tasks =+ n_t
-          }
+          tasks_changed = true
         end
       end
     }
@@ -244,14 +245,9 @@ class TaskManager
   def update(task)
     task_name = task.name
     puts "Finishing task #{task_name}"
-    sleep 1
+    sleep 0.2
     @registry[task_name] = "Finished"
     schedule_new_task
   end
   
 end
-
-
-
-# load 'task_manager.rb'
-# load 'task.rb'
