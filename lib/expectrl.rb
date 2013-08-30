@@ -5,7 +5,7 @@ require 'resourceset'
 require 'logger'
 class Experiment
   include Singleton
-  attr_accessor :resources, :logger, :tasks, :base_task, :num_jobs_required, :results, :jobs_2, :tasks_names
+  attr_accessor :resources, :logger, :tasks, :num_jobs_required, :results, :jobs_2, :tasks_names
   def initialize
     @id = 1
     @commands = []
@@ -16,7 +16,6 @@ class Experiment
     @jobs_2 = [] #temporal variable
     @tasks = {}
     @tasks_names = []
-    @base_task = nil
     @num_jobs_required = 0 ## This will count the number of jobs required for the experiment
                              ## It will depend on the reservation
     @last_task = 0

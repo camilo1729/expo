@@ -55,18 +55,14 @@ class TaskManager
   def execute_task( task)
     puts "Executing task #{task.name}"
     options = task.options
-    puts "Resurces id when executing: #{options[:target].object_id}"
-    #if task.target.is_a?(Fixnum) and not options[:target].nil? then
+
     if task.target.is_a?(String) and not options[:target].nil? then
       ## it is a node, cluster, or site we select the resources accordondly
-      puts "Testing if is an integer :#{task.target.is_integer?}"
       if task.target.is_integer? then
         ## it is a job so we select the resources accordondly
         puts "Executing task for a job"
         job_id = task.target
         target_nodes = options[:target].select(:id => job_id.to_i )
-        res_name = options[:target].select_resource_h{ |res|  res.properties.has_key? :id }
-        puts "Executing over the resources that belongs to the job: #{res_name}"
       else
         resource_name = task.target
         target_nodes = options[:target].select( :name => resource_name )
@@ -83,9 +79,11 @@ class TaskManager
       Thread.current['hosts'] = target_nodes unless target_nodes.nil?
       task.run
       ## This part has to be commented out in order to test with the script test_taskmanager
-      results = {target_nodes.name.to_sym => Thread.current['results']}
       
       @tasks_mutex.synchronize {
+        res_name = target_nodes.select_resource_h{ |res|  res.properties.has_key? :id }
+        results = {res_name.name.to_sym => Thread.current['results']}
+      
         MyExperiment.results.push(results)
       }
       
@@ -140,6 +138,7 @@ class TaskManager
     new_tasks = []
     ## First we have to analyze the tasks
     tasks_changed = false
+    
     @tasks.each{ |task|
       ## is the task ready to run?
       if not task.sync then ## task has to be treated before run it
@@ -147,15 +146,15 @@ class TaskManager
         # Two cases, asynchronously task or job asynchronously
      
         if task.job_async? and not job.nil? then   ## This tasks can be splitted several times
-          puts "creating a new task for the job"
+          puts "Creating a new task for the job"
           ## we have to create a new task for that particular job
           root_task = task.split(job.to_s)
-          puts "task : #{root_task.name} created"
+          puts "Task : #{root_task.name} created"
           new_tasks.push(root_task)
           tasks_changed = true
       
         elsif not task.split? 
-          ## if the task haven been split
+          ## If the task has been split
           ## We split according to the resources established in the resource of the task
           split_hash = { task.resource => [] }
           task_resources = task.options[:target]
@@ -194,30 +193,8 @@ class TaskManager
       
     }
     add_tasks(new_tasks)
-    puts "No task schedule" if not task_scheduled
-            
-    # while execute_task do
-
-    #   ## if there are not more task to execute we exited
-    #   if not_pending? then
-    #     puts "All task have been executed"
-    #   elsif
-    #   if @tasks.length == 0 then
-    #     puts "All task have been executed"
-    #     execute_task = false
-    #   elsif @tasks.first.dependency.nil? then
-    #     current_task = @tasks.shift
-    #     puts "Scheduling new task"
-    #     execute_task(current_task)
-    #   elsif check_dependency?(@tasks.first) then
-    #     current_task = @tasks.shift
-    #     puts "Scheduling new task"
-    #     execute_task(current_task)
-    #   else
-    #     execute_task = false
-    #   end
-    # end 
-      
+    puts "No task to schedule" if not task_scheduled
+                  
   end
 
 

@@ -11,7 +11,7 @@ class Task
   
   include Observable
   attr_accessor :name, :options, :dependency, :target, :split, :sync, :split_from
-  attr_reader :exec_part, :sync, :children, :resource
+  attr_reader :exec_part, :sync, :children, :resource, :job_async
   
   
   def initialize(name, options ={}, &block)
@@ -69,9 +69,9 @@ class Task
     ## We have to do a deep copy for the options array
     # copy_options = deep_copy(self.options)
     copy_options = deep_copy(self.options)
-    puts "Resource set id before cloning : #{self.options[:target].object_id}"
-    #copy_options[:depends] = self.options[:depends].copy
-    copy_options[:target] = self.options[:target]
+    # The following has to be done in order to not lose the
+    # reference of the resources, because it can be updated asynchronously
+    copy_options[:target] = self.options[:target] 
     Task.new(self.name, copy_options, &self.exec_part)
     
   end
