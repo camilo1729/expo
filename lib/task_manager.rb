@@ -24,6 +24,7 @@ class TaskManager
     @tasks = tasks.nil? ? [] : tasks
     @registry = {} # keeps the registry of tasks
     @tasks_mutex = Mutex.new
+    @notification_mutex = Mutex.new
     ## optional to start with a set of tasks
     if tasks.nil? then
       @task_from_experiment = true
@@ -32,7 +33,6 @@ class TaskManager
         t.set_taskmanager(self)
       }
     end
-    @notification_mutex = Mutex.new
   end
 
 
@@ -98,26 +98,28 @@ class TaskManager
     new_tasks_dep = []
     @tasks.each{ |task|
       ## we loop into the dependencies
-      if check_dependency_change?(task) then
-        task.dependency.each{ |t_name|
-          #puts "getting task #{t_name}"
-          task_depen = get_task(t_name)
-          # puts "task #{task_depen.name} children: #{task_depen.children.inspect}"
-          task_depen.children.each{ |c_t|
-            # # puts "Trying to get task :#{c_t}"
-            # puts "criteria : #{child.target}"
-            suffix = c_t.to_s
-            suffix.slice! (task_depen.name.to_s+"_")
-            if not task.children.include?((task.name.to_s+"_"+suffix).to_sym) then
-              n_t = task.split(suffix)
-              puts "Task #{n_t.name} created for dependency"
-              n_t.dependency.delete( t_name )
-              n_t.dependency.push ( c_t )
-              new_tasks_dep.push(n_t)
-            end
+      unless task.sync then  ## unless the task is synchronous otherwise we have to update the task
+        if check_dependency_change?(task) then
+          task.dependency.each{ |t_name|
+            #puts "getting task #{t_name}"
+            task_depen = get_task(t_name)
+            # puts "task #{task_depen.name} children: #{task_depen.children.inspect}"
+            task_depen.children.each{ |c_t|
+              # # puts "Trying to get task :#{c_t}"
+              # puts "criteria : #{child.target}"
+              suffix = c_t.to_s
+              suffix.slice! (task_depen.name.to_s+"_")
+              if not task.children.include?((task.name.to_s+"_"+suffix).to_sym) then
+                n_t = task.split(suffix)
+                puts "Task #{n_t.name} created for dependency"
+                n_t.dependency.delete( t_name )
+                n_t.dependency.push ( c_t )
+                new_tasks_dep.push(n_t)
+              end
+            }
           }
-        }
-      end
+        end
+      end ## unless task.sync
       }
     add_tasks(new_tasks_dep)
   end
@@ -141,8 +143,8 @@ class TaskManager
     
     @tasks.each{ |task|
       ## is the task ready to run?
-      if not task.sync then ## task has to be treated before run it
-        # puts "Task has to be thread before run it"
+      if task.async then ## task has to be treated before run it
+        puts "Task : #{task.name} has to be thread before run it"
         # Two cases, asynchronously task or job asynchronously
      
         if task.job_async? and not job.nil? then   ## This tasks can be splitted several times
@@ -173,13 +175,14 @@ class TaskManager
 
     ## update the dependencies if it is necessary
     updating_dependencies if tasks_changed
+    check_asynchronous_termination
    
     task_scheduled = false
   
     ## We can proceed to execute the tasks 
     @tasks.each{ |task|
       #puts "Trying to schedule task: #{task.name}"      
-      if task.sync and  not @registry.has_key?(task.name) then ## the task is executable and has not been executed 
+      if task.executable and  not @registry.has_key?(task.name) then ## the task is executable and has not been executed 
         puts "Task #{task.name} is executable"
         if task.dependency.nil? then
           puts "Scheduling new task"
@@ -194,9 +197,31 @@ class TaskManager
     }
     add_tasks(new_tasks)
     puts "No task to schedule" if not task_scheduled
-                  
+
+    ## check if a the children of a asynchronous task have finished
+
   end
 
+  def check_asynchronous_termination
+    @tasks.each{ |task|
+      ## Two cases job synchronous
+      ## we have to consul the experiment information
+      ## in order to know if all the children have finished
+      if task.split? and not @registry.has_key?(task.name) then ## the task has been split and it doesnt exist in the registry
+        children_finished = 0
+        task.children.each{ |ch_name|
+          # puts "#{ch_name.class}"
+          children_finished += 1 if @registry[ch_name] == "Finished"
+        }
+        if task.job_async
+          @registry[task.name]= "Finished" if children_finished == MyExperiment.num_jobs_required
+          # @registry[task.name]= "Finished" if children_finished == 3
+        else 
+          @registry[task.name] = "Finished" if children_finished == task.children.length
+        end
+      end
+    }
+  end
 
   def get_task( task_name)
     @tasks.detect{ |t| t.name == task_name }

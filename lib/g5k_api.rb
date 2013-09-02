@@ -203,10 +203,10 @@ class ExpoEngine < Grid5000::Campaign::Engine
       self.cleanup!("Finishing")
       return true
     end
-    job_hash = @jobs.select { |j| j['uid'] == job}.first
-    puts "Deleting job: #{job_hash['uid']}"
-    #job_hash.delete
-    self.cleanup!("Finish",job_hash)
+    job_uni  = @jobs.select { |j| j['uid'] == job}.first
+    puts "Deleting job: #{job_uni['uid']}"
+    job_uni.delete
+    #self.cleanup!("Finish",job_hash)
     ## cleaning up the variable $all
     # $all=ResourceSet::new()
   end

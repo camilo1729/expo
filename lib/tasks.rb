@@ -10,8 +10,8 @@ require 'thread'
 class Task
   
   include Observable
-  attr_accessor :name, :options, :dependency, :target, :split, :sync, :split_from
-  attr_reader :exec_part, :sync, :children, :resource, :job_async
+  attr_accessor :name, :options, :dependency, :target, :split, :async, :split_from, :executable
+  attr_reader :exec_part, :children, :resource, :job_async, :sync
   
   
   def initialize(name, options ={}, &block)
@@ -29,11 +29,13 @@ class Task
     @target = nil
     ### task that have this property setted to true will be executed otherwhise
     ### They have to be split 
-    @sync = (options[:async].nil? and options[:job_async].nil?) ? true: false
+    @async = (options[:async].nil? and options[:job_async].nil?) ? false : true
+    @sync = options[:sync].nil? ? false : true
     @split = false
     @update_mutex = nil #Mutex.new
     @split_from = nil
     @children = []
+    @executable = options[:sync].nil? ? false : true #it is executable when the task is synchronous from the begining
   end
 
   def run()
@@ -91,9 +93,12 @@ class Task
       task_j.name = (self.name.to_s+"_"+criteria.to_s).to_sym
       task_j.split_from = self.name
       task_j.target = criteria ## as a number, execute will know that it is a job so it has to select resources by Id
-      task_j.sync = true ## we make it runnable
+      task_j.async = false ## the task cannot be asynchronic anymore inside itself
+#      task_j.sync = true ## we make it runnable
+      task_j.executable = true
+      self.executable = false #This task cannot be executed anymore
       self.split = true ## in order to not split it again
-      self.sync = false  ## This task can not be executed anymore
+#      self.sync = false  ## This task can not be executed anymore
       @children.push(task_j.name)
       return task_j
     elsif criteria.is_a?(Hash) then ## we received a resourceset

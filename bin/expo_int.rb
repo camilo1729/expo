@@ -15,7 +15,6 @@ require 'DSL'
 
 Console = DSL.instance
 def task(name, options={}, &block)
-  puts "#{options.inspect}"
   Console.task(name,options, &block)
 end
 
@@ -29,4 +28,12 @@ end
 
 def run(command)
   Console.run(command)
+end
+
+def put(data, path, options={})
+  Console.put(data, path, options)
+end
+
+def free_resources(reservation)
+  Console.free_resources(reservation)
 end

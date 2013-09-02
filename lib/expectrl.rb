@@ -17,7 +17,6 @@ class Experiment
     @tasks = {}
     @tasks_names = []
     @num_jobs_required = 0 ## This will count the number of jobs required for the experiment
-                             ## It will depend on the reservation
     @last_task = 0
     # :number => 'state'
   end
