@@ -25,7 +25,7 @@ class ExpoEngine < Grid5000::Campaign::Engine
   #include Expo
   include Observable ## to test the observable software pattern
   MyExperiment = Experiment.instance
-  attr_accessor :environment, :resources, :resources_exp, :walltime, :name, :jobs, :submission_timeout 
+  attr_accessor :environment, :resources, :resources_exp, :walltime, :name, :jobs
   ##to ease the definition of the experiment
   @resources_exp = []   
   
@@ -34,6 +34,7 @@ class ExpoEngine < Grid5000::Campaign::Engine
   # It has to be true for interactive use and false when executed as stand-alone
   set :types , ["allow_classic_ssh"]
   set :logger, MyExperiment.logger
+  set :submission_timeout, 3600*24
   #set :data_logger, $data_logger
    
   ## I'm rewriting this method otherwise I cannot load the Class again because the defaults get frozen.
@@ -253,111 +254,7 @@ class ExpoEngine < Grid5000::Campaign::Engine
     }
     return processors
   end
-
-  def extract_resources_new(resources)
-    exp_resource_set = ResourceSet::new
-    exp_resource_set.properties[:gateway ] = @gateway
-    resources.each { |site|
-      puts "putting site: #{site[:name]} into resource Set"
-      site_set = ResourceSet::new(:site)
-      site_set.properties[:id] = site[:jobs].first ## Fix-me
-      site_set.properties[:name] = site[:name]
-      gateway = "frontend.#{site[:name]}.grid5000.fr"
-      site_set.properties[:gateway] = gateway ## Fix-me gatway definition will depend on the context
-      
-      site_set.properties[:ssh_user] = "cruizsanabria"
-      site[:clusters].each{ |cluster|
-        cluster_set = ResourceSet::new(:cluster)
-        cluster_set.properties[:name] = cluster[:name]
-        cluster_set.properties[:gateway] = gateway
-        cluster_set.properties[:ssh_user] ="cruizsanabria"
-        cluster_set.properties[:gw_ssh_user] ="cruizsanabria"
-        cluster[:nodes].each{ |node|
-          resource = Resource::new(:node, nil, node[:name])
-          resource.properties[:gateway] = gateway
-          #resource
-          cluster_set.push(resource)
-        }
-        site_set.push(cluster_set)
-      }
-      exp_resource_set.push(site_set)
-    }
-    MyExperiment.add_resources(exp_resource_set)
-  end
-          
-  def convert_to_resource(job,site_name)
-
-    # site hash
-    # site_hash = { :name => site,
-    #   :jobs => [] intergers
-    #   :clusters => []}
   
-    # first I have to verify if the site already exist in the array resources
-    # @resources_exp = []
-    job_name = job['name']
-    job_nodes = job['assigned_nodes']
-    puts "#{job_nodes.inspect}"
-    # job_id will be the same for all the clusters of one site                                                                            
-  
-    job_id = job['uid']
-
-    clusters = []
-
-    regexp = /(\w*)-\w*/
-    job_nodes.each { |node|
-      cl = regexp.match(node)
-      clusters.push(cl[1])
-    }
-
-    clusters.uniq!
-
-    clusters_struct = []
-    clusters.each{ |cluster|
-      cluster_hash = {}
-      cluster_hash[:name] = cluster
-      cluster_hash[:nodes] = []
-      job_nodes.each { |node|
-        node_hash = {}
-        if node =~ /#{cluster}\w*/ then
-          ## the finest granularity is the node, a node belongs to a particular job
-          ## in a cluster we could have different jobs
-          node_hash[:name] = node
-          node_hash[:job] = job['uid']
-          cluster_hash[:nodes].push(node_hash)
-        end
-      }
-
-      clusters_struct.push(cluster_hash)
-    }
-
-    index_site = @resources_exp.index{ |site| site[:name] == site_name }
-    
-    if index_site.nil? then ## new site in the resources
-      site_hash = {:jobs =>[]}
-      site_hash[:name] = site_name
-      site_hash[:jobs].push(job['uid'])
-      site_hash[:clusters] = clusters_struct
-      @resources_exp.push(site_hash)
-    else
-      ## we have to get the site form the resource_exp
-      ## res is the site that already is on the resources_exp
-      @resources_exp[index_site][:jobs].push(job['uid'])
-        
-      clusters_struct.each{ |cluster_hash|
-        index_cluster = @resources_exp[index_site][:clusters].index { |cluster| cluster[:name] == cluster_hash[:name] }
-        if index_cluster.nil? then ## there is no such a cluster we have to add it
-          @resources_exp[index_site][:clusters].push(cluster_hash)
-        else
-          @resources_exp[index_site][:clusters][index_cluster][:nodes]+= cluster_hash[:nodes]
-        end
-      }
-
-          
-    end
-  end
-                        
-  
-
   ## First of all there should be an initialization of the MyExperiment.resources
   ### exp_resource_set = ResourceSet::new
   ### exp_resource_set.properties[:gateway ] = @gateway
@@ -391,6 +288,7 @@ class ExpoEngine < Grid5000::Campaign::Engine
       site_set.properties[:ssh_user] = "cruizsanabria"
       MyExperiment.resources.push(site_set)
     elsif resource_site.is_a?(ResourceSet) then
+      gateway = "frontend.#{site_name}.grid5000.fr"
       site_set = resource_site
     end
     
