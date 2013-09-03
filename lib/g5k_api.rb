@@ -34,7 +34,7 @@ class ExpoEngine < Grid5000::Campaign::Engine
   # It has to be true for interactive use and false when executed as stand-alone
   set :types , ["allow_classic_ssh"]
   set :logger, MyExperiment.logger
-  set :submission_timeout, 3600*24
+  set :submission_timeout, 3600*24 
   #set :data_logger, $data_logger
    
   ## I'm rewriting this method otherwise I cannot load the Class again because the defaults get frozen.

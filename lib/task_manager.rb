@@ -71,7 +71,7 @@ class TaskManager
     elsif not options[:target].nil?
       target_nodes = options[:target]
     end
-    puts "Target nodes: #{target_nodes.name}"
+    puts "Target nodes: #{target_nodes.name}" if target_nodes.is_a?(ResourceSet)
    
     Thread.new {
       Thread.abort_on_exception=true 
@@ -79,13 +79,13 @@ class TaskManager
       Thread.current['hosts'] = target_nodes unless target_nodes.nil?
       task.run
       ## This part has to be commented out in order to test with the script test_taskmanager
-      
-      @tasks_mutex.synchronize {
-        res_name = target_nodes.select_resource_h{ |res|  res.properties.has_key? :id }
-        results = {res_name.name.to_sym => Thread.current['results']}
-      
-        MyExperiment.results.push(results)
-      }
+      if target_nodes.is_a?(ResourceSet) then
+        @tasks_mutex.synchronize {
+          res_name = target_nodes.select_resource_h{ |res|  res.properties.has_key? :id }
+          results = {res_name.name.to_sym => Thread.current['results']}
+          MyExperiment.results.push(results)
+        }
+      end
       
     }
    @registry[task.name] ="Running"   

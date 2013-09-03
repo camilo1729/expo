@@ -440,7 +440,6 @@ class ResourceSet < Resource
       ## The resourceset withtout resources should be clean out
       object_print = ""
       until object_print == resource_set.to_yaml do
-        puts "Iterating"
         object_print = resource_set.to_yaml
         resource_set.delete_if{ |res|
           if res.type != :node  then ## We erase all the resource set without resources

@@ -35,14 +35,13 @@ class DSL
 
   end
 
-  def run(command)
+  def run(command,num_instances = nil)
     ## It uses taktuk as default  
     ## If a reservation is already done we assign those machines as default for hosts
     # run locally is the host is not defined
     if Thread.current['hosts'].nil? then
       return run_local(command)
     end
-    # # @variables[:results] = []
     options = {:connector => 'ssh',:login => @variables[:user]}
 
     hosts = Thread.current['hosts']
@@ -51,7 +50,9 @@ class DSL
       ## checking if the resource set has the gateway defined ---- Fix-me we are not checking
       #hosts.properties[:gateway] = @variables[:gateway]
       ## this doesn't work when using with root
-      cmd_taktuk=TakTuk::TakTuk.new(hosts,options)
+      ## if num_instance is declared , we force the number of instances passed as argument
+      num_instances.nil? ? resources = hosts : resources = hosts[0..num_instances-1]
+      cmd_taktuk=TakTuk::TakTuk.new(resources,options)
       cmd_taktuk.broadcast_exec[command]   ## the normal behaviour if we add commands here, they will be executed in parallel.
       Thread.current['results'].push(cmd_taktuk.run!)
       
@@ -98,29 +99,43 @@ class DSL
     ## I dont need to define a gateway, the informatin is already included in the resourceSet.
     
     #options = {:connector => 'ssh',:login => @variables[:user]}
-    hosts = Thread.current['hosts'] ## host is already check by task
+    resources = Thread.current['hosts'] ## host is already check by task
     if options[:method] == "scp" then
-      if hosts.is_a?(ResourceSet) then
+      if resources.is_a?(ResourceSet) then 
+
+        ## nfs will decide at which level we have to copy to the frontend
+        unless options[:nfs].nil? then
+          
+          resources.each(options[:nfs]){ |res|
+            ## we copy to each nfs defined in the level of hierarchy of the resources
+            command = "scp -r #{data} #{@variables[:user]}@#{res.gw}:/#{path}"
+            MyExperiment.add_command(command)
+            puts "Using Gateway: #{resources.gw}"
+            cmd = CmdCtrlSSH.new("",resources.gw,@variables[:user],nil)
+            cmd.run(command)
+          }
+          return
+        end
         ## we have to iterate for each host
-        hosts.each{ |node|
-          command = "scp -r #{data} #{@variables[:user]}@#{node.name}:/#{path}"
+        resources.each{ |res|
+          command = "scp -r #{data} #{@variables[:user]}@#{res.name}:/#{path}"
           MyExperiment.add_command(command)
-          if hosts.gw == "localhost" then
+          if resources.gw == "localhost" then
             cmd = CtrlCmd.new(command)
             cmd.run
           else   ## if a gateway is define we have to use CmdCtrlSSH
-            cmd = CmdCtrlSSH.new("",hosts.gw,@variables[:user],nil)
+            cmd = CmdCtrlSSH.new("",resources.gw,@variables[:user],nil)
             cmd.run(command)
           end
         }
-      elsif ( hosts.is_a?(String) and @variables[:gateway])
-        command = "scp -r #{data} #{@variables[:user]}@#{hosts}:/#{path}"
+      elsif ( resources.is_a?(String) and @variables[:gateway])
+        command = "scp -r #{data} #{@variables[:user]}@#{resources}:/#{path}"
         MyExperiment.add_command(command)
         cmd = CmdCtrlSSH.new("",@variables[:gateway],@variables[:user],nil)
         cmd.run(command)
-      else ( hosts.is_a?(String) and @variables[:gateway].nil?) ## Fix this, there is no a clean manage of the gateway
+      else ( resources.is_a?(String) and @variables[:gateway].nil?) ## Fix this, there is no a clean manage of the gateway
         ## This is one just one host is passed as a parameter
-        command = "scp -r #{data} #{@variables[:user]}@#{hosts}:/#{path}"
+        command = "scp -r #{data} #{@variables[:user]}@#{resources}:/#{path}"
         MyExperiment.add_command(command)
         cmd = CtrlCmd.new(command)
         cmd.run

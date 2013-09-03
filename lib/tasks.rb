@@ -112,13 +112,14 @@ class Task
           task_r.name = (self.name.to_s+"_"+id.to_s).to_sym
           task_r.split_from = self.name
           task_r.target = id
-          task_r.sync = true
+          task_r.executable = true
+          task_r.async = false
           @children.push(task_r.name)
           task_set.push(task_r)
         }
       }
       self.split = true
-      self.sync = false
+      self.executable = false
       return task_set
     end
     

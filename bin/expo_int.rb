@@ -14,6 +14,9 @@ $LOAD_PATH.unshift LIB_DIR unless $LOAD_PATH.include?(LIB_DIR)
 require 'DSL'
 
 Console = DSL.instance
+
+MyExperiment = Experiment.instance
+
 def task(name, options={}, &block)
   Console.task(name,options, &block)
 end
@@ -26,8 +29,8 @@ def set(name, value)
   Console.set(name,value)
 end
 
-def run(command)
-  Console.run(command)
+def run(command,num_instances = nil)
+  Console.run(command,num_instances)
 end
 
 def put(data, path, options={})
