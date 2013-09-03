@@ -3,7 +3,7 @@
 require 'expectrl'
 require 'rubygems'
 require 'observer'
-
+require 'colorize'
 
 ## To know if a string is a valid number
 ## to job detection
@@ -20,7 +20,7 @@ class TaskManager
   ## This class will be notified from the DSL execute 
   attr_accessor :notification_mutex
 
-  def initialize( tasks = nil )  #tasks )
+  def initialize( tasks = nil )  
     @tasks = tasks.nil? ? [] : tasks
     @registry = {} # keeps the registry of tasks
     @tasks_mutex = Mutex.new
@@ -41,7 +41,7 @@ class TaskManager
     ## We dont include it
     return false if not get_task( task.name).nil? or @registry.has_key?(task.name)
     task.set_taskmanager(self)
-    puts "Registering task #{task.name}"
+    puts "Registering Task: "+ "[ #{task.name} ]".green
     @tasks.push( task )
   end
 
@@ -53,15 +53,15 @@ class TaskManager
 
 
   def execute_task( task)
-    puts "Executing task #{task.name}"
+    puts "Executing Task: "+ "[ #{task.name} ]".green
     options = task.options
 
     if task.target.is_a?(String) and not options[:target].nil? then
       ## it is a node, cluster, or site we select the resources accordondly
       if task.target.is_integer? then
         ## it is a job so we select the resources accordondly
-        puts "Executing task for a job"
         job_id = task.target
+        puts "Spliting Task for the Job: " + "#{job_id}".red
         target_nodes = options[:target].select(:id => job_id.to_i )
       else
         resource_name = task.target
@@ -111,7 +111,7 @@ class TaskManager
               suffix.slice! (task_depen.name.to_s+"_")
               if not task.children.include?((task.name.to_s+"_"+suffix).to_sym) then
                 n_t = task.split(suffix)
-                puts "Task #{n_t.name} created for dependency"
+                puts "Task : " + "[#{n_t.name}] ".green + " created for dependency"
                 n_t.dependency.delete( t_name )
                 n_t.dependency.push ( c_t )
                 new_tasks_dep.push(n_t)
@@ -144,14 +144,14 @@ class TaskManager
     @tasks.each{ |task|
       ## is the task ready to run?
       if task.async then ## task has to be treated before run it
-        puts "Task : #{task.name} has to be thread before run it"
+        # puts "Task : #{task.name} has to be thread before run it"
         # Two cases, asynchronously task or job asynchronously
      
         if task.job_async? and not job.nil? then   ## This tasks can be splitted several times
           puts "Creating a new task for the job"
           ## we have to create a new task for that particular job
           root_task = task.split(job.to_s)
-          puts "Task : #{root_task.name} created"
+          puts "Task : "+"[#{root_task.name}]".green+ "\tcreated"
           new_tasks.push(root_task)
           tasks_changed = true
       
@@ -183,12 +183,12 @@ class TaskManager
     @tasks.each{ |task|
       #puts "Trying to schedule task: #{task.name}"      
       if task.executable and  not @registry.has_key?(task.name) then ## the task is executable and has not been executed 
-        puts "Task #{task.name} is executable"
+        # puts "Task #{task.name} is executable"
         if task.dependency.nil? then
-          puts "Scheduling new task"
+          # puts "Scheduling new task"
           execute_task(task)
         elsif check_dependency?(task) then
-          puts "Scheduling new task after checking dependency"
+          # puts "Scheduling new task after checking dependency"
           execute_task(task)
         end
         task_scheduled = true
@@ -196,7 +196,7 @@ class TaskManager
       
     }
     add_tasks(new_tasks)
-    puts "No task to schedule" if not task_scheduled
+    puts "No task to schedule".brown if not task_scheduled
 
     ## check if a the children of a asynchronous task have finished
 
@@ -239,7 +239,7 @@ class TaskManager
   end
 
   def check_dependency?( task )
-    puts "Checking dependency of task #{task.name}"
+    # puts "Checking dependency of task #{task.name}"
     return false if task.dependency.nil?
     task.dependency.each{ |d|
       return false if @registry[d] != "Finished"
@@ -264,8 +264,8 @@ class TaskManager
 
   def update(task)
     task_name = task.name
-    puts "Finishing task #{task_name}"
-    sleep 0.2
+    puts "Task: "+ "#{task_name}\t".cyan + "[ DONE ]".green
+    sleep (rand(10)/17.to_f)
     @registry[task_name] = "Finished"
     schedule_new_task
   end
