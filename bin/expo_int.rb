@@ -40,3 +40,9 @@ end
 def free_resources(reservation)
   Console.free_resources(reservation)
 end
+
+
+## if a file is pass as a parameter
+if ARGV.length == 1
+  load(ARGV[0])
+end

@@ -82,8 +82,8 @@ class TaskManager
       if target_nodes.is_a?(ResourceSet) then
         @tasks_mutex.synchronize {
           res_name = target_nodes.select_resource_h{ |res|  res.properties.has_key? :id }
-          results = {res_name.name.to_sym => Thread.current['results']}
-          MyExperiment.results.push(results)
+          results = {task.name.to_sym => Thread.current['results']}
+          MyExperiment.results.push(results)  ## I have to merge here 
         }
       end
       

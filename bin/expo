@@ -8,6 +8,10 @@ if `which pry` && $?.success? then
 else
   PRY_BIN="~/.gem/bin/pry"
 end
-exec("#{PRY_BIN} -r #{BIN_DIR}/expo_int.rb")
 
+if ARGV.length == 1 then
+  exec("ruby #{BIN_DIR}/expo_int.rb #{ARGV[0]}")
+else
+  exec("#{PRY_BIN} -r #{BIN_DIR}/expo_int.rb")
+end
 
