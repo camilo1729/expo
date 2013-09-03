@@ -424,22 +424,48 @@ class ResourceSet < Resource
   #  	all[0]  return just one resource.
   def []( index )
     count=0
-    resource_set = ResourceSet::new
+    resource_set = self.copy
     it = ResourceSetIterator::new(self,:node)
     if index.kind_of?(Range) then
       self.each(:node){ |node|
-        resource=it.resource
+        resource = it.resource
         if resource then
-          if (count >= index.first ) and (count <= index.max) then
-            resource_set.resources.push( resource )
+          if (count < index.first ) or (count > index.max) then
+            resource_set.delete(resource)
           end
         end
         count+=1
         it.next
       }
-      resource_set.properties=self.properties.clone
+      ## The resourceset withtout resources should be clean out
+      object_print = ""
+      until object_print == resource_set.to_yaml do
+        puts "Iterating"
+        object_print = resource_set.to_yaml
+        resource_set.delete_if{ |res|
+          if res.type != :node  then ## We erase all the resource set without resources
+            res.length == 0 
+          end
+        }
+      end
       return resource_set
     end
+    # resource_set = ResourceSet::new
+    # it = ResourceSetIterator::new(self,:node)
+    # if index.kind_of?(Range) then
+    #   self.each(:node){ |node|
+    #     resource=it.resource
+    #     if resource then
+    #       if (count >= index.first ) and (count <= index.max) then
+    #         resource_set.resources.push( resource )
+    #       end
+    #     end
+    #     count+=1
+    #     it.next
+    #   }
+    #   resource_set.properties=self.properties.clone
+    #   return resource_set
+    # end
     if index.kind_of?(String) then
       it = ResourceSetIterator::new(self,:resource_set)
       self.each(:resource_set) { |resource_set|
