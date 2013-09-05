@@ -25,6 +25,7 @@ class TaskManager
     @registry = {} # keeps the registry of tasks
     @tasks_mutex = Mutex.new
     @notification_mutex = Mutex.new
+    @no_tasks = false  ## just to inform that all the tasks have been executed
     ## optional to start with a set of tasks
     if tasks.nil? then
       @task_from_experiment = true
@@ -36,6 +37,10 @@ class TaskManager
   end
 
 
+  def finish_tasks?
+    return @no_tasks
+  end
+
   def push( task )
     ## if the task already exist or have been executed it 
     ## We dont include it
@@ -43,6 +48,8 @@ class TaskManager
     task.set_taskmanager(self)
     puts "Registering Task: "+ "[ #{task.name} ]".green
     @tasks.push( task )
+    ## creating the respective hash for resutls of that tasks
+    MyExperiment.results[task.name.to_sym] = {} if task.split_from.nil? ## just for task that have not been split
   end
 
   def add_tasks( tasks )
@@ -55,7 +62,7 @@ class TaskManager
   def execute_task( task)
     puts "Executing Task: "+ "[ #{task.name} ]".green
     options = task.options
-
+    
     if task.target.is_a?(String) and not options[:target].nil? then
       ## it is a node, cluster, or site we select the resources accordondly
       if task.target.is_integer? then
@@ -81,9 +88,13 @@ class TaskManager
       ## This part has to be commented out in order to test with the script test_taskmanager
       if target_nodes.is_a?(ResourceSet) then
         @tasks_mutex.synchronize {
-          res_name = target_nodes.select_resource_h{ |res|  res.properties.has_key? :id }
-          results = {task.name.to_sym => Thread.current['results']}
-          MyExperiment.results.push(results)  ## I have to merge here 
+          resource = target_nodes.select_resource_h{ |res|  res.properties.has_key? :id }
+          ## get the name of the task
+          ## if the task has been  split we get the name of the father
+          task_name = task.split_from.nil? ? task.name : task.split_from
+          results = {resource => Thread.current['results']}
+          MyExperiment.results[task_name.to_sym].merge!(results)  ## I have to merge here
+          
         }
       end
       
@@ -196,7 +207,10 @@ class TaskManager
       
     }
     add_tasks(new_tasks)
-    puts "No task to schedule".brown if not task_scheduled
+    unless task_scheduled 
+      puts "No task to schedule".brown 
+      @no_tasks = true
+    end
 
     ## check if a the children of a asynchronous task have finished
 

@@ -45,4 +45,9 @@ end
 ## if a file is pass as a parameter
 if ARGV.length == 1
   load(ARGV[0])
+  while(Console.task_m.finish_tasks?) do
+    puts "Executing Experiment waiting for tasks to finish"
+    sleep 60
+  end
+  puts "Experiment has finished"
 end
