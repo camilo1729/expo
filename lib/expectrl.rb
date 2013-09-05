@@ -18,7 +18,6 @@ class Experiment
     @tasks_names = []
     @num_jobs_required = 0 ## This will count the number of jobs required for the experiment
     @last_task = 0
-    # :number => 'state'
   end
   
   def add_command(command)

@@ -25,17 +25,14 @@ class ExpoEngine < Grid5000::Campaign::Engine
   #include Expo
   include Observable ## to test the observable software pattern
   MyExperiment = Experiment.instance
-  attr_accessor :environment, :resources, :resources_exp, :walltime, :name, :jobs
-  ##to ease the definition of the experiment
-  @resources_exp = []   
-  
+  attr_accessor :environment, :resources, :walltime, :name, :jobs
+  # to ease the definition of the experiment 
   set :no_cleanup, true # setting this as the normal used is for interacting
   set :environment, nil # The enviroment is by default nil because if nothing is specifyed there is no deployment.
   # It has to be true for interactive use and false when executed as stand-alone
   set :types , ["allow_classic_ssh"]
   set :logger, MyExperiment.logger
-  set :submission_timeout, 3600*24 
-  #set :data_logger, $data_logger
+  set :submission_timeout, 300
    
   ## I'm rewriting this method otherwise I cannot load the Class again because the defaults get frozen.
 
@@ -48,11 +45,8 @@ class ExpoEngine < Grid5000::Campaign::Engine
     @name = "Expo_Experiment"
     @connection = api_connect
     @mutex = Mutex.new
-    @resources_exp = []
-    @res
     @nodes_deployed = []
     @gateway = gateway
-#    @jobs = []
     add_observer(JobNotifier.new)
 
     ### Small part to initialize the resourceSet of the experiment
@@ -63,7 +57,6 @@ class ExpoEngine < Grid5000::Campaign::Engine
     #### I need to check whether I put it here or elsewhere.
   end
   
-
 # rewriting the reserve part for several reasons:
 # - to submit request to serveral sites.
 # - to build the resourceSet needed for Expo.
@@ -79,7 +72,6 @@ class ExpoEngine < Grid5000::Campaign::Engine
     env[:parallel_reserve] = parallel(:ignore_thread_exceptions => true)
     # launch parallel reservation on all the sites specifyed
     # the :ignore_thread_exepctions is because sometimes the api throw some exceptions.
-    reserv = []
 
     env[:resources].each{ |site, resources|
       
@@ -91,17 +83,22 @@ class ExpoEngine < Grid5000::Campaign::Engine
         MyExperiment.num_jobs_required+=1  ## counting the number of jobs required for the experiment to start 
                                            ## in the case it would be synchronous
         env[:parallel_reserve].add(new_env) do |env|
-          
-          env_2=reserve!(env, &block)
-          reserv.push(env_2)
+          begin
+            env_2=reserve!(env, &block)
+           rescue Timeout::Error, StandardError => e
+            puts "!!! Error submiting job"
+            MyExperiment.num_jobs_required-=1  ## we decrease the counter
+            changed
+            notify_observers(0,logger)
+          end
           synchronize { self.create_resource_set(env_2[:job],env[:site])}
-#          @jobs.push(env_2[:job])
           ## putting jobs number into experiment structure
           @jobs.each{ |job| MyExperiment.jobs_2.push(job['uid']) }
-          changed
-          notify_observers(env_2[:job],logger)
+          synchronize {
+            changed
+            notify_observers(env_2[:job]['uid'],logger)
+          }
           ## Notifying that the task can start
-          # Here I can put the notifier that send the event to execute the task
         end
       }  
     }
@@ -123,14 +120,6 @@ class ExpoEngine < Grid5000::Campaign::Engine
     envs=[]
     
     nodes = []
-    ## I will comment this lines because I'm working in interactive mode I dont want that my session
-    ## will be canceld because of Ctrl+C.
-    #%w{ INT TERM}.each do |signal|
-    #  Signal.trap( signal ) do
-    #    logger.fatal "Received #{signal.inspect} signal. Exiting..."
-    #        exit(1)
-    #      end
-    #end
     
     change_dir do
       # I separate the deployment part from the submission part.
@@ -207,9 +196,6 @@ class ExpoEngine < Grid5000::Campaign::Engine
     job_uni  = @jobs.select { |j| j['uid'] == job}.first
     puts "Deleting job: #{job_uni['uid']}"
     job_uni.delete
-    #self.cleanup!("Finish",job_hash)
-    ## cleaning up the variable $all
-    # $all=ResourceSet::new()
   end
 
   def aval(options={})
@@ -292,7 +278,6 @@ class ExpoEngine < Grid5000::Campaign::Engine
       site_set = resource_site
     end
     
-
     regexp = /(\w*)-\w*/
     job_nodes.each { |node|
       cl = regexp.match(node)
@@ -316,7 +301,6 @@ class ExpoEngine < Grid5000::Campaign::Engine
           ## in a cluster we could have different jobs
           resource = Resource::new(:node, nil, node)
           resource.properties[:gateway] = gateway
-          #resource
           cluster_set.push(resource)
           # node_hash[:name] = node
           # node_hash[:job] = job['uid'] ## I have to check why I'm not taking into account the job_id 

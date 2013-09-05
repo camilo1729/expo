@@ -37,6 +37,10 @@ class TaskManager
   end
 
 
+  def running_tasks
+    @registry.values.select{ |state| state == "Running"}.length
+  end
+
   def finish_tasks?
     return @no_tasks
   end
@@ -85,7 +89,7 @@ class TaskManager
       Thread.current['results'] = []
       Thread.current['hosts'] = target_nodes unless target_nodes.nil?
       task.run
-      ## This part has to be commented out in order to test with the script test_taskmanager
+
       if target_nodes.is_a?(ResourceSet) then
         @tasks_mutex.synchronize {
           resource = target_nodes.select_resource_h{ |res|  res.properties.has_key? :id }
@@ -93,8 +97,7 @@ class TaskManager
           ## if the task has been  split we get the name of the father
           task_name = task.split_from.nil? ? task.name : task.split_from
           results = {resource => Thread.current['results']}
-          MyExperiment.results[task_name.to_sym].merge!(results)  ## I have to merge here
-          
+          MyExperiment.results[task_name.to_sym].merge!(results)  ## I have to merge here          
         }
       end
       
@@ -116,8 +119,6 @@ class TaskManager
             task_depen = get_task(t_name)
             # puts "task #{task_depen.name} children: #{task_depen.children.inspect}"
             task_depen.children.each{ |c_t|
-              # # puts "Trying to get task :#{c_t}"
-              # puts "criteria : #{child.target}"
               suffix = c_t.to_s
               suffix.slice! (task_depen.name.to_s+"_")
               if not task.children.include?((task.name.to_s+"_"+suffix).to_sym) then
@@ -143,11 +144,8 @@ class TaskManager
       puts "Getting tasks from Experiment"
       tasks_expe = MyExperiment.get_available_tasks
       add_tasks(tasks_expe) unless tasks_expe.nil? #if @task_from_experiment 
-      ## Get a new task from the experiment if that is the case
     end
 
-    ## This function will possibly be called by several threads so it has to be thread safe :D
-    ## I think we have to assure this in the g5k api code
     new_tasks = []
     ## First we have to analyze the tasks
     tasks_changed = false
@@ -183,9 +181,9 @@ class TaskManager
 
     ## we add the new tasks to the @task variable
     add_tasks(new_tasks)
-
     ## update the dependencies if it is necessary
     updating_dependencies if tasks_changed
+    ## check if a the children of a asynchronous task have finished
     check_asynchronous_termination
    
     task_scheduled = false
@@ -212,14 +210,12 @@ class TaskManager
       @no_tasks = true
     end
 
-    ## check if a the children of a asynchronous task have finished
-
   end
 
   def check_asynchronous_termination
     @tasks.each{ |task|
       ## Two cases job synchronous
-      ## we have to consul the experiment information
+      ## we have to consult the experiment information
       ## in order to know if all the children have finished
       if task.split? and not @registry.has_key?(task.name) then ## the task has been split and it doesnt exist in the registry
         children_finished = 0
@@ -229,9 +225,10 @@ class TaskManager
         }
         if task.job_async
           @registry[task.name]= "Finished" if children_finished == MyExperiment.num_jobs_required
-          # @registry[task.name]= "Finished" if children_finished == 3
         else 
-          @registry[task.name] = "Finished" if children_finished == task.children.length
+          if check_dependency?(task) then
+            @registry[task.name] = "Finished" if children_finished == task.children.length
+          end
         end
       end
     }

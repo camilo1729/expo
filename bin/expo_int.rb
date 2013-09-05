@@ -1,6 +1,5 @@
 
 require 'rubygems'
-
 #Gem.path<<"#{ENV['HOME']}/.gem/"
 #require 'termios'
 require 'optparse'
@@ -12,6 +11,7 @@ $LOAD_PATH.unshift LIB_DIR unless $LOAD_PATH.include?(LIB_DIR)
 ## Here I will include the DSL commands
 
 require 'DSL'
+require 'colorize'
 
 Console = DSL.instance
 
@@ -42,12 +42,12 @@ def free_resources(reservation)
 end
 
 
-## if a file is pass as a parameter
+## if a file is passed as a parameter
 if ARGV.length == 1
   load(ARGV[0])
-  while(Console.task_m.finish_tasks?) do
-    puts "Executing Experiment waiting for tasks to finish"
-    sleep 60
+  until Console.task_m.finish_tasks? do
+    puts "Executing Experiment waiting for  [ #{Console.task_m.running_tasks} ] Task running ...".cyan
+    sleep 30
   end
-  puts "Experiment has finished"
+  puts "Experiment has finished  :::".cyan
 end
