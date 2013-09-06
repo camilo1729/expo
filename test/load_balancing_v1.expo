@@ -1,0 +1,114 @@
+### First Experiment Description for the new engine
+
+require 'g5k_api'
+
+set :user, "cruizsanabria"
+set :gateway, "grenoble.g5k"
+reserv = ExpoEngine.new("grenoble.g5k")
+# This  above initialized the variable resources
+resources = MyExperiment.resources
+
+processors = reserv.get_processors
+
+### With the new version of resources
+### This reservation is cluster based, a job is sent for each cluster found
+res = {}
+processors.each { |site|
+  temp_str = ""
+  res[site[:site].to_sym] = []
+  site[:clusters].each_with_index{ |cluster,index|
+   
+    cluster_name = cluster["cluster"]
+    submit_line = "{cluster='#{cluster_name}'}/nodes=2"
+    res[site[:site].to_sym].push(submit_line)
+  }
+}
+
+
+
+reserv.resources = res
+
+
+task :transferingsite, :target => resources, :job_async => true do
+  options_put = {:method => "scp", :nfs => :site}
+  run("mkdir ~/Exp_tlm") ### The directory has to be created before                              ## Ok with Expo
+  put("/tmp/tlm_test.tar","/home/cruizsanabria/Exp_tlm/tlm_test.tar",:method => "scp")   
+end
+
+
+### Forth step extracting the code
+task :extract_code, :target => resources, :depends => [:transferingsite] do 
+  run("cd ~/Exp_tlm/; tar -xf tlm_test.tar",1)  ## Ok with Expo
+end
+
+### Five compile the code
+
+task :compiling, :target => resources,  :depends => [:extract_code] do         ## Ok with Expo
+  run("make -C ~/Exp_tlm/TLMME_Cristian/tlm/",1)  ## I could defined like this whatever happens it will deploy just one instance 
+end
+
+params_c1 = [ "1000 52 240 70",
+   #           "1000 47 305 160",
+              # "1000 31 305 160",
+              # "1000 150 100 50",
+              # "1000 38 345 173",
+              # "1000 76 86 43 ",
+              "1000 76 172 86"]
+
+
+temp = params_c1.map{ |k| k.split(" ")[1..k.length]}
+size_c1 = temp.map{ |p| p.map!{ |y| y.to_i}.inject(:*) }
+
+task :calibration, :target => resources, :depends => [:compiling]  do
+  params_c1.each{ |par|
+    run("cd ~/Exp_tlm/TLMME_Cristian/tlm/;./run 1 #{par} matched")
+    puts "Finish parameters #{par}"
+  }
+end
+
+task :free_resources, :target => resources, :depends => [:calibration] do
+  puts "Freeing resources"
+  free_resources(reserv)
+end 
+
+task :finish, :target => resources, :depends => [:free_resources], :sync => true do
+  puts "All the Tasks have finished"
+  puts "########--------------------------------------##############"
+end
+
+reserv.run!
+
+task :results_to_file, :depends => [:finish], :sync => true do
+
+
+  results_calibration_file = "Simulation_complete_v2.txt"
+
+  File.open(results_calibration_file,'w+') do |f|
+    f.puts "cluster params norm_run_time size_struct"
+    MyExperiment.results[:calibration].each{ |resources, results|
+      
+      cluster = resources.name
+      results.each_with_index{ |round,index|
+        round[:results][:status].compact!.each { |k|
+          run_time = k[:stop_date].to_f - k[:start_date].to_f
+          param_round = params_c1[index].split(" ").join("-")
+          sim_time = params_c1[index].split(" ")[0].to_f
+          norm_run_time = run_time/sim_time
+          size_struct = size_c1[index]
+          f.puts "#{cluster} #{param_round} #{norm_run_time} #{size_struct}"
+        }
+      }
+    }
+  end
+
+end
+
+
+
+
+
+### Last part I think it should be executed with another reservation
+
+
+
+
