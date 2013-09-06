@@ -4,6 +4,7 @@ require 'resourceset'
 require 'expectrl'
 require 'observer'
 require 'job_notiffier'
+require 'DSL'
 
 @options = { 
   :logger => $logger,
@@ -25,6 +26,7 @@ class ExpoEngine < Grid5000::Campaign::Engine
   #include Expo
   include Observable ## to test the observable software pattern
   MyExperiment = Experiment.instance
+  Console = DSL.instance
   attr_accessor :environment, :resources, :walltime, :name, :jobs
   # to ease the definition of the experiment 
   set :no_cleanup, true # setting this as the normal used is for interacting
@@ -170,8 +172,6 @@ class ExpoEngine < Grid5000::Campaign::Engine
         end#reserv!
         end_deploy=Time::now()
         logger.info reserve_log_msg +"Total Time Spent deploying #{end_deploy-start_deploy}" 
-        #data_logger.info "Nodes succesfully deployed"
-        #data_logger.info nodes
       end# if  environment
       
       ### Deletes the resources from the Resource Set that had problems in the deployment fase ####
@@ -271,7 +271,7 @@ class ExpoEngine < Grid5000::Campaign::Engine
       site_set.properties[:name] = site_name
       gateway = "frontend.#{site_name}.grid5000.fr"
       site_set.properties[:gateway] = gateway ## Fix-me gatway definition will depend on the context
-      site_set.properties[:ssh_user] = "cruizsanabria"
+      site_set.properties[:ssh_user] = Console.variables[:user]
       MyExperiment.resources.push(site_set)
     elsif resource_site.is_a?(ResourceSet) then
       gateway = "frontend.#{site_name}.grid5000.fr"
@@ -292,8 +292,8 @@ class ExpoEngine < Grid5000::Campaign::Engine
       cluster_set.properties[:id] = job['uid'] if @resources[site_name.to_sym].length > 1 ## there are several jobs per site
       cluster_set.properties[:name] = cluster
       cluster_set.properties[:gateway] = gateway
-      cluster_set.properties[:ssh_user] ="cruizsanabria"
-      cluster_set.properties[:gw_ssh_user] ="cruizsanabria"
+      cluster_set.properties[:ssh_user] = Console.variables[:user]  ## Fix-me for Deploying
+      cluster_set.properties[:gw_ssh_user] = Console.variables[:user]
       job_nodes.each { |node|
         node_hash = {}
         if node =~ /#{cluster}\w*/ then
