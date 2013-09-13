@@ -11,6 +11,7 @@ require 'task_manager'
 ## In order to avoid using Experiment.instance.method
 ## I can use insted another variables let's say
 ## MyExperiment = Experiment.instance // this is more readable 
+
 class DSL
  
   include Singleton
@@ -54,7 +55,14 @@ class DSL
       num_instances.nil? ? resources = hosts : resources = hosts[0..num_instances-1]
       cmd_taktuk=TakTuk::TakTuk.new(resources,options)
       cmd_taktuk.broadcast_exec[command]   ## the normal behaviour if we add commands here, they will be executed in parallel.
-      Thread.current['results'].push(cmd_taktuk.run!)
+      taktuk_result = cmd_taktuk.run!
+      ## I have to analyze the result
+      taktuk_result[:results][:status].compact!.each{ |ind|
+        ## checking for the status return
+        raise ExecutingError.new(taktuk_result[:results][:error]) if ind[:line].to_i != 0 
+      }
+   
+      Thread.current['results'].push(taktuk_result)
       
     elsif hosts.is_a?(String) or hosts.is_a?(Resource)#and @variables[:gateway]
       
@@ -68,9 +76,12 @@ class DSL
       # else
       #   cmd = CmdCtrlSSH.new("",hosts,@variables[:user],@variables[:gateway])
       # end
-      @variables[:results] = cmd.run(command)
       cmd.run(command)
 
+      raise ExecutingError if cmd.exit_status != 0
+
+      ## Results for the ssh execution are not implemented yet, 
+      ## We have to act on the task_manager code execute task part
       Thread.current['results'].push({
                                        :stdout => cmd.stdout,
                                        :stderr => cmd.stderr, 
@@ -108,7 +119,7 @@ class DSL
           
           resources.each(options[:nfs]){ |res|
             ## we copy to each nfs defined in the level of hierarchy of the resources
-            command = "scp -r #{data} #{@variables[:user]}@#{res.gw}:/#{path}"
+            command = "scp -r #{data} #{@variables[:user]}@#{res.gw}:#{path}"
             MyExperiment.add_command(command)
             puts "Using Gateway: #{resources.gw}"
             cmd = CmdCtrlSSH.new("",resources.gw,@variables[:user],nil)
@@ -118,7 +129,7 @@ class DSL
         end
         ## we have to iterate for each host
         resources.each{ |res|
-          command = "scp -r #{data} #{@variables[:user]}@#{res.name}:/#{path}"
+          command = "scp -r #{data} #{@variables[:user]}@#{res.name}:#{path}"
           MyExperiment.add_command(command)
           if resources.gw == "localhost" then
             cmd = CtrlCmd.new(command)
@@ -129,13 +140,13 @@ class DSL
           end
         }
       elsif ( resources.is_a?(String) and @variables[:gateway])
-        command = "scp -r #{data} #{@variables[:user]}@#{resources}:/#{path}"
+        command = "scp -r #{data} #{@variables[:user]}@#{resources}:#{path}"
         MyExperiment.add_command(command)
         cmd = CmdCtrlSSH.new("",@variables[:gateway],@variables[:user],nil)
         cmd.run(command)
       else ( resources.is_a?(String) and @variables[:gateway].nil?) ## Fix this, there is no a clean manage of the gateway
         ## This is one just one host is passed as a parameter
-        command = "scp -r #{data} #{@variables[:user]}@#{resources}:/#{path}"
+        command = "scp -r #{data} #{@variables[:user]}@#{resources}:#{path}"
         MyExperiment.add_command(command)
         cmd = CtrlCmd.new(command)
         cmd.run
@@ -151,6 +162,77 @@ class DSL
   
   end
 
+  def get(path, data, options={})
+    ## This is the first version of get, It will use a simple scp that
+    ## is going to be done sequentially.
+    
+    ## I dont need to define a gateway, the informatin is already included in the resourceSet.
+    
+    #options = {:connector => 'ssh',:login => @variables[:user]}
+    resources = Thread.current['hosts'] ## host is already check by task
+    if options[:method] == "scp" then
+      if resources.is_a?(ResourceSet) then 
+
+        ## nfs will decide at which level we have to copy to the frontend
+        unless options[:nfs].nil? then
+          
+          resources.each(options[:nfs]){ |res|
+            ## we copy to each nfs defined in the level of hierarchy of the resources
+            if options[:distinguish] == true then  ## This is for managing the getting of results when the filename is equal
+              puts "Distinguish activated"
+              command = "scp -r #{@variables[:user]}@#{res.gw}:#{path} #{data}#{res.name}"
+            else
+              command = "scp -r #{@variables[:user]}@#{res.gw}:#{path} #{data}"
+            end
+       
+            MyExperiment.add_command(command)
+            puts "Using Gateway: #{resources.gw}"
+            cmd = CmdCtrlSSH.new("",resources.gw,@variables[:user],nil)
+            cmd.run(command)
+          }
+          return
+        end
+        ## we have to iterate for each host
+        resources.each{ |res|
+          command = "scp -r #{@variables[:user]}@#{res.name}:#{path} #{data}"
+          MyExperiment.add_command(command)
+          if resources.gw == "localhost" then
+            cmd = CtrlCmd.new(command)
+            cmd.run
+          else   ## if a gateway is define we have to use CmdCtrlSSH
+            cmd = CmdCtrlSSH.new("",resources.gw,@variables[:user],nil)
+            cmd.run(command)
+          end
+        }
+      elsif (resources.is_a?(String) and @variables[:gateway])
+        command = "scp -r #{@variables[:user]}@#{resources}:#{path} #{data}"
+        MyExperiment.add_command(command)
+        cmd = CmdCtrlSSH.new("",@variables[:gateway],@variables[:user],nil)
+        cmd.run(command)
+      else (resources.is_a?(String) and @variables[:gateway].nil?) ## Fix this, there is no a clean manage of the gateway
+        ## This is one just one host is passed as a parameter
+        if options[:distinguish] == true then  ## This is for managing the getting of results when the filename is equal
+          puts "Distinguish activated"
+          command = "scp -r #{@variables[:user]}@#{resources}:#{path} #{data}#{resources}"
+        else
+          command = "scp -r #{@variables[:user]}@#{resources}:#{path} #{data}"
+        end
+        MyExperiment.add_command(command)
+        cmd = CtrlCmd.new(command)
+        cmd.run
+      end
+      
+    else 
+      raise "copy method not defined"
+    end
+    
+    ## return [cmd.stdout,cmd.run_time]
+
+    ## this doesn't work when using with root
+  
+  end
+
+
   def free_resources(reservation)
     hosts = Thread.current['hosts'] ## host is already check by task
     return false if hosts.nil?
@@ -159,6 +241,11 @@ class DSL
     reservation.stop!(job_id)
   end
 
+
+  def get_variable(var)
+    ## This can be used in general any variable will be passed as Thread.current['var']
+    return Thread.current[var]
+  end
 
   def add_recipe(name)
   
@@ -197,7 +284,7 @@ class DSL
     raise "Task name already registered" if MyExperiment.tasks.has_key?(name)
 
     ## I have to define an option to the granularity of asynchronous
-    options[:type] = :node if not options.has_key?(:type)
+    ##options[:split_into] = :node if not options.has_key?(:split_into)
     
     ## A task object is created and registered in the experiment
     puts "Registering task: #{name}"

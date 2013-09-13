@@ -8,7 +8,7 @@ require 'net/ssh/gateway' ### it is necessary to require it.
 
 class CmdCtrlSSH
 
-  attr_reader :stdout ,:stdin, :stderr
+  attr_reader :stdout ,:stdin, :stderr, :exit_status
   attr_reader :start_time, :end_time
 
   def initialize(cmd=nil,host="",user="",gateway=nil)
@@ -41,7 +41,8 @@ class CmdCtrlSSH
             end
             
             ch.on_request "exit-status" do |ch, data|
-              puts "process terminated with exit status: #{data.read_long}"
+              @exit_status = data.read_long
+#              puts "process terminated with exit status: #{data.read_long}"
             end
             
         
@@ -73,7 +74,8 @@ class CmdCtrlSSH
             end
             
             ch.on_request "exit-status" do |ch, data|
-              puts "process terminated with exit status: #{data.read_long}"
+              @exit_status = data.read_long
+              # puts "process terminated with exit status: #{data.read_long}"
             end
           
             

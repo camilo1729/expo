@@ -1,17 +1,15 @@
 ## This class will register the task defined in the experiment.
 ## This class will send notiifications to the class Taskmanager using notifications
-## form the celluloid library
 
 require 'rubygems'
-#require 'celluloid/autostart'
 require 'observer'
 require 'thread'
 
 class Task
   
   include Observable
-  attr_accessor :name, :options, :dependency, :target, :split, :async, :split_from, :executable
-  attr_reader :exec_part, :children, :resource, :job_async, :sync
+  attr_accessor :name, :options, :dependency, :target, :async, :split_from, :executable, :resource
+  attr_reader :exec_part, :children, :job_async, :sync, :start_time, :end_time
   
   
   def initialize(name, options ={}, &block)
@@ -21,30 +19,38 @@ class Task
     @timeout = 3600  if options[:timeout].nil?
     @timeout = options[:timeout] if not options[:timeout].nil?
     ## job synchrony
-    @job_async = options[:job_async].nil? ? false : true  
+    # @job_async = options[:job_async].nil? ? false : true  
     ## Type of resource associateted, it could be a node, cluster, site or job
     ## It will use this information to divide task and take the appropiate resources
-    @resource = options[:type]
+    @resource = options[:split_into]
     ## This target will be used by execute in order to know where to execute
     @target = nil
     ### task that have this property setted to true will be executed otherwhise
     ### They have to be split 
-    @async = (options[:async].nil? and options[:job_async].nil?) ? false : true
-    @sync = options[:sync].nil? ? false : true
+    @async = (options[:async].nil? or options[:sync].nil?) ? false : true
+    @sync = (options[:sync].nil? or options[:async].nil?) ? false : true
     @split = false
     @update_mutex = nil #Mutex.new
     @split_from = nil
     @children = []
-    @executable = options[:sync].nil? ? false : true #it is executable when the task is synchronous from the begining
+    @executable = options[:split_into].nil? ? true : false #it is executable when the task is synchronous from the begining
+    @start_time = nil
+    @end_time = nil
   end
 
   def run()
     ## I have to improve this mechanism to manage different messages
+    @start_time = Time.now
     @exec_part.call
+    @end_time = Time.now
     @update_mutex.synchronize {
       changed   ## this has to be thread safe 
       notify_observers(self)
     }
+  end
+
+  def run_time
+    @end_time.to_f - @start_time.to_f
   end
 
   def warning
@@ -94,10 +100,11 @@ class Task
       task_j.split_from = self.name
       task_j.target = criteria ## as a number, execute will know that it is a job so it has to select resources by Id
       task_j.async = false ## the task cannot be asynchronic anymore inside itself
+      task_j.resource = nil
 #      task_j.sync = true ## we make it runnable
       task_j.executable = true
       self.executable = false #This task cannot be executed anymore
-      self.split = true ## in order to not split it again
+      @split = true ## in order to not split it again
 #      self.sync = false  ## This task can not be executed anymore
       @children.push(task_j.name)
       return task_j
@@ -118,7 +125,7 @@ class Task
           task_set.push(task_r)
         }
       }
-      self.split = true
+      @split = true
       self.executable = false
       return task_set
     end

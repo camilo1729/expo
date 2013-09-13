@@ -37,14 +37,24 @@ def put(data, path, options={})
   Console.put(data, path, options)
 end
 
+def get(path, data, options={})
+  Console.get(path, data, options)
+end
+
+
 def free_resources(reservation)
   Console.free_resources(reservation)
 end
 
+def get_variable(var)
+  Console.get_variable(var)
+end
 
 ## if a file is passed as a parameter
 if ARGV.length == 1
   load(ARGV[0])
+  sleep 5
+  Console.run_task_manager ### running the first task because now everything is a task
   until Console.task_m.finish_tasks? do
     puts "Executing Experiment waiting for  [ #{Console.task_m.running_tasks} ] Task running ...".cyan
     sleep 30

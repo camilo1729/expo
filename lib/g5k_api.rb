@@ -206,8 +206,8 @@ class ExpoEngine < Grid5000::Campaign::Engine
     self.class.defaults.select { |k,v| [:site,:walltime,:environment,:resources,:types].include? k}    
   end  
 
-  def get_processors
-    ## Function to get the different processors available in Grid'5000
+  def get_info_processors
+    ## Function to get information of the different processors available in Grid'5000
     processors = []
     ## processors[:site => nancy, :clusters => {}
     @connection.root.sites.each{ |site|
@@ -283,7 +283,7 @@ class ExpoEngine < Grid5000::Campaign::Engine
       cl = regexp.match(node)
       clusters.push(cl[1])
     }
-
+    
     clusters.uniq!
     
     clusters_struct = []
