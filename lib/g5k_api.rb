@@ -49,6 +49,7 @@ class ExpoEngine < Grid5000::Campaign::Engine
     @mutex = Mutex.new
     @nodes_deployed = []
     @gateway = gateway
+    @processors = []
     add_observer(JobNotifier.new)
 
     ### Small part to initialize the resourceSet of the experiment
@@ -208,7 +209,6 @@ class ExpoEngine < Grid5000::Campaign::Engine
 
   def get_info_processors
     ## Function to get information of the different processors available in Grid'5000
-    processors = []
     ## processors[:site => nancy, :clusters => {}
     @connection.root.sites.each{ |site|
       site_info = {:site => site["name"].downcase, :clusters => [] }
@@ -217,7 +217,7 @@ class ExpoEngine < Grid5000::Campaign::Engine
         temp["cluster"] = cluster["uid"]
         site_info[:clusters].push(temp)
       }
-      processors.push(site_info)
+      @processors.push(site_info)
     }
     #processors.uniq!
     ## this have to be replace, fourtunately there is just one processor repeated thereofre is not worthy
@@ -232,15 +232,24 @@ class ExpoEngine < Grid5000::Campaign::Engine
     # ## Repeated element
     # r_element = vector-new_v
     ## Deleting some irrelevant information.
-    processors.each{ |site|
+    @processors.each{ |site|
       site[:clusters].each{ |cluster|
         cluster.delete("instruction_set")
         cluster.delete("version")
       }
     }
-    return processors
+    return @processors
   end
   
+  def get_info_cluster(cluster_name)
+    cluster = []
+    @processors.each{ |p|  cluster = p[:clusters].select{ |k| k["cluster"] == cluster_name}
+      break unless cluster.empty?  
+    }
+    return cluster.first unless cluster.nil?
+  end
+    
+
   ## First of all there should be an initialization of the MyExperiment.resources
   ### exp_resource_set = ResourceSet::new
   ### exp_resource_set.properties[:gateway ] = @gateway
@@ -294,6 +303,7 @@ class ExpoEngine < Grid5000::Campaign::Engine
       cluster_set.properties[:gateway] = gateway
       cluster_set.properties[:ssh_user] = Console.variables[:user]  ## Fix-me for Deploying
       cluster_set.properties[:gw_ssh_user] = Console.variables[:user]
+      cluster_set.properties[:hw] = get_info_cluster(cluster)
       job_nodes.each { |node|
         node_hash = {}
         if node =~ /#{cluster}\w*/ then

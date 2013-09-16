@@ -18,7 +18,7 @@ class JobNotifier
 
     ## This will look if there is a task declared as job asynchronous
     MyExperiment.tasks.each{ |name, task_obj|
-      job_asynchrony = true if task_obj.job_async
+      job_asynchrony = true if task_obj.resource == :job
     }
       
     if job_asynchrony == false then ## we wait everybody to trigger Task execution

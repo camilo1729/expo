@@ -77,7 +77,8 @@ class TaskManager
     options = task.options
     
     if task.target.is_a?(String) and not options[:target].nil? then
-      ## it is a node, cluster, or site we select the resources accordondly
+      ## it is a node, clustr, or site we select the resources accordondly
+      puts "We have to select the resources accordondly"
       if task.target.is_integer? then
         ## it is a job so we select the resources accordondly
         job_id = task.target
@@ -181,7 +182,7 @@ class TaskManager
     @tasks.each{ |task|
       ## is the task ready to run?
       unless task.resource.nil? then ## task has to be treated before run it
-        # puts "Task : #{task.name} has to be thread before run it"
+#       puts "Task : #{task.name} has to be thread before run it"
         # Two cases, asynchronously task or job asynchronously
      
         if task.resource == :job 

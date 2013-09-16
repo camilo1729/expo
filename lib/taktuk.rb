@@ -300,12 +300,17 @@ module TakTuk
   end
 
   class Hostlist
+     attr_reader :hostlist
     def initialize(hostlist)
       @hostlist=hostlist
     end
 
     def exclude(node)
       @hostlist.remove(node) if @hostlist.is_a?(Array)
+    end
+    
+    def type()
+      return @hostlist.class
     end
 
     def to_cmd
@@ -419,8 +424,17 @@ module TakTuk
         @args << '-o'
         @args << "#{name.to_s}#{temp}"
       end
-      @args += @hostlist.to_cmd
-      @args += @commands.to_cmd
+      @args += @hostlist.to_cmd 
+      if @hostlist.type==ResourceSet then
+        if @hostlist.hostlist.nodes_has_property?(:cmd) then
+          @args << " quit"
+        else
+          @args += @commands.to_cmd 
+        end
+      else
+        @args += @commands.to_cmd              ## This  modification is in order to test the assignation of different commands to different nodes.
+      end
+      
 
       @exec = Execute[@binary,*@args].run!
       @status, @stdout, @stderr = @exec.wait

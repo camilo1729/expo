@@ -36,7 +36,10 @@ class DSL
 
   end
 
-  def run(command,num_instances = nil)
+  def run(command,params=nil)
+    ## optionsd
+    ## { :ins_per_machine = number,
+    ## { :ins_per_resource_set =
     ## It uses taktuk as default  
     ## If a reservation is already done we assign those machines as default for hosts
     # run locally is the host is not defined
@@ -44,7 +47,7 @@ class DSL
       return run_local(command)
     end
     options = {:connector => 'ssh',:login => @variables[:user]}
-
+    
     hosts = Thread.current['hosts']
     if hosts.is_a?(ResourceSet) then
       ## Here, as the Expo server is on the user's machine, each resource set has to have the gateway used to enter Grid5000
@@ -52,25 +55,43 @@ class DSL
       #hosts.properties[:gateway] = @variables[:gateway]
       ## this doesn't work when using with root
       ## if num_instance is declared , we force the number of instances passed as argument
-      num_instances.nil? ? resources = hosts : resources = hosts[0..num_instances-1]
+      # num_instances.nil? ? resources = hosts : resources = hosts[0..num_instances-1]   I have to find a better way to do this
+      resources = hosts
+      unless params[:ins_per_machine].nil? then
+        if command.is_a?(Array) then
+          ## We assinged commands to each individual node
+          index = 0
+          resources.each{ |node|
+            node.properties[:multiplicity] = params[:ins_per_machine]
+            node.properties[:cmd] = command  
+            index += 1
+            puts index
+          }
+        else
+          resources.each{ |node| node.properties[:cmd] = command}
+        end
+        
+      end
       cmd_taktuk=TakTuk::TakTuk.new(resources,options)
       cmd_taktuk.broadcast_exec[command]   ## the normal behaviour if we add commands here, they will be executed in parallel.
       taktuk_result = cmd_taktuk.run!
       ## I have to analyze the result
-      taktuk_result[:results][:status].compact!.each{ |ind|
-        ## checking for the status return
-        raise ExecutingError.new(taktuk_result[:results][:error]) if ind[:line].to_i != 0 
-      }
-   
+      # taktuk_result[:results][:status].compact!.each{ |ind|
+      #   ## checking for the status return
+      #   raise ExecutingError.new(taktuk_result[:results][:error]) if ind[:line].to_i != 0 
+      # }
+      
       Thread.current['results'].push(taktuk_result)
       
     elsif hosts.is_a?(String) or hosts.is_a?(Resource)#and @variables[:gateway]
       
       MyExperiment.add_command(command)
-    
+      
       hosts.is_a?(Resource) ? hosts_end = hosts.name : hosts_end = hosts
+      puts "Name: #{hosts_end}"
       cmd = CmdCtrlSSH.new("",hosts_end,@variables[:user],@variables[:gateway])
 
+      
       # if hosts.is_a?(Resource) then
       #   cmd = CmdCtrlSSH.new("",hosts.name,@variables[:user],@variables[:gateway])
       # else

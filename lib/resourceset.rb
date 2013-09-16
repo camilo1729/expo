@@ -130,9 +130,28 @@ class Resource
   #Use to make the list of machines for
   #the taktuk command
   def make_taktuk_command()
-    return " -m #{self.name}"
-  end
+    machine_base = "-m #{self.name} "
+    if @properties[:multiplicity].nil? then
+      if @properties[:cmd].nil? then
+         return machine_base
+       else
+        return " #{machine_base} -[ exec [ #{properties[:cmd]} ] -]"
+      end
+    else
+      if @properties[:cmd].nil? then
+        return machine_list
+      else
+        if @properties[:cmd].is_a?(Array) then
+          final_cmd=""
+          @properties[:cmd].each{ |cmd|
+            final_cmd+=" #{machine_base} -[ exec [ #{cmd} ] -]"
+          }
+        end
+        return final_cmd
+      end
+    end
 
+  end
 end
 
 class ResourceSet < Resource
@@ -174,6 +193,7 @@ class ResourceSet < Resource
     }
     return nil
   end
+
 
   def select_resource( props )
     @resources.each { |resource|
@@ -287,6 +307,15 @@ class ResourceSet < Resource
     }
     return nil
   end
+
+
+  def nodes_has_property?(property_name)
+    self.each(:node){ |res|
+      return false unless res.properties.has_key?(property_name)
+    }
+    return true
+  end
+
 
   def delete(resource)
     res = nil

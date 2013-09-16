@@ -76,7 +76,8 @@ class Task
   def clone()
     ## We have to do a deep copy for the options array
     # copy_options = deep_copy(self.options)
-    copy_options = deep_copy(self.options)
+    ## This is in order to not dump the resource set when it has a file for resource set
+    copy_options = deep_copy(self.options.reject{ |key,value| key == :target})
     # The following has to be done in order to not lose the
     # reference of the resources, because it can be updated asynchronously
     copy_options[:target] = self.options[:target] 
