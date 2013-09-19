@@ -34,7 +34,7 @@ class ExpoEngine < Grid5000::Campaign::Engine
   # It has to be true for interactive use and false when executed as stand-alone
   set :types , ["allow_classic_ssh"]
   set :logger, MyExperiment.logger
-  set :submission_timeout, 300
+  set :submission_timeout, 7200
    
   ## I'm rewriting this method otherwise I cannot load the Class again because the defaults get frozen.
 
@@ -303,7 +303,7 @@ class ExpoEngine < Grid5000::Campaign::Engine
       cluster_set.properties[:gateway] = gateway
       cluster_set.properties[:ssh_user] = Console.variables[:user]  ## Fix-me for Deploying
       cluster_set.properties[:gw_ssh_user] = Console.variables[:user]
-      cluster_set.properties[:hw] = get_info_cluster(cluster)
+      cluster_set.properties[:hw] = get_info_cluster(cluster) 
       job_nodes.each { |node|
         node_hash = {}
         if node =~ /#{cluster}\w*/ then
@@ -326,6 +326,8 @@ class ExpoEngine < Grid5000::Campaign::Engine
       ## here the method select_resource return a reference of the self object
       resource_cluster = MyExperiment.resources.select_resource(:name => cluster_set.name)
       if not resource_cluster then ## it doesn't exist we add cluster_set to the site_set
+        site_set.properties[:hw] = cluster_set.properties[:hw] if @resources[site_name.to_sym].length < 2 
+        ## When we just have a cluster per site , we assigned the hardware cluster to the site
         site_set.push(cluster_set)
       elsif resource_cluster.is_a?(ResourceSet) then 
         cluster_set.each { |node|

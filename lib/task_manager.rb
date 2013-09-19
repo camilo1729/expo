@@ -28,14 +28,15 @@ class TaskManager
   ## This class will be notified from the DSL execute 
   attr_accessor :notification_mutex
 
-  def initialize(tasks = nil)  
-    @tasks = tasks.nil? ? [] : tasks
+  def initialize(tasks = [])  
+    @tasks = tasks
     @registry = {} # keeps the registry of tasks
     @tasks_mutex = Mutex.new
     @notification_mutex = Mutex.new
     @no_tasks = false  ## just to inform that all the tasks have been executed
+    @task_from_experiment = false
     ## optional to start with a set of tasks
-    if tasks.nil? then
+    if @tasks.empty? then
       @task_from_experiment = true
     else
       @tasks.each{ |t|
@@ -57,7 +58,7 @@ class TaskManager
   def push(task)
     ## if the task already exist or have been executed it 
     ## We dont include it
-    return false if not get_task( task.name).nil? or @registry.has_key?(task.name)
+    return false unless get_task( task.name).nil? or @registry.has_key?(task.name)
     task.set_taskmanager(self)
     puts "Registering Task: "+ "[ #{task.name} ]".green
     @tasks.push( task )
@@ -105,6 +106,8 @@ class TaskManager
         Thread.current['results'] = []
         Thread.current['hosts'] = target_nodes unless target_nodes.nil?
         Thread.current['info_nodes'] = nodes_info unless target_nodes.nil?
+        ## to avoid concurrency between tasks
+        sleep(rand(20)/7.to_f)
         task.run
         exception = false
       rescue ExecutingError => e
@@ -121,7 +124,7 @@ class TaskManager
 
       if target_nodes.is_a?(ResourceSet) and not exception then
         @tasks_mutex.synchronize {
-          ## get the name of the task
+          ## Get the name of the task
           ## if the task has been  split we get the name of the father
           task_name = task.split_from.nil? ? task.name : task.split_from
           results = {nodes_info => Thread.current['results']}
@@ -149,12 +152,12 @@ class TaskManager
             # puts "task #{task_depen.name} children: #{task_depen.children.inspect}"
             task_depen.children.each{ |c_t|
               suffix = c_t.to_s
-              suffix.slice! (task_depen.name.to_s+"_")
+              suffix.slice!(task_depen.name.to_s+"_")
               if not task.children.include?((task.name.to_s+"_"+suffix).to_sym) then
                 n_t = task.split(suffix)
                 puts "Task : " + "[#{n_t.name}] ".green + " created for dependency"
-                n_t.dependency.delete( t_name )
-                n_t.dependency.push ( c_t )
+                n_t.dependency.delete(t_name)
+                n_t.dependency.push(c_t)
                 new_tasks_dep.push(n_t)
               end
             }
@@ -167,7 +170,7 @@ class TaskManager
 
   def schedule_new_task(job=nil)
 
-    execute_task = true
+    # execute_task = true
     ## First thing to do we get the task from the experiment
     if @task_from_experiment
       puts "Getting tasks from Experiment"
@@ -300,7 +303,7 @@ class TaskManager
     task_list = []
     @tasks.each { |t|
       if not t.dependency.nil? then
-        task_list.push(t) if t.dependency.include?( task_name )
+        task_list.push(t) if t.dependency.include?(task_name)
       end
     }
     task_list
@@ -309,7 +312,7 @@ class TaskManager
   def update(task)
     task_name = task.name
     puts "Task: "+ "#{task_name}\t".cyan + "[ DONE ]".green + " In #{task.run_time.round(3)} Seconds".blue
-    sleep (rand(10)/17.to_f)
+    sleep(rand(10)/17.to_f)
     @registry[task_name] = "Finished"
     schedule_new_task
   end

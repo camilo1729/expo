@@ -29,8 +29,8 @@ def set(name, value)
   Console.set(name,value)
 end
 
-def run(command,num_instances = nil)
-  Console.run(command,num_instances)
+def run(command,params = {})
+  Console.run(command,params)
 end
 
 def put(data, path, options={})

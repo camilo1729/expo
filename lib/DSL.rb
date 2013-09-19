@@ -36,8 +36,13 @@ class DSL
 
   end
 
-  def run(command,params=nil)
-    ## optionsd
+  def run(command,params={})
+    ## To ease the declaration
+    if params.is_a?(Symbol) then
+      temp = params
+      params = {temp => []}
+    end
+    ## options
     ## { :ins_per_machine = number,
     ## { :ins_per_resource_set =
     ## It uses taktuk as default  
@@ -55,33 +60,48 @@ class DSL
       #hosts.properties[:gateway] = @variables[:gateway]
       ## this doesn't work when using with root
       ## if num_instance is declared , we force the number of instances passed as argument
-      # num_instances.nil? ? resources = hosts : resources = hosts[0..num_instances-1]   I have to find a better way to do this
       resources = hosts
-      unless params[:ins_per_machine].nil? then
+      resources = hosts[0..params[:ins_per_resources]-1]   if params[:ins_per_resources] #I have to find a better way to do this
+     
+      if params[:ins_per_machine] then
         if command.is_a?(Array) then
           ## We assinged commands to each individual node
-          index = 0
           resources.each{ |node|
             node.properties[:multiplicity] = params[:ins_per_machine]
             node.properties[:cmd] = command  
-            index += 1
-            puts index
           }
         else
-          resources.each{ |node| node.properties[:cmd] = command}
+          resources.each{ |node|
+            node.properties[:multiplicity] = params[:ins_per_machine]
+            node.properties[:cmd] = command
+          }
         end
         
       end
+   
       cmd_taktuk=TakTuk::TakTuk.new(resources,options)
       cmd_taktuk.broadcast_exec[command]   ## the normal behaviour if we add commands here, they will be executed in parallel.
       taktuk_result = cmd_taktuk.run!
-      ## I have to analyze the result
-      # taktuk_result[:results][:status].compact!.each{ |ind|
-      #   ## checking for the status return
-      #   raise ExecutingError.new(taktuk_result[:results][:error]) if ind[:line].to_i != 0 
-      # }
       
+      ## I have to analyze the result
+      ## Sometime we need to check something with a bash command and we dont want to raise an error
+      
+      taktuk_result[:results][:status].compact!.each{ |ind|
+        ## checking for the status return
+        if ind[:line].to_i != 0 then
+          raise ExecutingError.new(taktuk_result[:results][:error]) unless params[:no_error]
+          return false
+        end
+      }
+      
+
+      ## if a tag is activated we tag the results for an easy management
+        if params[:results_tag] then
+          tag_hash = {:tag => params[:results_tag] }
+          taktuk_result.merge!(tag_hash)
+        end
       Thread.current['results'].push(taktuk_result)
+      return true
       
     elsif hosts.is_a?(String) or hosts.is_a?(Resource)#and @variables[:gateway]
       

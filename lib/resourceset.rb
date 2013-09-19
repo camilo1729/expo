@@ -253,7 +253,6 @@ class ResourceSet < Resource
           elsif resource.kind_of?(ResourceSet) then
             #result = resource.select( type, props )
             result = resource.select(props)
-            #puts "Entering with type: #{type} "
             set.resources.push( result ) if result
 #          set.resources.push( resource.select( type, props ) )
           end
@@ -263,7 +262,6 @@ class ResourceSet < Resource
     else
       set.properties.replace( @properties )
       @resources.each { |resource|
-        puts "Entering #{block.class}"
         # if not type or resource.type == type then
         if block.call( resource ) then
           set.resources.push( resource.copy )
@@ -496,9 +494,9 @@ class ResourceSet < Resource
     # end
     if index.kind_of?(String) then
       it = ResourceSetIterator::new(self,:resource_set)
-      self.each(:resource_set) { |resource_set|
-        if resource_set.properties[:alias] == index then
-          return resource_set
+      self.each(:resource_set) { |resourceset|
+        if resourceset.properties[:alias] == index then
+          return resourceset
         end
       }
     end
