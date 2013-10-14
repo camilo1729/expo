@@ -278,6 +278,25 @@ class ResourceSet < Resource
   end
 
 
+  def permutation(length)
+    set = ResourceSet::new
+    set.properties.replace(@properties)
+    self.each
+    # self.each{ |res_1|
+    #   self.each{ |res_2|
+    #     unless res_1==res_2
+    #       pair = ResourceSet::new(:pair)
+    #       # res_1_info = self.select_resource_h(:name => res_1.name)
+    #       # res_2_info = self.select_resource_h(:name => res_2.name)
+    #       pair.push(res_1)
+    #       pair.push(res_2)
+    #     end
+    #     set.resources.push(pair)
+    #   }
+    # }
+    # return set
+  end
+
 
   def delete_first(resource)
     @resources.each_index { |i|
@@ -285,7 +304,7 @@ class ResourceSet < Resource
         @resources.delete_at(i)
         return resource
       elsif @resources[i].kind_of?(ResourceSet) then
-        if @resources[i].delete_first( resource ) then
+        if @resources[i].delete_first(resource) then
           return resource
         end
       end
@@ -343,19 +362,21 @@ class ResourceSet < Resource
   end
   
   #Puts all the resource hierarchy into one ResourceSet.
-  #The type can be either :node or :resource_set.
-  def flatten( type = nil )
+  #the type defines the level
+  def flatten(level=nil)
     set = ResourceSet::new
-                @resources.each { |resource|
-      if not type or resource.type == type then
-        set.resources.push( resource.copy )
-        if resource.kind_of?(ResourceSet) then
-          set.resources.last.resources.clear
-        end
-      end
-      if resource.kind_of?(ResourceSet) then
-        set.resources.concat( resource.flatten(type).resources )
-      end
+    self.each(level){ |resource|
+
+      set.resources.push( resource.copy )
+      # if not type or resource.type == type then
+      #   set.resources.push( resource.copy )
+      #   if resource.kind_of?(ResourceSet) then
+      #     # set.resources.last.resources.clear
+      #   end
+      # end
+      # if resource.kind_of?(ResourceSet) then
+      #   set.resources.concat(resource.flatten(type).resources)
+      # end
     }
     return set
   end
@@ -493,12 +514,13 @@ class ResourceSet < Resource
     #   return resource_set
     # end
     if index.kind_of?(String) then
-      it = ResourceSetIterator::new(self,:resource_set)
-      self.each(:resource_set) { |resourceset|
-        if resourceset.properties[:alias] == index then
-          return resourceset
-        end
-      }
+      return select_resource_h(:name => index ) 
+      # it = ResourceSetIterator::new(self,:resource_set)
+      # self.each(:resource_set) { |resourceset|
+      #   if resourceset.properties[:alias] == index then
+      #     return resourceset
+      #   end
+      # }
     end
     #For this case a number is passed and we return a resource Object
     self.each(:node){ |resource|
@@ -686,30 +708,43 @@ class ResourceSet < Resource
   
 end
 
+
+#it working backwards level =1 should be the nodes
+
+# Now the the iterators can be initialized with an integer
+# which specifies the level of depth 
 class ResourceSetIterator
   attr_accessor :current, :iterator, :resource_set, :type
-  def initialize( resource_set, type=nil)
+  def initialize( resource_set, level=nil)
     @resource_set = resource_set
     @iterator = nil
-    @type = type
+    @level = level
     @current = 0
+   
     @resource_set.resources.each_index { |i|
-      if @type == @resource_set.resources[i].type then
+      if @level == @resource_set.resources[i].type or @level == 1 then
+
         @current = i
         return
+  
       elsif @resource_set.resources[i].kind_of?(ResourceSet) then
-        @iterator = ResourceSetIterator::new(@resource_set.resources[i], @type)
+        if @level.is_a?(Fixnum) then
+          @iterator = ResourceSetIterator::new(@resource_set.resources[i], @level-1)
+        else
+          @iterator = ResourceSetIterator::new(@resource_set.resources[i], @level)
+        end
         if @iterator.resource then
           @current = i
           return
         else
           @iterator = nil
         end
-      elsif not @type then
+     elsif not @level then
         @current = i
         return
-      end
+    end
     }
+          
     @current = @resource_set.resources.size
   end
   
@@ -725,7 +760,7 @@ class ResourceSetIterator
   
   def next
     res = nil
-    @current += 1 if not @iterator
+    @current += 1 unless @iterator
     while not res and @current < @resource_set.resources.size do
       if @iterator then
         @iterator.next
@@ -734,16 +769,23 @@ class ResourceSetIterator
           @iterator = nil
           @current += 1
         end
-      elsif @type == @resource_set.resources[@current].type then
+      elsif @level == @resource_set.resources[@current].type or @level==1 then
         res = @resource_set.resources[@current]
+       
       elsif @resource_set.resources[@current].kind_of?(ResourceSet) then
-        @iterator = ResourceSetIterator::new(@resource_set.resources[@current], @type)
+        if @level.is_a?(Fixnum) then
+          @iterator = ResourceSetIterator::new(@resource_set.resources[@current], @level-1)
+        else
+          @iterator = ResourceSetIterator::new(@resource_set.resources[@current], @level)
+        end
+     
+        # @iterator = ResourceSetIterator::new(@resource_set.resources[@current], @type)
         res = @iterator.resource
         if not res then
           @iterator = nil
           @current += 1
         end
-      elsif not @type then
+      elsif not @level then
         res = @resource_set.resources[@current]
       else
         @current += 1

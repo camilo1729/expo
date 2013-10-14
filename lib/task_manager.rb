@@ -13,7 +13,7 @@ class String
   end
 end
 
-class ExecutingError < RuntimeError
+class ExecutingError < StandardError
   attr_reader :object
   
   def initialize(object)
@@ -78,8 +78,7 @@ class TaskManager
     options = task.options
     
     if task.target.is_a?(String) and not options[:target].nil? then
-      ## it is a node, clustr, or site we select the resources accordondly
-      puts "We have to select the resources accordondly"
+      ## it is a node, cluster, or site we select the resources accordondly
       if task.target.is_integer? then
         ## it is a job so we select the resources accordondly
         job_id = task.target
@@ -105,6 +104,7 @@ class TaskManager
       begin
         Thread.current['results'] = []
         Thread.current['hosts'] = target_nodes unless target_nodes.nil?
+        Thread.current['task_options'] = options
         Thread.current['info_nodes'] = nodes_info unless target_nodes.nil?
         ## to avoid concurrency between tasks
         sleep(rand(20)/7.to_f)
@@ -116,13 +116,12 @@ class TaskManager
         ## putting the errors
         task_name = task.split_from.nil? ? task.name : task.split_from
         results = {nodes_info => e.object}
-        puts "reulsts = #{results}"
         MyExperiment.results[task_name.to_sym].merge!(results)  ## I have to merge here          
         @registry[task.name] = "Failed"
         exception = true
       end
 
-      if target_nodes.is_a?(ResourceSet) and not exception then
+      unless target_nodes.is_a?(String) and exception then
         @tasks_mutex.synchronize {
           ## Get the name of the task
           ## if the task has been  split we get the name of the father
@@ -130,8 +129,6 @@ class TaskManager
           results = {nodes_info => Thread.current['results']}
           MyExperiment.results[task_name.to_sym].merge!(results)  ## I have to merge here          
         }
-      else
-        #results = {
       end
     }
     @registry[task.name] ="Running"   

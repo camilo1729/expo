@@ -47,13 +47,19 @@ class DSL
     ## { :ins_per_resource_set =
     ## It uses taktuk as default  
     ## If a reservation is already done we assign those machines as default for hosts
+
     # run locally is the host is not defined
     if Thread.current['hosts'].nil? then
       return run_local(command)
     end
+
     options = {:connector => 'ssh',:login => @variables[:user]}
-    
+
+
+    ## Getting variables from the executing task    
     hosts = Thread.current['hosts']
+    task_options = Thread.current['task_options']
+
     if hosts.is_a?(ResourceSet) then
       ## Here, as the Expo server is on the user's machine, each resource set has to have the gateway used to enter Grid5000
       ## checking if the resource set has the gateway defined ---- Fix-me we are not checking
@@ -96,8 +102,8 @@ class DSL
       
 
       ## if a tag is activated we tag the results for an easy management
-        if params[:results_tag] then
-          tag_hash = {:tag => params[:results_tag] }
+        if params[:results_label] then
+          tag_hash = {:tag => params[:results_label] }
           taktuk_result.merge!(tag_hash)
         end
       Thread.current['results'].push(taktuk_result)
@@ -107,16 +113,16 @@ class DSL
       
       MyExperiment.add_command(command)
       
-      hosts.is_a?(Resource) ? hosts_end = hosts.name : hosts_end = hosts
-      puts "Name: #{hosts_end}"
-      cmd = CmdCtrlSSH.new("",hosts_end,@variables[:user],@variables[:gateway])
+      if hosts.is_a?(Resource) then 
+        hosts_end = hosts.name 
+        gateway = hosts.properties[:gateway]
+      else
+        hosts_end = hosts
+        gateway = Thread.current['task_options'][:gateway]
+      end
 
-      
-      # if hosts.is_a?(Resource) then
-      #   cmd = CmdCtrlSSH.new("",hosts.name,@variables[:user],@variables[:gateway])
-      # else
-      #   cmd = CmdCtrlSSH.new("",hosts,@variables[:user],@variables[:gateway])
-      # end
+      cmd = CmdCtrlSSH.new("",hosts_end,@variables[:user],gateway)
+
       cmd.run(command)
 
       raise ExecutingError if cmd.exit_status != 0
@@ -129,19 +135,8 @@ class DSL
                                        :start_time => cmd.start_time, 
                                        :end_time => cmd.end_time
                                      })
-      ## I need to add the command executed to the result
-      #Thread.current['results'] = cmd.run(command)
     end
     
-    # ## This function run has to return the number of commands run succesfully
-    # # result_counter = 0
-    # ## result_taktuk[:results][:status] is a Taktuk result object
-    # result_taktuk[:results][:status].compact!.each{ |ind|
-    #   ## checking for the status return
-    #   result_counter+=1 if ind[:line].to_i == 0 
-    # }
-    
-    # return result_counter
   end
   
   def put(data, path, options={})
@@ -286,6 +281,10 @@ class DSL
   def get_variable(var)
     ## This can be used in general any variable will be passed as Thread.current['var']
     return Thread.current[var]
+  end
+
+  def set_variable(var,value)
+    Thread.current[var] = value
   end
 
   def add_recipe(name)

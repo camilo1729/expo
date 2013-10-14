@@ -310,7 +310,7 @@ class ExpoEngine < Grid5000::Campaign::Engine
           ## the finest granularity is the node, a node belongs to a particular job
           ## in a cluster we could have different jobs
           resource = Resource::new(:node, nil, node)
-          resource.properties[:gateway] = gateway
+          resource.properties[:gateway] = @gateway
           cluster_set.push(resource)
           # node_hash[:name] = node
           # node_hash[:job] = job['uid'] ## I have to check why I'm not taking into account the job_id 
