@@ -37,7 +37,9 @@ class DSL
   end
 
   def run(command,params={})
+    puts "Executing run"
     ## To ease the declaration
+   
     if params.is_a?(Symbol) then
       temp = params
       params = {temp => []}
@@ -50,7 +52,16 @@ class DSL
 
     # run locally is the host is not defined
     if Thread.current['hosts'].nil? then
-      return run_local(command)
+      MyExperiment.add_command(command)
+      cmd = CtrlCmd.new(command)
+      cmd.run
+      Thread.current['results'].push({
+                                       :stdout => cmd.stdout,
+                                       :stderr => cmd.stderr, 
+                                       :start_time => cmd.start_time, 
+                                       :end_time => cmd.end_time
+                                     })
+
     end
 
     options = {:connector => 'ssh',:login => @variables[:user]}
@@ -112,7 +123,7 @@ class DSL
     elsif hosts.is_a?(String) or hosts.is_a?(Resource)#and @variables[:gateway]
       
       MyExperiment.add_command(command)
-      
+       puts "ok"   
       if hosts.is_a?(Resource) then 
         hosts_end = hosts.name 
         gateway = hosts.properties[:gateway]
@@ -122,11 +133,11 @@ class DSL
       end
 
       cmd = CmdCtrlSSH.new("",hosts_end,@variables[:user],gateway)
-
+     
       cmd.run(command)
-
-      raise ExecutingError if cmd.exit_status != 0
-
+    
+      raise ExecutingError if cmd.exit_status != 0 unless params[:no_error]
+       puts "ok"  
       ## Results for the ssh execution are not implemented yet, 
       ## We have to act on the task_manager code execute task part
       Thread.current['results'].push({
