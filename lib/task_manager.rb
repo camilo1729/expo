@@ -51,6 +51,10 @@ class TaskManager
     @registry.values.select{ |state| state == "Running"}.length
   end
 
+  def tasks_registered
+    return @tasks.length
+  end
+
   def finish_tasks?
     return @no_tasks
   end
@@ -58,7 +62,8 @@ class TaskManager
   def push(task)
     ## if the task already exist or have been executed it 
     ## We dont include it
-    return false unless get_task( task.name).nil? or @registry.has_key?(task.name)
+    return false unless get_task(task.name).nil? 
+    return false if @registry.has_key?(task.name)
     task.set_taskmanager(self)
     puts "Registering Task: "+ "[ #{task.name} ]".green
     @tasks.push( task )
@@ -94,6 +99,8 @@ class TaskManager
     elsif not options[:target].nil?
       target_nodes = options[:target]
       nodes_info = target_nodes
+    else 
+      nodes_info = "localhost"
     end
 
    
