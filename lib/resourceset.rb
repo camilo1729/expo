@@ -278,23 +278,20 @@ class ResourceSet < Resource
   end
 
 
-  def permutation(length)
-    set = ResourceSet::new
-    set.properties.replace(@properties)
-    self.each
-    # self.each{ |res_1|
-    #   self.each{ |res_2|
-    #     unless res_1==res_2
-    #       pair = ResourceSet::new(:pair)
-    #       # res_1_info = self.select_resource_h(:name => res_1.name)
-    #       # res_2_info = self.select_resource_h(:name => res_2.name)
-    #       pair.push(res_1)
-    #       pair.push(res_2)
-    #     end
-    #     set.resources.push(pair)
-    #   }
-    # }
-    # return set
+  def combination(length)
+    set_per = []
+    (0..self.length-1).each{ |a|
+      (a..self.length-1).each{ |b|
+        unless a==b
+          set = ResourceSet::new
+          set.properties.replace(@properties)
+          set.resources.push(self[a])
+          set.resources.push(self[b])
+          set_per.push(set)
+        end
+      }
+    }
+    return set_per
   end
 
 

@@ -7,7 +7,7 @@ require 'job_notiffier'
 require 'DSL'
 
 @options = { 
-  :logger => $logger,
+  #:logger => $logger,
   #:data_logger => $data_logger,
   :restfully_config => File.expand_path("~/.restfully/api.grid5000.fr.yml")
 }
@@ -51,7 +51,7 @@ class ExpoEngine < Grid5000::Campaign::Engine
     @gateway = gateway
     @processors = []
     add_observer(JobNotifier.new)
-
+    
     ### Small part to initialize the resourceSet of the experiment
     exp_resource_set = ResourceSet::new(:resource_set,"Exp_resources")
     ## It seems that a name has to be declared in order to be assigned to a Hash
@@ -211,9 +211,10 @@ class ExpoEngine < Grid5000::Campaign::Engine
     ## Function to get information of the different processors available in Grid'5000
     ## processors[:site => nancy, :clusters => {}
     @connection.root.sites.each{ |site|
-      site_info = {:site => site["name"].downcase, :clusters => [] }
+      site_info = {:site => site["uid"], :clusters => [] }
       site.clusters.each{ |cluster|
         temp  = cluster.nodes.first["processor"].merge(cluster.nodes.first["architecture"])
+        temp.merge!(cluster.nodes.first["main_memory"])
         temp["cluster"] = cluster["uid"]
         site_info[:clusters].push(temp)
       }

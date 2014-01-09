@@ -31,6 +31,7 @@ class JobNotifier
     elsif job_asynchrony == true then ## we start runnig task and we pass the job id to create the respective resource_set
       if job_id == 0 then
         logger.info "There was an error in the Job submition notifying the task manager"
+        sleep( (rand(20/7.to_f)))
         DSL.instance.run_task_manager()
       else
         DSL.instance.run_task_manager(job_id)

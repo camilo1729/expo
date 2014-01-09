@@ -71,6 +71,9 @@ class VBoxManage
     end
   end
 
+  def add_port(host_port,guest_port)
+    
+  end
 
   def set_ip
     ## namp have to be execute it in order to fill the arp table
@@ -165,7 +168,7 @@ class VBoxManage_set
 
   def create_resource_set
     ## This method will return a resource set of the set of virtual machines created
-    resource_set = ResourceSet::new
+    resource_set = ResourceSet::new(:cluster)
     resource_set.properties[:name] = "virtual_set"
     resource_set.properties[:ssh_user] = "root"
     @group.each{ |vm|

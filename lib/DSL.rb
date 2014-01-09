@@ -37,7 +37,6 @@ class DSL
   end
 
   def run(command,params={})
-    puts "Executing run"
     ## To ease the declaration
    
     if params.is_a?(Symbol) then
@@ -135,8 +134,12 @@ class DSL
       cmd = CmdCtrlSSH.new("",hosts_end,@variables[:user],gateway)
      
       cmd.run(command)
-    
-      raise ExecutingError if cmd.exit_status != 0 unless params[:no_error]
+      
+      if cmd.exit_status != 0 then
+        raise ExecutingError unless params[:no_error]
+        return false
+      end
+      
        puts "ok"  
       ## Results for the ssh execution are not implemented yet, 
       ## We have to act on the task_manager code execute task part

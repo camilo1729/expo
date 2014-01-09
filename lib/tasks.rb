@@ -8,7 +8,7 @@ require 'thread'
 class Task
   
   include Observable
-  attr_accessor :name, :options, :dependency, :target, :async, :split_from, :executable, :resource
+  attr_accessor :name, :options, :dependency, :target, :async, :split_from, :executable, :resource, :split
   attr_reader :exec_part, :children, :job_async, :sync, :start_time, :end_time
   
   
@@ -122,6 +122,7 @@ class Task
           task_r.target = id
           task_r.executable = true
           task_r.async = false
+          task_r.split = true  ### I have to check this part probably is not the way to do it.
           @children.push(task_r.name)
           task_set.push(task_r)
         }

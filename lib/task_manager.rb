@@ -25,6 +25,7 @@ end
 class TaskManager
 
   MyExperiment = Experiment.instance
+
   ## This class will be notified from the DSL execute 
   attr_accessor :notification_mutex
 
@@ -44,6 +45,7 @@ class TaskManager
       }
     end
 
+    @logger = MyExperiment.logger
   end
 
 
@@ -66,6 +68,7 @@ class TaskManager
     return false if @registry.has_key?(task.name)
     task.set_taskmanager(self)
     puts "Registering Task: "+ "[ #{task.name} ]".green
+    @logger.info "Registering Task: "+ "[ #{task.name} ]"
     @tasks.push( task )
     ## creating the respective hash for resutls of that tasks
     MyExperiment.results[task.name.to_sym] = {} if task.split_from.nil? ## just for task that have not been split
@@ -79,7 +82,8 @@ class TaskManager
 
 
   def execute_task(task)
-    puts "Executing Task: "+ "[ #{task.name} ]".green
+    puts "Executing Task: "+ "[ #{task.name} ]"
+    @logger.info "Executing Task: "+ "[ #{task.name} ]"
     options = task.options
     
     if task.target.is_a?(String) and not options[:target].nil? then
@@ -88,6 +92,7 @@ class TaskManager
         ## it is a job so we select the resources accordondly
         job_id = task.target
         puts "Spliting Task for the Job: " + "#{job_id}".red
+        @logger.info "Spliting Task for the Job: " + "#{job_id}"
         target_nodes = options[:target].select(:id => job_id.to_i )
         nodes_info = target_nodes.select_resource_h{ |res|  res.properties.has_key? :id }
       else
@@ -316,6 +321,7 @@ class TaskManager
   def update(task)
     task_name = task.name
     puts "Task: "+ "#{task_name}\t".cyan + "[ DONE ]".green + " In #{task.run_time.round(3)} Seconds".blue
+    @logger.info "Task: "+ "#{task_name}\t" + "[ DONE ]" + " In #{task.run_time.round(3)} Seconds"
     sleep(rand(10)/17.to_f)
     @registry[task_name] = "Finished"
     schedule_new_task
