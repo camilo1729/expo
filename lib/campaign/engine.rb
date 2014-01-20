@@ -415,11 +415,12 @@ module Grid5000
           # FIXME: It should test for the same :resources attribute,
           # but OAR api does not provide that at the moment...
           job = connection.root.sites[env[:site].to_sym].jobs(
-            :reload => true
+#            :reload => true # Fixing problem when reusing job
           ).find{|j|
-            j['name'] == env[:name] &&
+            # j['name'] == env[:name] &&
             j['state'] == 'running' &&
-            j['user_uid'] == env[:user]
+            # j['user_uid'] == env[:user]
+            j['uid'] == env[:uid]
           }
         else
           payload = {
@@ -515,6 +516,7 @@ module Grid5000
             #FIXME Add vlan managment (data here http://sebian.yasaw.net/pub/debug.txt )
             # On passe le numéro de vlan si il existe, si non vlan = nil (bien géré par l'api)
             vlan = env[:job]['resources_by_type']['vlans'][0] if defined? env[:job]['resources_by_type']['vlans'][0]
+            logger.info "Got the following key specification: #{key_for_deployment(env)}"
             env[:remaining_attempts] -= 1
             deployment = connection.root.sites[env[:site].to_sym].deployments.submit({
               :nodes => env[:nodes],
@@ -843,6 +845,7 @@ module Grid5000
         when URI::HTTP, URI::HTTPS
           connection.get(uri.to_s).body
         else
+          logger.info "reading public key file: #{env[:public_key]}"
           File.read(env[:public_key])
         end
       end

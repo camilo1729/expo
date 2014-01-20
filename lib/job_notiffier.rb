@@ -4,6 +4,7 @@ require 'DSL'
 class JobNotifier
   
   MyExperiment = Experiment.instance
+  Console = DSL.instance
   def initialize
     @num_jobs = 0  
   end
@@ -25,16 +26,16 @@ class JobNotifier
       @num_jobs+=1
       if MyExperiment.num_jobs_required == @num_jobs then ## we reached the number of jobs required for the experiment
         logger.info "Executing task: #{MyExperiment.tasks.first[0]}"
-        DSL.instance.run_task_manager() ## first for a hash returns a vector [key, value]
+        Console.task_manager.schedule_new_task() ## first for a hash returns a vector [key, value]
       end
       
     elsif job_asynchrony == true then ## we start runnig task and we pass the job id to create the respective resource_set
       if job_id == 0 then
         logger.info "There was an error in the Job submition notifying the task manager"
         sleep( (rand(20/7.to_f)))
-        DSL.instance.run_task_manager()
+        Console.task_manager.schedule_new_task()
       else
-        DSL.instance.run_task_manager(job_id)
+        Console.task_manager.schedule_new_task(job_id)
       end
     end
   end

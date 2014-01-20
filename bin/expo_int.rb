@@ -41,7 +41,6 @@ def get(path, data, options={})
   Console.get(path, data, options)
 end
 
-
 def free_resources(reservation)
   Console.free_resources(reservation)
 end
@@ -63,14 +62,20 @@ def run_task(task_name)
   # This bug is due to the dynamic partitioning of the tasks.
   # when a task is already partitioned , I cannot paritined again, therefore it will execute ingoring the argument split
 end
+
+def start_experiment()
+  Console.start_experiment()
+end
+
+
 ## if a file is passed as a parameter
-# if ARGV.length == 1
-# #  load(ARGV[0])
-#   sleep 5
-#   Console.run_task_manager ### running the first task because now everything is a task
-#   until Console.task_m.finish_tasks? do
-#     puts "Executing Experiment waiting for  [ #{Console.task_m.running_tasks} ] Task running ...".cyan
-#     sleep 30
-#   end
-#   puts "Experiment has finished  :::".cyan
-# end
+if ARGV.length == 1
+  load(ARGV[0])
+  sleep 5
+  start_experiment()
+  until Console.task_manager.finish_tasks? do
+    puts "Executing Experiment waiting for  [ #{Console.task_manager.running_tasks} ] Task running ...".cyan
+    sleep 30
+  end
+  puts "Experiment has finished  :::".cyan
+end

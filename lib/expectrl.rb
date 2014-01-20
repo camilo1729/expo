@@ -3,22 +3,32 @@
 require 'singleton'
 require 'resourceset'
 require 'logger'
+
+class TaskResult < Hash
+  
+  def output
+    #self.
+  end
+end
+
 class Experiment
   include Singleton
-  attr_accessor :resources, :logger, :tasks, :num_jobs_required, :results, :jobs_2, :tasks_names
+  attr_accessor :resources, :logger, :tasks, :num_jobs_required, :results, :tasks_names,:jobs
   def initialize
     @id = 1
     @commands = []
     @resources = ResourceSet::new
     @logger = Logger.new("/tmp/Expo_log_#{Time.now.to_i}.log")
     @results = {}
-    @jobs = {}
-    @jobs_2 = [] #temporal variable
+    @jobs = []
     @tasks = {}
     @tasks_names = []
     @num_jobs_required = 0 ## This will count the number of jobs required for the experiment
     @last_task = 0
+
   end
+
+
   
   def add_command(command)
     @commands.push(command)
@@ -42,6 +52,8 @@ class Experiment
     } 
     return tasks_to_return
   end
+
+  
 
 end
 

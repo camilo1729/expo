@@ -27,7 +27,7 @@ class ExpoEngine < Grid5000::Campaign::Engine
   include Observable ## to test the observable software pattern
   MyExperiment = Experiment.instance
   Console = DSL.instance
-  attr_accessor :environment, :resources, :walltime, :name, :jobs, :jobs_id
+  attr_accessor :environment, :resources, :walltime, :name, :jobs, :jobs_id, :wait
   # to ease the definition of the experiment 
   set :no_cleanup, true # setting this as the normal used is for interacting
   set :environment, nil # The enviroment is by default nil because if nothing is specifyed there is no deployment.
@@ -51,6 +51,7 @@ class ExpoEngine < Grid5000::Campaign::Engine
     @gateway = gateway
     @jobs_id = {} # e.g., {:grenoble => 15706, :lille => 1221}
     @processors = []
+    @wait = true
     add_observer(JobNotifier.new)
     ### Small part to initialize the resourceSet of the experiment
     exp_resource_set = ResourceSet::new(:resource_set,"Exp_resources")
@@ -98,13 +99,14 @@ class ExpoEngine < Grid5000::Campaign::Engine
           end
           synchronize { self.create_resource_set(env_2[:job],env[:site])}
           ## putting jobs number into experiment structure
-          @jobs.each{ |job| MyExperiment.jobs_2.push(job['uid']) }
+          @jobs.each{ |job| MyExperiment.jobs.push(job['uid']) }
           synchronize {
             changed
             notify_observers(env_2[:job]['uid'],logger)
           }
           ## Notifying that the task can start
         end
+        env[:parallel_reserve].loop! if @wait
       }  
     }
       
@@ -124,7 +126,7 @@ class ExpoEngine < Grid5000::Campaign::Engine
     env[:resources] = @resources
     
      unless @jobs_id.nil? then
-      
+       puts "Reusing Existing Job"
        env[:no_submit] = true 
      end
 

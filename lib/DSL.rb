@@ -17,13 +17,14 @@ class DSL
   include Singleton
   MyExperiment = Experiment.instance
 
-  attr_reader :variables, :task_m
+  attr_reader :variables,:task_manager
 
   def initialize
     @variables = {}
     @variables[:results] = []
     @variables[:user] = nil
-    @task_m = TaskManager.new
+    @logger = MyExperiment.logger
+    @task_manager = TaskManager.new
   end
 
   def run_local(command)
@@ -38,9 +39,8 @@ class DSL
 
   def run(command,params={})
     # If gateway user is not declared it is suppose to use the same user for connecting to the frontend
-    @varibles[:gw_user] = @variables[:user] if @variables[:gw_user].nil?
+    @variables[:gw_user] ||= @variables[:user]
     ## To ease the declaration
-   
     if params.is_a?(Symbol) then
       temp = params
       params = {temp => []}
@@ -280,6 +280,7 @@ class DSL
        
             MyExperiment.add_command(command)
             puts "Using Gateway: #{resources.gw}"
+            @logger.info "Using Gateway #{resources.gw}"
             cmd = CmdCtrlSSH.new("",resources.gw,@variables[:user],nil)
             cmd.run(command)
           }
@@ -393,9 +394,7 @@ class DSL
     ## I have to define an option to the granularity of asynchronous
     ##options[:split_into] = :node if not options.has_key?(:split_into)
     
-    ## A task object is created and registered in the experiment
-    puts "Registering task: #{name}"
-    
+    ## A task object is created and registered in the experiment    
     task = Task.new(name,options,&block)
     register_task(task)
 
@@ -406,16 +405,16 @@ class DSL
     MyExperiment.tasks_names.push(task.name.to_sym)
   end
 
-  def run_task_manager(job=nil)
-    if job.nil?
-      @task_m.schedule_new_task
-    else
-      @task_m.schedule_new_task(job)
-    end
-  end
+  # def run_task_manager(job=nil)
+  #   if job.nil?
+  #     @task_m.schedule_new_task
+  #   else
+  #     @task_m.schedule_new_task(job)
+  #   end
+  # end
   
   def run_task(task_name)
-    @task_m.execute_task(@task_m.get_task(task_name))
+    @task_manager.execute_task(@task_manager.get_task(task_name))
   end
 
   def set(name, value)
@@ -424,6 +423,20 @@ class DSL
 
   def results()
     @variables[:results]
+  end
+
+  def start_experiment(options={})
+    ### By default the experiment is run under a FiFo scheduling
+    ## setting the dependencies of tasks for fifo
+    previous_task_name = nil
+    options[:schedule] = :fifo if options[:schedule].nil?
+    if options[:schedule] == :fifo then
+      MyExperiment.tasks.each{ |taskname, task|
+        task.dependency.push(previous_task_name) unless previous_task_name.nil?
+        previous_task_name = taskname
+      }
+    end
+    @task_manager.schedule_new_task
   end
 
 end

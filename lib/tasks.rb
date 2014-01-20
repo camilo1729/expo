@@ -15,9 +15,9 @@ class Task
   def initialize(name, options ={}, &block)
     @name, @options = name, options
     @exec_part = block or raise ArgumentError, "a task definition requires a block"
-    @dependency = options[:depends]
+    @dependency = options[:depends] || [] ## Array of dependencies
     @timeout = 3600  if options[:timeout].nil?
-    @timeout = options[:timeout] if not options[:timeout].nil?
+    @timeout = options[:timeout] unless options[:timeout].nil?
     ## job synchrony
     # @job_async = options[:job_async].nil? ? false : true  
     ## Type of resource associateted, it could be a node, cluster, site or job

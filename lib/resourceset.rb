@@ -692,7 +692,6 @@ class ResourceSet < Resource
           nodes_cmd += x.make_taktuk_command()
        # end
       }
-      puts " results of the command #{nodes_cmd}"
       str_cmd += nodes_cmd  #if nodes
       sets = false
       sets_cmd = ""

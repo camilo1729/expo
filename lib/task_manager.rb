@@ -82,7 +82,7 @@ class TaskManager
 
 
   def execute_task(task)
-    puts "Executing Task: "+ "[ #{task.name} ]"
+    puts "Executing Task: "+ "[ #{task.name} ]".green
     @logger.info "Executing Task: "+ "[ #{task.name} ]"
     options = task.options
     
@@ -111,6 +111,7 @@ class TaskManager
    
     ## Fix-me is showing in the case of resource the main name 
     puts "Nodes executing task: #{nodes_info.name}" if target_nodes.is_a?(ResourceSet)
+
     Thread.new {
       Thread.abort_on_exception=true 
       begin
