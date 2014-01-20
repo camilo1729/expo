@@ -179,21 +179,29 @@ class ResourceSet < Resource
     return self
   end
 
-	# Return the first element which is an object of the Resource Class
+  # Return the first element which is an object of the Resource Class
+  # if a gateway is defined we have to wrap the first element in a resourceset
   def first ( type=nil )
-    @resources.each { |resource|
-      if resource.type == type then
-        return resource
-      elsif resource.kind_of?(ResourceSet) then
-        res = resource.first( type )
-        return res if res
-      elsif not type then
-        return resource
-      end
-    }
-    return nil
+    if @properties[:outside] then
+      return self[0..0]
+    else
+      @resources.each { |resource|
+        if resource.type == type then
+          return resource
+        elsif resource.kind_of?(ResourceSet) then
+          res = resource.first( type )
+          return res if res
+        elsif not type then
+          return resource
+        end
+      }
+      return nil
+   end
   end
 
+  def first_h (type=nil)
+    self[0..0]
+  end    
 
   def select_resource( props )
     @resources.each { |resource|
@@ -649,6 +657,8 @@ class ResourceSet < Resource
   #different gateways in order to perform this execution more
   #efficiently.
   # the parameter cmd was erase because of the taktuk wrapper
+  ## When using the option gateway with TakTuk,
+  # The command is not executed in that node
   def make_taktuk_command()
     str_cmd = ""
     #pd : séparation resource set/noeuds
@@ -676,15 +686,15 @@ class ResourceSet < Resource
       nodes_cmd = ""
       first = ""
       @resources.each { |x|
-        if x.type == :node then
-          first = x.name if not nodes
-          nodes = true
+       #if x.type == :node then
+          # first = x.name if not nodes
+          # nodes = true
           nodes_cmd += x.make_taktuk_command()
-        end
+       # end
       }
       puts " results of the command #{nodes_cmd}"
-      str_cmd += nodes_cmd  if nodes
-                        sets = false
+      str_cmd += nodes_cmd  #if nodes
+      sets = false
       sets_cmd = ""
       @resources.each { |x|
         if x.instance_of?(ResourceSet) then

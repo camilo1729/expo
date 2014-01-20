@@ -9,7 +9,7 @@ require 'task_manager'
 ## This code should include ResourceSet
 
 ## In order to avoid using Experiment.instance.method
-## I can use insted another variables let's say
+## I can use instead another variables let's say
 ## MyExperiment = Experiment.instance // this is more readable 
 
 class DSL
@@ -37,6 +37,8 @@ class DSL
   end
 
   def run(command,params={})
+    # If gateway user is not declared it is suppose to use the same user for connecting to the frontend
+    @varibles[:gw_user] = @variables[:user] if @variables[:gw_user].nil?
     ## To ease the declaration
    
     if params.is_a?(Symbol) then
@@ -49,8 +51,8 @@ class DSL
     ## It uses taktuk as default  
     ## If a reservation is already done we assign those machines as default for hosts
 
-    # run locally is the host is not defined
-    if Thread.current['hosts'].nil? then
+    # run locally is the host is not defined and parameter target is not declared
+    if Thread.current['hosts'].nil? and params[:target].nil? then
       MyExperiment.add_command(command)
       cmd = CtrlCmd.new(command)
       cmd.run
@@ -62,19 +64,23 @@ class DSL
                                      })
 
     end
+    
+ 
+    options = {:connector => 'ssh',:login => @variables[:gw_user]}
 
-    options = {:connector => 'ssh',:login => @variables[:user]}
 
-
-    ## Getting variables from the executing task    
-    hosts = Thread.current['hosts']
+    ## Getting variables from the executing task
+    if not params[:target].nil? then
+      hosts = params[:target]
+    else
+      hosts = Thread.current['hosts']
+    end
+    
     task_options = Thread.current['task_options']
 
     if hosts.is_a?(ResourceSet) then
       ## Here, as the Expo server is on the user's machine, each resource set has to have the gateway used to enter Grid5000
       ## checking if the resource set has the gateway defined ---- Fix-me we are not checking
-      #hosts.properties[:gateway] = @variables[:gateway]
-      ## this doesn't work when using with root
       ## if num_instance is declared , we force the number of instances passed as argument
       resources = hosts
       resources = hosts[0..params[:ins_per_resources]-1]   if params[:ins_per_resources] #I have to find a better way to do this
@@ -100,7 +106,7 @@ class DSL
       taktuk_result = cmd_taktuk.run!
       
       ## I have to analyze the result
-      ## Sometime we need to check something with a bash command and we dont want to raise an error
+      ## Sometimes we need to check something with a bash command and we dont want to raise an error
       
       taktuk_result[:results][:status].compact!.each{ |ind|
         ## checking for the status return
@@ -110,7 +116,6 @@ class DSL
         end
       }
       
-
       ## if a tag is activated we tag the results for an easy management
         if params[:results_label] then
           tag_hash = {:tag => params[:results_label] }
@@ -119,10 +124,10 @@ class DSL
       Thread.current['results'].push(taktuk_result)
       return true
       
-    elsif hosts.is_a?(String) or hosts.is_a?(Resource)#and @variables[:gateway]
+    elsif hosts.is_a?(String) or hosts.is_a?(Resource)
       
       MyExperiment.add_command(command)
-       puts "ok"   
+       
       if hosts.is_a?(Resource) then 
         hosts_end = hosts.name 
         gateway = hosts.properties[:gateway]
@@ -131,8 +136,12 @@ class DSL
         gateway = Thread.current['task_options'][:gateway]
       end
 
-      cmd = CmdCtrlSSH.new("",hosts_end,@variables[:user],gateway)
-     
+      if gateway.nil? then 
+        cmd = CmdCtrlSSH.new("",hosts_end,@variables[:gw_user])
+      else
+        cmd = CmdCtrlSSH.new("",hosts_end,@variables[:user],gateway,@variables[:gw_user])
+      end
+
       cmd.run(command)
       
       if cmd.exit_status != 0 then
@@ -140,7 +149,6 @@ class DSL
         return false
       end
       
-       puts "ok"  
       ## Results for the ssh execution are not implemented yet, 
       ## We have to act on the task_manager code execute task part
       Thread.current['results'].push({
@@ -156,11 +164,21 @@ class DSL
   def put(data, path, options={})
     ## This is the first version of put, It will use a simple scp that
     ## is going to be done sequentially.
-    
+ 
+    # if gate way user is not declare it is suppose to use the same user for connectiing to the frontend
+    @varibles[:gw_user] = @variables[:user] if @variables[:gw_user].nil?
+   
     ## I dont need to define a gateway, the informatin is already included in the resourceSet.
-    
-    #options = {:connector => 'ssh',:login => @variables[:user]}
-    resources = Thread.current['hosts'] ## host is already check by task
+  
+    if not options[:target].nil? then
+      resources = options[:target]
+    else
+      resources = Thread.current['hosts']
+    end
+
+    options[:method] = "scp" if options[:method].nil? # Assigned scp as a default method for copying
+
+   
     if options[:method] == "scp" then
       if resources.is_a?(ResourceSet) then 
 
@@ -169,7 +187,9 @@ class DSL
           
           resources.each(options[:nfs]){ |res|
             ## we copy to each nfs defined in the level of hierarchy of the resources
-            command = "scp -r #{data} #{@variables[:user]}@#{res.gw}:#{path}"
+
+            ## command = "scp -r #{data} #{@variables[:user]}@#{res.gw}:#{path}"
+
             MyExperiment.add_command(command)
             puts "Using Gateway: #{resources.gw}"
             cmd = CmdCtrlSSH.new("",resources.gw,@variables[:user],nil)
@@ -178,25 +198,38 @@ class DSL
           return
         end
         ## we have to iterate for each host
+      
         resources.each{ |res|
+       
           command = "scp -r #{data} #{@variables[:user]}@#{res.name}:#{path}"
+          puts "command_generated : #{command}"
           MyExperiment.add_command(command)
           if resources.gw == "localhost" then
             cmd = CtrlCmd.new(command)
             cmd.run
           else   ## if a gateway is define we have to use CmdCtrlSSH
-            cmd = CmdCtrlSSH.new("",resources.gw,@variables[:user],nil)
+            cmd = CmdCtrlSSH.new("",resources.gw,@variables[:gw_user],nil)
             cmd.run(command)
           end
         }
-      elsif ( resources.is_a?(String) and @variables[:gateway])
+      elsif resources.is_a?(Resource) then
+          command = "scp -r #{data} #{@variables[:user]}@#{resources.name}:#{path}"
+          MyExperiment.add_command(command)
+          if resources.gw == "localhost" then
+            cmd = CtrlCmd.new(command)
+            cmd.run
+          else   ## if a gateway is define we have to use CmdCtrlSSH
+            cmd = CmdCtrlSSH.new("",resources.gw,@variables[:gw_user],nil)
+            cmd.run(command)
+          end
+      elsif (resources.is_a?(String) and @variables[:gateway])
         command = "scp -r #{data} #{@variables[:user]}@#{resources}:#{path}"
         MyExperiment.add_command(command)
         cmd = CmdCtrlSSH.new("",@variables[:gateway],@variables[:user],nil)
         cmd.run(command)
-      else ( resources.is_a?(String) and @variables[:gateway].nil?) ## Fix this, there is no a clean manage of the gateway
+      else (resources.is_a?(String) and @variables[:gateway].nil?) ## Fix this, there is no a clean manage of the gateway
         ## This is one just one host is passed as a parameter
-        command = "scp -r #{data} #{@variables[:user]}@#{resources}:#{path}"
+        command = "scp -r #{data} #{@variables[:gw_user]}@#{resources}:#{path}"
         MyExperiment.add_command(command)
         cmd = CtrlCmd.new(command)
         cmd.run
@@ -217,9 +250,19 @@ class DSL
     ## is going to be done sequentially.
     
     ## I dont need to define a gateway, the informatin is already included in the resourceSet.
+   
+    # if gate way user is not declare it is suppose to use the same user for connectiing to the frontend
+    @varibles[:gw_user] = @variables[:user] if @variables[:gw_user].nil?
+   
     
-    #options = {:connector => 'ssh',:login => @variables[:user]}
-    resources = Thread.current['hosts'] ## host is already check by task
+    if not options[:target].nil? then
+      resources = options[:target]
+    else
+      resources = Thread.current['hosts']
+    end
+
+    options[:method] = "scp" if options[:method].nil? # Assigned scp as a default method for copying
+
     if options[:method] == "scp" then
       if resources.is_a?(ResourceSet) then 
 
@@ -250,10 +293,20 @@ class DSL
             cmd = CtrlCmd.new(command)
             cmd.run
           else   ## if a gateway is define we have to use CmdCtrlSSH
-            cmd = CmdCtrlSSH.new("",resources.gw,@variables[:user],nil)
+            cmd = CmdCtrlSSH.new("",resources.gw,@variables[:gw_user],nil)
             cmd.run(command)
           end
         }
+      elsif resources.is_a?(Resource) then
+        command = "scp -r #{@variables[:user]}@#{resources.name}:#{path} #{data}"
+          MyExperiment.add_command(command)
+          if resources.gw == "localhost" then
+            cmd = CtrlCmd.new(command)
+            cmd.run
+          else   ## if a gateway is define we have to use CmdCtrlSSH
+            cmd = CmdCtrlSSH.new("",resources.gw,@variables[:gw_user],nil)
+            cmd.run(command)
+          end
       elsif (resources.is_a?(String) and @variables[:gateway])
         command = "scp -r #{@variables[:user]}@#{resources}:#{path} #{data}"
         MyExperiment.add_command(command)
@@ -263,9 +316,9 @@ class DSL
         ## This is one just one host is passed as a parameter
         if options[:distinguish] == true then  ## This is for managing the getting of results when the filename is equal
           puts "Distinguish activated"
-          command = "scp -r #{@variables[:user]}@#{resources}:#{path} #{data}#{resources}"
+          command = "scp -r #{@variables[:gw_user]}@#{resources}:#{path} #{data}#{resources}"
         else
-          command = "scp -r #{@variables[:user]}@#{resources}:#{path} #{data}"
+          command = "scp -r #{@variables[:gw_user]}@#{resources}:#{path} #{data}"
         end
         MyExperiment.add_command(command)
         cmd = CtrlCmd.new(command)
@@ -361,6 +414,10 @@ class DSL
     end
   end
   
+  def run_task(task_name)
+    @task_m.execute_task(@task_m.get_task(task_name))
+  end
+
   def set(name, value)
     @variables[name.to_sym]=value
   end

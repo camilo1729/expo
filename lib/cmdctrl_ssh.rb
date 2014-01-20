@@ -11,11 +11,12 @@ class CmdCtrlSSH
   attr_reader :stdout ,:stdin, :stderr, :exit_status
   attr_reader :start_time, :end_time
 
-  def initialize(cmd=nil,host="",user="",gateway=nil)
+  def initialize(cmd=nil,host="",user="",gateway=nil,gw_user=nil)
     @cmd = cmd
     @host = host
     @user = user
     @gateway = gateway
+    @gw_user = gw_user
   end
 
   def run(cmd)
@@ -56,10 +57,8 @@ class CmdCtrlSSH
     else
       
     ## now if there is a gateway defined
-      puts "gateway #{@gateway}"
-      gateway = Net::SSH::Gateway.new(@gateway,@user)
-      puts "OK gateway"
-      
+      gateway = Net::SSH::Gateway.new(@gateway,@gw_user)
+      puts "Using gateway"
       gateway.ssh(@host,@user) do |session|
         session.open_channel do |ch|
           ch.exec @cmd do |ch,success|
@@ -85,8 +84,6 @@ class CmdCtrlSSH
           end
         end
       end
-      # gateway.ssh(@host,@user) do |ssh|
-      #   puts ssh.execute
     end
 
   end

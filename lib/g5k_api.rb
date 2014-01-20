@@ -35,7 +35,7 @@ class ExpoEngine < Grid5000::Campaign::Engine
   set :types , ["allow_classic_ssh"]
   set :logger, MyExperiment.logger
   set :submission_timeout, 7200
-   
+  set :public_key, "/home/cristian/.ssh/grid5000.pub"
   ## I'm rewriting this method otherwise I cannot load the Class again because the defaults get frozen.
 
   ## @resources will be a hash with the following structure
@@ -55,7 +55,8 @@ class ExpoEngine < Grid5000::Campaign::Engine
     ### Small part to initialize the resourceSet of the experiment
     exp_resource_set = ResourceSet::new(:resource_set,"Exp_resources")
     ## It seems that a name has to be declared in order to be assigned to a Hash
-    exp_resource_set.properties[:gateway ] = @gateway
+    exp_resource_set.properties[:gateway] = @gateway until @gateway.nil?
+ #   exp_resource_set.properties[:outside] = true until @gateway.nil?
     MyExperiment.add_resources(exp_resource_set)
     #### I need to check whether I put it here or elsewhere.
   end
@@ -280,7 +281,7 @@ class ExpoEngine < Grid5000::Campaign::Engine
       site_set.properties[:id] = job['uid'] if @resources[site_name.to_sym].length < 2 ## there is just one job per site
       site_set.properties[:name] = site_name
       gateway = "frontend.#{site_name}.grid5000.fr"
-      site_set.properties[:gateway] = gateway ## Fix-me gatway definition will depend on the context
+      site_set.properties[:gateway] = gateway ## Fix-me gateway definition will depend on the context
       site_set.properties[:ssh_user] = Console.variables[:user]
       MyExperiment.resources.push(site_set)
     elsif resource_site.is_a?(ResourceSet) then
@@ -301,9 +302,9 @@ class ExpoEngine < Grid5000::Campaign::Engine
       cluster_set = ResourceSet::new(:cluster)
       cluster_set.properties[:id] = job['uid'] if @resources[site_name.to_sym].length > 1 ## there are several jobs per site
       cluster_set.properties[:name] = cluster
-      cluster_set.properties[:gateway] = gateway
+      cluster_set.properties[:gateway] = "localhost" # gateway it is scalable enough
       cluster_set.properties[:ssh_user] = Console.variables[:user]  ## Fix-me for Deploying
-      cluster_set.properties[:gw_ssh_user] = Console.variables[:user]
+      cluster_set.properties[:gw_ssh_user] = Console.variables[:gw_user].nil? ? Console.variables[:user] : Console.variables[:gw_user]
       cluster_set.properties[:hw] = get_info_cluster(cluster) 
       job_nodes.each { |node|
         node_hash = {}

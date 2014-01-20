@@ -54,6 +54,15 @@ def set_variable(var,value)
   Console.set_variable(var,value)
 end
 
+def run_task(task_name)
+  Console.run_task(task_name)
+
+  ## bug, when trying to rexecute a task with the argument split,
+  # it seems that it doesnt take into account this argument anymore
+
+  # This bug is due to the dynamic partitioning of the tasks.
+  # when a task is already partitioned , I cannot paritined again, therefore it will execute ingoring the argument split
+end
 ## if a file is passed as a parameter
 # if ARGV.length == 1
 # #  load(ARGV[0])
