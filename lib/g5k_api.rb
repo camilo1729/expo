@@ -27,7 +27,7 @@ class ExpoEngine < Grid5000::Campaign::Engine
   include Observable ## to test the observable software pattern
   MyExperiment = Experiment.instance
   Console = DSL.instance
-  attr_accessor :environment, :resources, :walltime, :name, :jobs
+  attr_accessor :environment, :resources, :walltime, :name, :jobs, :jobs_id
   # to ease the definition of the experiment 
   set :no_cleanup, true # setting this as the normal used is for interacting
   set :environment, nil # The enviroment is by default nil because if nothing is specifyed there is no deployment.
@@ -49,15 +49,16 @@ class ExpoEngine < Grid5000::Campaign::Engine
     @mutex = Mutex.new
     @nodes_deployed = []
     @gateway = gateway
+    @jobs_id = {} # e.g., {:grenoble => 15706, :lille => 1221}
     @processors = []
     add_observer(JobNotifier.new)
-    
     ### Small part to initialize the resourceSet of the experiment
     exp_resource_set = ResourceSet::new(:resource_set,"Exp_resources")
     ## It seems that a name has to be declared in order to be assigned to a Hash
-    exp_resource_set.properties[:gateway] = @gateway until @gateway.nil?
+    exp_resource_set.properties[:gateway] = @gateway unless @gateway.nil?
  #   exp_resource_set.properties[:outside] = true until @gateway.nil?
     MyExperiment.add_resources(exp_resource_set)
+
     #### I need to check whether I put it here or elsewhere.
   end
   
@@ -80,7 +81,7 @@ class ExpoEngine < Grid5000::Campaign::Engine
     env[:resources].each{ |site, resources|
       
       resources.each{ |res|
-        new_env = env.merge(:site => site.to_s, :resources => res)
+        new_env = env.merge(:site => site.to_s, :resources => res, :uid => @jobs_id[site.to_sym])
     
         logger.info reserve_log_msg+"Number of nodes to reserve in site: #{site.to_s} => #{res}"
         ## The number resources definitions in each site determined the number of jobs submitted
@@ -117,10 +118,16 @@ class ExpoEngine < Grid5000::Campaign::Engine
     
     env = self.class.defaults.dup
     ### copying some variables defined by the user
-    env[:environment]=@environment    
+    env[:environment] = @environment    
     # env[:site]=@site
-    env[:walltime]=@walltime
-    env[:resources]=@resources
+    env[:walltime] = @walltime
+    env[:resources] = @resources
+    
+     unless @jobs_id.nil? then
+      
+       env[:no_submit] = true 
+     end
+
     envs=[]
     
     nodes = []
@@ -151,7 +158,6 @@ class ExpoEngine < Grid5000::Campaign::Engine
         ### Timing deployment part
         start_deploy=Time::now()  
         ### Default user management root
-        $ssh_user="root"
         env = execute_with_hooks(:reserve!, env) do |env|
           
           env[:nodes] = env[:job]['assigned_nodes']
