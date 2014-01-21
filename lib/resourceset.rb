@@ -195,7 +195,7 @@ class ResourceSet < Resource
           return resource
         end
       }
-      return nil
+      return false
    end
   end
 

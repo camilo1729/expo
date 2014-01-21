@@ -15,7 +15,10 @@ require 'colorize'
 
 Console = DSL.instance
 
-MyExperiment = Experiment.instance
+#MyExperiment = Experiment.instance
+
+
+
 
 def task(name, options={}, &block)
   Console.task(name,options, &block)
@@ -63,10 +66,21 @@ def run_task(task_name)
   # when a task is already partitioned , I cannot paritined again, therefore it will execute ingoring the argument split
 end
 
+# def start_from_file()
+#   Console.start_from_file
+# end
+
+def load_experiment(file_path)
+  Console.load_experiment(file_path)
+end
+
 def start_experiment()
   Console.start_experiment()
 end
 
+def set_experiment_variables()
+  Console.set_experiment_variables()
+end
 
 ## if a file is passed as a parameter
 if ARGV.length == 1

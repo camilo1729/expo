@@ -17,7 +17,7 @@ class DSL
   include Singleton
   MyExperiment = Experiment.instance
 
-  attr_reader :variables,:task_manager
+  attr_reader :variables,:task_manager,:exp_variables,:exp_tasks
 
   def initialize
     @variables = {}
@@ -25,6 +25,9 @@ class DSL
     @variables[:user] = nil
     @logger = MyExperiment.logger
     @task_manager = TaskManager.new
+    @variables_set = false
+    @exp_variables = ""
+    @exp_tasks = ""
   end
 
   def run_local(command)
@@ -38,6 +41,7 @@ class DSL
   end
 
   def run(command,params={})
+  
     # If gateway user is not declared it is suppose to use the same user for connecting to the frontend
     @variables[:gw_user] ||= @variables[:user]
     ## To ease the declaration
@@ -388,13 +392,17 @@ class DSL
     
     raise "User is not defined" if @variables[:user].nil?
     
+#    raise "Experiment variables are not set, function: set_experiment_variables has to be called before tasks declaration" unless @variables_set
+    raise "Target is not defined probably beacause of the use of Resourceset first" if options[:target]==false
+    ## In order to solve this, a lazy evaluation has to be implemented
     ## Checking if the name exists
     raise "Task name already registered" if MyExperiment.tasks.has_key?(name)
 
     ## I have to define an option to the granularity of asynchronous
     ##options[:split_into] = :node if not options.has_key?(:split_into)
     
-    ## A task object is created and registered in the experiment    
+    ## A task object is created and registered in the experiment
+    #MyExperiment.variable_test = binding
     task = Task.new(name,options,&block)
     register_task(task)
 
@@ -415,6 +423,49 @@ class DSL
   
   def run_task(task_name)
     @task_manager.execute_task(@task_manager.get_task(task_name))
+  end
+
+
+  def load_experiment(file_path)
+    @exp_variables = ""
+    @exp_tasks = ""
+    flag = false
+    file = File.new(file_path, "r")
+    while (line = file.gets)      
+      @exp_variables+= "#{line}" unless (line.chop == "task_definition_start" or flag)
+      @exp_tasks += "#{line}" if flag
+      if line.chop =="task_definition_start" then
+        flag = true
+      end
+  
+    end
+ 
+  end
+
+  def start_from_file()
+    variable_binding = binding
+    eval(@exp_variables,variable_binding)
+    MyExperiment.variable_test = variable_binding
+    set_experiment_variables(variable_binding)
+    eval(@exp_tasks, variable_binding)
+    variable_binding
+  end
+
+  def set_experiment_variables(exp_binding)
+    ### Here we deal with the case when value makes reference to MyExperiment.resources
+    ## Because this will be created dinamically
+    #variables_binding = binding  #This is the variable binding for setting the resourceset at execution time
+    @variables.each{ |name,value|
+      if eval("defined? #{value}") then
+        puts "#{name.to_s}=#{value}"
+        eval("#{name.to_s}=#{value}",exp_binding)
+      else
+        puts "#{name.to_s}=\"#{value}\""
+        eval("#{name.to_s}=\"#{value}\"",exp_binding)
+      end
+    }
+   #MyExperiment.variable_test = variables_binding
+    @variables_set = true
   end
 
   def set(name, value)
@@ -438,6 +489,8 @@ class DSL
     end
     @task_manager.schedule_new_task
   end
+
+
 
 end
 

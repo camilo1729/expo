@@ -26,7 +26,7 @@ class JobNotifier
       @num_jobs+=1
       if MyExperiment.num_jobs_required == @num_jobs then ## we reached the number of jobs required for the experiment
         logger.info "Executing task: #{MyExperiment.tasks.first[0]}"
-        Console.task_manager.schedule_new_task() ## first for a hash returns a vector [key, value]
+        Console.task_manager.schedule_new_task() 
       end
       
     elsif job_asynchrony == true then ## we start runnig task and we pass the job id to create the respective resource_set

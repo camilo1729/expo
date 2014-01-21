@@ -84,8 +84,7 @@ class TaskManager
   def execute_task(task)
     puts "Executing Task: "+ "[ #{task.name} ]".green
     @logger.info "Executing Task: "+ "[ #{task.name} ]"
-    options = task.options
-    
+    options = task.options    
     if task.target.is_a?(String) and not options[:target].nil? then
       ## it is a node, cluster, or site we select the resources accordondly
       if task.target.is_integer? then
@@ -102,7 +101,7 @@ class TaskManager
       end
 
     elsif not options[:target].nil?
-      target_nodes = options[:target]
+      target_nodes = eval(options[:target],MyExperiment.variable_test) ## This is for evaluating the resourceSet
       nodes_info = target_nodes
     else 
       nodes_info = "localhost"
