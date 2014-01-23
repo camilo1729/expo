@@ -31,7 +31,7 @@ Running a simple experiment
 ---------------------------
 
 	cd /PATH_TO_EXPO_REPOSITORY/expo_new
-	bin/expo ../examples/simple_experiment.rb 
+	bin/expo examples/simple_experiment.rb 
 
 ## Contact
 
