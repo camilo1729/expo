@@ -20,9 +20,9 @@ Installation
 Procedure to install in Grid5000
 
 
-export GEM_HOME=~/.gem/ 
+	  export GEM_HOME=~/.gem/ 
 
-gem install pry restfully ap crack net-ssh net-scp net-sftp log4r-color
+	  gem install pry restfully ap crack net-ssh net-scp net-sftp log4r-color
 
 ## Contact
 
