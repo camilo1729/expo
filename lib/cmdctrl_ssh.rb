@@ -47,7 +47,7 @@ class CmdCtrlSSH
             end
             
         
-            ch.on_close { puts "done!" 
+            ch.on_close { 
               @end_time = Time.now
             }
             
@@ -74,11 +74,9 @@ class CmdCtrlSSH
             
             ch.on_request "exit-status" do |ch, data|
               @exit_status = data.read_long
-              # puts "process terminated with exit status: #{data.read_long}"
             end
           
-            
-            ch.on_close { puts "done!" 
+            ch.on_close {  
               @end_time = Time.now
             }
           end

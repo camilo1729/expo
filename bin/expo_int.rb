@@ -15,10 +15,7 @@ require 'colorize'
 
 Console = DSL.instance
 
-#MyExperiment = Experiment.instance
-
-
-
+MyExperiment = Experiment.instance
 
 def task(name, options={}, &block)
   Console.task(name,options, &block)
@@ -34,6 +31,10 @@ end
 
 def run(command,params = {})
   Console.run(command,params)
+end
+
+def check(command)
+  Console.run(command,:no_error)
 end
 
 def put(data, path, options={})
@@ -84,12 +85,12 @@ end
 
 ## if a file is passed as a parameter
 if ARGV.length == 1
-  load(ARGV[0])
-  sleep 5
+  load_experiment(ARGV[0])
+  sleep 2
   start_experiment()
   until Console.task_manager.finish_tasks? do
     puts "Executing Experiment waiting for  [ #{Console.task_manager.running_tasks} ] Task running ...".cyan
-    sleep 30
+    sleep 20
   end
   puts "Experiment has finished  :::".cyan
 end

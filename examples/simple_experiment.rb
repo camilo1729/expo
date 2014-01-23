@@ -5,8 +5,8 @@ require 'g5k_api'
 set :user, "cruizsanabria"
 set :resources, "MyExperiment.resources"
 
-reserv = ExpoEngine.new("grenoble.g5k")
-reserv.jobs_id = {:lyon => 688874}
+reserv = connection(:type => "Grid5000", :gateway => "grenoble.g5k")
+#reserv.jobs_id = {:lyon => 691281}
 reserv.resources = {:lyon => ["nodes=1"]}
 reserv.wait = true
 
@@ -17,30 +17,33 @@ task_definition_start
 
 # set_experiment_variables
 
+
 task :run_reservation do
   reserv.run!
 end
 
-task :task_1, :target => "resources" do
+task :task_1, :target => resources do
   run("hostname")
 end
 
-task :task_2, :target => "resources" do
+task :task_2, :target => resources do
   run("sleep 10")
   run("hostname")
 end
 
-task :task_3, :target => "resources.first" do
+task :task_3, :target => resources.first do
   run("sleep 5")
   run("uname -a")
 end
 
 task :testing_resourceset do
   resources.each{ |node|
-    run("sleep 100",:target => node)
+    run("sleep 20",:target => node)
   }
 end
 
-start_experiment
+# task :free_reservation, :target => resources do
+#   free_resources(reserv)
+# end
 
 

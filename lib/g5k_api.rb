@@ -6,11 +6,11 @@ require 'observer'
 require 'job_notiffier'
 require 'DSL'
 
-@options = { 
-  #:logger => $logger,
-  #:data_logger => $data_logger,
-  :restfully_config => File.expand_path("~/.restfully/api.grid5000.fr.yml")
-}
+# @options = { 
+#   #:logger => $logger,
+#   #:data_logger => $data_logger,
+#   :restfully_config => File.expand_path("~/.restfully/api.grid5000.fr.yml")
+# }
 
 
 def api_connect
@@ -27,6 +27,8 @@ class ExpoEngine < Grid5000::Campaign::Engine
   include Observable ## to test the observable software pattern
   MyExperiment = Experiment.instance
   Console = DSL.instance
+  RESOURCE_SET_FILE = ".expo_resource_set"
+  RESOURCE_METADATA = ".expo_resources"
   attr_accessor :environment, :resources, :walltime, :name, :jobs, :jobs_id, :wait
   # to ease the definition of the experiment 
   set :no_cleanup, true # setting this as the normal used is for interacting
@@ -54,15 +56,22 @@ class ExpoEngine < Grid5000::Campaign::Engine
     @wait = true
     add_observer(JobNotifier.new)
     ### Small part to initialize the resourceSet of the experiment
-    exp_resource_set = ResourceSet::new(:resource_set,"Exp_resources")
+    exp_resource_set = ResourceSet::new(:resource_set,"Expo_resources")
     ## It seems that a name has to be declared in order to be assigned to a Hash
     exp_resource_set.properties[:gateway] = @gateway unless @gateway.nil?
+    ### need to initialized the resources properly
  #   exp_resource_set.properties[:outside] = true until @gateway.nil?
     MyExperiment.add_resources(exp_resource_set)
 
     #### I need to check whether I put it here or elsewhere.
   end
-  
+
+  def create_resouces_validty_file()
+    metadata = { :validity => Time.now.to_i + @walltime }
+    File.open(RESOURCE_METADATA,'w+') do |f|
+      f.puts(metadata.to_yaml)
+    end
+  end
 # rewriting the reserve part for several reasons:
 # - to submit request to serveral sites.
 # - to build the resourceSet needed for Expo.
@@ -116,6 +125,16 @@ class ExpoEngine < Grid5000::Campaign::Engine
   # and Expo does not like that, and also to finally construct the resource set.
 
   def run!
+
+    if File.exist?(RESOURCE_METADATA) then
+      previous_run_metadata = YAML::load(File.read(RESOURCE_METADATA)) 
+      if previous_run_metadata[:validity] > Time.now.to_i
+      puts "Reusing previous reservation".cyan
+        ### replacing resources of the experiment ## Fix-me I have to find a cleaner way to do this
+        MyExperiment.resources.resources=YAML::load(File.read(RESOURCE_SET_FILE)).resources
+        return true
+      end
+    end
     reset!
     
     env = self.class.defaults.dup
@@ -199,6 +218,10 @@ class ExpoEngine < Grid5000::Campaign::Engine
 # Redefining cleanup
 
   def stop!(job=nil)
+    puts "Cleaning previous reservation files".cyan
+    File.delete(RESOURCE_SET_FILE)
+    File.delete(RESOURCE_METADATA)
+
     if job.nil? then
       self.cleanup!("Finishing")
       return true
@@ -347,6 +370,13 @@ class ExpoEngine < Grid5000::Campaign::Engine
 
     }
   
+    ### saving resource_set in yaml
+    puts "Saving resources in yaml".green
+    File.open(RESOURCE_SET_FILE,'w+') do |f|
+      f.puts(MyExperiment.resources.to_yaml)
+    end
+    
+    create_resouces_validty_file
   end
   
 end

@@ -13,7 +13,7 @@ end
 
 class Experiment
   include Singleton
-  attr_accessor :resources, :logger, :tasks, :num_jobs_required, :results, :tasks_names,:jobs, :variable_test
+  attr_accessor :resources, :logger, :tasks, :num_jobs_required, :results, :tasks_names,:jobs, :variable_binding
   def initialize
     @id = 1
     @commands = []
@@ -25,7 +25,7 @@ class Experiment
     @tasks_names = []
     @num_jobs_required = 0 ## This will count the number of jobs required for the experiment
     @last_task = 0
-    @variable_test = nil
+    @variable_binding = nil
 
   end
 

@@ -101,7 +101,11 @@ class TaskManager
       end
 
     elsif not options[:target].nil?
-      target_nodes = eval(options[:target],MyExperiment.variable_test) ## This is for evaluating the resourceSet
+      if options[:lazy] then
+        target_nodes = eval(options[:target],MyExperiment.variable_binding) ## This is for evaluating the resourceSet
+      else
+        target_nodes = options[:target]
+      end
       nodes_info = target_nodes
     else 
       nodes_info = "localhost"

@@ -5,7 +5,7 @@ require 'cmdctrl_ssh' ## for ssh commands
 require 'taktuk'
 require 'tasks'
 require 'task_manager'
-
+#equire 'colorize'
 ## This code should include ResourceSet
 
 ## In order to avoid using Experiment.instance.method
@@ -38,6 +38,18 @@ class DSL
     cmd.run
     return [cmd.stdout,cmd.run_time]
 
+  end
+
+  def connection(options={})
+    gateway = options[:gateway]
+    ## we have to check the password-less accessability of the gateway
+    
+    ## checking if a previous experiment has left a reservation
+    
+    type = options[:type]
+    if type == "Grid5000" then
+      return ExpoEngine.new(gateway)
+    end
   end
 
   def run(command,params={})
@@ -75,6 +87,8 @@ class DSL
 
     ## Getting variables from the executing task
     if not params[:target].nil? then
+      
+      #hosts = eval(params[:target],MyExperiment.variable_test)
       hosts = params[:target]
     else
       hosts = Thread.current['hosts']
@@ -175,6 +189,7 @@ class DSL
     ## I dont need to define a gateway, the informatin is already included in the resourceSet.
   
     if not options[:target].nil? then
+      #resources = eval(options[:target],MyExperiment.variable_test)
       resources = options[:target]
     else
       resources = Thread.current['hosts']
@@ -260,6 +275,7 @@ class DSL
    
     
     if not options[:target].nil? then
+      #resources = eval(options[:target],MyExperiment.variable_test)    
       resources = options[:target]
     else
       resources = Thread.current['hosts']
@@ -391,9 +407,25 @@ class DSL
     @variables[:gateway] = options[:gateway] if options.has_key?(:gateway)
     
     raise "User is not defined" if @variables[:user].nil?
-    
-#    raise "Experiment variables are not set, function: set_experiment_variables has to be called before tasks declaration" unless @variables_set
-    raise "Target is not defined probably beacause of the use of Resourceset first" if options[:target]==false
+
+    ## if the target thas the form 122112_method it means that 
+    ## The resourset method was not able to send a reference, 
+    ## Therefore it has to be evaluated later
+    regexp = /^(\d*)_(\w*)$/
+    if options[:target].is_a?(String) then
+      if values = regexp.match(options[:target]) then
+        var_id = values[1].to_i
+        var_method = values[2]
+        var_name=look_variable_by_id(var_id,MyExperiment.variable_binding)
+        new_target="#{var_name}.#{var_method}"
+        puts "New_target #{new_target}"
+        puts "Activating lazy evaluation".green
+        options[:lazy]=true
+        options[:target]=new_target
+      end
+    end
+
+    #raise "Target is not defined probably beacause of the use of Resourceset first" if options[:target]==false
     ## In order to solve this, a lazy evaluation has to be implemented
     ## Checking if the name exists
     raise "Task name already registered" if MyExperiment.tasks.has_key?(name)
@@ -402,7 +434,6 @@ class DSL
     ##options[:split_into] = :node if not options.has_key?(:split_into)
     
     ## A task object is created and registered in the experiment
-    #MyExperiment.variable_test = binding
     task = Task.new(name,options,&block)
     register_task(task)
 
@@ -412,7 +443,7 @@ class DSL
     MyExperiment.tasks[task.name.to_sym] = task
     MyExperiment.tasks_names.push(task.name.to_sym)
   end
-
+  
   # def run_task_manager(job=nil)
   #   if job.nil?
   #     @task_m.schedule_new_task
@@ -427,56 +458,38 @@ class DSL
 
 
   def load_experiment(file_path)
+    puts "Reading Experiment Definition file !!! ..".green
     @exp_variables = ""
     @exp_tasks = ""
     flag = false
     file = File.new(file_path, "r")
-    while (line = file.gets)      
-      @exp_variables+= "#{line}" unless (line.chop == "task_definition_start" or flag)
+    count = 0
+    while (line = file.gets)
+      unless (line.chop == "task_definition_start" or flag) then
+        @exp_variables+= "#{line}" 
+        print "Reading experiment variables ...#{count}".cyan
+        print 13.chr
+        count = count + 1
+      end
       @exp_tasks += "#{line}" if flag
       if line.chop =="task_definition_start" then
         flag = true
       end
-  
     end
- 
-  end
-
-  def start_from_file()
-    variable_binding = binding
-    eval(@exp_variables,variable_binding)
-    MyExperiment.variable_test = variable_binding
-    set_experiment_variables(variable_binding)
-    eval(@exp_tasks, variable_binding)
-    variable_binding
-  end
-
-  def set_experiment_variables(exp_binding)
-    ### Here we deal with the case when value makes reference to MyExperiment.resources
-    ## Because this will be created dinamically
-    #variables_binding = binding  #This is the variable binding for setting the resourceset at execution time
-    @variables.each{ |name,value|
-      if eval("defined? #{value}") then
-        puts "#{name.to_s}=#{value}"
-        eval("#{name.to_s}=#{value}",exp_binding)
-      else
-        puts "#{name.to_s}=\"#{value}\""
-        eval("#{name.to_s}=\"#{value}\"",exp_binding)
-      end
-    }
-   #MyExperiment.variable_test = variables_binding
-    @variables_set = true
-  end
-
-  def set(name, value)
-    @variables[name.to_sym]=value
-  end
-
-  def results()
-    @variables[:results]
+    puts "\n Experiment description loaded ...".cyan
   end
 
   def start_experiment(options={})
+    ## First dealing with description file loading and proper experiment variables handling
+    variable_binding = binding
+    eval(@exp_variables,variable_binding)
+
+    ### Perfrom some checks with connectivity 
+    # ssh -o ConnectTimeout 5 gateway in order to know that the gateway to access the platform is accesible
+    MyExperiment.variable_binding = variable_binding
+    set_experiment_variables(variable_binding)
+    eval(@exp_tasks, variable_binding) ## loading Expo tasks
+  
     ### By default the experiment is run under a FiFo scheduling
     ## setting the dependencies of tasks for fifo
     previous_task_name = nil
@@ -488,8 +501,43 @@ class DSL
       }
     end
     @task_manager.schedule_new_task
+    #variable_binding
   end
 
+ 
+
+  def set_experiment_variables(exp_binding)
+    ### Here we deal with the case when value makes reference to MyExperiment.resources
+    ## Because this will be created dinamically
+    #variables_binding = binding  #This is the variable binding for setting the resourceset at execution time
+    @variables.each{ |name,value|
+      if eval("defined? #{value}") then
+        puts "Setting variable => #{name.to_s}=#{value}".green
+        eval("#{name.to_s}=#{value}",exp_binding)
+      else
+        puts "Setting variable => #{name.to_s}=\"#{value}\"".green
+        eval("#{name.to_s}=\"#{value}\"",exp_binding)
+      end
+    }
+    @variables_set = true
+  end
+
+  def look_variable_by_id(var_id,variable_binding)
+    ## looking for object id among the variables defined for the experiment
+    @variables.each{ |name, value|
+      obj_id=eval("#{name.to_s}.object_id",variable_binding)
+      return name.to_s if var_id==obj_id
+    }
+    return nil
+  end
+
+  def set(name, value)
+    @variables[name.to_sym]=value
+  end
+
+  def results()
+    @variables[:results]
+  end
 
 
 end

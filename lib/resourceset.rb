@@ -156,10 +156,23 @@ end
 
 class ResourceSet < Resource
   attr_accessor :resources
-  def initialize( type = :resource_set, name = nil )
+  def initialize( type = :resource_set, name = nil)
     super( type, nil, name )
     @resources = Array::new
     @resource_files = Hash::new
+    # unless structure.nil? then
+    #   ## normal structure form Grid5000
+    #   ## {:lyon => ["nodes=1"]}
+    #   regexp = /\w*=(\w*)/
+    #   structure.each{ |site, nodes|
+    #     num_nodes = regexp.match(node)[1].to_i
+    #     site_set = ResourceSet::new(:site)
+    #     site_set.properties[:name] = site
+    #     site_set.properties[:gateway] = "frontend.#{site}.grid5000.fr"
+    #     (1..num_nodes).each{ |node|
+    #        resource = Resource::new(:node, nil, node)
+    #   }
+    # end
   end
 
   #Creates a copy of the ResourceSet Object
@@ -182,9 +195,9 @@ class ResourceSet < Resource
   # Return the first element which is an object of the Resource Class
   # if a gateway is defined we have to wrap the first element in a resourceset
   def first ( type=nil )
-    if @properties[:outside] then
-      return self[0..0]
-    else
+    # if @properties[:outside] then
+    #   return self[0..0]
+    # else
       @resources.each { |resource|
         if resource.type == type then
           return resource
@@ -195,8 +208,8 @@ class ResourceSet < Resource
           return resource
         end
       }
-      return false
-   end
+    return "#{self.object_id}_first"
+#   end
   end
 
   def first_h (type=nil)
