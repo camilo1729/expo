@@ -58,7 +58,7 @@ class CmdCtrlSSH
       
     ## now if there is a gateway defined
       gateway = Net::SSH::Gateway.new(@gateway,@gw_user)
-      puts "Using gateway"
+      # puts "Using gateway"
       gateway.ssh(@host,@user) do |session|
         session.open_channel do |ch|
           ch.exec @cmd do |ch,success|

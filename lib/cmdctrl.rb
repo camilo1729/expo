@@ -2,7 +2,7 @@ require 'command_with_open3'
 
 class CtrlCmd
   
-  attr_reader :stdout, :stdin, :stderr
+  attr_reader :stdout, :stdin, :stderr, :status
   attr_reader :start_time, :end_time, :default_filter
 
   ##### Default Filter for comamnd instrumeted
@@ -41,6 +41,7 @@ class CtrlCmd
     @stdout=@cmd.stdout.readlines
     # @stdin=@cmd.stdin.readlines
     @stderr=@cmd.stderr.readlines
+    @status = @cmd.status
   end
 
   def run_time

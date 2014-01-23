@@ -6,12 +6,6 @@ require 'observer'
 require 'job_notiffier'
 require 'DSL'
 
-# @options = { 
-#   #:logger => $logger,
-#   #:data_logger => $data_logger,
-#   :restfully_config => File.expand_path("~/.restfully/api.grid5000.fr.yml")
-# }
-
 
 def api_connect
 connection = Restfully::Session.new(
@@ -29,13 +23,15 @@ class ExpoEngine < Grid5000::Campaign::Engine
   Console = DSL.instance
   RESOURCE_SET_FILE = ".expo_resource_set"
   RESOURCE_METADATA = ".expo_resources"
+
   attr_accessor :environment, :resources, :walltime, :name, :jobs, :jobs_id, :wait
   # to ease the definition of the experiment 
   set :no_cleanup, true # setting this as the normal used is for interacting
   set :environment, nil # The enviroment is by default nil because if nothing is specifyed there is no deployment.
   # It has to be true for interactive use and false when executed as stand-alone
   set :types , ["allow_classic_ssh"]
-  set :logger, MyExperiment.logger
+  #set :logger, MyExperiment.logger
+  set :logger, Log4r::Logger['Expo_log']
   set :submission_timeout, 7200
   set :public_key, "/home/cristian/.ssh/grid5000.pub"
   ## I'm rewriting this method otherwise I cannot load the Class again because the defaults get frozen.
@@ -129,7 +125,7 @@ class ExpoEngine < Grid5000::Campaign::Engine
     if File.exist?(RESOURCE_METADATA) then
       previous_run_metadata = YAML::load(File.read(RESOURCE_METADATA)) 
       if previous_run_metadata[:validity] > Time.now.to_i
-      puts "Reusing previous reservation".cyan
+      logger.info "Reusing previous reservation"
         ### replacing resources of the experiment ## Fix-me I have to find a cleaner way to do this
         MyExperiment.resources.resources=YAML::load(File.read(RESOURCE_SET_FILE)).resources
         return true
@@ -144,8 +140,7 @@ class ExpoEngine < Grid5000::Campaign::Engine
     env[:walltime] = @walltime
     env[:resources] = @resources
     
-     unless @jobs_id.nil? then
-       puts "Reusing Existing Job"
+     unless @jobs_id.empty? then
        env[:no_submit] = true 
      end
 
@@ -218,7 +213,7 @@ class ExpoEngine < Grid5000::Campaign::Engine
 # Redefining cleanup
 
   def stop!(job=nil)
-    puts "Cleaning previous reservation files".cyan
+    logger.info "Cleaning previous reservation files"
     File.delete(RESOURCE_SET_FILE)
     File.delete(RESOURCE_METADATA)
 
@@ -291,8 +286,7 @@ class ExpoEngine < Grid5000::Campaign::Engine
   def create_resource_set(job,site_name)
     job_name = job['name']
     job_nodes = job['assigned_nodes']
-    puts "#{job_nodes.inspect}"
-    puts "Entering create jobs "
+ 
     # job_id will be the same for all the clusters of one site                                                                            
   
     job_id = job['uid']
@@ -307,7 +301,7 @@ class ExpoEngine < Grid5000::Campaign::Engine
     ## Otherwise I will return an array
     gateway = ""
     if not resource_site then ## puff it exists
-      puts "The site doesnt exits adding it"
+      logger.info "The site doesnt exits adding it"
       site_set = ResourceSet::new(:site)
       site_set.properties[:id] = job['uid'] if @resources[site_name.to_sym].length < 2 ## there is just one job per site
       site_set.properties[:name] = site_name
@@ -371,7 +365,7 @@ class ExpoEngine < Grid5000::Campaign::Engine
     }
   
     ### saving resource_set in yaml
-    puts "Saving resources in yaml".green
+    logger.info "Saving resources in yaml"
     File.open(RESOURCE_SET_FILE,'w+') do |f|
       f.puts(MyExperiment.resources.to_yaml)
     end

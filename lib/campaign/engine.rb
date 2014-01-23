@@ -451,9 +451,7 @@ module Grid5000
           sleep 1
           job.reload
           synchronize { @jobs.push(job) }
-          #logger.info "[#{env[:site]}] Got the following job: #{job.inspect}"
           logger.info "[#{env[:site]}] Got the following job: #{job['uid']}"
-          data_logger.info job
           logger.info "[#{env[:site]}] Waiting for state=running for job ##{job['uid']} (expected start time=\"#{Time.at(job['scheduled_at']) rescue "unknown"}\")..."
 
           Timeout.timeout(env[:submission_timeout]) do
@@ -464,8 +462,6 @@ module Grid5000
 
           #logger.info "[#{env[:site]}] Job is running: #{job.inspect}"
           logger.info "[#{env[:site]}] Job is running:"
-          data_logger.info job
-    
           env[:job] = job
           yield env if block
           env

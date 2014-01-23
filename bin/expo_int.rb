@@ -1,21 +1,49 @@
 
 require 'rubygems'
-#Gem.path<<"#{ENV['HOME']}/.gem/"
-#require 'termios'
 require 'optparse'
+require 'colorize'
+require 'log4r-color'
+
 ROOT_DIR= File.expand_path('../..',__FILE__)
 BIN_DIR= File.join(ROOT_DIR,"bin")
 LIB_DIR= File.join(ROOT_DIR,"lib")
 $LOAD_PATH.unshift LIB_DIR unless $LOAD_PATH.include?(LIB_DIR)
 
 ## Here I will include the DSL commands
-
 require 'DSL'
-require 'colorize'
-
-Console = DSL.instance
 
 MyExperiment = Experiment.instance
+
+include Log4r
+
+expo_logger = Log4r::Logger.new('Expo_log')
+
+format = Log4r::PatternFormatter.new(:pattern => '%d %5l %11c: %M')
+console_output = Log4r::ColorOutputter.new 'color', {
+  :colors =>   { 
+    :debug  => :light_blue, 
+    :info   => :light_blue, 
+    :warn   => :yellow, 
+    :error  => :red, 
+    :fatal  => {:color => :red, :background => :white} 
+  } ,
+  :formatter => format,
+}
+
+expo_log_file = Log4r::FileOutputter.new('logtest', :filename =>  "/tmp/Expo_log_#{Time.now.to_i}.log")
+
+expo_logger.outputters = [console_output,expo_log_file] 
+
+Console = DSL.instance
+#Outputter.stdout
+ 
+#PatternFormatter.new(:pattern => "%l - %m - %c")
+
+
+
+    
+
+
 
 def task(name, options={}, &block)
   Console.task(name,options, &block)

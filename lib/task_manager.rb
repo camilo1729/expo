@@ -45,7 +45,7 @@ class TaskManager
       }
     end
 
-    @logger = MyExperiment.logger
+    @logger = Log4r::Logger['Expo_log']#MyExperiment.logger
   end
 
 
@@ -67,7 +67,7 @@ class TaskManager
     return false unless get_task(task.name).nil? 
     return false if @registry.has_key?(task.name)
     task.set_taskmanager(self)
-    puts "Registering Task: "+ "[ #{task.name} ]".green
+    #puts "Registering Task: "+ "[ #{task.name} ]".green
     @logger.info "Registering Task: "+ "[ #{task.name} ]"
     @tasks.push( task )
     ## creating the respective hash for resutls of that tasks
@@ -82,7 +82,7 @@ class TaskManager
 
 
   def execute_task(task)
-    puts "Executing Task: "+ "[ #{task.name} ]".green
+    #puts "Executing Task: "+ "[ #{task.name} ]".green
     @logger.info "Executing Task: "+ "[ #{task.name} ]"
     options = task.options    
     if task.target.is_a?(String) and not options[:target].nil? then
@@ -90,7 +90,7 @@ class TaskManager
       if task.target.is_integer? then
         ## it is a job so we select the resources accordondly
         job_id = task.target
-        puts "Spliting Task for the Job: " + "#{job_id}".red
+        #puts "Spliting Task for the Job: " + "#{job_id}".red
         @logger.info "Spliting Task for the Job: " + "#{job_id}"
         target_nodes = options[:target].select(:id => job_id.to_i )
         nodes_info = target_nodes.select_resource_h{ |res|  res.properties.has_key? :id }
@@ -113,7 +113,7 @@ class TaskManager
 
    
     ## Fix-me is showing in the case of resource the main name 
-    puts "Nodes executing task: #{nodes_info.name}" if target_nodes.is_a?(ResourceSet)
+    @logger.info "Nodes executing task: #{nodes_info.name}" if target_nodes.is_a?(ResourceSet)
 
     Thread.new {
       Thread.abort_on_exception=true 
@@ -127,7 +127,7 @@ class TaskManager
         task.run
         exception = false
       rescue ExecutingError => e
-        puts "Task: #{task.name} =>"+" Failed".red
+        #puts "Task: #{task.name} =>"+" Failed".red
         puts "error: #{e.object}"
         ## putting the errors
         task_name = task.split_from.nil? ? task.name : task.split_from
@@ -168,7 +168,7 @@ class TaskManager
               suffix.slice!(task_depen.name.to_s+"_")
               if not task.children.include?((task.name.to_s+"_"+suffix).to_sym) then
                 n_t = task.split(suffix)
-                puts "Task : " + "[#{n_t.name}] ".green + " created for dependency"
+                #puts "Task : " + "[#{n_t.name}] ".green + " created for dependency"
                 n_t.dependency.delete(t_name)
                 n_t.dependency.push(c_t)
                 new_tasks_dep.push(n_t)
@@ -186,7 +186,7 @@ class TaskManager
     # execute_task = true
     ## First thing to do we get the task from the experiment
     if @task_from_experiment
-      puts "Getting tasks from Experiment"
+      @logger.info "Getting tasks from Experiment"
       tasks_expe = MyExperiment.get_available_tasks
       add_tasks(tasks_expe) unless tasks_expe.nil? #if @task_from_experiment 
     end
@@ -207,7 +207,7 @@ class TaskManager
             puts "Creating a new task for the job"
             ## we have to create a new task for that particular job
             root_task = task.split(job.to_s)
-            puts "Task : "+"[#{root_task.name}]".green+ "\tcreated"
+            @logger.info "Task : "+"[#{root_task.name}] created"
             new_tasks.push(root_task)
             tasks_changed = true
           end
@@ -254,7 +254,7 @@ class TaskManager
     }
     add_tasks(new_tasks)
     unless task_scheduled 
-      puts "No task to schedule".brown 
+      @logger.info "No task to schedule"
       @no_tasks = true
     end
 
@@ -324,7 +324,7 @@ class TaskManager
 
   def update(task)
     task_name = task.name
-    puts "Task: "+ "#{task_name}\t".cyan + "[ DONE ]".green + " In #{task.run_time.round(3)} Seconds".blue
+    #puts "Task: "+ "#{task_name}\t".cyan + "[ DONE ]".green + " In #{task.run_time.round(3)} Seconds".blue
     @logger.info "Task: "+ "#{task_name}\t" + "[ DONE ]" + " In #{task.run_time.round(3)} Seconds"
     sleep(rand(10)/17.to_f)
     @registry[task_name] = "Finished"

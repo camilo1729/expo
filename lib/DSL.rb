@@ -15,6 +15,7 @@ require 'task_manager'
 class DSL
  
   include Singleton
+  include Log4r
   MyExperiment = Experiment.instance
 
   attr_reader :variables,:task_manager,:exp_variables,:exp_tasks
@@ -23,7 +24,8 @@ class DSL
     @variables = {}
     @variables[:results] = []
     @variables[:user] = nil
-    @logger = MyExperiment.logger
+    @logger = Log4r::Logger['Expo_log']
+      #MyExperiment.logger
     @task_manager = TaskManager.new
     @variables_set = false
     @exp_variables = ""
@@ -48,7 +50,7 @@ class DSL
     
     type = options[:type]
     if type == "Grid5000" then
-      return ExpoEngine.new(gateway)
+      return ExpoEngine.new(@variables[:gateway])
     end
   end
 
@@ -418,8 +420,8 @@ class DSL
         var_method = values[2]
         var_name=look_variable_by_id(var_id,MyExperiment.variable_binding)
         new_target="#{var_name}.#{var_method}"
-        puts "New_target #{new_target}"
-        puts "Activating lazy evaluation".green
+        @logger.info "New_target #{new_target} for Task: #{name}"
+        @logger.info "Activating lazy evaluation"
         options[:lazy]=true
         options[:target]=new_target
       end
@@ -458,25 +460,28 @@ class DSL
 
 
   def load_experiment(file_path)
-    puts "Reading Experiment Definition file !!! ..".green
+    @logger.info "Reading Experiment Definition file !!! .."
     @exp_variables = ""
     @exp_tasks = ""
     flag = false
     file = File.new(file_path, "r")
     count = 0
+
     while (line = file.gets)
       unless (line.chop == "task_definition_start" or flag) then
         @exp_variables+= "#{line}" 
-        print "Reading experiment variables ...#{count}".cyan
-        print 13.chr
-        count = count + 1
+        @logger.info "Reading experiment variables"
+        # print "Reading experiment variables ...#{count}".cyan
+        # print 13.chr
+        # count = count + 1
       end
       @exp_tasks += "#{line}" if flag
       if line.chop =="task_definition_start" then
+        @logger.info "Reading experiment tasks"
         flag = true
       end
     end
-    puts "\n Experiment description loaded ...".cyan
+    @logger.info "Experiment description loaded ..."
   end
 
   def start_experiment(options={})
@@ -486,6 +491,20 @@ class DSL
 
     ### Perfrom some checks with connectivity 
     # ssh -o ConnectTimeout 5 gateway in order to know that the gateway to access the platform is accesible
+    if @variables[:gateway] then
+      @logger.info "Checking the accessability of the defined gateway: #{@variables[:gateway]}"
+      test_cmd = "ssh -o ConnectTimeout=5 #{@variables[:gateway]} hostname"
+      @logger.info "With command: #{test_cmd}"
+      cmd = CtrlCmd.new(test_cmd)
+      cmd.run
+      if cmd.status > 0 then
+        @logger.error "Error Experiment gateway is inaccessible"
+        @logger.fatal "Exiting... "
+        return false
+      else
+        @logger.info "Gateway connectivity [OK].."
+      end
+    end
     MyExperiment.variable_binding = variable_binding
     set_experiment_variables(variable_binding)
     eval(@exp_tasks, variable_binding) ## loading Expo tasks
@@ -512,10 +531,10 @@ class DSL
     #variables_binding = binding  #This is the variable binding for setting the resourceset at execution time
     @variables.each{ |name,value|
       if eval("defined? #{value}") then
-        puts "Setting variable => #{name.to_s}=#{value}".green
+        @logger.info "Setting variable => #{name.to_s}=#{value}"
         eval("#{name.to_s}=#{value}",exp_binding)
       else
-        puts "Setting variable => #{name.to_s}=\"#{value}\"".green
+        @logger.info "Setting variable => #{name.to_s}=\"#{value}\""
         eval("#{name.to_s}=\"#{value}\"",exp_binding)
       end
     }

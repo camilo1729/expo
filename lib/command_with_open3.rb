@@ -3,7 +3,7 @@
 require 'open3'
 class Command
 
-  attr_reader :stdout,:stdin,:stderr,:cmd
+  attr_reader :stdout,:stdin,:stderr,:cmd,:status
 
   def initialize(cmd=nil,&block)
     @cmd = cmd
@@ -28,7 +28,7 @@ class Command
 
   def wait
     true until @thread_p.join(1) #wait for the thread to finish
-    @status = @thread_p.value
+    @status = @thread_p.value.exitstatus
   end
 
 end
