@@ -5,7 +5,6 @@ Expo: Experiment Engine for Distributed Platforms
  
 **Authors**:   Cristian Ruiz, Brice Videau, Olivier Richard.
 
-**News**:  Grid5000 tutorial {file:docs/Grid5000_tutorial.md Expo and Kameleon}
  
 
 Synopsis
@@ -19,10 +18,20 @@ Installation
 
 Procedure to install in Grid5000
 
+	  export https_proxy="http://proxy:3128"
 
+	  git clone https://github.com/camilo1729/expo_new.git
+        
 	  export GEM_HOME=~/.gem/ 
 
 	  gem install pry restfully ap crack net-ssh net-scp net-sftp log4r-color
+
+
+Running a simple experiment
+---------------------------
+
+	cd /PATH_TO_EXPO_REPOSITORY/expo_new
+	bin/expo ../examples/simple_experiment.rb 
 
 ## Contact
 
