@@ -699,11 +699,11 @@ class ResourceSet < Resource
       nodes_cmd = ""
       first = ""
       @resources.each { |x|
-       #if x.type == :node then
-          # first = x.name if not nodes
-          # nodes = true
+       if x.type == :node then
+          first = x.name if not nodes
+          nodes = true
           nodes_cmd += x.make_taktuk_command()
-       # end
+       end
       }
       str_cmd += nodes_cmd  #if nodes
       sets = false
