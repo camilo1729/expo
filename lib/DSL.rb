@@ -5,7 +5,7 @@ require 'cmdctrl_ssh' ## for ssh commands
 require 'taktuk'
 require 'tasks'
 require 'task_manager'
-#equire 'colorize'
+
 ## This code should include ResourceSet
 
 ## In order to avoid using Experiment.instance.method
@@ -50,7 +50,7 @@ class DSL
     
     type = options[:type]
     if type == "Grid5000" then
-      return ExpoEngine.new(@variables[:gateway])
+      return ExpoEngine.new(@variables[:gateway],@variables[:public_key])
     end
   end
 
@@ -243,22 +243,29 @@ class DSL
             cmd = CmdCtrlSSH.new("",resources.gw,@variables[:gw_user],nil)
             cmd.run(command)
           end
+
       elsif (resources.is_a?(String) and @variables[:gateway])
+        if resources == @variables[:gateway] ## we are copying to the gateway
+          command = "scp -r #{data} #{@variables[:gw_user]}@#{resources}:#{path}"
+          MyExperiment.add_command(command)
+          cmd = CtrlCmd.new(command)
+        else
+          command = "scp -r #{data} #{@variables[:user]}@#{resources}:#{path}"
+          MyExperiment.add_command(command)
+          cmd = CmdCtrlSSH.new("",@variables[:gateway],@variables[:gw_user],nil)
+        end
+          cmd.run(command)
+      elsif(resources.is_a?(String) and @variables[:gateway].nil?) ## Fix this, there is no a clean manage of the gateway
+          ## This is one just one host is passed as a parameter
         command = "scp -r #{data} #{@variables[:user]}@#{resources}:#{path}"
-        MyExperiment.add_command(command)
-        cmd = CmdCtrlSSH.new("",@variables[:gateway],@variables[:user],nil)
-        cmd.run(command)
-      else (resources.is_a?(String) and @variables[:gateway].nil?) ## Fix this, there is no a clean manage of the gateway
-        ## This is one just one host is passed as a parameter
-        command = "scp -r #{data} #{@variables[:gw_user]}@#{resources}:#{path}"
         MyExperiment.add_command(command)
         cmd = CtrlCmd.new(command)
         cmd.run
       end
-      
+    
     else 
-      raise "copy method not defined"
-    end
+        raise "copy method not defined"
+      end
     
     ## return [cmd.stdout,cmd.run_time]
 
@@ -530,12 +537,22 @@ class DSL
     ## Because this will be created dinamically
     #variables_binding = binding  #This is the variable binding for setting the resourceset at execution time
     @variables.each{ |name,value|
-      if eval("defined? #{value}") then
-        @logger.info "Setting variable => #{name.to_s}=#{value}"
-        eval("#{name.to_s}=#{value}",exp_binding)
-      else
-        @logger.info "Setting variable => #{name.to_s}=\"#{value}\""
-        eval("#{name.to_s}=\"#{value}\"",exp_binding)
+       regexp = /.*\/.*/
+      # Testing if has a ruby valid variable name
+      string_flag = true if value.is_a?(String)
+      if string_flag == true then
+        if not regexp.match(value.to_s) then
+          if eval("defined? #{value}") then
+            @logger.info "Setting variable => #{name.to_s}=#{value}"
+            eval("#{name.to_s}=#{value}",exp_binding)
+          else
+            @logger.info "Setting variable => #{name.to_s}=\"#{value}\""
+            eval("#{name.to_s}=\"#{value}\"",exp_binding)
+          end
+        else
+          @logger.info "Setting variable => #{name.to_s}=\"#{value}\""
+          eval("#{name.to_s}=\"#{value}\"",exp_binding)  
+        end
       end
     }
     @variables_set = true

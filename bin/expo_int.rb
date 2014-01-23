@@ -1,7 +1,7 @@
 
 require 'rubygems'
 require 'optparse'
-require 'colorize'
+#require 'colorize'
 require 'log4r-color'
 
 ROOT_DIR= File.expand_path('../..',__FILE__)

@@ -33,13 +33,12 @@ class ExpoEngine < Grid5000::Campaign::Engine
   #set :logger, MyExperiment.logger
   set :logger, Log4r::Logger['Expo_log']
   set :submission_timeout, 7200
-  #set :public_key, "/home/cristian/.ssh/grid5000.pub"
   ## I'm rewriting this method otherwise I cannot load the Class again because the defaults get frozen.
 
   ## @resources will be a hash with the following structure
   ## {:grenoble => ["nodes=1","nodes=1"]   --> This will submit two jobs
   ##  :lille => ["{cluster = 'cluster_1'}/nodes=1"]
-  def initialize(gateway=nil)
+  def initialize(gateway=nil,key=nil)
     @resources = { :grenoble => ["nodes=1"] }
     @walltime=3600
     @name = "Expo_Experiment"
@@ -56,9 +55,8 @@ class ExpoEngine < Grid5000::Campaign::Engine
     ## It seems that a name has to be declared in order to be assigned to a Hash
     exp_resource_set.properties[:gateway] = @gateway unless @gateway.nil?
     ### need to initialized the resources properly
- #   exp_resource_set.properties[:outside] = true until @gateway.nil?
     MyExperiment.add_resources(exp_resource_set)
-
+    @public_key = key
     #### I need to check whether I put it here or elsewhere.
   end
 
@@ -79,7 +77,6 @@ class ExpoEngine < Grid5000::Campaign::Engine
     logger.info reserve_log_msg +"Asking for Resources"
 
     envs = []
-    
     env[:parallel_reserve] = parallel(:ignore_thread_exceptions => true)
     # launch parallel reservation on all the sites specifyed
     # the :ignore_thread_exepctions is because sometimes the api throw some exceptions.
@@ -136,10 +133,11 @@ class ExpoEngine < Grid5000::Campaign::Engine
     env = self.class.defaults.dup
     ### copying some variables defined by the user
     env[:environment] = @environment    
-    # env[:site]=@site
     env[:walltime] = @walltime
     env[:resources] = @resources
     
+    env[:public_key] = @public_key unless @public_key.nil?
+
      unless @jobs_id.empty? then
        env[:no_submit] = true 
      end
@@ -206,7 +204,6 @@ class ExpoEngine < Grid5000::Campaign::Engine
       ##########################
       
     end #change_dir
-    #nodes
     return env
   end
 
@@ -307,7 +304,7 @@ class ExpoEngine < Grid5000::Campaign::Engine
       site_set.properties[:name] = site_name
       gateway = "frontend.#{site_name}.grid5000.fr"
       site_set.properties[:gateway] = gateway ## Fix-me gateway definition will depend on the context
-      site_set.properties[:ssh_user] = Console.variables[:user]
+      #site_set.properties[:ssh_user] = Console.variables[:user]
       MyExperiment.resources.push(site_set)
     elsif resource_site.is_a?(ResourceSet) then
       gateway = "frontend.#{site_name}.grid5000.fr"

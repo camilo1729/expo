@@ -4,7 +4,7 @@ require 'g5k_api'
 
 set :user, "cruizsanabria" 
 set :resources, "MyExperiment.resources"
-# set :gateway, "grenoble.g5k" #Only if you execute the script outside Grid5000
+set :gateway, "grenoble.g5k" #Only if you execute the script outside Grid5000
 
 reserv = connection(:type => "Grid5000")
 reserv.resources = {:lyon => ["nodes=1"]}
@@ -41,8 +41,8 @@ task :testing_resourceset do
   }
 end
 
-# task :free_reservation, :target => resources do
-#   free_resources(reserv)
-# end
+task :free_reservation, :target => resources do
+  free_resources(reserv)
+end
 
 

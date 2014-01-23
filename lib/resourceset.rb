@@ -678,12 +678,23 @@ class ResourceSet < Resource
     if self.gw != "localhost" then
       sets = false
       sets_cmd = ""
+      nodes_cmd = ""
+      ssh_user = ""
+      sets_with_ssh_user = false
       @resources.each { |x|
         if x.instance_of?(ResourceSet) then
-          sets = true
-          sets_cmd += x.make_taktuk_command()
+          unless x.ssh_user.nil? then
+            nodes_cmd += x.make_taktuk_command()
+            sets_with_ssh_user = true
+            ssh_user = x.ssh_user
+          else
+            sets_cmd += x.make_taktuk_command()
+            sets = true
+          end
         end
       }
+
+      str_cmd += " --gateway #{self.gw} -[ -l #{ssh_user} " + nodes_cmd + " -]" if sets_with_ssh_user
       str_cmd += " --gateway #{self.gw} -[ " + sets_cmd + " -]" if sets
       nodes = false
       nodes_cmd = ""
@@ -693,7 +704,8 @@ class ResourceSet < Resource
           nodes_cmd += x.make_taktuk_command()
         end
       }
-      str_cmd += " -l #{self.gw_ssh_user} --gateway #{self.gw} -[ -l #{self.ssh_user} " + nodes_cmd + " -]" if nodes 
+      str_cmd += " --gateway #{self.gw} -[ -l #{nodes_cmd} -]" if nodes
+      #str_cmd += " -l #{self.gw_ssh_user} --gateway #{self.gw} -[ -l #{self.ssh_user} " + nodes_cmd + " -]" if nodes 
     else
       nodes = false
       nodes_cmd = ""
@@ -705,7 +717,7 @@ class ResourceSet < Resource
           nodes_cmd += x.make_taktuk_command()
        end
       }
-      str_cmd += nodes_cmd  #if nodes
+      str_cmd += nodes_cmd  if nodes
       sets = false
       sets_cmd = ""
       @resources.each { |x|
