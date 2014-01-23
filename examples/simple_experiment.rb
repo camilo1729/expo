@@ -2,14 +2,12 @@
 
 require 'g5k_api'
 
-set :user, "cruizsanabria"
+set :user, "cruizsanabria" 
 set :resources, "MyExperiment.resources"
-set :gateway, "grenoble.g5k"
+# set :gateway, "grenoble.g5k" #Only if you execute the script outside Grid5000
 
 reserv = connection(:type => "Grid5000")
-#reserv.jobs_id = {:lyon => 691281}
 reserv.resources = {:lyon => ["nodes=1"]}
-#reserv.wait = true
 
 ## We grab a job that was already created by the user manually
 ## In order to use this functionality I have to submit the job with -t allow_classic_ssh 

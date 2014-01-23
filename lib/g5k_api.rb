@@ -33,7 +33,7 @@ class ExpoEngine < Grid5000::Campaign::Engine
   #set :logger, MyExperiment.logger
   set :logger, Log4r::Logger['Expo_log']
   set :submission_timeout, 7200
-  set :public_key, "/home/cristian/.ssh/grid5000.pub"
+  #set :public_key, "/home/cristian/.ssh/grid5000.pub"
   ## I'm rewriting this method otherwise I cannot load the Class again because the defaults get frozen.
 
   ## @resources will be a hash with the following structure
