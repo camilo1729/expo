@@ -1,10 +1,10 @@
 require 'g5k_api'
 
 set :user, "root"
-set :gw_user, "cruizsanabria"
+set :gw_user, "cruizsanabria"  ## replace with your user
 set :resources, "MyExperiment.resources"
 # set :gateway, "grenoble.g5k" # This is used when executing the experiment from outside
-set :public_key, "/home/cristian/.ssh/grid5000.pub"
+# set :public_key, "/home/cristian/.ssh/grid5000.pub"  ## this has to be set if you want to specify a special key for your deployment
 
 reserv = connection(:type => "Grid5000")
 reserv.resources = { :lyon => ["nodes=1"] }
@@ -26,6 +26,7 @@ end
 
 task :config_ssh do
 
+  msg("Generating SSH config")
   File.open("/tmp/config",'w+') do |f|
     f.puts "Host * 
    StrictHostKeyChecking no 
@@ -35,15 +36,13 @@ task :config_ssh do
 end
 
 task :generating_ssh_keys do
-  if check("ls /tmp/temp_keys/key") then
     run("mkdir -p /tmp/temp_keys/")
     run("ssh-keygen -P '' -f /tmp/temp_keys/key") 
-  end
 end
 
 task :trans_keys do
-  put("/tmp/temp_keys/","/tmp/temp_keys/",:method => "scp",:target => gateway)
-  put("/tmp/config","/tmp/config",:target => gateway)
+  # put("/tmp/temp_keys/","/tmp/temp_keys/",:method => "scp",:target => gateway) # use this when executing from outside Grid5000
+  # put("/tmp/config","/tmp/config",:target => gateway)
   put("/tmp/config","/root/.ssh/", :target => resources)
   put("/tmp/temp_keys/key","/root/.ssh/id_rsa", :target => resources)
   put("/tmp/temp_keys/key.pub","/root/.ssh/id_rsa.pub", :target => resources)
@@ -51,7 +50,7 @@ end
 
 task :copy_identity do
   resources.each{ |node|
-    run("ssh-copy-id -i /tmp/temp_keys/key.pub root@#{node.name}",:target => gateway)
+    run("ssh-copy-id -i /tmp/temp_keys/key.pub root@#{node.name}")  #,:target => gateway)
   }
 end
 
@@ -59,6 +58,7 @@ end
 
 task :get_benchmark, :target => resources do
   unless check("ls /tmp/NPB3.3.tar") then
+    msg("Getting NAS benchmark")
     run("cd /tmp/; wget -q http://public.grenoble.grid5000.fr/~cruizsanabria/NPB3.3.tar")
     run("cd /tmp/; tar -xvf NPB3.3.tar")
   end
@@ -73,8 +73,9 @@ end
 
 ## Generating machinefile
 task :transfering_machinefile do
-  put(resources.nodefile,"/tmp/nodefile.txt",:target => gateway)
-  put("/tmp/nodefile.txt","/tmp/machinefile", :target => resources.first)
+  # put(resources.nodefile,"/tmp/nodefile.txt",:target => gateway) # use this when executing from outside
+  put(resources.nodefile,"/tmp/machinefile",:target => resources.first)
+  # put("/tmp/nodefile.txt","/tmp/machinefile", :target => resources.first)
 end
 
 task :creating_trace_dir, :target => resources do
@@ -89,6 +90,7 @@ end
 ## Gathering traces and merging
 task :gathering_traces, :target => resources.first do 
   resources.each{ |node|
+    msg("Merging in node #{node.name}")
     run("scp -r #{node.name}:/tmp/mpi_traces/* /tmp/mpi_traces")
   }
   cmd_merge = "export PATH=/usr/local/tau-install/x86_64/bin/:$PATH;"
@@ -99,5 +101,5 @@ end
 
 task :get_traces do
   get("/tmp/mpi_traces/lu.A.8.paje","/tmp/",:target => resources.first)
-  get("/tmp/lu.A.8.paje","/tmp/",:target => gateway)
+  # get("/tmp/lu.A.8.paje","/tmp/",:target => gateway) # use this when executing from outside
 end
