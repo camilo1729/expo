@@ -4,7 +4,7 @@ require 'g5k_api'
 
 set :user, "cruizsanabria" 
 set :resources, "MyExperiment.resources"
-set :gateway, "grenoble.g5k" #Only if you execute the script outside Grid5000
+# set :gateway, "grenoble.g5k" #Only if you execute the script outside Grid5000
 
 reserv = connection(:type => "Grid5000")
 reserv.resources = {:lyon => ["nodes=1"]}
@@ -22,21 +22,20 @@ task :run_reservation do
 end
 
 task :task_1, :target => resources do
-  run("hostname")
-end
-
-task :task_2, :target => resources do
   run("sleep 10")
   run("hostname")
 end
 
-task :task_3, :target => resources.first do
+
+task :task_2, :target => resources.first do
   run("sleep 5")
+  msg("Running command: uname -a")
   run("uname -a")
 end
 
 task :testing_resourceset do
   resources.each{ |node|
+    msg("Running sleep in node #{node.name}")
     run("sleep 20",:target => node)
   }
 end
