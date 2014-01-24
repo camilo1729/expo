@@ -2,7 +2,7 @@
 
 require 'g5k_api'
 
-set :user, "cruizsanabria" 
+set :user, "cruizsanabria" ## replace with your user
 set :resources, "MyExperiment.resources"
 # set :gateway, "grenoble.g5k" #Only if you execute the script outside Grid5000
 

@@ -157,7 +157,7 @@ class DSL
       end
 
       if gateway.nil? then 
-        cmd = CmdCtrlSSH.new("",hosts_end,@variables[:gw_user])
+        cmd = CmdCtrlSSH.new("",hosts_end,@variables[:user])
       else
         cmd = CmdCtrlSSH.new("",hosts_end,@variables[:user],gateway,@variables[:gw_user])
       end

@@ -103,3 +103,8 @@ task :get_traces do
   get("/tmp/mpi_traces/lu.A.8.paje","/tmp/",:target => resources.first)
   # get("/tmp/lu.A.8.paje","/tmp/",:target => gateway) # use this when executing from outside
 end
+
+
+# task :free_reservation, :target => resources do
+#   free_resources(reserv)
+# end

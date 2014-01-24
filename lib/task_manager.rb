@@ -16,7 +16,7 @@ end
 class ExecutingError < StandardError
   attr_reader :object
   
-  def initialize(object)
+  def initialize(object=nil)
     @object = object
   end
 end
@@ -127,8 +127,8 @@ class TaskManager
         task.run
         exception = false
       rescue ExecutingError => e
-        #puts "Task: #{task.name} =>"+" Failed".red
-        puts "error: #{e.object}"
+        @logger.error "Task: #{task.name} =>"+" Failed"
+        @logger.error "error: #{e.object}"
         ## putting the errors
         task_name = task.split_from.nil? ? task.name : task.split_from
         results = {nodes_info => e.object}
