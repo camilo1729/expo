@@ -32,6 +32,8 @@ Running a simple experiment
 
 Before running you have to change some experiment parameters such as "username"
 
+        export GEM_HOME=~/.gem/
+
 	cd /PATH_TO_EXPO_REPOSITORY/expo_new
 	bin/expo examples/simple_experiment.rb
 

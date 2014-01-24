@@ -273,6 +273,11 @@ class DSL
   
   end
 
+
+  def msg(message)
+    @logger.info "From Task: #{message}"
+  end
+
   def get(path, data, options={})
     ## This is the first version of get, It will use a simple scp that
     ## is going to be done sequentially.
