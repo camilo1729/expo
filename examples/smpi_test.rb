@@ -7,7 +7,7 @@ set :resources, "MyExperiment.resources"
 # set :public_key, "/home/cristian/.ssh/grid5000.pub"  ## this has to be set if you want to specify a special key for your deployment
 
 reserv = connection(:type => "Grid5000")
-reserv.resources = { :lyon => ["nodes=1"] }
+reserv.resources = { :lyon => ["nodes=2"] }
 # #reserv.jobs_id = {:grenoble => 1596128}
 reserv.environment = "http://public.nancy.grid5000.fr/~dlehoczky/newimage.dsc"
 # reserv.walltime = 3*3600
@@ -90,7 +90,7 @@ end
 ## Gathering traces and merging
 task :gathering_traces, :target => resources.first do 
   resources.each{ |node|
-    msg("Merging in node #{node.name}")
+    msg("Merging results of node #{node.name}")
     run("scp -r #{node.name}:/tmp/mpi_traces/* /tmp/mpi_traces")
   }
   cmd_merge = "export PATH=/usr/local/tau-install/x86_64/bin/:$PATH;"
