@@ -3,7 +3,7 @@ require 'g5k_api'
 set :user, "root"
 set :gw_user, "cruizsanabria"
 set :resources, "MyExperiment.resources"
-set :gateway, "grenoble.g5k"
+# set :gateway, "grenoble.g5k" # This is used when executing the experiment from outside
 set :public_key, "/home/cristian/.ssh/grid5000.pub"
 
 reserv = connection(:type => "Grid5000")
@@ -81,23 +81,23 @@ task :creating_trace_dir, :target => resources do
   run("mkdir -p /tmp/mpi_traces") 
 end
 
-# task :run_mpi do
-#   mpi_params = "-x TAU_TRACE=1 -x TRACEDIR=/tmp/mpi_traces -np 8 -machinefile /tmp/machinefile"
-#   run("/usr/local/openmpi-1.6.4-install/bin/mpirun #{mpi_params} /tmp/NPB3.3/NPB3.3-MPI/bin/lu.A.8",:target => "resources.first")
-# end 
+task :run_mpi do
+  mpi_params = "-x TAU_TRACE=1 -x TRACEDIR=/tmp/mpi_traces -np 8 -machinefile /tmp/machinefile"
+  run("/usr/local/openmpi-1.6.4-install/bin/mpirun #{mpi_params} /tmp/NPB3.3/NPB3.3-MPI/bin/lu.A.8",:target => resources.first)
+end 
 
-# ## Gathering traces and merging
-# task :gathering_traces, :target => resources.first do 
-#   resources.each{ |node|
-#     run("scp -r #{node.name}:/tmp/mpi_traces/* /tmp/mpi_traces")
-#   }
-#   cmd_merge = "export PATH=/usr/local/tau-install/x86_64/bin/:$PATH;"
-#   cmd_merge += "cd /tmp/mpi_traces/; tau_treemerge.pl"
-#   run(cmd_merge)
-#   run("cd /tmp/mpi_traces/; /usr/local/akypuera-install/bin/tau2paje tau.trc tau.edf 1>lu.A.8.paje 2>tau2paje.error")
-# end
+## Gathering traces and merging
+task :gathering_traces, :target => resources.first do 
+  resources.each{ |node|
+    run("scp -r #{node.name}:/tmp/mpi_traces/* /tmp/mpi_traces")
+  }
+  cmd_merge = "export PATH=/usr/local/tau-install/x86_64/bin/:$PATH;"
+  cmd_merge += "cd /tmp/mpi_traces/; tau_treemerge.pl"
+  run(cmd_merge)
+  run("cd /tmp/mpi_traces/; /usr/local/akypuera-install/bin/tau2paje tau.trc tau.edf 1>lu.A.8.paje 2>tau2paje.error")
+end
 
-# task :get_traces do
-#   get("/tmp/mpi_traces/lu.A.8.paje","/tmp/",:target => "resources.first")
-#   get("/tmp/lu.A.8.paje","/tmp/",:target => "gateway_g5k")
-# end
+task :get_traces do
+  get("/tmp/mpi_traces/lu.A.8.paje","/tmp/",:target => resources.first)
+  get("/tmp/lu.A.8.paje","/tmp/",:target => gateway)
+end
