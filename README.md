@@ -20,11 +20,11 @@ Procedure to install in Grid5000
 
 	  export https_proxy="http://proxy:3128"
 
-	  git clone https://github.com/camilo1729/expo_new.git
+	  git clone https://github.com/camilo1729/expo.git
         
 	  export GEM_HOME=~/.gem/ 
 
-	  gem install pry restfully ap crack net-ssh net-scp net-sftp log4r-color
+	  bash install_dependencies.sh
 
 
 Running a simple experiment
