@@ -10,7 +10,6 @@ require 'DSL'
 def api_connect
 connection = Restfully::Session.new(
       :configuration_file=> File.expand_path("~/.restfully/api.grid5000.fr.yml")
-     # :logger => @options[:verbose] ? @options[:logger] : nil
     )
   return connection
 end
@@ -66,6 +65,7 @@ class ExpoEngine < Grid5000::Campaign::Engine
       f.puts(metadata.to_yaml)
     end
   end
+
 # rewriting the reserve part for several reasons:
 # - to submit request to serveral sites.
 # - to build the resourceSet needed for Expo.
@@ -219,7 +219,7 @@ class ExpoEngine < Grid5000::Campaign::Engine
       return true
     end
     job_uni  = @jobs.select { |j| j['uid'] == job}.first
-    puts "Deleting job: #{job_uni['uid']}"
+    logger.info "Deleting job: #{job_uni['uid']}"
     job_uni.delete
   end
 
@@ -298,7 +298,7 @@ class ExpoEngine < Grid5000::Campaign::Engine
     ## Otherwise I will return an array
     gateway = ""
     if not resource_site then ## puff it exists
-      logger.info "The site doesnt exits adding it"
+      logger.info "The site does not exits adding it"
       site_set = ResourceSet::new(:site)
       site_set.properties[:id] = job['uid'] if @resources[site_name.to_sym].length < 2 ## there is just one job per site
       site_set.properties[:name] = site_name

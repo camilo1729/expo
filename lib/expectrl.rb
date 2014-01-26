@@ -1,5 +1,4 @@
 ### This class is to keep data about the experiment
-### This is going to be a singleton class :)
 require 'singleton'
 require 'resourceset'
 require 'logger'
@@ -12,20 +11,16 @@ class TaskResult < Hash
   end
 end
 
-
-
-
-
-
 class Experiment
 
   include Singleton
-  attr_accessor :resources, :logger, :tasks, :num_jobs_required, :results, :tasks_names,:jobs, :variable_binding, :color_log
+  attr_accessor :resources, :logger, :tasks, :num_jobs_required, :results, :tasks_names,:jobs, :variable_binding
+
   def initialize
     @id = 1
     @commands = []
     @resources = ResourceSet::new
-    @logger = Logger.new("/tmp/Expo_log_#{Time.now.to_i}.log")
+    # @logger = Logger.new("/tmp/Expo_log_#{Time.now.to_i}.log")
     @results = {}
     @jobs = []
     @tasks = {}
@@ -33,7 +28,6 @@ class Experiment
     @num_jobs_required = 0 ## This will count the number of jobs required for the experiment
     @last_task = 0
     @variable_binding = nil
-    @color_log = 'color_logger'
   end
 
   

@@ -1,7 +1,5 @@
-
 require 'rubygems'
 require 'optparse'
-#require 'colorize'
 require 'log4r-color'
 
 ROOT_DIR= File.expand_path('../..',__FILE__)
@@ -35,14 +33,6 @@ expo_log_file = Log4r::FileOutputter.new('logtest', :filename =>  "/tmp/Expo_log
 expo_logger.outputters = [console_output,expo_log_file] 
 
 Console = DSL.instance
-#Outputter.stdout
- 
-#PatternFormatter.new(:pattern => "%l - %m - %c")
-
-
-
-    
-
 
 
 def task(name, options={}, &block)
@@ -94,10 +84,6 @@ def run_task(task_name)
   # This bug is due to the dynamic partitioning of the tasks.
   # when a task is already partitioned , I cannot paritined again, therefore it will execute ingoring the argument split
 end
-
-# def start_from_file()
-#   Console.start_from_file
-# end
 
 def load_experiment(file_path)
   Console.load_experiment(file_path)
