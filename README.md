@@ -7,36 +7,32 @@ Expo: Experiment Engine for Distributed Platforms
 
  
 
-Synopsis
---------
+## Synopsis
+
 
 Expo is an experiment engine for distributed platforms. It aims at simplifying the experimental process on such platforms.
 
 
-Installation
-------------
+## Installation
 
 Procedure to install in Grid5000
 
-	  export https_proxy="http://proxy:3128"
+``` sh
+export https_proxy="http://proxy:3128"
+git clone https://github.com/camilo1729/expo.git
+export GEM_HOME=~/.gem/ 
+bash install_dependencies.sh
+```
 
-	  git clone https://github.com/camilo1729/expo.git
-        
-	  export GEM_HOME=~/.gem/ 
+## Running a simple experiment
 
-	  bash install_dependencies.sh
-
-
-Running a simple experiment
----------------------------
 
 Before running you have to change some experiment parameters such as "username"
-
-        export GEM_HOME=~/.gem/
-
-	cd /PATH_TO_EXPO_REPOSITORY/expo_new
-	bin/expo examples/simple_experiment.rb
-
+``` sh
+export GEM_HOME=~/.gem/
+cd /PATH_TO_EXPO_REPOSITORY/expo_new
+bn/expo examples/simple_experiment.rb
+```
  
 
 ## Contact

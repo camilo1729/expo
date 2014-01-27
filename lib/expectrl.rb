@@ -83,8 +83,9 @@ class Experiment
           res_tmp = task_cmd.clone
           res_tmp.delete(:results)
           res_tmp[:output] = []
-          task_cmd[:results][:output].values.flatten.each{ |ind_out|
-            res_tmp[:output].push({:output => ind_out[:line], :host => ind_out[:host]})
+          k = TakTuk::DefaultAggregator.new
+          task_cmd[:results][:output].aggregate(k).values.each{ |ind_out|
+            res_tmp[:output].push({:output => ind_out[:line]}) #, :host => ind_out[:host]})          
           }
           @results[task_name.to_sym].push(res_tmp)          
           # we have to post processing it

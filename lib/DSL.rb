@@ -250,7 +250,7 @@ class DSL
         resources.each{ |res|
        
           command = "scp -r #{data} #{@variables[:user]}@#{res.name}:#{path}"
-          puts "command_generated : #{command}"
+          @logger.info "command_generated : #{command}"
           MyExperiment.add_command(command)
           if resources.gw == "localhost" then
             cmd = CtrlCmd.new(command)
