@@ -33,6 +33,16 @@ export GEM_HOME=~/.gem/
 cd /PATH_TO_EXPO_REPOSITORY/expo_new
 bn/expo examples/simple_experiment.rb
 ```
+
+## DSL commands
+
+``` ruby
+
+run("command to run", :target => "node")
+check("command")
+put("file","path",:method => "scp")
+get("file","path",:method => "scp")
+```
  
 
 ## Contact
