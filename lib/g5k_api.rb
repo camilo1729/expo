@@ -21,8 +21,9 @@ class ExpoEngine < Grid5000::Campaign::Engine
   MyExperiment = Experiment.instance
   Console = DSL.instance
   RESOURCE_SET_FILE = ".expo_resource_set"
-  RESOURCE_METADATA = ".expo_resources"
-
+  EXPO_METADATA = ".expo_metadata"
+  G5K_METADATA = ".g5k_metadata-#{Time.now.to_i}"
+  
   attr_accessor :environment, :resources, :walltime, :name, :jobs, :jobs_id, :wait
   # to ease the definition of the experiment 
   set :no_cleanup, true # setting this as the normal used is for interacting
@@ -59,10 +60,26 @@ class ExpoEngine < Grid5000::Campaign::Engine
     #### I need to check whether I put it here or elsewhere.
   end
 
-  def create_resouces_validty_file()
+  def create_metadata_file()
     metadata = { :validity => Time.now.to_i + @walltime }
-    File.open(RESOURCE_METADATA,'w+') do |f|
+    File.open(EXPO_METADATA,'w+') do |f|
       f.puts(metadata.to_yaml)
+    end
+  end
+
+  def saving_g5k_metadata(env)
+    ## The case multi-site has to be still tested
+    g5k_metadata = {}
+    g5k_metadata[:name] = env[:name]
+    g5k_metadata[:user] = env[:user]
+    g5k_metadata[:site] = env[:site]
+    g5k_metadata[:environment] = env[:environment]
+    g5k_metadata[:resources] = env[:resources]
+    g5k_metadata[:walltime] = env[:walltime]
+    g5k_metadata[:public_key] = env[:public_key]
+    g5k_metadata[:job] = env[:job]['uid']
+    File.open(G5K_METADATA,'w+') do |f|
+      f.puts(g5k_metadata.to_yaml)
     end
   end
 
@@ -94,12 +111,15 @@ class ExpoEngine < Grid5000::Campaign::Engine
           begin
             env_2=reserve!(env, &block)
            rescue Timeout::Error, StandardError => e
-            puts "!!! Error submiting job"
+            logger.error "!!! Error submiting job"
             MyExperiment.num_jobs_required-=1  ## we decrease the counter
             changed
             notify_observers(0,logger)
           end
-          synchronize { self.create_resource_set(env_2[:job],env[:site])}
+          synchronize { self.create_resource_set(env_2[:job],env[:site])
+            ## Writing reservation metadata
+            saving_g5k_metadata(env_2)
+          }
           ## putting jobs number into experiment structure
           @jobs.each{ |job| MyExperiment.jobs.push(job['uid']) }
           synchronize {
@@ -119,12 +139,15 @@ class ExpoEngine < Grid5000::Campaign::Engine
 
   def run!
 
-    if File.exist?(RESOURCE_METADATA) then
-      previous_run_metadata = YAML::load(File.read(RESOURCE_METADATA)) 
-      if previous_run_metadata[:validity] > Time.now.to_i
+    if File.exist?(EXPO_METADATA) then
+      previous_run_metadata = YAML::load(File.read(EXPO_METADATA)) 
+      if previous_run_metadata[:validity] > Time.now.to_i then
       logger.info "Reusing previous reservation"
         ### replacing resources of the experiment ## Fix-me I have to find a cleaner way to do this
+        ## reading g5k metadata
+        g5k_metadata =  YAML::load(File.read(Dir.glob(".g5k*").first)) 
         MyExperiment.resources.resources=YAML::load(File.read(RESOURCE_SET_FILE)).resources
+        MyExperiment.jobs.push(g5k_metadata[:job])
         return true
       end
     end
@@ -135,6 +158,7 @@ class ExpoEngine < Grid5000::Campaign::Engine
     env[:environment] = @environment    
     env[:walltime] = @walltime
     env[:resources] = @resources
+    env[:name] = @name
     
     env[:public_key] = @public_key unless @public_key.nil?
 
@@ -185,10 +209,10 @@ class ExpoEngine < Grid5000::Campaign::Engine
             
             if defined? env[:job]['resources_by_type']['vlans'][0]
               # I have to redifined the resource Set.
-              MyExperiment.each do |node|  ### Need to check this part is using the all resource Set
-                node.name = 
-                  "#{node.name.split('.')[0]}-kavlan-#{env[:job]['resources_by_type']['vlans'][0]}.#{node.properties[:site]}.grid5000.fr"
-              end
+              # MyExperiment.each do |node|  ### Need to check this part is using the all resource Set
+              #   node.name = 
+              #     "#{node.name.split('.')[0]}-kavlan-#{env[:job]['resources_by_type']['vlans'][0]}.#{node.properties[:site]}.grid5000.fr"
+              # end
             end
           end#deploy!
         end#reserv!
@@ -212,7 +236,7 @@ class ExpoEngine < Grid5000::Campaign::Engine
   def stop!(job=nil)
     logger.info "Cleaning previous reservation files"
     File.delete(RESOURCE_SET_FILE)
-    File.delete(RESOURCE_METADATA)
+    File.delete(EXPO_METADATA)
 
     if job.nil? then
       self.cleanup!("Finishing")
@@ -367,7 +391,7 @@ class ExpoEngine < Grid5000::Campaign::Engine
       f.puts(MyExperiment.resources.to_yaml)
     end
     
-    create_resouces_validty_file
+    create_metadata_file
   end
   
 end

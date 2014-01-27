@@ -10,6 +10,7 @@ reserv = connection(:type => "Grid5000")
 reserv.resources = { :lyon => ["nodes=2"] }
 # #reserv.jobs_id = {:grenoble => 1596128}
 reserv.environment = "http://public.nancy.grid5000.fr/~dlehoczky/newimage.dsc"
+reserv.name = "mpi trace collection"
 # reserv.walltime = 3*3600
 # reserv.wait = true
 
@@ -40,12 +41,12 @@ task :generating_ssh_keys do
     run("ssh-keygen -P '' -f /tmp/temp_keys/key") 
 end
 
-task :trans_keys do
+task :trans_keys, :target => resources do
   # put("/tmp/temp_keys/","/tmp/temp_keys/",:method => "scp",:target => gateway) # use this when executing from outside Grid5000
   # put("/tmp/config","/tmp/config",:target => gateway)
-  put("/tmp/config","/root/.ssh/", :target => resources)
-  put("/tmp/temp_keys/key","/root/.ssh/id_rsa", :target => resources)
-  put("/tmp/temp_keys/key.pub","/root/.ssh/id_rsa.pub", :target => resources)
+  put("/tmp/config","/root/.ssh/")
+  put("/tmp/temp_keys/key","/root/.ssh/id_rsa")
+  put("/tmp/temp_keys/key.pub","/root/.ssh/id_rsa.pub")
 end 
 
 task :copy_identity do
@@ -72,9 +73,9 @@ task :compile_benchmark_lu, :target => resources do
 end
 
 ## Generating machinefile
-task :transfering_machinefile do
+task :transfering_machinefile, :target => resources.first do
   # put(resources.nodefile,"/tmp/nodefile.txt",:target => gateway) # use this when executing from outside
-  put(resources.nodefile,"/tmp/machinefile",:target => resources.first)
+  put(resources.nodefile,"/tmp/machinefile")
   # put("/tmp/nodefile.txt","/tmp/machinefile", :target => resources.first)
 end
 
@@ -82,9 +83,9 @@ task :creating_trace_dir, :target => resources do
   run("mkdir -p /tmp/mpi_traces") 
 end
 
-task :run_mpi do
+task :run_mpi, :target => resources.first do
   mpi_params = "-x TAU_TRACE=1 -x TRACEDIR=/tmp/mpi_traces -np 8 -machinefile /tmp/machinefile"
-  run("/usr/local/openmpi-1.6.4-install/bin/mpirun #{mpi_params} /tmp/NPB3.3/NPB3.3-MPI/bin/lu.A.8",:target => resources.first)
+  run("/usr/local/openmpi-1.6.4-install/bin/mpirun #{mpi_params} /tmp/NPB3.3/NPB3.3-MPI/bin/lu.A.8")
 end 
 
 ## Gathering traces and merging
@@ -99,8 +100,8 @@ task :gathering_traces, :target => resources.first do
   run("cd /tmp/mpi_traces/; /usr/local/akypuera-install/bin/tau2paje tau.trc tau.edf 1>lu.A.8.paje 2>tau2paje.error")
 end
 
-task :get_traces do
-  get("/tmp/mpi_traces/lu.A.8.paje","/tmp/",:target => resources.first)
+task :get_traces, :target => resources.first do
+  get("/tmp/mpi_traces/lu.A.8.paje","/tmp/")
   # get("/tmp/lu.A.8.paje","/tmp/",:target => gateway) # use this when executing from outside
 end
 

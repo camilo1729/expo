@@ -56,6 +56,16 @@ class DSL
 
   def run(command,params={})
   
+    info_nodes = []
+    if params[:target].nil? then
+      info_nodes = Thread.current['info_nodes']
+    elsif params[:target].is_a?(String) then
+      info_nodes = [params[:target]]
+    elsif params[:target].is_a?(Resource) then
+      info_nodes = [params[:target].name] 
+    else
+      params[:target].each{ |node| info_nodes.push(node.name)}
+    end
     # If gateway user is not declared it is suppose to use the same user for connecting to the frontend
     @variables[:gw_user] ||= @variables[:user]
     ## To ease the declaration
@@ -75,10 +85,13 @@ class DSL
       cmd = CtrlCmd.new(command)
       cmd.run
       Thread.current['results'].push({
+                                       :resources => info_nodes,
                                        :stdout => cmd.stdout,
-                                       :stderr => cmd.stderr, 
+                                       :stderr => cmd.stderr,
                                        :start_time => cmd.start_time, 
-                                       :end_time => cmd.end_time
+                                       :end_time => cmd.end_time,
+                                       :run_time => cmd.end_time - cmd.start_time,
+                                       :cmd => cmd.cmd
                                      })
 
     end
@@ -88,9 +101,7 @@ class DSL
 
 
     ## Getting variables from the executing task
-    if not params[:target].nil? then
-      
-      #hosts = eval(params[:target],MyExperiment.variable_test)
+    if not params[:target].nil? then      
       hosts = params[:target]
     else
       hosts = Thread.current['hosts']
@@ -141,7 +152,15 @@ class DSL
           tag_hash = {:tag => params[:results_label] }
           taktuk_result.merge!(tag_hash)
         end
-      Thread.current['results'].push(taktuk_result)
+
+      ### getting rid of some taktuk information
+      taktuk_result[:results].delete(:connector)
+      taktuk_result[:results].delete(:state)
+      taktuk_result[:results].delete(:message)
+      taktuk_result[:results][:taktuk]= true
+      Thread.current['results'].push(taktuk_result.merge!(:resources => info_nodes)) 
+
+      # Thread.current['results'].push(taktuk_result)
       return true
       
     elsif hosts.is_a?(String) or hosts.is_a?(Resource)
@@ -172,10 +191,13 @@ class DSL
       ## Results for the ssh execution are not implemented yet, 
       ## We have to act on the task_manager code execute task part
       Thread.current['results'].push({
+                                       :resources => info_nodes,
                                        :stdout => cmd.stdout,
                                        :stderr => cmd.stderr, 
                                        :start_time => cmd.start_time, 
-                                       :end_time => cmd.end_time
+                                       :end_time => cmd.end_time,
+                                       :cmd => cmd.cmd,
+                                       :run_time => cmd.end_time - cmd.start_time
                                      })
     end
     

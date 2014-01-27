@@ -80,7 +80,6 @@ module Grid5000
         :name,
         :gateway,
         :logger,
-        :data_logger,
         :submission_timeout,
         :deployment_max_attempts,
         :deployment_min_threshold,
@@ -128,12 +127,8 @@ module Grid5000
           defaults[:logger]
         end
 
-        #### Fix me adding temporary data logger ###
-        
-        def data_logger
-          defaults[:data_logger]
-        end
-
+        #### Fix me adding temporary data logger ###   
+     
         # Register a hook to be executed *before* method <tt>name</tt>.
         # @param [String] name the name of the method.
         # @param [Proc] block the block that will be called.

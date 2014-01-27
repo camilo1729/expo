@@ -9,7 +9,7 @@ require 'net/ssh/gateway' ### it is necessary to require it.
 class CmdCtrlSSH
 
   attr_reader :stdout ,:stdin, :stderr, :exit_status
-  attr_reader :start_time, :end_time
+  attr_reader :start_time, :end_time, :cmd
 
   def initialize(cmd=nil,host="",user="",gateway=nil,gw_user=nil)
     @cmd = cmd
@@ -24,7 +24,7 @@ class CmdCtrlSSH
     @stderr = []
     @cmd = cmd
     # @ssh.exec!(@cmd)
-    @start_time = Time.now
+    @start_time = Time.now.to_f
 
     if @gateway == nil then
       Net::SSH.start(@host,@user) do |session|
@@ -48,7 +48,7 @@ class CmdCtrlSSH
             
         
             ch.on_close { 
-              @end_time = Time.now
+              @end_time = Time.now.to_f
             }
             
           end
@@ -77,7 +77,7 @@ class CmdCtrlSSH
             end
           
             ch.on_close {  
-              @end_time = Time.now
+              @end_time = Time.now.to_f
             }
           end
         end

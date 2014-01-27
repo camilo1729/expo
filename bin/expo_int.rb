@@ -107,4 +107,6 @@ if ARGV.length == 1
     sleep 20
   end
   puts "Experiment has finished  :::".cyan
+  puts "Saving resuls ...:".cyan
+  MyExperiment.save_experiment_results
 end

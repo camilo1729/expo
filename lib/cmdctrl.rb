@@ -2,7 +2,7 @@ require 'command_with_open3'
 
 class CtrlCmd
   
-  attr_reader :stdout, :stdin, :stderr, :status
+  attr_reader :stdout, :stdin, :stderr, :status, :cmd
   attr_reader :start_time, :end_time, :default_filter
 
   ##### Default Filter for comamnd instrumeted
@@ -33,10 +33,10 @@ class CtrlCmd
   
   def run(cmd=nil)
     @cmd = Command.new(cmd) unless cmd.nil?
-    @start_time  = Time.now
+    @start_time  = Time.now.to_f
     @cmd.run
     @cmd.wait
-    @end_time = Time.now
+    @end_time = Time.now.to_f
     ### writing the input output
     @stdout=@cmd.stdout.readlines
     # @stdin=@cmd.stdin.readlines

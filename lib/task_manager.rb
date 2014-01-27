@@ -67,11 +67,10 @@ class TaskManager
     return false unless get_task(task.name).nil? 
     return false if @registry.has_key?(task.name)
     task.set_taskmanager(self)
-    #puts "Registering Task: "+ "[ #{task.name} ]".green
     @logger.info "Registering Task: "+ "[ #{task.name} ]"
     @tasks.push( task )
-    ## creating the respective hash for resutls of that tasks
-    MyExperiment.results[task.name.to_sym] = {} if task.split_from.nil? ## just for task that have not been split
+    ## creating the respective hash for results of that task
+    MyExperiment.results_raw[task.name.to_sym] = [] if task.split_from.nil? ## just for task that have not been split
   end
 
   def add_tasks(tasks)
@@ -82,7 +81,6 @@ class TaskManager
 
 
   def execute_task(task)
-    #puts "Executing Task: "+ "[ #{task.name} ]".green
     @logger.info "Executing Task: "+ "[ #{task.name} ]"
     options = task.options    
     if task.target.is_a?(String) and not options[:target].nil? then
@@ -106,14 +104,19 @@ class TaskManager
       else
         target_nodes = options[:target]
       end
-      nodes_info = target_nodes
+      nodes_info = []
+      if target_nodes.is_a?(ResourceSet) then
+        target_nodes.each{ |node| nodes_info.push(node.name)} 
+      else
+        nodes_info = [target_nodes.to_s]
+      end
     else 
-      nodes_info = "localhost"
+      nodes_info = ["localhost"]
     end
 
    
     ## Fix-me is showing in the case of resource the main name 
-    @logger.info "Nodes executing task: #{nodes_info.name}" if target_nodes.is_a?(ResourceSet)
+    @logger.info "Nodes executing task: #{nodes_info}" 
 
     Thread.new {
       Thread.abort_on_exception=true 
@@ -132,7 +135,7 @@ class TaskManager
         ## putting the errors
         task_name = task.split_from.nil? ? task.name : task.split_from
         results = {nodes_info => e.object}
-        MyExperiment.results[task_name.to_sym].merge!(results)  ## I have to merge here          
+        MyExperiment.results_raw[task_name.to_sym].merge!(results)  ## I have to merge here          
         @registry[task.name] = "Failed"
         exception = true
       end
@@ -142,8 +145,8 @@ class TaskManager
           ## Get the name of the task
           ## if the task has been  split we get the name of the father
           task_name = task.split_from.nil? ? task.name : task.split_from
-          results = {nodes_info => Thread.current['results']}
-          MyExperiment.results[task_name.to_sym].merge!(results)  ## I have to merge here          
+          results = Thread.current['results']
+          MyExperiment.results_raw[task_name.to_sym]=results  ## I have to merge here          
         }
       end
     }
@@ -204,7 +207,7 @@ class TaskManager
         if task.resource == :job 
           unless job.nil?
             #  if task.job_async? and not job.nil? then   ## This tasks can be splitted several times
-            puts "Creating a new task for the job"
+            @logger.info "Creating a new task for the job"
             ## we have to create a new task for that particular job
             root_task = task.split(job.to_s)
             @logger.info "Task : "+"[#{root_task.name}] created"
@@ -238,7 +241,7 @@ class TaskManager
   
     ## We can proceed to execute the tasks 
     @tasks.each{ |task|
-      #puts "Trying to schedule task: #{task.name}"      
+
       if task.executable and  not @registry.has_key?(task.name) then ## the task is executable and has not been executed 
         # puts "Task #{task.name} is executable"
         if task.dependency.nil? then
@@ -324,7 +327,6 @@ class TaskManager
 
   def update(task)
     task_name = task.name
-    #puts "Task: "+ "#{task_name}\t".cyan + "[ DONE ]".green + " In #{task.run_time.round(3)} Seconds".blue
     @logger.info "Task: "+ "#{task_name}\t" + "[ DONE ]" + " In #{task.run_time.round(3)} Seconds"
     sleep(rand(10)/17.to_f)
     @registry[task_name] = "Finished"
