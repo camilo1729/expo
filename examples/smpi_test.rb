@@ -8,7 +8,6 @@ set :resources, "MyExperiment.resources"
 
 reserv = connection(:type => "Grid5000")
 reserv.resources = { :lyon => ["nodes=2"] }
-# #reserv.jobs_id = {:grenoble => 1596128}
 reserv.environment = "http://public.nancy.grid5000.fr/~dlehoczky/newimage.dsc"
 reserv.name = "mpi trace collection"
 # reserv.walltime = 3*3600
@@ -38,7 +37,7 @@ end
 
 task :generating_ssh_keys do
     run("mkdir -p /tmp/temp_keys/")
-    run("ssh-keygen -P '' -f /tmp/temp_keys/key") 
+    run("ssh-keygen -P '' -f /tmp/temp_keys/key")  unless check("ls /tmp/temp_keys/key")
 end
 
 task :trans_keys, :target => resources do

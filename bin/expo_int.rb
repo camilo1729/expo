@@ -28,7 +28,7 @@ console_output = Log4r::ColorOutputter.new 'color', {
   :formatter => format,
 }
 
-expo_log_file = Log4r::FileOutputter.new('logtest', :filename =>  "/tmp/Expo_log_#{Time.now.to_i}.log")
+expo_log_file = Log4r::FileOutputter.new('logtest', :filename =>  "Expo_log_#{Time.now.to_i}.log")
 
 expo_logger.outputters = [console_output,expo_log_file] 
 
@@ -52,7 +52,12 @@ def run(command,params = {})
 end
 
 def check(command)
-  Console.run(command,:no_error)
+  ret = Console.run(command,:no_error)
+  if ret == false then
+    return ret 
+  else
+    return true
+  end
 end
 
 def put(data, path, options={})
@@ -106,7 +111,9 @@ if ARGV.length == 1
     puts "Executing Experiment waiting for  [ #{Console.task_manager.running_tasks} ] Task running ...".cyan
     sleep 20
   end
-  puts "Experiment has finished  :::".cyan
-  puts "Saving resuls ...:".cyan
+  expo_logger.info "Experiment has finished  :::"
+  expo_logger.info "Saving resuls ...:"
   MyExperiment.save_experiment_results
+  MyExperiment.end_time = Time.now.to_i
+  expo_logger.info "Total Experiment run time: #{MyExperiment.run_time} secs"
 end

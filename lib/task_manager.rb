@@ -134,8 +134,8 @@ class TaskManager
         @logger.error "error: #{e.object}"
         ## putting the errors
         task_name = task.split_from.nil? ? task.name : task.split_from
-        results = {nodes_info => e.object}
-        MyExperiment.results_raw[task_name.to_sym].merge!(results)  ## I have to merge here          
+        results = e.object
+        MyExperiment.results_raw[task_name.to_sym]=results  ## I have to merge here          
         @registry[task.name] = "Failed"
         exception = true
       end

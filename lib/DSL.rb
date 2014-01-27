@@ -85,6 +85,10 @@ class DSL
       MyExperiment.add_command(command)
       cmd = CtrlCmd.new(command)
       cmd.run
+      if cmd.status != 0 then
+        raise ExecutingError.new(cmd.stderr) unless params[:no_error]
+        return false
+      end
       Thread.current['results'].push({
                                        :resources => info_nodes,
                                        :stdout => cmd.stdout,
@@ -92,9 +96,9 @@ class DSL
                                        :start_time => cmd.start_time, 
                                        :end_time => cmd.end_time,
                                        :run_time => cmd.end_time - cmd.start_time,
-                                       :cmd => cmd.cmd
+                                       :cmd => command
                                      })
-
+      
     end
     
  

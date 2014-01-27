@@ -15,6 +15,7 @@ class Experiment
 
   include Singleton
   attr_accessor :resources, :logger, :tasks, :num_jobs_required, :results_raw, :tasks_names,:jobs, :variable_binding, :results
+  attr_accessor :start_time, :end_time
 
   RESULTS_FILE = "Experiment_results"
   def initialize
@@ -29,8 +30,13 @@ class Experiment
     @num_jobs_required = 0 ## This will count the number of jobs required for the experiment
     @last_task = 0
     @variable_binding = nil
+    @start_time = Time.now.to_i
+    @end_time = nil
   end
 
+  def run_time()
+    @end_time - @start_time
+  end
   
   def add_command(command)
     @commands.push(command)
