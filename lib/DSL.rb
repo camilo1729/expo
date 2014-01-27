@@ -56,6 +56,11 @@ class DSL
 
   def run(command,params={})
   
+    if params.is_a?(Symbol) then
+      temp = params
+      params = {temp => []}
+    end
+    
     info_nodes = []
     if params[:target].nil? then
       info_nodes = Thread.current['info_nodes']
@@ -69,10 +74,6 @@ class DSL
     # If gateway user is not declared it is suppose to use the same user for connecting to the frontend
     @variables[:gw_user] ||= @variables[:user]
     ## To ease the declaration
-    if params.is_a?(Symbol) then
-      temp = params
-      params = {temp => []}
-    end
     ## options
     ## { :ins_per_machine = number,
     ## { :ins_per_resource_set =
