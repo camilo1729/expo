@@ -45,7 +45,7 @@ class TaskManager
       }
     end
 
-    @logger = Log4r::Logger['Expo_log']#MyExperiment.logger
+    @logger = Log4r::Logger['Expo_log']
   end
 
 
@@ -84,47 +84,47 @@ class TaskManager
     @logger.info "Executing Task: "+ "[ #{task.name} ]"
     options = task.options    
     if task.target.is_a?(String) and not options[:target].nil? then
-      ## it is a node, cluster, or site we select the resources accordondly
+      ## it is a node, cluster, or site we select the resources accordingly
       if task.target.is_integer? then
-        ## it is a job so we select the resources accordondly
+        ## it is a job so we select the resources accordingly
         job_id = task.target
         #puts "Spliting Task for the Job: " + "#{job_id}".red
         @logger.info "Spliting Task for the Job: " + "#{job_id}"
-        target_nodes = options[:target].select(:id => job_id.to_i )
-        nodes_info = target_nodes.select_resource_h{ |res|  res.properties.has_key? :id }
+        target_resources = options[:target].select(:id => job_id.to_i )
+        resources_info = target_resources.select_resource_h{ |res|  res.properties.has_key? :id }
       else
         resource_name = task.target
-        target_nodes = options[:target].select(:name => resource_name)
-        nodes_info = target_nodes.select_resource_h(:name => resource_name)
+        target_resources = options[:target].select(:name => resource_name)
+        resources_info = target_resources.select_resource_h(:name => resource_name)
       end
 
     elsif not options[:target].nil?
       if options[:lazy] then
-        target_nodes = eval(options[:target],MyExperiment.variable_binding) ## This is for evaluating the resourceSet
+        target_resources = eval(options[:target],MyExperiment.variable_binding) ## This is for evaluating the resourceSet
       else
-        target_nodes = options[:target]
+        target_resources = options[:target]
       end
-      nodes_info = []
-      if target_nodes.is_a?(ResourceSet) then
-        target_nodes.each{ |node| nodes_info.push(node.name)} 
+      resources_info = []
+      if target_resources.is_a?(ResourceSet) then
+        target_resources.each{ |node| resources_info.push(node.name)} 
       else
-        nodes_info = [target_nodes.to_s]
+        resources_info = [target_resources.to_s]
       end
     else 
-      nodes_info = ["localhost"]
+      resources_info = ["localhost"]
     end
 
    
     ## Fix-me is showing in the case of resource the main name 
-    @logger.info "Nodes executing task: #{nodes_info}" 
+    @logger.info "Nodes executing task: #{resources_info}" 
 
     Thread.new {
       Thread.abort_on_exception=true 
       begin
         Thread.current['results'] = []
-        Thread.current['hosts'] = target_nodes unless target_nodes.nil?
+        Thread.current['resources'] = target_resources unless target_resources.nil?
         Thread.current['task_options'] = options
-        Thread.current['info_nodes'] = nodes_info unless target_nodes.nil?
+        Thread.current['info_resources'] = resources_info unless target_resources.nil?
         ## to avoid concurrency between tasks
         sleep(rand(20)/7.to_f)
         task.run
@@ -140,7 +140,7 @@ class TaskManager
         exception = true
       end
 
-      unless target_nodes.is_a?(String) and exception then
+      unless target_resources.is_a?(String) and exception then
         @tasks_mutex.synchronize {
           ## Get the name of the task
           ## if the task has been  split we get the name of the father

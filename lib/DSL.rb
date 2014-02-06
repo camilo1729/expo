@@ -61,15 +61,15 @@ class DSL
       params = {temp => []}
     end
     
-    info_nodes = []
+    info_resources = []
     if params[:target].nil? then
-      info_nodes = Thread.current['info_nodes']
+      info_resources = Thread.current['info_resources']
     elsif params[:target].is_a?(String) then
-      info_nodes = [params[:target]]
+      info_resources = [params[:target]]
     elsif params[:target].is_a?(Resource) then
-      info_nodes = [params[:target].name] 
+      info_resources = [params[:target].name] 
     else
-      params[:target].each{ |node| info_nodes.push(node.name)}
+      params[:target].each{ |node| info_resources.push(node.name)}
     end
     # If gateway user is not declared it is suppose to use the same user for connecting to the frontend
     @variables[:gw_user] ||= @variables[:user]
@@ -81,7 +81,7 @@ class DSL
     ## If a reservation is already done we assign those machines as default for hosts
 
     # run locally is the host is not defined and parameter target is not declared
-    if Thread.current['hosts'].nil? and params[:target].nil? then
+    if Thread.current['resources'].nil? and params[:target].nil? then
       MyExperiment.add_command(command)
       cmd = CtrlCmd.new(command)
       cmd.run
@@ -90,7 +90,7 @@ class DSL
         return false
       end
       Thread.current['results'].push({
-                                       :resources => info_nodes,
+                                       :resources => info_resources,
                                        :stdout => cmd.stdout,
                                        :stderr => cmd.stderr,
                                        :start_time => cmd.start_time, 
@@ -107,29 +107,29 @@ class DSL
 
     ## Getting variables from the executing task
     if not params[:target].nil? then      
-      hosts = params[:target]
+      resources = params[:target]
     else
-      hosts = Thread.current['hosts']
+      resources = Thread.current['resources']
     end
     
     task_options = Thread.current['task_options']
 
-    if hosts.is_a?(ResourceSet) then
+    if resources.is_a?(ResourceSet) then
       ## Here, as the Expo server is on the user's machine, each resource set has to have the gateway used to enter Grid5000
       ## checking if the resource set has the gateway defined ---- Fix-me we are not checking
       ## if num_instance is declared , we force the number of instances passed as argument
-      resources = hosts
-      resources = hosts[0..params[:ins_per_resources]-1]   if params[:ins_per_resources] #I have to find a better way to do this
+      
+      exe_resources = resources[0..params[:ins_per_resources]-1]   if params[:ins_per_resources] #I have to find a better way to do this
      
       if params[:ins_per_machine] then
         if command.is_a?(Array) then
           ## We assinged commands to each individual node
-          resources.each{ |node|
+          exe_resources.each{ |node|
             node.properties[:multiplicity] = params[:ins_per_machine]
             node.properties[:cmd] = command  
           }
         else
-          resources.each{ |node|
+          exe_resources.each{ |node|
             node.properties[:multiplicity] = params[:ins_per_machine]
             node.properties[:cmd] = command
           }
@@ -137,7 +137,7 @@ class DSL
         
       end
    
-      cmd_taktuk=TakTuk::TakTuk.new(resources,options)
+      cmd_taktuk=TakTuk::TakTuk.new(exe_resources,options)
       cmd_taktuk.broadcast_exec[command]   ## the normal behaviour if we add commands here, they will be executed in parallel.
       taktuk_result = cmd_taktuk.run!
       
@@ -153,37 +153,36 @@ class DSL
       }
       
       ## if a tag is activated we tag the results for an easy management
-        if params[:results_label] then
-          tag_hash = {:tag => params[:results_label] }
-          taktuk_result.merge!(tag_hash)
-        end
+      if params[:results_label] then
+        tag_hash = {:tag => params[:results_label] }
+        taktuk_result.merge!(tag_hash)
+      end
 
       ### getting rid of some taktuk information
       taktuk_result[:results].delete(:connector)
       taktuk_result[:results].delete(:state)
       taktuk_result[:results].delete(:message)
       taktuk_result[:results][:taktuk]= true
-      Thread.current['results'].push(taktuk_result.merge!(:resources => info_nodes)) 
+      Thread.current['results'].push(taktuk_result.merge!(:resources => info_resources)) 
 
-      # Thread.current['results'].push(taktuk_result)
       return true
       
-    elsif hosts.is_a?(String) or hosts.is_a?(Resource)
+    elsif resources.is_a?(String) or resources.is_a?(Resource)
       
       MyExperiment.add_command(command)
        
-      if hosts.is_a?(Resource) then 
-        hosts_end = hosts.name 
-        gateway = hosts.properties[:gateway]
+      if resources.is_a?(Resource) then 
+        exe_resources = resources.name 
+        gateway = resources.properties[:gateway]
       else
-        hosts_end = hosts
+        exe_resources = resources
         gateway = Thread.current['task_options'][:gateway]
       end
 
       if gateway.nil? then 
-        cmd = CmdCtrlSSH.new("",hosts_end,@variables[:user])
+        cmd = CmdCtrlSSH.new("",exe_resources,@variables[:user])
       else
-        cmd = CmdCtrlSSH.new("",hosts_end,@variables[:user],gateway,@variables[:gw_user])
+        cmd = CmdCtrlSSH.new("",exe_resources,@variables[:user],gateway,@variables[:gw_user])
       end
 
       cmd.run(command)
@@ -196,7 +195,7 @@ class DSL
       ## Results for the ssh execution are not implemented yet, 
       ## We have to act on the task_manager code execute task part
       Thread.current['results'].push({
-                                       :resources => info_nodes,
+                                       :resources => info_resources,
                                        :stdout => cmd.stdout,
                                        :stderr => cmd.stderr, 
                                        :start_time => cmd.start_time, 
@@ -221,7 +220,7 @@ class DSL
       #resources = eval(options[:target],MyExperiment.variable_test)
       resources = options[:target]
     else
-      resources = Thread.current['hosts']
+      resources = Thread.current['resources']
     end
 
     options[:method] = "scp" if options[:method].nil? # Assigned scp as a default method for copying
@@ -319,7 +318,7 @@ class DSL
       #resources = eval(options[:target],MyExperiment.variable_test)    
       resources = options[:target]
     else
-      resources = Thread.current['hosts']
+      resources = Thread.current['resources']
     end
 
     options[:method] = "scp" if options[:method].nil? # Assigned scp as a default method for copying
@@ -399,11 +398,14 @@ class DSL
 
 
   def free_resources(reservation)
-    hosts = Thread.current['hosts'] ## host is already check by task
+    hosts = Thread.current['resources'] ## host is already check by task
     return false if hosts.nil?
-    resource = hosts.select_resource_h{ |res| res.properties.has_key? :id }
-    job_id = resource.properties[:id]
-    reservation.stop!(job_id)
+    return false unless hosts.is_a?(ResourceSet)
+    ### Getting the jobs identifiers 
+    resource = hosts.select_resource_h{ |res| res.properties.has_key? :id } # just to know at which level the jobs has been submitted either cluster or site
+    jobs_id = []
+    hosts.each(resource.type){ |resource|  jobs_id.push(resource.properties[:id]) }
+    reservation.stop!(jobs_id)
   end
 
 
@@ -443,7 +445,6 @@ class DSL
 
   def task(name, options={}, &block)
   
-    @variables[:hosts] = options[:target] if options.has_key?(:target)
     ## for the definition we dont need a copy
     @variables[:gateway] = options[:gateway] if options.has_key?(:gateway)
     
@@ -565,7 +566,7 @@ class DSL
  
 
   def set_experiment_variables(exp_binding)
-    ### Here we deal with the case when value makes reference to MyExperiment.resources
+    ### Here we deal with the case when value make reference to MyExperiment.resources
     ## Because this will be created dinamically
     #variables_binding = binding  #This is the variable binding for setting the resourceset at execution time
     @variables.each{ |name,value|

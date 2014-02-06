@@ -8,15 +8,13 @@ set :gateway, "grenoble.g5k" #Only if you execute the script outside Grid5000
 
 reserv = connection(:type => "Grid5000")
 reserv.resources = {:lyon => ["nodes=2"]}
+#reserv.resources = {:lille => ["nodes=1"], :lyon => ["nodes=1"]}
 reserv.name = "Simple experiment"
 
 ## We grab a job that was already created by the user manually
 ## In order to use this functionality I have to submit the job with -t allow_classic_ssh 
 
 task_definition_start
-
-# set_experiment_variables
-
 
 task :run_reservation do
   reserv.run!
@@ -40,8 +38,8 @@ task :testing_resourceset do
   }
 end
 
-# task :free_reservation, :target => resources do
-#   free_resources(reserv)
-# end
+task :free_reservation, :target => resources do
+  free_resources(reserv)
+end
 
 

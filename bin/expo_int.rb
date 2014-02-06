@@ -28,7 +28,7 @@ console_output = Log4r::ColorOutputter.new 'color', {
   :formatter => format,
 }
 
-expo_log_file = Log4r::FileOutputter.new('logtest', :filename =>  "Expo_log_#{Time.now.to_i}.log")
+expo_log_file = Log4r::FileOutputter.new('logtest', :filename =>  "Expo_#{Time.now.to_i}.log")
 
 expo_logger.outputters = [console_output,expo_log_file] 
 

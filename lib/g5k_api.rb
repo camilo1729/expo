@@ -30,7 +30,6 @@ class ExpoEngine < Grid5000::Campaign::Engine
   set :environment, nil # The enviroment is by default nil because if nothing is specifyed there is no deployment.
   # It has to be true for interactive use and false when executed as stand-alone
   set :types , ["allow_classic_ssh"]
-  #set :logger, MyExperiment.logger
   set :logger, Log4r::Logger['Expo_log']
   set :submission_timeout, 7200
   ## I'm rewriting this method otherwise I cannot load the Class again because the defaults get frozen.
@@ -233,18 +232,20 @@ class ExpoEngine < Grid5000::Campaign::Engine
 
 # Redefining cleanup
 
-  def stop!(job=nil)
+  def stop!(jobs=nil)
     logger.info "Cleaning previous reservation files"
     File.delete(RESOURCE_SET_FILE)
     File.delete(EXPO_METADATA)
 
-    if job.nil? then
+    if jobs.nil? then
       self.cleanup!("Finishing")
       return true
     end
-    job_uni  = @jobs.select { |j| j['uid'] == job}.first
-    logger.info "Deleting job: #{job_uni['uid']}"
-    job_uni.delete
+    jobs.each{ |job|
+      job_uni  = @jobs.select { |j| j['uid'] == job}.first
+      logger.info "Deleting job: #{job_uni['uid']}"
+      job_uni.delete
+    }
   end
 
   def aval(options={})
