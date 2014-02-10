@@ -117,7 +117,7 @@ class ExpoEngine < Grid5000::Campaign::Engine
           end
           synchronize { self.create_resource_set(env_2[:job],env[:site])
             ## Writing reservation metadata
-            saving_g5k_metadata(env_2)
+          
           }
           ## putting jobs number into experiment structure
           @jobs.each{ |job| MyExperiment.jobs.push(job['uid']) }
@@ -127,10 +127,12 @@ class ExpoEngine < Grid5000::Campaign::Engine
           }
           ## Notifying that the task can start
         end
-        env[:parallel_reserve].loop! if @wait
-      }  
+       
+      }
+    
+      #saving_g5k_metadata(env_2)
     }
-      
+    env[:parallel_reserve].loop! if @wait  
   end
 
   # rewriting the run code because the default behavior deploys an evironment 

@@ -98,7 +98,7 @@ class DSL
                                        :run_time => cmd.end_time - cmd.start_time,
                                        :cmd => command
                                      })
-      
+      return true
     end
     
  
@@ -467,6 +467,9 @@ class DSL
       end
     end
 
+    options[:res_granularity] = @variables[:res_granularity]  unless @variables[:res_granularity].nil?
+
+    options[:res_granularity] = nil if options[:target].nil? ## This is a local task resource granularity does not apply
     #raise "Target is not defined probably beacause of the use of Resourceset first" if options[:target]==false
     ## In order to solve this, a lazy evaluation has to be implemented
     ## Checking if the name exists
@@ -552,11 +555,19 @@ class DSL
     ### By default the experiment is run under a FiFo scheduling
     ## setting the dependencies of tasks for fifo
     previous_task_name = nil
+    previous_task_name_parallel = nil ## This is for parallel Tasks
     options[:schedule] = :fifo if options[:schedule].nil?
     if options[:schedule] == :fifo then
       MyExperiment.tasks.each{ |taskname, task|
-        task.dependency.push(previous_task_name) unless previous_task_name.nil?
-        previous_task_name = taskname
+
+        unless task.options[:parallel] then
+          task.dependency.push(previous_task_name) unless previous_task_name.nil?
+          previous_task_name_parallel = taskname ## This is for parallel Tasks
+        else
+          puts "previous : #{previous_task_name_parallel}"
+          task.dependency.push(previous_task_name_parallel)
+        end
+        previous_task_name = taskname     
       }
     end
     @task_manager.schedule_new_task
@@ -575,8 +586,8 @@ class DSL
       string_flag = true if value.is_a?(String)
       if string_flag == true then
         if not regexp.match(value.to_s) then
-          if eval("defined? #{value}") then
-            @logger.info "Setting variable => #{name.to_s}=#{value}"
+          if eval("defined? #{value}",exp_binding) then
+            @logger.info "Setting already variable => #{name.to_s}=#{value}"
             eval("#{name.to_s}=#{value}",exp_binding)
           else
             @logger.info "Setting variable => #{name.to_s}=\"#{value}\""

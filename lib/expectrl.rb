@@ -2,7 +2,7 @@
 require 'singleton'
 require 'resourceset'
 require 'logger'
-
+require 'yaml' ## it is weird what I have to include it here when executing without expo console
 
 class TaskResult < Hash
   

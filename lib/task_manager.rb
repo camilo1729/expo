@@ -46,6 +46,7 @@ class TaskManager
     end
 
     @logger = Log4r::Logger['Expo_log']
+
   end
 
 
@@ -62,7 +63,7 @@ class TaskManager
   end
 
   def push(task)
-    ## if the task already exist or have been executed it 
+    ## if the task already exist or have been executed 
     ## We dont include it
     return false unless get_task(task.name).nil? 
     return false if @registry.has_key?(task.name)
@@ -70,7 +71,7 @@ class TaskManager
     @logger.info "Registering Task: "+ "[ #{task.name} ]"
     @tasks.push( task )
     ## creating the respective hash for results of that task
-    MyExperiment.results_raw[task.name.to_sym] = [] if task.split_from.nil? ## just for task that have not been split
+    MyExperiment.results_raw[task.name.to_sym] = [] if task.cloned_from.nil? ## just for task that have not been split
   end
 
   def add_tasks(tasks)
@@ -88,8 +89,7 @@ class TaskManager
       if task.target.is_integer? then
         ## it is a job so we select the resources accordingly
         job_id = task.target
-        #puts "Spliting Task for the Job: " + "#{job_id}".red
-        @logger.info "Spliting Task for the Job: " + "#{job_id}"
+        @logger.info "Clonnig Task for the Job: " + "#{job_id}"
         target_resources = options[:target].select(:id => job_id.to_i )
         resources_info = target_resources.select_resource_h{ |res|  res.properties.has_key? :id }
       else
@@ -115,7 +115,6 @@ class TaskManager
     end
 
    
-    ## Fix-me is showing in the case of resource the main name 
     @logger.info "Nodes executing task: #{resources_info}" 
 
     Thread.new {
@@ -132,8 +131,7 @@ class TaskManager
       rescue ExecutingError => e
         @logger.error "Task: #{task.name} =>"+" Failed"
         @logger.error "error: #{e.object}"
-        ## putting the errors
-        task_name = task.split_from.nil? ? task.name : task.split_from
+        task_name = task.cloned_from.nil? ? task.name : task.cloned_from
         results = e.object
         MyExperiment.results_raw[task_name.to_sym]=results  ## I have to merge here          
         @registry[task.name] = "Failed"
@@ -144,9 +142,8 @@ class TaskManager
         @tasks_mutex.synchronize {
           ## Get the name of the task
           ## if the task has been  split we get the name of the father
-          task_name = task.split_from.nil? ? task.name : task.split_from
-          results = Thread.current['results']
-          MyExperiment.results_raw[task_name.to_sym]=results  ## I have to merge here          
+          task_name = task.cloned_from.nil? ? task.name : task.cloned_from
+          MyExperiment.results_raw[task_name.to_sym]= Thread.current['results']
         }
       end
     }
@@ -156,7 +153,7 @@ class TaskManager
   def updating_dependencies()
     ## This function will update dependencies for every task
 
-    puts "Updating dependencies....."
+    @logger.info "Updating dependencies....."
     new_tasks_dep = []
     @tasks.each{ |task|
       ## we loop into the dependencies
@@ -170,7 +167,7 @@ class TaskManager
               suffix = c_t.to_s
               suffix.slice!(task_depen.name.to_s+"_")
               if not task.children.include?((task.name.to_s+"_"+suffix).to_sym) then
-                n_t = task.split(suffix)
+                n_t = task.clone_with_criteria(suffix)
                 #puts "Task : " + "[#{n_t.name}] ".green + " created for dependency"
                 n_t.dependency.delete(t_name)
                 n_t.dependency.push(c_t)
@@ -199,33 +196,39 @@ class TaskManager
     tasks_changed = false
     
     @tasks.each{ |task|
+
+
       ## is the task ready to run?
       unless task.resource.nil? then ## task has to be treated before run it
-#       puts "Task : #{task.name} has to be thread before run it"
-        # Two cases, asynchronously task or job asynchronously
-     
-        if task.resource == :job 
-          unless job.nil?
-            #  if task.job_async? and not job.nil? then   ## This tasks can be splitted several times
-            @logger.info "Creating a new task for the job"
-            ## we have to create a new task for that particular job
-            root_task = task.split(job.to_s)
-            @logger.info "Task : "+"[#{root_task.name}] created"
-            new_tasks.push(root_task)
+
+
+        # we verify first if the task is ready to run
+        if check_dependency?(task) then
+        # Two cases, asynchronously task or job asynchronously     
+          @logger.debug "Checking task : #{task.name}"
+          if task.resource == :job 
+            unless job.nil?
+              #  if task.job_async? and not job.nil? then   ## This tasks can be splitted several times
+              @logger.info "Creating a new task for the job"
+              ## we have to create a new task for that particular job
+              root_task = task.clone_with_criteria(job.to_s)
+              @logger.info "Task : "+"[#{root_task.name}] created"
+              new_tasks.push(root_task)
+              tasks_changed = true
+            end
+            
+          elsif not task.cloned?  
+            ## If the task has not been cloned
+            ## We clone according to the resources established in the resource of the task
+            split_hash = { task.resource => [] }
+            task_resources = task.options[:target]
+            task_resources.each(task.resource){ | res |
+              split_hash[task.resource].push(res.name)
+            }
+            new_tasks = task.clone_with_criteria(split_hash) ## This return an array
+            
             tasks_changed = true
           end
-      
-        elsif not task.split?  
-          ## If the task has been split
-          ## We split according to the resources established in the resource of the task
-          split_hash = { task.resource => [] }
-          task_resources = task.options[:target]
-          task_resources.each(task.resource){ | res |
-            split_hash[task.resource].push(res.name)
-          }
-          new_tasks = task.split(split_hash) ## This return an array
-          
-          tasks_changed = true
         end
       end
     }
@@ -233,29 +236,28 @@ class TaskManager
     ## we add the new tasks to the @task variable
     add_tasks(new_tasks)
     ## update the dependencies if it is necessary
-    updating_dependencies if tasks_changed
     ## check if a the children of a asynchronous task have finished
-    check_asynchronous_termination
+
+    updating_dependencies if tasks_changed
    
     task_scheduled = false
-  
+
     ## We can proceed to execute the tasks 
     @tasks.each{ |task|
-
+      @logger.debug "Looking task : #{task.name} is executable #{task.executable}"
       if task.executable and  not @registry.has_key?(task.name) then ## the task is executable and has not been executed 
-        # puts "Task #{task.name} is executable"
-        if task.dependency.nil? then
-          # puts "Scheduling new task"
-          execute_task(task)
-        elsif check_dependency?(task) then
-          # puts "Scheduling new task after checking dependency"
+        @logger.debug "Task #{task.name} is executable"
+
+        if check_dependency?(task) then
           execute_task(task)
         end
         task_scheduled = true
       end
       
     }
-    add_tasks(new_tasks)
+
+    check_asynchronous_termination
+    # add_tasks(new_tasks)
     unless task_scheduled 
       @logger.info "No task to schedule"
       @no_tasks = true
@@ -268,13 +270,14 @@ class TaskManager
       ## Two cases job synchronous
       ## we have to consult the experiment information
       ## in order to know if all the children have finished
-      if task.split? and not @registry.has_key?(task.name) then ## the task has been split and it doesnt exist in the registry
+      if task.cloned? and not @registry.has_key?(task.name) then ## the task has been split and it doesnt exist in the registry
         children_finished = 0
         task.children.each{ |ch_name|
           # puts "#{ch_name.class}"
           children_finished += 1 if @registry[ch_name] == "Finished"
         }
         if task.resource == :job
+
           @registry[task.name]= "Finished" if children_finished == MyExperiment.num_jobs_required
         else 
           if check_dependency?(task) then
@@ -296,14 +299,14 @@ class TaskManager
     task.dependency.each{ |d_name|
     #  puts "dependency name: #{d_name}"
       d_t = get_task(d_name)
-      return true if d_t.split? 
+      return true if d_t.cloned? 
     }
     return false
   end
 
   def check_dependency?(task)
     # puts "Checking dependency of task #{task.name}"
-    return false if task.dependency.nil?
+    return true if task.dependency.nil?
     task.dependency.each{ |d|
       return false if @registry[d] != "Finished"
     }

@@ -8,12 +8,13 @@ require 'thread'
 class Task
   
   include Observable
-  attr_accessor :name, :options, :dependency, :target, :async, :split_from, :executable, :resource, :split
+  attr_accessor :name, :options, :dependency, :target, :async, :cloned_from, :executable, :resource, :cloned
   attr_reader :exec_part, :children, :job_async, :sync, :start_time, :end_time
   
   
   def initialize(name, options ={}, &block)
     @name, @options = name, options
+    @options[:parallel] = false if options[:parallel].nil?
     @exec_part = block or raise ArgumentError, "a task definition requires a block"
     @dependency = options[:depends] || [] ## Array of dependencies
     @timeout = 3600  if options[:timeout].nil?
@@ -22,18 +23,18 @@ class Task
     # @job_async = options[:job_async].nil? ? false : true  
     ## Type of resource associateted, it could be a node, cluster, site or job
     ## It will use this information to divide task and take the appropiate resources
-    @resource = options[:split_into]
+    @resource = options[:res_granularity]
     ## This target will be used by execute in order to know where to execute
     @target = nil
     ### task that have this property setted to true will be executed otherwhise
     ### They have to be split 
     @async = (options[:async].nil? or options[:sync].nil?) ? false : true
     @sync = (options[:sync].nil? or options[:async].nil?) ? false : true
-    @split = false
+    @cloned = false
     @update_mutex = nil #Mutex.new
-    @split_from = nil
+    @cloned_from = nil
     @children = []
-    @executable = options[:split_into].nil? ? true : false #it is executable when the task is synchronous from the begining
+    @executable = options[:res_granularity].nil? ? true : false #it is executable when the task is synchronous from the begining
     @start_time = nil
     @end_time = nil
   end
@@ -69,8 +70,8 @@ class Task
     return @job_async
   end
 
-  def split?
-    return @split
+  def cloned?
+    return @cloned
   end
 
   def clone()
@@ -90,7 +91,7 @@ class Task
     Marshal.load(Marshal.dump(o))
   end
 
-  def split(criteria)
+  def clone_with_criteria(criteria)
     ## Job number
     ## site array
     ## cluster array
@@ -98,17 +99,16 @@ class Task
     if criteria.is_a?(String) then ## we received a job number
       task_j = self.clone
       task_j.name = (self.name.to_s+"_"+criteria.to_s).to_sym
-      task_j.split_from = self.name
+      task_j.cloned_from = self.name
       task_j.target = criteria ## as a number, execute will know that it is a job so it has to select resources by Id
       task_j.async = false ## the task cannot be asynchronic anymore inside itself
       task_j.resource = nil
-#      task_j.sync = true ## we make it runnable
       task_j.executable = true
-      self.executable = false #This task cannot be executed anymore
-      @split = true ## in order to not split it again
-#      self.sync = false  ## This task can not be executed anymore
+      self.executable = false # The current task cannot be executed anymore
+      @cloned = true ## in order to not clone it again
       @children.push(task_j.name)
       return task_j
+
     elsif criteria.is_a?(Hash) then ## we received a resourceset
       ##  { :type => [array_ids] }
       ##  { :cluster => [adonis, genepi] }
@@ -118,16 +118,16 @@ class Task
         values.each{ |id|
           task_r = self.clone
           task_r.name = (self.name.to_s+"_"+id.to_s).to_sym
-          task_r.split_from = self.name
+          task_r.cloned_from = self.name
           task_r.target = id
           task_r.executable = true
           task_r.async = false
-          task_r.split = true  ### I have to check this part probably is not the way to do it.
+          task_r.cloned = true  ### I have to check this part probably is not the way to do it.
           @children.push(task_r.name)
           task_set.push(task_r)
         }
       }
-      @split = true
+      @cloned = true
       self.executable = false
       return task_set
     end
