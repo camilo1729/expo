@@ -95,7 +95,7 @@ class Experiment
       }
     }
     ### saving results into yaml forma
-    results_file = RESULTS_FILE + "#{@jobs}-#{Time.now.to_i}"
+    results_file = RESULTS_FILE + "-#{Time.now.to_i}"
     File.open(results_file,'w+') do |f|
       f.puts(@results.to_yaml)
     end

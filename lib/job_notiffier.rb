@@ -11,10 +11,9 @@ class JobNotifier
 
   def update(job_id,logger)
     ## this part will read the base task in take decisions accordondly
-    logger.info "A notification has been triggerd"
-    logger.info "From job #{job_id}"
+    logger.info "A notification has been triggerd from job #{job_id}"
 
-    job_asynchrony = false
+    job_asynchrony = true
     sleep( (rand(10/7.to_f)))
 
     ## This will look if there is a task declared as job asynchronous
@@ -35,6 +34,7 @@ class JobNotifier
         sleep( (rand(20/7.to_f)))
         Console.task_manager.schedule_new_task()
       else
+        logger.debug "Scheduling new task with job id : #{job_id}"
         Console.task_manager.schedule_new_task(job_id)
       end
     end

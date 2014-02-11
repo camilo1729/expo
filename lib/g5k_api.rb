@@ -24,7 +24,7 @@ class ExpoEngine < Grid5000::Campaign::Engine
   EXPO_METADATA = ".expo_metadata"
   G5K_METADATA = ".g5k_metadata-#{Time.now.to_i}"
   
-  attr_accessor :environment, :resources, :walltime, :name, :jobs, :jobs_id, :wait
+  attr_accessor :environment, :resources, :walltime, :name, :jobs, :jobs_id, :wait_jobs
   # to ease the definition of the experiment 
   set :no_cleanup, true # setting this as the normal used is for interacting
   set :environment, nil # The enviroment is by default nil because if nothing is specifyed there is no deployment.
@@ -47,7 +47,7 @@ class ExpoEngine < Grid5000::Campaign::Engine
     @gateway = gateway
     @jobs_id = {} # e.g., {:grenoble => 15706, :lille => 1221}
     @processors = []
-    @wait = true
+    @wait_jobs = true
     add_observer(JobNotifier.new)
     ### Small part to initialize the resourceSet of the experiment
     exp_resource_set = ResourceSet::new(:resource_set,"Expo_resources")
@@ -57,6 +57,8 @@ class ExpoEngine < Grid5000::Campaign::Engine
     MyExperiment.add_resources(exp_resource_set)
     @public_key = key
     #### I need to check whether I put it here or elsewhere.
+    @g5k_metadata = {:environment => [],:resources => [], :job =>[], :site =>[]}
+    
   end
 
   def create_metadata_file()
@@ -68,17 +70,17 @@ class ExpoEngine < Grid5000::Campaign::Engine
 
   def saving_g5k_metadata(env)
     ## The case multi-site has to be still tested
-    g5k_metadata = {}
-    g5k_metadata[:name] = env[:name]
-    g5k_metadata[:user] = env[:user]
-    g5k_metadata[:site] = env[:site]
-    g5k_metadata[:environment] = env[:environment]
-    g5k_metadata[:resources] = env[:resources]
-    g5k_metadata[:walltime] = env[:walltime]
-    g5k_metadata[:public_key] = env[:public_key]
-    g5k_metadata[:job] = env[:job]['uid']
+   
+    @g5k_metadata[:name] = env[:name]
+    @g5k_metadata[:user] = env[:user]
+    @g5k_metadata[:site].push(env[:site])
+    @g5k_metadata[:environment].push(env[:environment]) 
+    @g5k_metadata[:resources].push(env[:resources])
+    @g5k_metadata[:walltime] = env[:walltime]
+    @g5k_metadata[:public_key] = env[:public_key]
+    @g5k_metadata[:job].push(env[:job]['uid'])
     File.open(G5K_METADATA,'w+') do |f|
-      f.puts(g5k_metadata.to_yaml)
+      f.puts(@g5k_metadata.to_yaml)
     end
   end
 
@@ -93,10 +95,9 @@ class ExpoEngine < Grid5000::Campaign::Engine
     logger.info reserve_log_msg +"Asking for Resources"
 
     envs = []
-    env[:parallel_reserve] = parallel(:ignore_thread_exceptions => true)
     # launch parallel reservation on all the sites specifyed
     # the :ignore_thread_exepctions is because sometimes the api throw some exceptions.
-
+    env[:parallel_reserve] = parallel(:ignore_thread_exceptions => true)
     env[:resources].each{ |site, resources|
       
       resources.each{ |res|
@@ -107,6 +108,7 @@ class ExpoEngine < Grid5000::Campaign::Engine
         MyExperiment.num_jobs_required+=1  ## counting the number of jobs required for the experiment to start 
                                            ## in the case it would be synchronous
         env[:parallel_reserve].add(new_env) do |env|
+          
           begin
             env_2=reserve!(env, &block)
            rescue Timeout::Error, StandardError => e
@@ -115,24 +117,24 @@ class ExpoEngine < Grid5000::Campaign::Engine
             changed
             notify_observers(0,logger)
           end
-          synchronize { self.create_resource_set(env_2[:job],env[:site])
-            ## Writing reservation metadata
           
-          }
-          ## putting jobs number into experiment structure
-          @jobs.each{ |job| MyExperiment.jobs.push(job['uid']) }
-          synchronize {
+          synchronize { 
+            self.create_resource_set(env_2[:job],env[:site])
             changed
             notify_observers(env_2[:job]['uid'],logger)
+            MyExperiment.jobs.push(env_2[:job]['uid'])
+            saving_g5k_metadata(env_2)
           }
           ## Notifying that the task can start
         end
        
       }
     
-      #saving_g5k_metadata(env_2)
+
     }
-    env[:parallel_reserve].loop! if @wait  
+    env[:parallel_reserve].loop! if @wait_jobs
+    last_value = true ## just to not make the proc crash
+    
   end
 
   # rewriting the run code because the default behavior deploys an evironment 
@@ -148,7 +150,7 @@ class ExpoEngine < Grid5000::Campaign::Engine
         ## reading g5k metadata
         g5k_metadata =  YAML::load(File.read(Dir.glob(".g5k*").first)) 
         MyExperiment.resources.resources=YAML::load(File.read(RESOURCE_SET_FILE)).resources
-        MyExperiment.jobs.push(g5k_metadata[:job])
+        MyExperiment.jobs = g5k_metadata[:job]
         return true
       end
     end
@@ -178,7 +180,7 @@ class ExpoEngine < Grid5000::Campaign::Engine
       if env[:environment].nil?
         ### Timing the reservation part
         start_reserve=Time::now()
-        
+       
         env = execute_with_hooks(:reserve!,env) do |env|        
         
           env[:nodes] = env[:job]['assigned_nodes']
@@ -187,9 +189,15 @@ class ExpoEngine < Grid5000::Campaign::Engine
             nodes.push(env[:nodes]).flatten!
             
           }
+         
+          # if @wait then
+        
+          # end
           
         end # reserve!
       
+        #env[:parallel_reserve].loop!   
+        
         end_reserve=Time::now()
         logger.info reserve_log_msg +"Total Time Spent waiting for resources #{end_reserve-start_reserve} secs"
         ###############################
@@ -236,8 +244,8 @@ class ExpoEngine < Grid5000::Campaign::Engine
 
   def stop!(jobs=nil)
     logger.info "Cleaning previous reservation files"
-    File.delete(RESOURCE_SET_FILE)
-    File.delete(EXPO_METADATA)
+    # File.delete(RESOURCE_SET_FILE) ## Fix-me I have to find a way to delete those files when dealing with asynchronity
+    # File.delete(EXPO_METADATA)
 
     if jobs.nil? then
       self.cleanup!("Finishing")
@@ -389,12 +397,12 @@ class ExpoEngine < Grid5000::Campaign::Engine
     }
   
     ### saving resource_set in yaml
-    logger.info "Saving resources in yaml"
-    File.open(RESOURCE_SET_FILE,'w+') do |f|
-      f.puts(MyExperiment.resources.to_yaml)
-    end
+    # logger.info "Saving resources in yaml"
+    # File.open(RESOURCE_SET_FILE,'w+') do |f|
+    #   f.puts(MyExperiment.resources.to_yaml)
+    # end
     
-    create_metadata_file
+#    create_metadata_file
   end
   
 end

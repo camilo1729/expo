@@ -81,37 +81,52 @@ class TaskManager
   end
 
 
+### Executes a Task
   def execute_task(task)
+
     @logger.info "Executing Task: "+ "[ #{task.name} ]"
     options = task.options    
-    if task.target.is_a?(String) and not options[:target].nil? then
-      ## it is a node, cluster, or site we select the resources accordingly
-      if task.target.is_integer? then
-        ## it is a job so we select the resources accordingly
-        job_id = task.target
-        @logger.info "Clonnig Task for the Job: " + "#{job_id}"
-        target_resources = options[:target].select(:id => job_id.to_i )
-        resources_info = target_resources.select_resource_h{ |res|  res.properties.has_key? :id }
-      else
-        resource_name = task.target
-        target_resources = options[:target].select(:name => resource_name)
-        resources_info = target_resources.select_resource_h(:name => resource_name)
-      end
 
-    elsif not options[:target].nil?
-      if options[:lazy] then
-        target_resources = eval(options[:target],MyExperiment.variable_binding) ## This is for evaluating the resourceSet
-      else
-        target_resources = options[:target]
-      end
-      resources_info = []
-      if target_resources.is_a?(ResourceSet) then
-        target_resources.each{ |node| resources_info.push(node.name)} 
-      else
-        resources_info = [target_resources.to_s]
-      end
-    else 
+    task_resources = options[:target]
+    resources_info = []
+    # Dealing with lazy evaluation
+    # options[:taget] will be an array [var,operator]
+    if options[:lazy] then
+      var = options[:target][0]
+      # we evaluate just the variable and then the operator
+      task_resources = eval("#{var}",MyExperiment.variable_binding) 
+    end
+
+    if task_resources.nil? then
+      # We are executing in localhost
       resources_info = ["localhost"]
+      
+    elsif task.target.nil? then
+      target_resources = task_resources
+
+    elsif task.target.is_a?(String) then
+      job_id = task.target
+      @logger.info "Clonnig Task for the Job: " + "#{job_id}"
+      target_resources = task_resources.select(:id => job_id.to_i )
+      #resources_info = target_resources.select_resource_h{ |res|  res.properties.has_key? :id }
+
+    else
+      resource_name = task.target
+      target_resources = task_resources.select(:name => resource_name)
+      #resources_info = target_resources.select_resource_h(:name => resource_name)
+    end   
+
+    if options[:lazy] then
+      operator = options[:target][1]
+      # we evaluate now the operator 
+      @logger.debug "target_resources.#{operator}"
+      target_resources = eval("target_resources.#{operator}") 
+    end
+ 
+    if target_resources.is_a?(ResourceSet) then
+      target_resources.each{ |node| resources_info.push(node.name)} 
+    else
+      #resources_info = [target_resources.to_s]
     end
 
    
@@ -141,9 +156,9 @@ class TaskManager
       unless target_resources.is_a?(String) and exception then
         @tasks_mutex.synchronize {
           ## Get the name of the task
-          ## if the task has been  split we get the name of the father
+          ## if the task has been cloned we get the name of the father
           task_name = task.cloned_from.nil? ? task.name : task.cloned_from
-          MyExperiment.results_raw[task_name.to_sym]= Thread.current['results']
+          MyExperiment.results_raw[task_name.to_sym]+= Thread.current['results'] ## this is an array
         }
       end
     }
@@ -160,7 +175,7 @@ class TaskManager
       unless task.sync then  ## unless the task is synchronous otherwise we have to update the task
         if check_dependency_change?(task) then
           task.dependency.each{ |t_name|
-            puts "getting task #{t_name}"
+            # puts "getting task #{t_name}"
             task_depen = get_task(t_name)
             # puts "task #{task_depen.name} children: #{task_depen.children.inspect}"
             task_depen.children.each{ |c_t|
@@ -201,7 +216,6 @@ class TaskManager
       ## is the task ready to run?
       unless task.resource.nil? then ## task has to be treated before run it
 
-
         # we verify first if the task is ready to run
         if check_dependency?(task) then
         # Two cases, asynchronously task or job asynchronously     
@@ -220,12 +234,12 @@ class TaskManager
           elsif not task.cloned?  
             ## If the task has not been cloned
             ## We clone according to the resources established in the resource of the task
-            split_hash = { task.resource => [] }
+            clone_hash = { task.resource => [] }
             task_resources = task.options[:target]
             task_resources.each(task.resource){ | res |
-              split_hash[task.resource].push(res.name)
+              clone_hash[task.resource].push(res.name)
             }
-            new_tasks = task.clone_with_criteria(split_hash) ## This return an array
+            new_tasks = task.clone_with_criteria(clone_hash) ## This return an array
             
             tasks_changed = true
           end

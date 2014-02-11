@@ -110,6 +110,7 @@ class DSL
       resources = params[:target]
     else
       resources = Thread.current['resources']
+      @logger.debug "Command generated : #{resources.make_taktuk_command}"
     end
     
     task_options = Thread.current['task_options']
@@ -118,8 +119,11 @@ class DSL
       ## Here, as the Expo server is on the user's machine, each resource set has to have the gateway used to enter Grid5000
       ## checking if the resource set has the gateway defined ---- Fix-me we are not checking
       ## if num_instance is declared , we force the number of instances passed as argument
-      
-      exe_resources = resources[0..params[:ins_per_resources]-1]   if params[:ins_per_resources] #I have to find a better way to do this
+      if params[:ins_per_resources] then#I have to find a better way to do this
+        exe_resources = resources[0..params[:ins_per_resources]-1]   
+      else
+        exe_resources = resources
+      end
      
       if params[:ins_per_machine] then
         if command.is_a?(Array) then
@@ -463,7 +467,8 @@ class DSL
         @logger.info "New_target #{new_target} for Task: #{name}"
         @logger.info "Activating lazy evaluation"
         options[:lazy]=true
-        options[:target]=new_target
+        #options[:target]=new_target
+        options[:target]=[var_name,var_method]
       end
     end
 
@@ -509,11 +514,10 @@ class DSL
     flag = false
     file = File.new(file_path, "r")
     count = 0
-
+    @logger.info "Reading experiment variables"
     while (line = file.gets)
       unless (line.chop == "task_definition_start" or flag) then
         @exp_variables+= "#{line}" 
-        @logger.info "Reading experiment variables"
         # print "Reading experiment variables ...#{count}".cyan
         # print 13.chr
         # count = count + 1
