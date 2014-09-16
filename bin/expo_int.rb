@@ -1,4 +1,5 @@
 require 'rubygems'
+require "bundler/setup"
 require 'optparse'
 require 'log4r-color'
 
@@ -18,21 +19,24 @@ expo_logger = Log4r::Logger.new('Expo_log')
 
 format = Log4r::PatternFormatter.new(:pattern => '%d %5l %11c: %M')
 console_output = Log4r::ColorOutputter.new 'color', {
-  :colors =>   { 
-    :debug  => :light_blue, 
-    :info   => :light_blue, 
-    :warn   => :yellow, 
-    :error  => :red, 
-    :fatal  => {:color => :red, :background => :white} 
+  :colors =>   {
+    :debug  => :light_blue,
+    :info   => :light_blue,
+    :warn   => :yellow,
+    :error  => :red,
+    :fatal  => {:color => :red, :background => :white}
   } ,
   :formatter => format,
 }
 
 expo_log_file = Log4r::FileOutputter.new('logtest', :filename =>  "Expo_#{Time.now.to_i}.log")
 
-expo_logger.outputters = [console_output,expo_log_file] 
+expo_logger.outputters = [console_output,expo_log_file]
+
+#expo_logger.level = INFO
 
 Console = DSL.instance
+
 
 
 def task(name, options={}, &block)
@@ -51,10 +55,10 @@ def run(command,params = {})
   Console.run(command,params)
 end
 
-def check(command)
-  ret = Console.run(command,:no_error)
+def check(command, params = {})
+  ret = Console.run(command,params.merge!(:no_error => true))
   if ret == false then
-    return ret 
+    return ret
   else
     return true
   end
@@ -100,6 +104,10 @@ end
 
 def set_experiment_variables()
   Console.set_experiment_variables()
+end
+
+def connection(options={})
+  Console.connection(options)
 end
 
 ## if a file is passed as a parameter
