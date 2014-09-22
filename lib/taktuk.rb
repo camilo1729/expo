@@ -388,14 +388,15 @@ module TakTuk
       @binary = 'taktuk'
       @options = Options[options]
 
+      ## This seems information that is not important for Expo
       @streams = {
         :output => OutputStream.new(Template[:line]),
         :error => ErrorStream.new(Template[:line]),
         :status => StatusStream.new(Template[:command,:line,:start_date,:stop_date]),
-        :connector => ConnectorStream.new(Template[:command,:line]),
-        :state => StateStream.new(Template[:command,:line,:peer]),
+      #  :connector => ConnectorStream.new(Template[:command,:line]),
+      #  :state => StateStream.new(Template[:command,:line,:peer]),
         :info => nil,
-        :message => nil,
+      #  :message => nil,
         :taktuk => nil,
       }
 
@@ -435,10 +436,8 @@ module TakTuk
         @args += @commands.to_cmd              ## This  modification is in order to test the assignation of different commands to different nodes.
       end
       
-
       @exec = Execute[@binary,*@args].run!
       @status, @stdout, @stderr = @exec.wait
-      puts @stderr
 
       unless @status.success?
         @curthread = nil
@@ -453,14 +452,16 @@ module TakTuk
           results[name] = nil
         end
       end
-
+     
       @curthread = nil
       ## putting results plus time of execution
-      main_result={:cmd=> @exec.command,
-                   :start_time=> @exec.start_time,
-                   :end_time=> @exec.end_time,
-                   :run_time=> @exec.run_time,
-        :results => results}
+      main_result={
+        :cmd=> @exec.command,
+        :start_time=> @exec.start_time,
+        :end_time=> @exec.end_time,
+        :run_time=> @exec.run_time,
+        :results => results
+      }
       main_result
     end
 

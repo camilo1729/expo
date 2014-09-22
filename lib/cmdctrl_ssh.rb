@@ -40,22 +40,22 @@ class CmdCtrlSSH
             ch.on_extended_data do |c, type, data|
               @stderr << data
             end
-            
+
             ch.on_request "exit-status" do |ch, data|
               @exit_status = data.read_long
 #              puts "process terminated with exit status: #{data.read_long}"
             end
-            
-        
-            ch.on_close { 
+
+
+            ch.on_close {
               @end_time = Time.now.to_f
             }
-            
+
           end
         end
       end
     else
-      
+
     ## now if there is a gateway defined
       gateway = Net::SSH::Gateway.new(@gateway,@gw_user)
       # puts "Using gateway"
@@ -63,20 +63,20 @@ class CmdCtrlSSH
         session.open_channel do |ch|
           ch.exec @cmd do |ch,success|
             raise "could not execute command" unless success
-            
+
             ch.on_data do |c, data|
               @stdout << data
             end
-            
+
             ch.on_extended_data do |c,type,data|
               @stderr << data
             end
-            
+
             ch.on_request "exit-status" do |ch, data|
               @exit_status = data.read_long
             end
-          
-            ch.on_close {  
+
+            ch.on_close {
               @end_time = Time.now.to_f
             }
           end
